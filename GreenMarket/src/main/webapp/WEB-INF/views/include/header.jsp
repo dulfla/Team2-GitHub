@@ -18,7 +18,7 @@
 				        </ul>
 				    </li>		    	
 		    	</c:if>
-		    	<c:if test="${empty member }"><!-- && member.type=='M' -->
+		    	<c:if test="${!empty member && member.type=='M'}">
 				    <li>
 				    	<a href="#" class="nav-link px-2 link-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">현황 관리</a>
 				        <ul class="dropdown-menu text-small">
@@ -34,16 +34,16 @@
 	      	</form>
 	
 	      	<div class="dropdown text-end">
-	      		<c:if test="${!empty member}">
+	      		<c:if test="${empty member}">
 				    <button type="button" class="btn btn-outline-dark me-2">로그인</button>
-	        		<button type="button" class="btn btn-warning">회원가입</button>	    	
+	        		<button type="button" class="btn btn-warning">회원가입</button>
 		    	</c:if>
-	        	<c:if test="${empty member}">
+	        	<c:if test="${!empty member}">
 				    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 			            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
 			        </a>
 			        <ul class="dropdown-menu text-small">
-			        	<c:if test="${!empty member}"><!-- member.type=='U' -->
+			        	<c:if test="${member.type=='U'}">
 			        		<li><a class="dropdown-item" href="#">채팅방 보기</a></li>
 				            <li><a class="dropdown-item" href="#">판매목록</a></li>
 				            <li><a class="dropdown-item" href="#">구매목록</a></li>
