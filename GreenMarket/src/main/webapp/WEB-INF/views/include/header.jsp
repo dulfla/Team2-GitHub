@@ -8,7 +8,7 @@
       		</a>
 
 		    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-			    <li><a href="#" class="nav-link px-2 link-dark">중고 거래</a></li>
+			    <li><a href="productResult" class="nav-link px-2 link-dark">중고 거래</a></li>
 		    	<c:if test="${!empty member && member.type=='U'}">
 				    <li>
 				    	<a href="#" class="nav-link px-2 link-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">내 물건</a>

@@ -3,7 +3,13 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-<mapper namespace="mybatis.mapper.member">
+<mapper namespace="mybatis.mapper.productList">
+
+	<select id="selectAll" resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email
+		FROM productDetail pd, product p
+		WHERE pd.p_id = p.p_id
+	</select>
 	
 	<!-- <resultMap type="member" id="memVO">
 		<result column="id" property="id"/>

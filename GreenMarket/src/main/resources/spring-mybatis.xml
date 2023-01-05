@@ -29,5 +29,9 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory"/>
 	</bean>	
+	
+	<bean id="productListDAO" class="spring.dao.ProductListDAO">
+		<constructor-arg name="sqlSession" ref="sqlSession" />
+	</bean>
 
 </beans>
