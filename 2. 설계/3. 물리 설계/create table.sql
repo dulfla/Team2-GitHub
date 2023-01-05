@@ -15,7 +15,7 @@ DROP TABLE chatParticipants CASCADE CONSTRAINTS;
 DROP TABLE withdraw CASCADE CONSTRAINTS;
 drop table trade cascade constraints;
 
--- 회원 테이블 -----------------------------------------------------------------------------------------------------
+-- 회원 관련 테이블 ------------------------------------------------------------------------------------------------
 CREATE TABLE member(
     email VARCHAR2(50),
     password VARCHAR2(50) NOT NULL,
@@ -28,6 +28,11 @@ CREATE TABLE member(
     regdate date DEFAULT sysdate NOT NULL,
     
     CONSTRAINT PK_member_email PRIMARY KEY(email)
+);
+
+CREATE TABLE withdraw(
+    email VARCHAR2(50) CONSTRAINT withdraw_pk_email PRIMARY KEY,
+    wd_date DATE NOT NULL
 );
 
 
@@ -123,12 +128,6 @@ CREATE TABLE chatParticipants(
     join_date date NOT NULL
 );
 
-CREATE TABLE withdraw(
-    email VARCHAR2(50) CONSTRAINT withdraw_pk_email PRIMARY KEY,
-    wd_date DATE NOT NULL
-);
-
-
 -- FORING KEY 작성-----------------------------------------------------------------------------------------------
 -- 검색어 fk 추가
 ALTER TABLE search ADD CONSTRAINT fk_search_email FOREIGN KEY(email) REFERENCES member(email);
@@ -175,28 +174,53 @@ DROP SEQUENCE month_seq;
 DROP sequence day_seq;
 
 CREATE SEQUENCE year_seq
-START WITH 1 INCREMENT BY 1 maxvalue 5
+START WITH 20 INCREMENT BY 1 minvalue 20 maxvalue 22
 NOCACHE CYCLE;
 SET SERVEROUTPUT ON;
 CREATE SEQUENCE month_seq
-START WITH 1 INCREMENT BY 4 maxvalue 12
+START WITH 1 INCREMENT BY 1 maxvalue 12
 NOCACHE CYCLE;
 CREATE SEQUENCE day_seq
-START WITH 1 INCREMENT BY 4 maxvalue 28
+START WITH 1 INCREMENT BY 3 maxvalue 28
 NOCACHE CYCLE;
+
+CREATE TABLE member(
+    email VARCHAR2(50),
+    password VARCHAR2(50) NOT NULL,
+    birth NUMBER NOT NULL,
+    address VARCHAR2(200) NOT NULL,
+    phone CHAR(13) NOT NULL,
+    name NVARCHAR2(20) not null,
+    nickname NVARCHAR2(20) UNIQUE not null,
+    type CHAR(1) DEFAULT 'U' NOT NULL, -- 회원 : U, 관리자 : M
+    regdate date DEFAULT sysdate NOT NULL,
+    
+    CONSTRAINT PK_member_email PRIMARY KEY(email)
+);
+
+CREATE OR REPLACE PROCEDURE member_sampleDate
+IS
+    maxinput number:=200;
+BEGIN
+    FOR idx  IN 1..maxinput LOOP
+        INSERT INTO member
+        VALUES('mail'||idx||'@naver.com', '1234', 19990101, '주소'||idx, '010'||LPAD(to_char(idx),8, '0'), '이름'||idx,'회원'||idx, 'U',
+            TO_DATE('20'||LPAD(to_char(year_seq.nextval), 2, '0')||LPAD(to_char(month_seq.nextval),2, '0')||LPAD(to_char(day_seq.nextval),2, '0'), 'YYYY/MM/DD'));
+    END LOOP;
+END;
 
 CREATE OR REPLACE PROCEDURE withdraw_sampleDate
 IS
     maxinput number:=200;
 BEGIN
     FOR idx  IN 1..maxinput LOOP
-    --  dbms_output.put_line('20'||LPAD(to_char(year_seq.nextval+16), 2, '0')||LPAD(to_char(month_seq.nextval),2, '0')||'01');
         INSERT INTO withdraw
-        VALUES('이메일'||idx||'@naver.com',
-            TO_DATE('20'||LPAD(to_char(year_seq.nextval+16), 2, '0')||LPAD(to_char(month_seq.nextval),2, '0')||LPAD(to_char(day_seq.nextval),2, '0'), 'YYYY/MM/DD'));
+        VALUES('email'||idx||'@naver.com',
+            TO_DATE('20'||LPAD(to_char(year_seq.nextval), 2, '0')||LPAD(to_char(month_seq.nextval),2, '0')||LPAD(to_char(day_seq.nextval),2, '0'), 'YYYY/MM/DD'));
     END LOOP;
 END;
 
+EXECUTE member_sampleDate;
 EXECUTE withdraw_sampleDate;
 
 
@@ -216,20 +240,15 @@ VALUES('pid5','에어팟 맥스','에어팟 맥스 미개봉 상품입니다','�
 
 -- 회원 상세
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
-VALUES('hong@naver.com','1234',19990305,'경기도안산시','0103455555',
-'홍길동','길동이1');
+VALUES('hong@naver.com','1234',19990305,'경기도안산시','0103455555','홍길동','길동이1');
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
-VALUES('lee@naver.com','1234',19970205,'경기도오산시','0103455556',
-'이길동','길동이2');
+VALUES('lee@naver.com','1234',19970205,'경기도오산시','0103455556','이길동','길동이2');
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
-VALUES('pack@naver.com','1234',19990105,'경기도안산시','0103455557',
-'박길동','길동이3');
+VALUES('pack@naver.com','1234',19990105,'경기도안산시','0103455557','박길동','길동이3');
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
-VALUES('jeong@naver.com','1234',19890506,'경기도안산시','0103455558',
-'정길동','길동이4');
+VALUES('jeong@naver.com','1234',19890506,'경기도안산시','0103455558','정길동','길동이4');
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
-VALUES('choi@naver.com','1234',19900312,'경기도안산시','0103455559',
-'최길동','길동이5');
+VALUES('choi@naver.com','1234',19900312,'경기도안산시','0103455559','최길동','길동이5');
 
 -- 검색어
 insert into search(idx, search, email)
