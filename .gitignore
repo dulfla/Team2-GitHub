@@ -1,3 +1,13 @@
+/GreenMarket/target/
+
+/GreenMarket/.settings/
+
+/GreenMarket/.project
+
+/GreenMarket/.classpath
+
+/GreenMarket/.springBeans
+
 /.metadata/
 
 /Servers/
