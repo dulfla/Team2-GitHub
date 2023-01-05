@@ -20,16 +20,14 @@
 	
 	<!-- 두번째 빈 : sqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation"
-			value="classpath:mybatis/config/mybatisConfig.xml" />
-		<property name="mapperLocations" 
-			value="classpath*:mybatis/mapper/*.xml"/>	<!-- * = 모두쓸때 -->
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:mybatis/config/mybatisConfig.xml"/>
+		<property name="mapperLocations" value="classpath*:mybatis/mapper/*.xml"/>	<!-- * = 모두쓸때 -->
 	</bean>
 	
 	<!-- 세번째 빈 : SqlSession -->
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg ref="sqlSessionFactory" />
+		<constructor-arg index="0" ref="sqlSessionFactory"/>
 	</bean>	
 
 </beans>
