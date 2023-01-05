@@ -2,23 +2,18 @@ package spring.vo;
 
 public class AuthInfo { 
 	
-	private Long id;
 	private String email;
 	private String name;
-	
-	public AuthInfo(Long id, String email, String name) {
-		this.id = id;
-		this.email = email;
-		this.name = name;
-	}
+	private String nickname;
 	
 	public AuthInfo() {}
-	
-	public AuthInfo setId(Long id) {
-		this.id = id;
-		return this;
+
+	public AuthInfo(String email, String name, String nickname) {
+		this.email = email;
+		this.name = name;
+		this.nickname = nickname;
 	}
-	
+
 	public AuthInfo setEmail(String email) {
 		this.email = email;
 		return this;
@@ -29,14 +24,24 @@ public class AuthInfo {
 		return this;
 	}
 	
-	public Long getId() {
-		return id;
+	public AuthInfo setNickname(String nickname) {
+		this.nickname = nickname;
+		return this;
 	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public String getName() {
 		return name;
 	}
+
+	public String getNickname() {
+		return nickname;
+	}
+	
+	
+	
 	
 }

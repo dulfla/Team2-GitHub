@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <header class="p-3 mb-3 border-bottom">
 	<div class="container">
     	<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-      		<a href="/GreenMarket/main" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+      		<a href="index" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
         		<img class="bi me-2" width="150" height="60" role="img" alt="그린마켓 로고" src="${path}resources/img/그린마켓2.png">
         		<!-- 로고 비율 최적화 == w:150, h:60 -->
       		</a>
@@ -34,11 +37,12 @@
 	      	</form>
 	
 	      	<div class="dropdown text-end">
-	      		<c:if test="${!empty member}">
-				    <button type="button" class="btn btn-outline-dark me-2">로그인</button>
-	        		<button type="button" class="btn btn-warning">회원가입</button>	    	
+	      		<c:if test="${empty member}">
+	      			<a href="login"><button type="button" class="btn btn-outline-dark me-2">로그인</button></a>
+				    <a href="register"><button type="button"class="btn btn-warning">회원가입</button></a>	
 		    	</c:if>
-	        	<c:if test="${empty member}">
+		    	
+	        	<c:if test="${!empty member}">
 				    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 			            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
 			        </a>

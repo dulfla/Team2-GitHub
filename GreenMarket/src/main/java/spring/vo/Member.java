@@ -11,11 +11,24 @@ public class Member {
 	private String name;
 	private String nickName;
 	private String type;
-	
-	public Member() {}
-	
+	private Date regdate;
 	
 	
+	public Member() {} 
+	
+	public Member(String email, String password, int birth, String address, String phone, String name,
+			String nickName) {
+		super();
+		this.email = email;
+		this.password = password;
+		this.birth = birth;
+		this.address = address;
+		this.phone = phone;
+		this.name = name;
+		this.nickName = nickName;
+	}
+
+
 	public String getType() {
 		return type;
 	}
@@ -31,7 +44,6 @@ public class Member {
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
 	}
-	private Date regdate;
 	
 	public String getEmail() {
 		return email;
