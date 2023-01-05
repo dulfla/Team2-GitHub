@@ -18,6 +18,7 @@
 <body>
 	<%@ include file="include/header.jsp" %>
 	<div id="container">
+		<a href="PD">상품 상세 페이지로 이동</a>
 		
 	</div>
 	<%@ include file="include/footer.jsp" %>
