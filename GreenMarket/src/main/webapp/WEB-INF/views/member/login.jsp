@@ -4,8 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="google-signin-client_id" content="769346217672-1q91nco79jmnlv5t8ff299rlgk7i52ga.apps.googleusercontent.com">
 <title>로그인 페이지</title>
+
+<!-- 부트스트랩 링크 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -16,7 +17,7 @@
 	integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
 	crossorigin="anonymous">
 </script>
-	
+
 <style type="text/css">
 
 @import
@@ -192,7 +193,7 @@ input {
 		<div class="overlay-container">
 			<div class="overlay">
 				<div class="overlay-panel overlay-right">
-					<h1>HTML CSS Login Form</h1>
+					<h1>Green Market Login Form</h1>
 					<p>This login form is created using pure HTML and CSS. For
 						social icons, FontAwesome is used.</p>
 				</div>
