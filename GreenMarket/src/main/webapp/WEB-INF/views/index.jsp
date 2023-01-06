@@ -18,7 +18,7 @@
 <body>
 	<%@ include file="include/header.jsp" %>
 	<div id="container">
-		
+
 	</div>
 	<%@ include file="include/footer.jsp" %>
 </body>
