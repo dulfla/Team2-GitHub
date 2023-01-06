@@ -1,12 +1,12 @@
-/GreenMarket/target/
+target/
 
-/GreenMarket/.settings/
+.settings/
 
-/GreenMarket/.project
+.project
 
-/GreenMarket/.classpath
+.classpath
 
-/GreenMarket/.springBeans
+.springBeans
 
 /.metadata/
 
