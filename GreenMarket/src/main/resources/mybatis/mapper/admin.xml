@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="mybatis.mapper.admin">
+	
+	<select id="countAllMember" resultType="countVo">
+		SELECT SUBSTR(wd_date, 1, 2) AS "year", SUBSTR(wd_date, 4, 2) AS "month", count(*) AS "cnt"
+		FROM WITHDRAW
+		group by SUBSTR(wd_date, 1, 2), SUBSTR(wd_date, 4, 2)
+		order by "year" asc, "month" asc
+	</select>
+	
+	<select id="countAllWithdraw" resultType="countVo">
+		SELECT SUBSTR(regdate, 1, 4) AS "year", SUBSTR(regdate, 5, 2) AS "month", count(*) AS "cnt"
+		FROM member
+		group by SUBSTR(regdate, 1, 4),SUBSTR(regdate, 5, 2)
+		order by "year" asc, "month" asc
+	</select>
+	
+</mapper>

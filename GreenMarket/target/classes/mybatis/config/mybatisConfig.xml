@@ -3,7 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<!-- <typeAliases>
-		<typeAlias type="spring.vo.Member" alias="member"/>
-	</typeAliases>	 -->
+	<typeAliases>
+		<typeAlias type="spring.vo.ChatInfomationVo" alias="chatRoomfoVo"/>
+		<typeAlias type="spring.vo.ChatMessageVo" alias="chatMessageVo"/>
+		<typeAlias type="spring.vo.ChatParticipantsVo" alias="chatMemberVo"/>
+		<typeAlias type="spring.vo.CountVo" alias="countVo"/>
+	</typeAliases>
 </configuration>  
