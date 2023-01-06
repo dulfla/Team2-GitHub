@@ -1,16 +1,3 @@
-target/
-
-.settings/
-
-.project
-
-.classpath
-
-.springBeans
-
 /.metadata/
 
 /Servers/
-
-pom.properties
-MANIFEST.MF
