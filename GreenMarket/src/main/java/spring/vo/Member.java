@@ -18,7 +18,7 @@ public class Member {
 	
 	public Member(String email, String password, int birth, String address, String phone, String name,
 			String nickName) {
-		super();
+		
 		this.email = email;
 		this.password = password;
 		this.birth = birth;

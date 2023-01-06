@@ -1,15 +1,32 @@
 package spring.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import spring.vo.Member;
 
 @Repository
 public class MemberDao {
-
+	
+	@Autowired
+	private SqlSession sqlSession;
+	
+	String nameSpace = "mybatis.mapper.member.";
+	
+	public void setSqlSession(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
+	}
+	
+	public List<Member> selectAll(){
+		return sqlSession.selectList(nameSpace+"selectAll");
+	}
+	
 	public Member selectByEmail(String email) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println(email);
+		return sqlSession.selectOne(nameSpace+"selectByEmail",email);	
 	}
 
 }

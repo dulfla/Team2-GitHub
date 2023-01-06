@@ -14,6 +14,7 @@
 				classpath:spring-mvc.xml
 				classpath:spring-mybatis.xml
 				classpath:spring-service.xml
+				classpath:spring-member.xml
 			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>

@@ -3,7 +3,6 @@ package spring.vo;
 public class LoginCommand { // 커맨드 객체 : 클라이언트의 데이터를 묶어서 서버(controller)로 보내주는 역할
 	private String email;
 	private String password;
-	private boolean rememberEmail; // 쿠키
 	
 	
 	public String getEmail() {
@@ -17,12 +16,6 @@ public class LoginCommand { // 커맨드 객체 : 클라이언트의 데이터�
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	public boolean isRememberEmail() {
-		return rememberEmail;
-	}
-	public void setRememberEmail(boolean rememberEmail) {
-		this.rememberEmail = rememberEmail;
 	}
 	
 	

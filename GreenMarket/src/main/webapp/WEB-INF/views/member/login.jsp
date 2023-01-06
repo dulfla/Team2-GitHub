@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>  
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>        	
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,8 +20,18 @@
 	crossorigin="anonymous">
 </script>
 
-<style type="text/css">
+<!-- 제이쿼리 -->
+<script
+  src="https://code.jquery.com/jquery-3.6.3.js"
+  integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+  crossorigin="anonymous">
+</script>
 
+<!-- sweetalert -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
+<style type="text/css">
 @import
 	url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
@@ -177,7 +189,7 @@ input {
 	<main>
 		<div class="container2" id="container2">
 		<div class="form-container log-in-container">
-			<form action="#">
+			<form:form modelAttribute="loginCommand">
 				<h1>로그인</h1>
 				<div class="social-container">
 					<a href="#" class="social"><i class="fa fa-facebook fa-2x"></i></a>
@@ -187,8 +199,8 @@ input {
 				<input type="email"	name="email" id="email"  placeholder="이메일" /> 
 				<input type="password" name="password" id="password" placeholder="비밀번호" /> 
 				<a href="#">Forgot your password?</a>
-				<button>Log In</button>
-			</form>
+				<button id="alertStart">Log In</button>
+			</form:form>
 		</div>
 		<div class="overlay-container">
 			<div class="overlay">
@@ -201,7 +213,40 @@ input {
 		</div>
 	</div>
 	</main>
-	
+<script type="text/javascript">
+
+
+$("#alertStart").click(function () {
+  Swal.fire({
+    icon: 'success',
+    title: 'Alert가 실행되었습니다.',
+    text: '이곳은 내용이 나타나는 곳입니다.',
+  });
+});
+
+/* $(document).ready(function () {
+	$("#login_btn").on('click', function() {
+		loginChk();
+	})
+});
+	function loginCheck() {
+		$.ajax({
+			url:,
+			type:"POST",
+			data:{
+				email:$("#id").val(),
+				password:$("#password").val()
+			},
+			 success: function(data){
+		            alert("로그인 성공");
+		        },
+		        error: function(){
+		            alert("로그인 실패");
+		        }
+		  	});
+		});
+	} */
+</script>
 </body>
 <jsp:include page="../include/footer.jsp"/>
 </html>

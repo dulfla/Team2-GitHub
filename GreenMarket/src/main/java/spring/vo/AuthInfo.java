@@ -5,13 +5,24 @@ public class AuthInfo {
 	private String email;
 	private String name;
 	private String nickname;
+	private String type;
 	
 	public AuthInfo() {}
 
-	public AuthInfo(String email, String name, String nickname) {
+	
+
+	public AuthInfo(String email, String name, String nickname, String type) {
 		this.email = email;
 		this.name = name;
 		this.nickname = nickname;
+		this.type = type;
+	}
+
+
+
+	public AuthInfo setType(String type) {
+		this.type = type;
+		return this;
 	}
 
 	public AuthInfo setEmail(String email) {
@@ -41,7 +52,9 @@ public class AuthInfo {
 		return nickname;
 	}
 	
-	
+	public String getType() {
+		return type;
+	}
 	
 	
 }

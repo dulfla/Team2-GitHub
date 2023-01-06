@@ -29,5 +29,10 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory"/>
 	</bean>	
-
+	
+	<!-- 네번째 빈 : MemberDao -->
+	<bean id="memberDao" class="spring.dao.MemberDao">
+		<property name="sqlSession" ref="sqlSession"/>
+	</bean>
+	
 </beans>
