@@ -8,7 +8,7 @@
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/resources/mybatis/mapper/admin.xml</config>
-		<config>src/main/resources/spring-beans.xml</config>
+		<config>src/main/resources/spring-servies.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/resources/spring-controller.xml</config>

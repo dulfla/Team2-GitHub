@@ -1,21 +1,22 @@
 package spring.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import spring.business.AdminJsonParsing;
 import spring.dao.AdminDao;
 import spring.dao.ChatDao;
 import spring.vo.ChatInfomationVo;
-import spring.vo.CountVo;
+import spring.vo.CountByYearVo;
 
 @Controller
 public class SampleController {
@@ -46,15 +47,12 @@ public class SampleController {
 //--------------------------------------------------------------------------------------
 	
 	@Autowired
-	private AdminDao a_dao;
-	
-	@Autowired
 	private AdminJsonParsing adminJsonParsing;
 	
 	@RequestMapping("MemberStatus")
-	public String memberAdmin(HttpServletRequest request) {
-		
-		JSONObject json = adminJsonParsing.memverAdmin(a_dao);
+	public String memberAdmin(HttpServletRequest request) throws ParseException {
+		JSONObject json = adminJsonParsing.memverAdmin();
+		request.setAttribute("memberAdmin", json);
 		
 		return "admin/memberStatus";
 	}

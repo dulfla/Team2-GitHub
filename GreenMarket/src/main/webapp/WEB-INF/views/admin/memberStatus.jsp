@@ -19,72 +19,71 @@
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
 		<div class="main">
-    <div class="chart-container" style="position: relative; height:40vh; width:80vw">
-        <canvas id="test1"></canvas>
-    </div>
-        <script>
-            var ctx = document.getElementById('test1').getContext('2d');
-            var chart = new Chart(ctx, {
-                // The type of chart we want to create
-                type: 'bar',
-
-                // The data for our dataset
-                data: {
-                    labels: ['7월', '8월', '9월', '10월', '11월', '12월'],
-                    datasets: [{
-                        label: '티스토리 블로그 희망 방문자 수',
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.5)',
-                            'rgba(54, 162, 235, 0.5)',
-                            'rgba(255, 206, 86, 0.5)',
-                            'rgba(75, 192, 192, 0.5)',
-                            'rgba(153, 102, 255, 0.5)',
-                            'rgba(255, 159, 64, 0.5)'],
-                        borderColor: ['rgb(255, 99, 132,1.5)',
-                            'rgba(54, 162, 235, 1.5)',
-                            'rgba(255, 206, 86, 1.5)',
-                            'rgba(75, 192, 192, 1.5)',
-                            'rgba(153, 102, 255, 1.5)',
-                            'rgba(255, 159, 64, 1.5)'],
-                        data: [1000, 1600, 2700, 3400, 4900, 6000]
-                    }]
-                },
-
-                // Configuration options go here
-                options: {
-                    title: {
-                        display: true,
-                        text: '★방문해 주셔서 감사합니다★',
-                        fontSize: 30,
-                        fontColor: 'rgba(46, 49, 49, 1)'
-                    },
-                    legend: {
-                        labels: {
-                            fontColor: 'rgba(83, 51, 237, 1)',
-                            fontSize: 15
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            ticks: {
-                                fontColor: 'rgba(27, 163, 156, 1)',
-                                fontSize: '15'
-                            }
-                        }],
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                                fontColor: 'rgba(246, 36, 89, 1)',
-                                fontSize: '15'
-                            }
-                        }]
-                    }
-                }
-            });
-        </script>
-    </div>    
-</div>
+		    <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+		        <canvas id="chart1"></canvas>
+		    </div>
+		</div>    
+	</div>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
+	<script>
+		const json = ${memberAdmin};
+		console.log(json);
+		
+		let dateArr = [];
+		let countArr = []
+		for(let i=0; i<json["count"][0]["leftMemberAdmin"].length; i++){
+			dateArr.push(json["count"][0]["leftMemberAdmin"][i]["date"]);
+			countArr.push(json["count"][0]["leftMemberAdmin"][i]["count"]);
+		}
+		
+		   var ctx = document.getElementById('chart1').getContext('2d');
+		   var chart = new Chart(ctx, {
+		       type: 'line',
+		       data: {
+		           labels: dateArr,
+		           datasets: [{
+		               label: '누적 회원수',
+		               tension: 0.5,
+		           	pointStyle: 'circle',
+		           	fill: false,
+		               backgroundColor: 'rgba(255, 99, 132, 0.5)',
+		               borderColor: 'rgb(255, 99, 132,1.5)',
+		               data: countArr
+		           }]
+		       },
+		
+		       // Configuration options go here
+		       options: {
+		           title: {
+		               display: true,
+		               text: '★가입일자별 현재 회원수★',
+		               fontSize: 30,
+		               fontColor: 'rgba(46, 49, 49, 1)'
+		           },
+		           legend: {
+		               labels: {
+		                   fontColor: 'rgba(83, 51, 237, 1)',
+		                   fontSize: 15
+		               }
+		           },
+		           scales: {
+		               xAxes: [{
+		                   ticks: {
+		                       fontColor: 'rgba(27, 163, 156, 1)',
+		                       fontSize: '15'
+		                   }
+		               }],
+		               yAxes: [{
+		                   ticks: {
+		                       beginAtZero: true,
+		                       fontColor: 'rgba(246, 36, 89, 1)',
+		                       fontSize: '15'
+		                   }
+		               }]
+		           }
+		       }
+		   });
+	</script>
 </body>
 </html>

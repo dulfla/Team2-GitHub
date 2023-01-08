@@ -1,9 +1,8 @@
 package spring.vo;
 
-public class CountVo {
+public class CountByYearVo {
 
 	private String year;
-	private String month;
 	private long cnt;
 	
 	public String getYear() {
@@ -11,12 +10,6 @@ public class CountVo {
 	}
 	public void setYear(String year) {
 		this.year = year;
-	}
-	public String getMonth() {
-		return month;
-	}
-	public void setMonth(String month) {
-		this.month = month;
 	}
 	public long getCnt() {
 		return cnt;

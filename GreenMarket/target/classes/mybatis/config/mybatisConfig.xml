@@ -7,6 +7,9 @@
 		<typeAlias type="spring.vo.ChatInfomationVo" alias="chatRoomfoVo"/>
 		<typeAlias type="spring.vo.ChatMessageVo" alias="chatMessageVo"/>
 		<typeAlias type="spring.vo.ChatParticipantsVo" alias="chatMemberVo"/>
-		<typeAlias type="spring.vo.CountVo" alias="countVo"/>
+		
+		<typeAlias type="spring.vo.CountByYearVo" alias="cYearVo"/>
+		<typeAlias type="spring.vo.CountByMonthVo" alias="cMonthVo"/>
+		<typeAlias type="spring.vo.CountCategory" alias="cCategoryVo"/>
 	</typeAliases>
 </configuration>  
