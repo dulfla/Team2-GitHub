@@ -9,5 +9,5 @@
 	<bean id="MemberController" class="spring.controller.MemberController">
 		<!-- <property name="authService" ref="authService"/> -->
 	</bean>
-	
+	<bean id="LoginController" class="spring.controller.LoginController"></bean>
 </beans>

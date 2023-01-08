@@ -189,7 +189,7 @@ input {
 	<main>
 		<div class="container2" id="container2">
 		<div class="form-container log-in-container">
-			<form:form modelAttribute="loginCommand">
+			<form:form modelAttribute="loginCommand" action="postLogin" name="frm">
 				<h1>로그인</h1>
 				<div class="social-container">
 					<a href="#" class="social"><i class="fa fa-facebook fa-2x"></i></a>
@@ -199,7 +199,7 @@ input {
 				<input type="email"	name="email" id="email"  placeholder="이메일" /> 
 				<input type="password" name="password" id="password" placeholder="비밀번호" /> 
 				<a href="#">Forgot your password?</a>
-				<button id="alertStart">Log In</button>
+				<button id="alertStart" onclick="return loginCheck()">Log In</button>
 			</form:form>
 		</div>
 		<div class="overlay-container">
@@ -216,36 +216,78 @@ input {
 <script type="text/javascript">
 
 
-$("#alertStart").click(function () {
+/* $("#alertStart").click(function () {
   Swal.fire({
     icon: 'success',
     title: 'Alert가 실행되었습니다.',
     text: '이곳은 내용이 나타나는 곳입니다.',
   });
-});
+}); */
 
-/* $(document).ready(function () {
-	$("#login_btn").on('click', function() {
-		loginChk();
-	})
-});
-	function loginCheck() {
+function loginCheck(){
+	if(document.frm.email.value.length == 0){
+		 Swal.fire({
+			    icon: 'error',
+			    title: '아이디를 입력해주세요.',
+			  });
+		document.frm.email.focus();
+		return false;
+	}
+	
+	if(document.frm.password.value == ''){
+		Swal.fire({
+		    icon: 'error',
+		    title: '비밀번호를 입력해주세요.',
+		  });
+		document.frm.password.focus();
+		return false;
+	}
+	return loginAjax();
+}
+
+function loginAjax(){
+	var email = $("#email").val();
+	var password = $("#password").val();
+
+	var jsonData ={
+		email : email,
+		password : password
+	};
+	console.log(jsonData);
+	
 		$.ajax({
-			url:,
+			url:"postLogin",
 			type:"POST",
-			data:{
-				email:$("#id").val(),
-				password:$("#password").val()
-			},
+			/* data:JSON.stringify(jsonData), */
+			data:jsonData,
+			/* dataType:"text", */
+			/* contentType: "application/json; charset=UTF-8",  */
+			contentType:" application/x-www-form-urlencoded; charset=UTF-8",
 			 success: function(data){
-		            alert("로그인 성공");
-		        },
-		        error: function(){
-		            alert("로그인 실패");
-		        }
-		  	});
-		});
-	} */
+				 console.log(data);
+				 if(data == "1"){
+					 Swal.fire({
+						    icon: 'success',
+						    title: '로그인성공.',
+						  }); 
+					window.location.href = "index"; 
+				}else{
+					Swal.fire({
+					    icon: 'error',
+					    title: '로그인실패',
+					  });
+					window.location.href = "member/login";
+					return false;
+				}
+			 		
+		  	},error : function(error) {
+		  		console.log(result);
+				alert("전송에 실패하였습니다.");
+				 /* window.location.href = "index"; */
+			}
+		})
+	}
+	
 </script>
 </body>
 <jsp:include page="../include/footer.jsp"/>
