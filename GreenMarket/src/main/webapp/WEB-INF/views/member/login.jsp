@@ -189,7 +189,8 @@ input {
 	<main>
 		<div class="container2" id="container2">
 		<div class="form-container log-in-container">
-			<form:form modelAttribute="loginCommand" action="postLogin" name="frm">
+			<form action="postLogin" method="post" name="frm">
+			<form:errors />
 				<h1>로그인</h1>
 				<div class="social-container">
 					<a href="#" class="social"><i class="fa fa-facebook fa-2x"></i></a>
@@ -199,8 +200,8 @@ input {
 				<input type="email"	name="email" id="email"  placeholder="이메일" /> 
 				<input type="password" name="password" id="password" placeholder="비밀번호" /> 
 				<a href="#">Forgot your password?</a>
-				<button id="alertStart" onclick="return loginCheck()">Log In</button>
-			</form:form>
+				<button type="submit" onclick="return loginCheck()">Log In</button>
+			</form>	
 		</div>
 		<div class="overlay-container">
 			<div class="overlay">
@@ -250,34 +251,28 @@ function loginAjax(){
 	var password = $("#password").val();
 
 	var jsonData ={
-		email : email,
-		password : password
+		"email" : email,
+		"password" : password
 	};
 	console.log(jsonData);
 	
 		$.ajax({
-			url:"postLogin",
 			type:"POST",
-			/* data:JSON.stringify(jsonData), */
-			data:jsonData,
-			/* dataType:"text", */
-			/* contentType: "application/json; charset=UTF-8",  */
-			contentType:" application/x-www-form-urlencoded; charset=UTF-8",
-			 success: function(data){
-				 console.log(data);
-				 if(data == "1"){
-					 Swal.fire({
-						    icon: 'success',
-						    title: '로그인성공.',
-						  }); 
+			url:"postLogin",
+			data : JSON.stringify(jsonData),  
+			dataType : 'json', 
+			contentType : 'application/json;charset=UTF-8', 
+			/* contentType:" application/x-www-form-urlencoded", */
+			 success: function(result){
+				 console.log(result);
+				 if(result == "1"){
+					
 					window.location.href = "index"; 
 				}else{
 					Swal.fire({
 					    icon: 'error',
 					    title: '로그인실패',
 					  });
-					window.location.href = "member/login";
-					return false;
 				}
 			 		
 		  	},error : function(error) {

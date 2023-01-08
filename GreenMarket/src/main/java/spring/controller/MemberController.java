@@ -1,6 +1,7 @@
 package spring.controller;
 
 import java.awt.PageAttributes.MediaType;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,12 +13,11 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import spring.exception.IdPasswordNotMatchingException;
 import spring.service.AuthService;
@@ -40,19 +40,19 @@ public class MemberController {
 	}
 
 	@GetMapping("login")
-	public String memberLoginGet( LoginCommand loginCommand) {
+	public String memberLoginGet(LoginCommand loginCommand) {
 		return "member/login";
 	}
-	
-	@PostMapping("postLogin")
+	@PostMapping(value = "postLogin",consumes="application/json")
 	@ResponseBody
-	public String memberLoginPost(LoginCommand loginCommand, HttpSession session,
+	public String memberLoginPost(@RequestBody LoginCommand loginCommand, HttpSession session,
 			HttpServletResponse response, Errors errors) {
 
 		new LoginCommandValidator().validate(loginCommand, errors);
-
+		
+		String result ;
 		if (errors.hasErrors()) {
-			return "0";
+			result ="0";
 		}
 
 		try {
@@ -60,10 +60,11 @@ public class MemberController {
 			System.out.println(authInfo.getType());
 
 			session.setAttribute("member", authInfo);
-			return "1";
+			result ="1";
 		} catch (IdPasswordNotMatchingException e) {
-			return "0";
+			result ="0";
 		}
+		return result;
 	}
 	
 	

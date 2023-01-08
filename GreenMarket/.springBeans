@@ -13,6 +13,7 @@
 		<config>src/main/resources/spring-service.xml</config>
 	</configs>
 	<autoconfigs>
+		<config>src/main/resources/spring-member.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
 	</autoconfigs>
 	<configSets>
