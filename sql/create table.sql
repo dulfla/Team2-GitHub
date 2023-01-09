@@ -12,8 +12,10 @@ DROP TABLE category CASCADE CONSTRAINTS;
 DROP TABLE chatInfomation CASCADE CONSTRAINTS;
 DROP TABLE chatMessage CASCADE CONSTRAINTS;
 DROP TABLE chatParticipants CASCADE CONSTRAINTS;
-DROP TABLE withdraw CASCADE CONSTRAINTS;
-DROP TABLE trade cascade constraints;
+DROP TABLE trade CASCADE CONSTRAINTS;
+DROP TABLE memberHistory CASCADE CONSTRAINTS;
+DROP TABLE productHistory CASCADE CONSTRAINTS;
+
 
 -- 회원 관련 테이블 ------------------------------------------------------------------------------------------------
 CREATE TABLE member(
@@ -30,9 +32,11 @@ CREATE TABLE member(
     CONSTRAINT PK_member_email PRIMARY KEY(email)
 );
 
-CREATE TABLE withdraw(
-    email VARCHAR2(50) CONSTRAINT withdraw_pk_email PRIMARY KEY,
-    wd_date DATE NOT NULL
+CREATE TABLE memberHistory(
+    idx NUMBER CONSTRAINT memberHistory_pk_idx PRIMARY KEY,
+    email VARCHAR2(50) NOT NULL,
+    trakingDate DATE NOT NULL,
+    type char(5) NOT NULL
 );
 
 
@@ -106,6 +110,14 @@ INSERT INTO category VALUES('가공식품');
 INSERT INTO category VALUES('반려동물 물품');
 INSERT INTO category VALUES('기타 중고물품');
 
+CREATE TABLE productHistory(
+    idx number CONSTRAINT productHistory_pk_idx PRIMARY key,
+    p_id varchar2(10),
+    category nvarchar2(20),
+    trackDate date not null,
+    type char(5)
+);
+
 
 -- 채팅 관련 테이블 ------------------------------------------------------------------------------------------------
 CREATE TABLE chatInfomation(
@@ -131,83 +143,102 @@ CREATE TABLE chatParticipants(
 -- FORING KEY 작성-----------------------------------------------------------------------------------------------
 
 -- 검색어 fk 추가
-ALTER TABLE search ADD CONSTRAINT fk_search_email FOREIGN KEY(email) REFERENCES member(email) on delete cascade;
+ALTER TABLE search
+ADD CONSTRAINT fk_search_email FOREIGN KEY(email) REFERENCES member(email) ON DELETE CASCADE;
 
 -- 상품 fk 추가
 ALTER TABLE product
-ADD CONSTRAINT product_fk_email FOREIGN KEY(email) REFERENCES member(email) on delete cascade;
+ADD CONSTRAINT product_fk_email FOREIGN KEY(email) REFERENCES member(email) ON DELETE CASCADE;
 ALTER TABLE product
-ADD CONSTRAINT product_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) on delete cascade;
+ADD CONSTRAINT product_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) ON DELETE CASCADE;
 
 -- 상품 상세보기 fk 추가
 ALTER TABLE productDetail
-ADD CONSTRAINT productDetail_fk_category FOREIGN KEY(category) REFERENCES category(category) on delete cascade;
+ADD CONSTRAINT productDetail_fk_category FOREIGN KEY(category) REFERENCES category(category) ON DELETE CASCADE;
 
 -- 상품 사진 fk 추가
 ALTER TABLE productPic
-ADD CONSTRAINT productPic_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) on delete cascade;
+ADD CONSTRAINT productPic_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) ON DELETE CASCADE;
 ALTER TABLE productPic
-ADD CONSTRAINT productPic_fk_f_id FOREIGN KEY(f_id) REFERENCES picDetail(f_id) on delete cascade;
+ADD CONSTRAINT productPic_fk_f_id FOREIGN KEY(f_id) REFERENCES picDetail(f_id) ON DELETE CASCADE;
 
 -- 채팅방 fk 추가
 ALTER TABLE chatInfomation
-ADD CONSTRAINT chatInfomation_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) on delete cascade;
+ADD CONSTRAINT chatInfomation_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) ON DELETE CASCADE;
 
 -- 채팅 메세지 fk 추가
 ALTER TABLE chatMessage
-ADD CONSTRAINT chatMessage_fk_c_id FOREIGN KEY(c_id) REFERENCES chatInfomation(c_id) on delete cascade;
+ADD CONSTRAINT chatMessage_fk_c_id FOREIGN KEY(c_id) REFERENCES chatInfomation(c_id) ON DELETE CASCADE;
 
 -- 채팅 인원 fk 추가
 ALTER TABLE chatParticipants
-ADD CONSTRAINT chatParticipants_fk_c_id FOREIGN KEY(c_id) REFERENCES chatInfomation(c_id) on delete cascade
-ADD CONSTRAINT chatPartic_fk_sender_email FOREIGN KEY(sender_email) REFERENCES member(email) on delete cascade;
+ADD CONSTRAINT chatParticipants_fk_c_id FOREIGN KEY(c_id) REFERENCES chatInfomation(c_id) ON DELETE CASCADE
+ADD CONSTRAINT chatPartic_fk_sender_email FOREIGN KEY(sender_email) REFERENCES member(email) ON DELETE CASCADE;
 
 -- 상품 거래 fk 추가
 ALTER TABLE trade
-ADD CONSTRAINT trade_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) on delete cascade
-ADD CONSTRAINT trade_fk_email FOREIGN KEY(email) REFERENCES member(email) on delete cascade;
+ADD CONSTRAINT trade_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) ON DELETE CASCADE
+ADD CONSTRAINT trade_fk_email FOREIGN KEY(email) REFERENCES member(email) ON DELETE CASCADE;
 
 
--- 프로시저 ---------------------------------------------------------------------------------------------------
+-- 트리거 ---------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE PROCEDURE member_sampleDate
-IS
-    maxinput number:=1200;
-    yearNum number(2);
-    monthNum number(2);
-    dayNum number(2);
+DROP SEQUENCE memberTracking_seq;
+CREATE SEQUENCE memberTracking_seq
+START WITH 1
+NOCYCLE
+NOCACHE;
+
+CREATE OR REPLACE TRIGGER memberAdmin
+BEFORE INSERT OR DELETE
+    ON member
+FOR EACH ROW
 BEGIN
-    FOR idx  IN 1..maxinput LOOP
-        yearNum:=ROUND(DBMS_RANDOM.VALUE(19, 22));
-        monthNum:=ROUND(DBMS_RANDOM.VALUE(1, 12));
-        dayNum:=ROUND(DBMS_RANDOM.VALUE(1, 28));
-        
-        INSERT INTO member
-        VALUES('mail'||idx||'@naver.com', '1234', 19990101, '주소'||idx, '010'||LPAD(to_char(idx),8, '0'), '이름'||idx,'회원'||idx, 'U',
-            TO_DATE('20'||yearNum||LPAD(to_char(monthNum),2, '0')||LPAD(to_char(dayNum),2, '0'), 'YYYY/MM/DD'));
-    END LOOP;
+    IF INSERTING THEN
+        INSERT INTO memberHistory
+        VALUES(memberTracking_seq.NEXTVAL, :NEW.email,:NEW.regdate, 'IN'); -- sysdate 여야 함
+    ELSIF DELETING THEN
+        INSERT INTO memberHistory
+        VALUES(memberTracking_seq.NEXTVAL, :OLD.email,:OLD.regdate, 'OUT'); -- sysdate 여야 함
+    END IF;
+END memberAdmin;
+
+DROP SEQUENCE productTracking_seq;
+CREATE SEQUENCE productTracking_seq
+START WITH 1
+NOCYCLE
+NOCACHE;
+
+CREATE OR REPLACE TRIGGER trackingProduct
+BEFORE INSERT OR UPDATE OR DELETE
+    ON productDetail
+FOR EACH ROW
+BEGIN
+    IF inserting THEN
+        INSERT INTO productHistory
+        VALUES(productTracking_seq.NEXTVAL, :NEW.p_id, :NEW.category, :NEW.regdate, 'IN');
+    ELSIF updating THEN
+        UPDATE productHistory
+        SET category = :NEW.category
+        WHERE p_id=:OLD.p_id;
+    ELSIF deleting THEN
+        INSERT INTO productHistory
+        VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :OLD.category, :OLD.regdate, 'OUT'); -- sysdate 여야 함
+    END if;
 END;
 
-CREATE OR REPLACE PROCEDURE withdraw_sampleDate
-IS
-    maxinput number:=200;
-    yearNum number(2);
-    monthNum number(2);
-    dayNum number(2);
+CREATE OR REPLACE TRIGGER trackingProductTrade
+BEFORE INSERT ON trade
+FOR EACH ROW
+DECLARE
+    trackdate DATE;
+    category NVARCHAR2(20);
 BEGIN
-    FOR idx  IN 1..maxinput LOOP
-        yearNum:=ROUND(DBMS_RANDOM.VALUE(20, 22));
-        monthNum:=ROUND(DBMS_RANDOM.VALUE(1, 12));
-        dayNum:=ROUND(DBMS_RANDOM.VALUE(1, 28));
-        
-        INSERT INTO withdraw
-        VALUES('email'||idx||'@naver.com',
-            TO_DATE('20'||yearNum||LPAD(to_char(monthNum),2, '0')||LPAD(to_char(dayNum),2, '0'), 'YYYY/MM/DD'));
-    END LOOP;
+    SELECT regdate INTO trackdate FROM productDetail WHERE p_id=:NEW.p_id; -- sysdate 여야 함
+    SELECT category INTO category FROM productDetail WHERE p_id=:NEW.p_id;
+    INSERT INTO productHistory
+    VALUES(productTracking_seq.NEXTVAL, :NEW.p_id, category, trackdate, 'TRADE');
 END;
-
-EXECUTE member_sampleDate;
-EXECUTE withdraw_sampleDate;
 
 
 -- 샘플 데이터 ---------------------------------------------------------------------------------------------------
@@ -269,11 +300,56 @@ insert into trade
 values('tid5', 'pid5', 'hong@naver.com');
 
 
--- 테이블 확인 ---------------------------------------------------------------------------------------------------
-rollback;
-commit;
+-- 프로시저 ---------------------------------------------------------------------------------------------------
 
-delete TRADE;
+CREATE OR REPLACE PROCEDURE member_sampleDate
+IS
+    maxinput NUMBER:=2000;
+    yearNum NUMBER(2);
+    monthNum NUMBER(2);
+    dayNum NUMBER(2);
+    dayDate DATE;
+BEGIN
+    FOR idx  IN 1..maxinput LOOP
+        yearNum:=ROUND(DBMS_RANDOM.VALUE(19, 22));
+        monthNum:=ROUND(DBMS_RANDOM.VALUE(1, 12));
+        dayNum:=ROUND(DBMS_RANDOM.VALUE(1, 28));
+        dayDate:=TO_DATE('20'||yearNum||LPAD(to_char(monthNum),2, '0')||LPAD(to_char(dayNum),2, '0'), 'YYYY/MM/DD');
+        
+        INSERT INTO member
+        VALUES('mail'||idx||'@naver.com',
+               '1234', 19990101, '주소'||idx,
+               '010'||LPAD(to_char(idx),8, '0'),
+               '이름'||idx,'회원'||idx, 'U', dayDate);
+    END LOOP;
+END;
+
+CREATE OR REPLACE PROCEDURE withdraw_sampleDate
+IS
+    maxinput NUMBER:=300;
+    nums NUMBER(4);
+    deleteCheck NUMBER(1);
+BEGIN
+    FOR idx  IN 1..maxinput LOOP
+        LOOP
+            nums:=ROUND(DBMS_RANDOM.VALUE(1, 2000));
+            SELECT COUNT(*) INTO deleteCheck FROM member WHERE email = 'mail'||nums||'@naver.com';
+            IF 0<deleteCheck THEN
+                DELETE member
+                WHERE email='mail'||nums||'@naver.com';
+                EXIT;
+            END IF;
+        END LOOP;
+    END LOOP;
+END;
+
+EXECUTE member_sampleDate;
+EXECUTE withdraw_sampleDate;
+
+
+-- 테이블 확인 ---------------------------------------------------------------------------------------------------
+ROLLBACK;
+COMMIT;
 
 SELECT * FROM SEARCH;
 SELECT * FROM MEMBER;
@@ -289,12 +365,5 @@ SELECT * FROM CHATINFOMATION;
 SELECT * FROM CHATMESSAGE;
 SELECT * FROM CHATPARTICIPANTS;
 
-SELECT * FROM WITHDRAW;
-
-
-----------------------------------------------------------------------------------------------------------------
-
-INSERT INTO chatInfomation
-VALUES('chat1', 'pid1');
-INSERT INTO chatParticipants
-VALUES(1, 'chat1', 'choi@naver.com', '2020/11/12');
+SELECT * FROM memberHistory;
+SELECT * FROM productHistory;

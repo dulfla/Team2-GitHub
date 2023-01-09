@@ -7,8 +7,10 @@
 
 	<context:component-scan base-package="spring.business"/>
 	
+<!-- 
 	<bean id="jaonArr" class="org.json.simple.JSONArray"></bean>
 	<bean id="jsonObj" class="org.json.simple.JSONObject"></bean>
+-->
 	<bean id="jsonParser" class="org.json.simple.parser.JSONParser"></bean>
 
 </beans>

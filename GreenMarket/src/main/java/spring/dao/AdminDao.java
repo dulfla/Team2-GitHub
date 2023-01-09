@@ -16,19 +16,19 @@ public class AdminDao {
 	}
 	
 	public List<String> memberAdminYears() { // 가입 기록이나 탈퇴 기록이 있는 년도
-		return null; // sqlSession.selectList("mybatis.mapper.admin.selectMemberAdminYears");
+		return sqlSession.selectList("mybatis.mapper.admin.selectMemberAdminYears");
 	}
 
 	public List<CountByYearVo> countAllMemberYear() { // 년도별 누적 회원수
-		return null; // sqlSession.selectList("mybatis.mapper.admin.countAllMemberYear");
+		return sqlSession.selectList("mybatis.mapper.admin.countAllMemberYear");
 	}
 
 	public List<CountByYearVo> countMemberYear(String type) { // 년도별 가입/탈퇴 건수
-		return null; // sqlSession.selectList("mybatis.mapper.admin.countMemberYear", type);
+		return sqlSession.selectList("mybatis.mapper.admin.countMemberYear", type);
 	}
 	
 	public List<CountByMonthVo> countMemberMonth(String type) { // 월별 가입/탈퇴 건수
-		return null; // sqlSession.selectList("mybatis.mapper.admin.countMemberMonth", type);
+		return sqlSession.selectList("mybatis.mapper.admin.countMemberMonth", type);
 	}
 
 	public Long countAllTypeProduct(String type) { // 전체 상품 등록, 삭제, 거래 건수

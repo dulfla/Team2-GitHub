@@ -58,10 +58,82 @@ SELECT category.category, COUNT(p_id) FROM category LEFT OUTER JOIN productDetai
 ON category.category = productDetail.category
 GROUP BY category.category;
 
-
--- 
-
 ------------------------------------------------------------------------------------------------------------------
+
+-- 전체 상품 수
+SELECT COUNT(*) FROM productHistory
+WHERE type='IN';
+-- 전체 거래건수
+SELECT COUNT(*) FROM productHistory
+WHERE type='TRADE';
+-- 미거래 삭제 건수
+SELECT COUNT(*) FROM productHistory
+WHERE type='OUT' AND p_id NOT IN (SELECT p_id FROM productHistory WHERE type='TRADE');
+
+
+-- 카테고리별 등록된 상품 수
+SELECT c.category, COUNT(p_id)
+FROM category c LEFT OUTER JOIN (SELECT category, p_id FROM productHistory WHERE type='IN') p
+ON c.category = p.category
+GROUP BY c.category;
+-- 월별 - 카테고리별 거래된 상품 수
+SELECT TO_CHAR(trackDate, 'YYYY'), TO_CHAR(trackDate, 'MM'), c.category, COUNT(p_id)
+FROM category c LEFT OUTER JOIN (SELECT category, p_id, trackDate FROM productHistory WHERE type='IN') p
+ON c.category = p.category
+GROUP BY TO_CHAR(trackDate, 'YYYY'), TO_CHAR(trackDate, 'MM'), c.category;
+
+
+-- 카테고리별 거래된 상품 수
+SELECT c.category, COUNT(p_id)
+FROM category c LEFT OUTER JOIN (SELECT category, p_id FROM productHistory WHERE type='TRADE') p
+ON c.category = p.category
+GROUP BY c.category;
+-- 월별 - 카테고리별 거래된 상품 수
+SELECT TO_CHAR(trackDate, 'YYYY'), TO_CHAR(trackDate, 'MM'), c.category, COUNT(p_id)
+FROM category c LEFT OUTER JOIN (SELECT category, p_id, trackDate FROM productHistory WHERE type='TRADE') p
+ON c.category = p.category
+GROUP BY TO_CHAR(trackDate, 'YYYY'), TO_CHAR(trackDate, 'MM'), c.category;
+
+
+-- 카테고리별 삭제 상품 수
+SELECT c.category, COUNT(p_id)
+FROM category c LEFT OUTER JOIN (SELECT category, p_id FROM productHistory WHERE type='OUT') p
+ON c.category = p.category
+GROUP BY c.category;
+-- 월별 - 카테고리별 삭제 상품 수
+SELECT TO_CHAR(trackDate, 'YYYY'), TO_CHAR(trackDate, 'MM'), c.category, COUNT(p_id)
+FROM category c LEFT OUTER JOIN (SELECT category, p_id, trackDate FROM productHistory WHERE type='OUT') p
+ON c.category = p.category
+GROUP BY TO_CHAR(trackDate, 'YYYY'), TO_CHAR(trackDate, 'MM'), c.category;
+
+
+-- 카테고리별 미 거래 삭제 상품 수
+SELECT c.category, COUNT(p_id)
+FROM category c LEFT OUTER JOIN (SELECT category, p_id FROM productHistory WHERE type='OUT' AND type<>'TRADE') p
+ON c.category = p.category
+GROUP BY c.category
+ORDER BY category ASC;
+-- 월별 - 카테고리별 미 거래 삭제 상품 수
+SELECT TO_CHAR(trackDate, 'YYYY'), TO_CHAR(trackDate, 'MM'), c.category, COUNT(p_id)
+FROM category c LEFT OUTER JOIN (SELECT category, p_id, trackDate FROM productHistory WHERE type='OUT' AND type<>'TRADE') p
+ON c.category = p.category
+GROUP BY TO_CHAR(trackDate, 'YYYY'), TO_CHAR(trackDate, 'MM'), c.category
+ORDER BY category ASC;
+
+
+-- 카테고리별 거래 후 삭제 상품 수
+SELECT c.category, COUNT(p_id)
+FROM category c LEFT OUTER JOIN (SELECT category, p_id FROM productHistory WHERE type='OUT' AND type='TRADE') p
+ON c.category = p.category
+GROUP BY c.category
+ORDER BY category ASC;
+-- 월별 - 카테고리별 거래 후 삭제 상품 수
+SELECT TO_CHAR(trackDate, 'YYYY'), TO_CHAR(trackDate, 'MM'), c.category, COUNT(p_id)
+FROM category c LEFT OUTER JOIN (SELECT category, p_id, trackDate FROM productHistory WHERE type='OUT' AND type='TRADE') p
+ON c.category = p.category
+GROUP BY TO_CHAR(trackDate, 'YYYY'), TO_CHAR(trackDate, 'MM'), c.category
+ORDER BY category ASC;
+
 ------------------------------------------------------------------------------------------------------------------
 
 -- 월별 탈퇴 회원수
@@ -119,6 +191,7 @@ WHERE TO_DATE(TO_CHAR(m2.trakingDate,'YYYY'), 'YYYY')<=TO_DATE(dates, 'YYYY')
 GROUP BY dates
 ORDER BY dates;
 
+------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------
 
 -- 특정 날짜를 포함한 컬럼 가져오기

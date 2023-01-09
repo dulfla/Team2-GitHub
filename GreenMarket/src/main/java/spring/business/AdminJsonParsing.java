@@ -26,9 +26,8 @@ public class AdminJsonParsing {
 	private AdminDao dao;
 	@Autowired
 	private JSONParser parser;
-	@Autowired
+	
 	private JSONArray jsonArr;
-	@Autowired
 	private JSONObject json;
 
 	public JSONObject memverAdmin() throws ParseException {		
@@ -42,14 +41,16 @@ public class AdminJsonParsing {
 		
 		String[] typeM = {"joinMember", "withdrawMember"};
 		Object[] countByMonths = {admin.get("joinMonths"), admin.get("withdrawMonths")};
-		String countByMonthsJson = to_json("countByMonths", memberAdminYears, typeM, countByMonths);
+		String countByMonthsJson = to_json("withdrawMonths", memberAdminYears, typeM, countByMonths);
 		
 		JSONObject contYJ = (JSONObject) parser.parse(countByYearJson);
 		JSONObject contMJ = (JSONObject) parser.parse(countByMonthsJson);
 		
+		jsonArr = new JSONArray();
 		jsonArr.add(contYJ);
 		jsonArr.add(contMJ);
 		
+		json = new JSONObject();
 		json.put("memberAdmin", jsonArr);
 		
 		return json;
@@ -69,10 +70,12 @@ public class AdminJsonParsing {
 		JSONObject pTypeJ = (JSONObject) parser.parse(productAdminTypeJson);
 		JSONObject pCatgryJ = (JSONObject) parser.parse(productAdminCategoryJson);
 		
+		jsonArr = new JSONArray();
 		jsonArr.add(pTypeJ);
 		jsonArr.add(pCatgryJ);
 		
-		json.put("memberAdmin", jsonArr);
+		json = new JSONObject();
+		json.put("productAdmin", jsonArr);
 		
 		return json;
 	}
@@ -80,12 +83,18 @@ public class AdminJsonParsing {
 	private String to_json(String type, String[] types, Object[] prodCategorys) {
 		String json = String.format("{\"%s\":[{\"type\":[", type);
 		for(int i=0; i<types.length; i++) {
-			json += types[i];
+			json += "\""+types[i]+"\"";
 			if(i!=types.length-1) {json += ", ";}
 		}
 		json += "]}, {\"date\":[";
 		for(int i=0; i<prodCategorys.length; i++) {
-			json += prodCategorys[i];
+			List<CountByCategory> prodCategory = (List<CountByCategory>)prodCategorys[i];
+			json += "[";
+			for(int j=0; j<prodCategory.size(); j++) {
+				json += prodCategory.get(j).getCnt();
+				if(i!=prodCategory.size()-1) {json += ", ";}
+			}
+			json += "]";
 			if(i!=prodCategorys.length-1) {json += ", ";}
 		}
 		return json+"]}]}";
@@ -94,7 +103,7 @@ public class AdminJsonParsing {
 	private String to_json(String type, String[] types, long[] prodType) {
 		String json = String.format("{\"%s\":[{\"type\":[", type);
 		for(int i=0; i<types.length; i++) {
-			json += types[i];
+			json += "\""+types[i]+"\"";
 			if(i!=types.length-1) {json += ", ";}
 		}
 		json += "]}, {\"date\":[";
@@ -114,21 +123,21 @@ public class AdminJsonParsing {
 		json += "]}, {\"type\":[";
 		for(int t=0; t<types.length; t++) {
 			if(t!=0) { json += ", "; }
-			json += types[t];
+			json += "\""+types[t]+"\"";
 		}
 		json += "]}, {\"data\":[";
 		if(counts.length==3) { // year
 			for(int c=0; c<counts.length; c++) {
-				List<CountByYearVo> count = (List<CountByYearVo>)counts[c];
+				List<CountByYearVo> count = (List<CountByYearVo>)(counts[c]);
 				json += "[";
-				for(int sc=0; sc<memberAdminYears.length; sc++) {
-					if(memberAdminYears[sc]==Integer.parseInt(count.get(sc).getYear())) {
-						json += count.get(sc).getCnt();
+				for(int sc=0, y=0; sc<memberAdminYears.length; sc++) {
+					if(y<count.size() && memberAdminYears[sc]==Integer.parseInt(count.get(y).getYear())) {
+						json += count.get(y).getCnt();
+						y++;
 					}else {
 						json += 0;
-						sc--;
 					}
-					if(sc<memberAdminYears.length) { json += ", "; }
+					if(sc<memberAdminYears.length-1) { json += ", "; }
 				}
 				json += "]";
 				if(c!=0) { json += ", "; }
@@ -141,10 +150,10 @@ public class AdminJsonParsing {
 					for(int m=1; m<=12 && s<count.size(); m++) {
 						if(memberAdminYears[sc]==Integer.parseInt(count.get(m).getYear())) {
 							if(m!=1) { json += ", "; }
-							if(Integer.parseInt(count.get(c).getMonth())!=m) {
+							if(Integer.parseInt(count.get(s).getMonth())!=m) {
 								json += 0;
 							}else {
-								json += count.get(c).getCnt();
+								json += count.get(s).getCnt();
 								s++;
 							}
 						}else {
@@ -164,17 +173,17 @@ public class AdminJsonParsing {
 		
 		List<String> memAminYear = dao.memberAdminYears();
 		int[] memberAdminYears = new int[Integer.parseInt(memAminYear.get(memAminYear.size()-1))-Integer.parseInt(memAminYear.get(0))+1];
-		for(int i=0, y=Integer.parseInt(memAminYear.get(0)); i<=memberAdminYears.length; i++) {
+		for(int i=0, y=Integer.parseInt(memAminYear.get(0)); i<memberAdminYears.length; i++) {
 			memberAdminYears[i] = y+i;
 		}
 		
 		List<CountByYearVo> countAllMemberYear = dao.countAllMemberYear();
 		
-		List<CountByYearVo> countJoinMemberYear = dao.countMemberYear("IN");
-		List<CountByYearVo> countWithdrawMemberYear = dao.countMemberYear("OUT");
+		List<CountByYearVo> countJoinMemberYear = dao.countMemberYear("IN   ");
+		List<CountByYearVo> countWithdrawMemberYear = dao.countMemberYear("OUT  ");
 		
-		List<CountByMonthVo> joinMonths = dao.countMemberMonth("IN");
-		List<CountByMonthVo> withdrawMonths = dao.countMemberMonth("OUT");
+		List<CountByMonthVo> joinMonths = dao.countMemberMonth("IN   ");
+		List<CountByMonthVo> withdrawMonths = dao.countMemberMonth("OUT  ");
 		
 		admin.put("memberAdminYears", memberAdminYears);
 		admin.put("countAllMemberYear", countAllMemberYear);
@@ -189,9 +198,9 @@ public class AdminJsonParsing {
 	private Map<String, Object> getProductAdminData() {
 		Map<String, Object> admin = new HashMap();
 		
-		long[] productAdminType = {dao.countAllTypeProduct("IN"), dao.countAllTypeProduct("TRADE"), dao.countBfTradeRemovedProduct()};
+		long[] productAdminType = {dao.countAllTypeProduct("IN   "), dao.countAllTypeProduct("TRADE"), dao.countBfTradeRemovedProduct()};
 		
-		List<CountByCategory> inProd = dao.countAllTypeProductByCategory("IN");
+		List<CountByCategory> inProd = dao.countAllTypeProductByCategory("IN   ");
 		List<CountByCategory> tradeProd = dao.countAllTypeProductByCategory("TRADE");
 		List<CountByCategory> outProd = dao.countBfTradeRemovedProductByCategory();
 		
