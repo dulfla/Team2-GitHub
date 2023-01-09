@@ -49,7 +49,7 @@ public class SampleController {
 	@Autowired
 	private AdminJsonParsing adminJsonParsing;
 	
-	@RequestMapping("MemberStatus")
+	@RequestMapping("/MemberStatus")
 	public String memberAdmin(HttpServletRequest request) throws ParseException {
 		JSONObject json = adminJsonParsing.memverAdmin();
 		request.setAttribute("memberAdmin", json);
@@ -57,7 +57,7 @@ public class SampleController {
 		return "admin/memberStatus";
 	}
 	
-	@RequestMapping("MemberStatus")
+	@RequestMapping("/ProductStatus")
 	public String productAdmin(HttpServletRequest request) throws ParseException {
 		JSONObject json = adminJsonParsing.productAdmin();
 		request.setAttribute("productAdmin", json);

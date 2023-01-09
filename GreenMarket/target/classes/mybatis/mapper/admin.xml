@@ -70,7 +70,7 @@
 	</select>
  	
  	<!-- 카테고리별 등록/삭제/거래된 상품 수 -->
-	<select id="countAllTypeProductByCategory" parameterType="type" resultType="cCategoryVo">
+	<select id="countAllTypeProductByCategory" parameterType="String" resultType="cCategoryVo">
 		SELECT
 			c.category,
 			COUNT(p_id)
