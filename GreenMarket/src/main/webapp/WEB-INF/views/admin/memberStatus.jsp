@@ -18,6 +18,7 @@
 <body>
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
+		${memberAdmin}
 		<div class="main">
 		    <div class="chart-container" style="position: relative; height:40vh; width:80vw">
 		        <canvas id="chart1"></canvas>
@@ -28,7 +29,6 @@
 	<%@ include file="../include/footer.jsp" %>
 	<script>
 		const json = ${memberAdmin};
-		console.log(json);
 		
 		let dateArr = [];
 		let countArr = []

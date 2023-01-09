@@ -2,77 +2,107 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
+
 <mapper namespace="mybatis.mapper.admin">
-	
-	<select id="selectMemberAdminYears" resultType="String"> <!-- 회원 기록이 있는 년도 -->
+
+	<!-- memberAdmin -->
+
+	<!-- 회원 기록이 있는 년도 -->
+	<select id="selectMemberAdminYears" resultType="String">
 		SELECT TO_CHAR(trakingDate,'YYYY') as "year"
 		FROM memberHistory
 		GROUP BY TO_CHAR(trakingDate,'YYYY')
 		ORDER BY "year" ASC
 	</select>
-	
-	<select id="countAllMemberYear" resultType="cYearVo"> <!-- 년도별 누적 회원수 -->
+
+	<!-- 년도별 누적 회원수 -->
+	<select id="countAllMemberYear" resultType="cYearVo">
 		SELECT
-			dates AS "year",
+			dates,
 			COUNT(CASE WHEN m2.type='IN' THEN 1 END)-COUNT(CASE WHEN m2.type='OUT' THEN 1 END) AS "cnt"
 		FROM
 		    (SELECT TO_CHAR(trakingDate,'YYYY') AS dates FROM memberHistory GROUP BY TO_CHAR(trakingDate,'YYYY')) m1,
 		    memberHistory m2
 		<![CDATA[WHERE TO_DATE(TO_CHAR(m2.trakingDate,'YYYY'), 'YYYY')<=TO_DATE(dates, 'YYYY')]]>
 		GROUP BY dates
-		ORDER BY dates
+		ORDER BY dates ASC
 	</select>
-	
-	<select id="countJoinMemberYear" resultType="cYearVo"> <!-- 년도별 가입 건수 -->
+
+	<!-- 년도별 가입/탈퇴 건수 -->
+	<select id="countMemberYear" parameterType="String" resultType="cYearVo">
 		SELECT
 		    TO_CHAR(trakingDate,'YYYY') as "year",
-		    COUNT(*) AS "cnt"
+		    COUNT(*)
 		FROM memberHistory
-		WHERE type='IN'
+		WHERE type=#{type}
 		GROUP BY TO_CHAR(trakingDate,'YYYY')
 		ORDER BY "year" ASC
-	</select>
-	
-	<select id="countWithdrawMemberYear" resultType="cYearVo"> <!-- 년도별 탈퇴 건수 -->
-		SELECT
-		    TO_CHAR(trakingDate,'YYYY') as "year",
-		    COUNT(*) AS "cnt"
-		FROM memberHistory
-		WHERE type='OUT'
-		GROUP BY TO_CHAR(trakingDate,'YYYY')
-		ORDER BY "year" ASC
-	</select>
-	
-	<select id="countJoinMemberMonth" resultType="cMonthVo"> <!-- 월별 가입 건수 -->
+	</select> <!-- type::'IN','OUT' -->
+
+	<!-- 월별 가입/탈퇴 건수 -->
+	<select id="countMemberMonth" parameterType="String" resultType="cMonthVo">
 		SELECT
 		    TO_CHAR(trakingDate,'YYYY') as "year",
 		    TO_CHAR(trakingDate,'MM') as "month",
-		    COUNT(*) AS "cnt"
+		    COUNT(*)
 		FROM memberHistory
-		WHERE type='IN'
-		GROUP BY TO_CHAR(trakingDate,'YYYY'), TO_CHAR(trakingDate,'MM') 
+		WHERE type=#{type}
+		GROUP BY TO_CHAR(trakingDate,'YYYY'),TO_CHAR(trakingDate,'MM') 
 		ORDER BY "year" ASC, "month" ASC
+	</select> <!-- type::'IN','OUT' -->
+
+
+	<!-- productAdmin -->
+
+	<!-- 전체 상품 등록/삭제/거래 건수 -->
+	<select id="countAllTypeProduct" parameterType="String" resultType="long">
+		SELECT COUNT(*)
+		FROM productHistory
+		WHERE type=#{type}
+	</select> <!-- type::'IN','OUT','TRADE' -->
+
+	<!-- 미거래 상품 삭제 건수 -->
+	<select id="countBfTradeRemovedProduct" resultType="long">
+		SELECT COUNT(*)
+		FROM productHistory
+		WHERE type='OUT' AND
+			p_id NOT IN (SELECT p_id FROM productHistory WHERE type='TRADE')
 	</select>
-	
-	<select id="countWithdrawMemberMonth" resultType="cMonthVo"> <!-- 월별 탈퇴 건수 -->
+ 	
+ 	<!-- 카테고리별 등록/삭제/거래된 상품 수 -->
+	<select id="countAllTypeProductByCategory" parameterType="type" resultType="cCategoryVo">
 		SELECT
-		    TO_CHAR(trakingDate,'YYYY') as "year",
-		    TO_CHAR(trakingDate,'MM') as "month",
-		    COUNT(*) AS "cnt"
-		FROM memberHistory
-		WHERE type='OUT'
-		GROUP BY TO_CHAR(trakingDate,'YYYY'), TO_CHAR(trakingDate,'MM') 
-		ORDER BY "year" ASC, "month" ASC
-	</select>
-	
-	<select id="countAllProductsByCategory"  resultType="cCategoryVo"> <!-- 현재까지 등록된 삼품의 카테고리별 건수 -->
+			c.category,
+			COUNT(p_id)
+		FROM
+			category c LEFT OUTER JOIN
+			(SELECT category, p_id FROM productHistory WHERE type=#{type}) p
+		ON c.category = p.category
+		GROUP BY c.category
+	</select> <!-- type::'IN','OUT','TRADE' -->
+
+	<!-- 카테고리별 미 거래 삭제 상품 수 -->
+	<select id="countBfTradeRemovedProductByCategory" resultType="cCategoryVo">
 		SELECT
-			category.category,
-			COUNT(p_id) AS "cnt"
-		FROM category LEFT OUTER JOIN productDetail
-		ON category.category = productDetail.category
-		GROUP BY category.category
+			c.category,
+			COUNT(p_id)
+		FROM category c LEFT OUTER JOIN
+			<![CDATA[(SELECT category, p_id FROM productHistory WHERE type='OUT' AND type<>'TRADE') p]]>
+		ON c.category = p.category
+		GROUP BY c.category
+		ORDER BY category ASC
 	</select>
-	
+
+	<!-- 카테고리별 거래 후 삭제 상품 수 -->
+	<select id="countAfTradeRemovedProductByCategory" resultType="cCategoryVo">
+		SELECT
+			c.category,
+			COUNT(p_id)
+		FROM category c LEFT OUTER JOIN
+			(SELECT category, p_id FROM productHistory WHERE type='OUT' AND type='TRADE') p
+		ON c.category = p.category
+		GROUP BY c.category
+		ORDER BY category ASC
+	</select>
+
 </mapper>

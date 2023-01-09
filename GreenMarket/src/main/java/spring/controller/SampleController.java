@@ -57,8 +57,11 @@ public class SampleController {
 		return "admin/memberStatus";
 	}
 	
-	@RequestMapping("ProductStatus")
-	public String productAdmin() {
+	@RequestMapping("MemberStatus")
+	public String productAdmin(HttpServletRequest request) throws ParseException {
+		JSONObject json = adminJsonParsing.productAdmin();
+		request.setAttribute("productAdmin", json);
+		
 		return "admin/productStatus";
 	}
 	

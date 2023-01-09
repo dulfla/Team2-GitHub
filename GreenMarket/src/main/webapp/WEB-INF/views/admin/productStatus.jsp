@@ -16,7 +16,7 @@
 <body>
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
-		
+		${productAdmin}
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 </body>

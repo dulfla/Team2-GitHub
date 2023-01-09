@@ -10,6 +10,6 @@
 		
 		<typeAlias type="spring.vo.CountByYearVo" alias="cYearVo"/>
 		<typeAlias type="spring.vo.CountByMonthVo" alias="cMonthVo"/>
-		<typeAlias type="spring.vo.CountCategory" alias="cCategoryVo"/>
+		<typeAlias type="spring.vo.CountByCategory" alias="cCategoryVo"/>
 	</typeAliases>
 </configuration>  
