@@ -52,4 +52,7 @@
 		SET name=#{name}, password=#{password} 
 		WHERE email =#{email}
 	</update> -->
+	<select id="category" resultType="spring.vo.CategoryVO">
+		select category from category
+	</select>
 </mapper>

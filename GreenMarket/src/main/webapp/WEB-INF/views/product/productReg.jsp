@@ -11,34 +11,39 @@
 <body>
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
-		<form action="">
-			<label>카테고리</label>
-			<select class="category">
-				<option value="">전체</option>
-			</select>	
-			<input type="text" name="pName" placeholder="상품명을 입력해주세요">
+		<form action="" method="POST" autocomplete="off">
+			<div>
+				<span>카테고리</span>
+				<select class="category" name="category">
+					<option selected value="none">선택</option>
+				</select>
+			</div>	
+			<div>
+			<input type="text" name="p_name" placeholder="상품명을 입력해주세요">
+			</div>
+			<div>
 			<input type="text" name="price" placeholder="상품가격">
-			<textarea rows="" cols="" name="description" placeholder="내용을 입력하세요"></textarea>
+			</div>
+			<div>
+			<textarea rows="5" cols="50" name="description" placeholder="내용을 입력하세요"></textarea>
+			</div>
 			<button>상품등록</button>
 			<button>목록</button>
 		</form>
 				
 	</div>
 	<%@ include file="../include/footer.jsp" %>
+	
 	<script type="text/javascript">
-		var jsonData = JSON.parse('${category}');
-		console.log(jsonData);
+		let category = JSON.parse('${category}');
 		
-		var cate1Arr = new Array();
-		var cate10bj = new Object();
-		
-		
-		var cateSelect = $("select.category")
-		
-		for(var i = 0; i< cate1Arr.length; i++){
-			category.append("<option value='" + cateSelect + "'>"
-					+ category + "</option>")
-		}
+		let cateArray = new Array();
+		let cate1Obj = new Object();
+		let cateSelect = $(".category");
+	
+	    cateSelect.append("<option value='"+cateArray.category+">"+"</option>");
+	    
+	    obj.category = 
 	</script>
 </body>
 </html>

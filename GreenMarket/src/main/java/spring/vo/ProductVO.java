@@ -4,24 +4,25 @@ import java.util.Date;
 
 public class ProductVO {
 
-	private String pId;
-	private String pName;
+	private String p_id;
+	private String p_name;
 	private String description;
 	private String category;
 	private Date regdate;
 	private int views;
 	private int price;
-	public String getpId() {
-		return pId;
+	
+	public String getP_id() {
+		return p_id;
 	}
-	public void setpId(String pId) {
-		this.pId = pId;
+	public void setP_id(String p_id) {
+		this.p_id = p_id;
 	}
-	public String getpName() {
-		return pName;
+	public String getP_name() {
+		return p_name;
 	}
-	public void setpName(String pName) {
-		this.pName = pName;
+	public void setP_name(String p_name) {
+		this.p_name = p_name;
 	}
 	public String getDescription() {
 		return description;
@@ -53,11 +54,10 @@ public class ProductVO {
 	public void setPrice(int price) {
 		this.price = price;
 	}
+	
 	@Override
 	public String toString() {
-		return "ProductVO [pId=" + pId + ", pName=" + pName + ", description=" + description + ", category=" + category
-				+ ", regdate=" + regdate + ", views=" + views + ", price=" + price + "]";
-	}
-	
-	
+		return "ProductVO [p_id=" + p_id + ", p_name=" + p_name + ", description=" + description + ", category="
+				+ category + ", regdate=" + regdate + ", views=" + views + ", price=" + price + "]";
+	}		
 }
