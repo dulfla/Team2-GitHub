@@ -18,4 +18,10 @@
 		WHERE email=#{email}
 	</select>
 	
+	<insert id="insertMember" parameterType="member">
+		INSERT INTO member (email, password,birth, address, phone,name,nickname)
+		VALUES(#{email},#{password},#{birth},
+			   #{address},#{phone},#{name},#{nickname})
+	</insert>
+	
 </mapper>

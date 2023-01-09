@@ -200,7 +200,7 @@ input {
 				<input type="email"	name="email" id="email"  placeholder="이메일" /> 
 				<input type="password" name="password" id="password" placeholder="비밀번호" /> 
 				<a href="#">Forgot your password?</a>
-				<button type="submit" onclick="return loginCheck()">Log In</button>
+				<button type="button" onclick="return loginCheck()">Log In</button>
 			</form>	
 		</div>
 		<div class="overlay-container">
@@ -215,15 +215,6 @@ input {
 	</div>
 	</main>
 <script type="text/javascript">
-
-
-/* $("#alertStart").click(function () {
-  Swal.fire({
-    icon: 'success',
-    title: 'Alert가 실행되었습니다.',
-    text: '이곳은 내용이 나타나는 곳입니다.',
-  });
-}); */
 
 function loginCheck(){
 	if(document.frm.email.value.length == 0){
@@ -262,23 +253,32 @@ function loginAjax(){
 			data : JSON.stringify(jsonData),  
 			dataType : 'json', 
 			contentType : 'application/json;charset=UTF-8', 
-			/* contentType:" application/x-www-form-urlencoded", */
 			 success: function(result){
 				 console.log(result);
 				 if(result == "1"){
-					
-					window.location.href = "index"; 
+					 Swal.fire({
+						    icon: 'success',
+						    title: '로그인성공!',
+						    text: '환영합니다.'
+
+					    }).then(result => {
+					      // 만약 Promise리턴을 받으면,
+					      if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+
+							 document.location.href = "index";  
+					      }
+					    });
 				}else{
 					Swal.fire({
 					    icon: 'error',
 					    title: '로그인실패',
+					    text: '아이디와 비밀번호를 확인해주세요!'
 					  });
 				}
 			 		
 		  	},error : function(error) {
 		  		console.log(result);
 				alert("전송에 실패하였습니다.");
-				 /* window.location.href = "index"; */
 			}
 		})
 	}

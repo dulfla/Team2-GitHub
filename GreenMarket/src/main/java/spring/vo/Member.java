@@ -9,7 +9,7 @@ public class Member {
 	private String address;
 	private String phone;
 	private String name;
-	private String nickName;
+	private String nickname;
 	private String type;
 	private Date regdate;
 	
@@ -17,7 +17,7 @@ public class Member {
 	public Member() {} 
 	
 	public Member(String email, String password, int birth, String address, String phone, String name,
-			String nickName) {
+			String nickname) {
 		
 		this.email = email;
 		this.password = password;
@@ -25,7 +25,7 @@ public class Member {
 		this.address = address;
 		this.phone = phone;
 		this.name = name;
-		this.nickName = nickName;
+		this.nickname = nickname;
 	}
 
 
@@ -81,11 +81,11 @@ public class Member {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getNickName() {
-		return nickName;
+	public String getNickname() {
+		return nickname;
 	}
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 	
 }

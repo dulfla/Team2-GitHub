@@ -18,6 +18,7 @@
 <body>
 	<%@ include file="include/header.jsp" %>
 	<div id="container">
+		<!-- 메인 공간 -->
 		
 	</div>
 	<%@ include file="include/footer.jsp" %>

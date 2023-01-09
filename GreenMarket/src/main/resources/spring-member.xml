@@ -19,7 +19,7 @@
 	
 	
 	<!-- 회원 가입 -->
-	<!-- <bean id="memberRegSvc" class="spring.service.MemberRegisterService">
+	<!-- <bean id="memberRegSvc" class="spring.service.RegisterService">
 		<constructor-arg ref="memberDao"/>
 	</bean> -->
 	
