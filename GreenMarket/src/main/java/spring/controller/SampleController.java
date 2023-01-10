@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import spring.business.AdminJsonParsing;
@@ -50,17 +51,17 @@ public class SampleController {
 	private AdminJsonParsing adminJsonParsing;
 	
 	@RequestMapping("/MemberStatus")
-	public String memberAdmin(HttpServletRequest request) throws ParseException {
+	public String memberAdmin(Model model) throws ParseException {
 		JSONObject json = adminJsonParsing.memverAdmin();
-		request.setAttribute("memberAdmin", json);
+		model.addAttribute("memberAdmin", json);
 		
 		return "admin/memberStatus";
 	}
 	
 	@RequestMapping("/ProductStatus")
-	public String productAdmin(HttpServletRequest request) throws ParseException {
+	public String productAdmin(Model model) throws ParseException {
 		JSONObject json = adminJsonParsing.productAdmin();
-		request.setAttribute("productAdmin", json);
+		model.addAttribute("productAdmin", json);
 		
 		return "admin/productStatus";
 	}

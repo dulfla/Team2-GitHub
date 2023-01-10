@@ -59,13 +59,14 @@ public class AdminJsonParsing {
 	public JSONObject productAdmin() throws ParseException {
 		Map<String, Object> admin = getProductAdminData();
 		
-		String[] types = {"inProd", "tradeProd", "outProd"};
+		String[] types = {"미거래 상품", "거래 상품", "미거래 삭제 상품"};
 		
 		long[] productAdminType = (long[])admin.get("totalPieType");
 		String productAdminTypeJson = to_json("productAdminType", types, productAdminType);
 		
+		List<String> categorys = (List<String>)admin.get("category");
 		Object[] prodCategorys = {admin.get("inByCategory"), admin.get("tradeByCategory"), admin.get("outByCategory")};
-		String productAdminCategoryJson = to_json("productAdminCategory", types, prodCategorys);
+		String productAdminCategoryJson = to_json("productAdminCategory", types, categorys, prodCategorys);
 		
 		JSONObject pTypeJ = (JSONObject) parser.parse(productAdminTypeJson);
 		JSONObject pCatgryJ = (JSONObject) parser.parse(productAdminCategoryJson);
@@ -80,22 +81,27 @@ public class AdminJsonParsing {
 		return json;
 	}
 
-	private String to_json(String type, String[] types, Object[] prodCategorys) {
+	private String to_json(String type, String[] types, List<String> category, Object[] prodCategorys) {
 		String json = String.format("{\"%s\":[{\"type\":[", type);
 		for(int i=0; i<types.length; i++) {
 			json += "\""+types[i]+"\"";
 			if(i!=types.length-1) {json += ", ";}
 		}
-		json += "]}, {\"date\":[";
+		json += "]}, {\"category\":[";
+		for(int i=0; i<category.size(); i++) {
+			json += "\""+category.get(i)+"\"";
+			if(i!=category.size()-1) { json += ", "; }
+		}
+		json += "]}, {\"data\":[";
 		for(int i=0; i<prodCategorys.length; i++) {
 			List<CountByCategory> prodCategory = (List<CountByCategory>)prodCategorys[i];
 			json += "[";
 			for(int j=0; j<prodCategory.size(); j++) {
 				json += prodCategory.get(j).getCnt();
-				if(i!=prodCategory.size()-1) {json += ", ";}
+				if(i!=prodCategory.size()-1) { json += ", "; }
 			}
 			json += "]";
-			if(i!=prodCategorys.length-1) {json += ", ";}
+			if(i!=prodCategorys.length-1) { json += ", "; }
 		}
 		return json+"]}]}";
 	}
@@ -106,7 +112,7 @@ public class AdminJsonParsing {
 			json += "\""+types[i]+"\"";
 			if(i!=types.length-1) {json += ", ";}
 		}
-		json += "]}, {\"date\":[";
+		json += "]}, {\"data\":[";
 		for(int i=0; i<prodType.length; i++) {
 			json += prodType[i];
 			if(i!=prodType.length-1) {json += ", ";}
@@ -147,19 +153,23 @@ public class AdminJsonParsing {
 				List<CountByMonthVo> count = (List<CountByMonthVo>)counts[c];
 				json += "[";
 				for(int sc=0, s=0; sc<memberAdminYears.length; sc++) {
-					for(int m=1; m<=12 && s<count.size(); m++) {
-						if(memberAdminYears[sc]==Integer.parseInt(count.get(m).getYear())) {
+					json += "[";
+					for(int m=1; m<13; m++) {
+						if(memberAdminYears[sc]==Integer.parseInt(count.get(s).getYear())) {
 							if(m!=1) { json += ", "; }
 							if(Integer.parseInt(count.get(s).getMonth())!=m) {
 								json += 0;
 							}else {
 								json += count.get(s).getCnt();
-								s++;
+								if(s<count.size()-1) { s++; }
 							}
 						}else {
-							break;
+							if(m!=1) { json += ", "; }
+							json += 0;
 						}
 					}
+					json += "]";
+					if(sc<memberAdminYears.length-1) { json += ", "; }
 				}
 				json += "]";
 				if(c!=0) { json += ", "; }
@@ -198,13 +208,19 @@ public class AdminJsonParsing {
 	private Map<String, Object> getProductAdminData() {
 		Map<String, Object> admin = new HashMap();
 		
-		long[] productAdminType = {dao.countAllTypeProduct("IN   "), dao.countAllTypeProduct("TRADE"), dao.countBfTradeRemovedProduct()};
+		long totalP = dao.countAllTypeProduct("IN   ");
+		long totalTradeP = dao.countAllTypeProduct("TRADE");
+		long totalNoTrdRemoveP = dao.countBfTradeRemovedProduct();
+		long[] productAdminType = {(totalP-totalTradeP-totalNoTrdRemoveP), totalTradeP, totalNoTrdRemoveP};
+		
+		List<String> categorys = dao.selectAllCategorys();
 		
 		List<CountByCategory> inProd = dao.countAllTypeProductByCategory("IN   ");
 		List<CountByCategory> tradeProd = dao.countAllTypeProductByCategory("TRADE");
 		List<CountByCategory> outProd = dao.countBfTradeRemovedProductByCategory();
 		
 		admin.put("totalPieType", productAdminType);
+		admin.put("category", categorys);
 		admin.put("inByCategory", inProd);
 		admin.put("tradeByCategory", tradeProd);
 		admin.put("outByCategory", outProd);

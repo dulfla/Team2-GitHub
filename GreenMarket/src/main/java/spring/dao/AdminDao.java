@@ -46,5 +46,9 @@ public class AdminDao {
 	public List<CountByCategory> countBfTradeRemovedProductByCategory() { // 카테고리별 상품 미거래 삭제 건수
 		return sqlSession.selectList("mybatis.mapper.admin.countBfTradeRemovedProductByCategory");
 	}
+
+	public List<String> selectAllCategorys() {
+		return sqlSession.selectList("mybatis.mapper.admin.selectAllCategory");
+	}
 	
 }

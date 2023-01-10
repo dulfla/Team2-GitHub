@@ -45,3 +45,20 @@ where p_id='pid10';
 
 insert into trade
 values('tid15', 'pid11', 'pack@naver.com');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

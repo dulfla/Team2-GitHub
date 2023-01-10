@@ -70,6 +70,13 @@
 			p_id NOT IN (SELECT p_id FROM productHistory WHERE type='TRADE')
 	</select>
  	
+ 	<!-- 카테고리 가져오기 -->
+ 	<select id="selectAllCategory" resultType="String">
+ 		SELECT category
+ 		FROM category
+ 		ORDER BY category ASC
+ 	</select>
+ 	
  	<!-- 카테고리별 등록/삭제/거래된 상품 수 -->
 	<select id="countAllTypeProductByCategory" parameterType="String" resultType="cCategoryVo">
 		SELECT
