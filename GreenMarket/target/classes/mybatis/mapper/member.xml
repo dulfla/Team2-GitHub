@@ -52,7 +52,13 @@
 		SET name=#{name}, password=#{password} 
 		WHERE email =#{email}
 	</update> -->
-	<select id="category" resultType="spring.vo.CategoryVO">
+	<select id="category" resultType="CategoryVO">
 		select category from category
 	</select>
+	
+	<insert id="productReg" parameterType="ProductVO">
+		insert into productdetail (p_id,p_name,description,category,regdate,price)
+    	values ('pid'||pid_seq.nextval,#{p_name},#{description},#{category},sysdate,#{price})
+	</insert>
+	
 </mapper>

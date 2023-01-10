@@ -6,4 +6,8 @@
 	<!-- <typeAliases>
 		<typeAlias type="spring.vo.Member" alias="member"/>
 	</typeAliases>	 -->
+	<typeAliases>
+		<typeAlias type="spring.vo.ProductVO" alias="ProductVO"/>
+		<typeAlias type="spring.vo.CategoryVO" alias="CategoryVO"/>
+	</typeAliases>	
 </configuration>  

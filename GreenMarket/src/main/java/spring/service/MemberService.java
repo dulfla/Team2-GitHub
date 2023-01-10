@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import spring.vo.CategoryVO;
 import spring.vo.ProductVO;
 
-@Service
 public interface MemberService {
 
 	// 상품등록
