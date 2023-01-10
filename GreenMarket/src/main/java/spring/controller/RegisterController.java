@@ -76,4 +76,16 @@ public class RegisterController {
 		return result;		
 				
 	}
+	
+	@ResponseBody
+	@PostMapping(value = "confirmPassword",consumes="application/json")
+	public int confirmPassword(@RequestBody RegisterRequest regReq) {
+		int result = 0;
+		
+		if(regReq.getPassword().equals(regReq.getConfirmPassword())) {
+			result = 1;
+		}
+		
+		return result;
+	}
 }

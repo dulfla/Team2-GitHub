@@ -71,13 +71,14 @@ body {
 						<div class="col-md-6 mb-3">
 							<label for="name">이름</label> <input type="text"
 								class="form-control" id="name" name="name" required>
-							<div class="invalid-feedback">이름을 입력해주세요.</div>
 						</div>
 						<div class="col-md-6 mb-3">
 							<label for="nickname">닉네임</label> <input type="text"
 								class="form-control" id="nickname" name="nickname" oninput="checkNick()" required>
-							<div class="invalid-feedback">닉네임을 입력해주세요.</div>
-							<div> <span id="result_checkNickname" style="font-size: 14px;"></span></div>
+							<div> 
+								<span id="result_checkNickname" style="font-size: 14px;"></span>
+								<input type="hidden" id="result_checkNickname2" value="">
+							</div>
 						</div>
 					</div>
 
@@ -85,41 +86,41 @@ body {
 						<label for="email">이메일</label> <input type="email"
 							class="form-control" id="email" name="email"
 							placeholder="you@example.com" oninput="checkEmail()" required>
-						<div class="invalid-feedback">이메일을 입력해주세요.</div>
-						<div> <span id="result_email" style="font-size: 12px;"></span></div>
+						<div> 
+							<span id="result_email" style="font-size: 14px;"></span>
+							<input type="hidden" id="result_email2" value="">
+						</div>
 					</div>
 
 					<div class="mb-3">
 						<label for="password">비밀번호</label> <input type="password"
 							class="form-control" id="password" name="password" oninput="checkPwd()" required>
-						<div class="invalid-feedback">비밀번호를 입력해주세요.</div>
 					</div>
 					<div class="mb-3">
 						<label for="confirmPassword">비밀번호 확인</label> <input
 							type="password" class="form-control" id="confirmPassword"
 							name="confirmPassword" oninput="checkPwd()" required>
-						<div class="invalid-feedback">비밀번호를 입력해주세요.</div>
-						<div> <span id="result_checkId" style="font-size: 12px;"></span></div>
+						<div> 
+							<span id="result_checkPwd" style="font-size: 14px;"></span>
+							<input type="hidden" id="result_checkPwd2" value="">
+						</div>
 					</div>
 					<div class="mb-3">
 						<label for="birth">생년월일</label> <input type="number"
 							class="form-control" id="birth" name="birth"
 							placeholder="ex 19970518"  maxlength="8" oninput="numberMaxLength(this);"
 							required>
-						<div class="invalid-feedback">생년월일을 입력해주세요.</div>
 					</div>
 
 					<div class="mb-3">
 						<label for="phone">전화번호</label> <input type="text"
 							class="form-control" id="phone" name="phone" oninput="autoHyphen2(this)" maxlength="13"
 							placeholder="전화번호 입력"  required>
-						<div class="invalid-feedback">전화번호를 입력해주세요.</div>
 					</div>
 
 					<div class="mb-3">
 						<label for="address">주소</label> <input type="text"
 							class="form-control" id="address_kakao" name="address" required>
-						<div class="invalid-feedback">주소를 입력해주세요.</div>
 					</div>
 
 
@@ -156,15 +157,38 @@ body {
 	}	
 	
 	function checkPwd() {
-        var inputed = $('#password').val();
-        var reinputed = $('#confirmPassword').val();
+       	var password = $('#password').val();
+       	var confirmPassword = $('#confirmPassword').val();
+       	const check = document.getElementById("result_checkPwd2");
         
-        if(reinputed=="" && (inputed != reinputed || inputed == reinputed)){
-            $("#result_checkId").html('비밀번호가 일치하지 않습니다.').css("color","red");
-        }
-        else if (inputed == reinputed) {
-        	$("#result_checkId").html('비밀번호가 일치합니다.').css("color","green");
-        } 
+        var jsonData ={
+        		"password" : password,
+        		"confirmPassword" : confirmPassword
+        	};
+        
+        $.ajax({
+        	type:"POST",
+        	url:"confirmPassword",
+        	data : JSON.stringify(jsonData),  
+			dataType : 'json', 
+			contentType : 'application/json;charset=UTF-8', 
+			 success: function(result){
+				 if(result == 1){
+					 if(confirmPassword == ''){
+						$("#result_checkPwd").html('');						 
+					 }else{
+						check.setAttribute('value','success');
+					 	$("#result_checkPwd").html('비밀번호가 일치합니다.').css("color","green");
+					 }
+				 }else{
+					 check.setAttribute('value','pwdFail');
+					 $("#result_checkPwd").html('비밀번호가 일치하지 않습니다.').css("color","red");
+				 }
+				 
+				 
+			 }
+        });
+        
     }
 	
 	
@@ -172,37 +196,42 @@ body {
         
 	    const forms = document.getElementsByClassName('validation-form');
 		const button = document.getElementById('button');
+		
 	    Array.prototype.filter.call(forms, (form) => {
-	    	
+	    
 	    button.addEventListener('click', function (event) {
 	    	
    		var inputed = $('#password').val();
         var reinputed = $('#confirmPassword').val();
     	var resultCheck = $('#result_checkNickname').val(); 
-    	
+        const pwdCheck = document.getElementById('result_checkPwd2').getAttribute('value');
+        const nicknameCheck = document.getElementById('result_checkNickname2').getAttribute('value');
+        const emailCheck = document.getElementById('result_email2').getAttribute('value');
+        
+        
         if (form.checkValidity() === false) {
           event.preventDefault();
           event.stopPropagation();
           form.classList.add('was-validated');
           
-          console.log(resultCheck);
-          
-        }else if(checkNick){
-        	console.log(checkNick.result);
-        	
-        }else if(checkEmail){
-        	console.log(checkEmail);
-        	
-        }else if(inputed != reinputed){
-        	
+        }else if(pwdCheck == 'pwdFail'){
         	Swal.fire({
-			    icon: 'warning',
-			    title: '비밀번호가 일치하지 않습니다.',
-			    text: '비밀번호를 확인해주세요.'
-
-		    });
-        	
-        }else{
+	        	icon: 'warning',
+			    title: '비밀번호를 확인해주세요.!',
+        	});    
+        }else if(nicknameCheck == 'nicknameFail'){
+        	Swal.fire({
+	        	icon: 'warning',
+			    title: '닉네임을 확인해주세요.!',
+        	}); 
+       
+        }else if(emailCheck == 'emailFail'){
+        	Swal.fire({
+	        	icon: 'warning',
+			    title: '이메일을 확인해주세요.!',
+        	}); 
+        }
+        else{
         	registerAjax()
         }
 				
@@ -256,13 +285,7 @@ body {
 							 document.location.href = "index";  
 					      }
 					    });
-				}else{
-					Swal.fire({
-					    icon: 'error',
-					    title: '회원가입 실패!',
-					    text: '아이디와 비밀번호를 확인해주세요!'
-					  });
-				}		
+				}
 			}
 		
 		});
@@ -271,6 +294,7 @@ body {
 	
 	function checkNick() {
         var nickname = $("#nickname").val();
+        const check = document.getElementById("result_checkNickname2");
         console.log(nickname);
         var jsonData={
         	"nickname" : nickname	
@@ -286,14 +310,15 @@ body {
             	
                 if(result == 0) {
                 	if(nickname =='' || nickname == null){
-                    	console.log('공백');
                     	$("#result_checkNickname").html('');
                     }else{
+                    	check.setAttribute('value','success');
 	                	$("#result_checkNickname").html('사용가능한 닉네임입니다.').css("color","green");
 	                	return result;
                     }
                 	
                 } else {
+                	check.setAttribute('value','nicknameFail');
                 	$("#result_checkNickname").html('중복된 닉네임입니다.').css("color","red");
                 	
                 } 
@@ -303,6 +328,7 @@ body {
 	
 	function checkEmail(){
 		var email = $("#email").val();
+		const check = document.getElementById("result_email2");
 		
         var jsonData={
         	"email" : email	
@@ -319,13 +345,14 @@ body {
             	console.log(result);
                 if(result == 0) {
                 	if(email =='' || email == null){
-                    	console.log('공백');
                     	$("#result_email").html('');
                     }else{
+                    	check.setAttribute('value','success');
 	                	$("#result_email").html('사용가능한 이메일입니다.').css("color","green");
                     }
                 	
                 } else {
+                	check.setAttribute('value','emailFail');
                 	$("#result_email").html('중복된 이메일입니다.').css("color","red");
                 } 
             }

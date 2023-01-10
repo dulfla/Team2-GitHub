@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import spring.vo.Member;
-import spring.vo.RegisterRequest;
 
 @Repository
 public class MemberDao {
