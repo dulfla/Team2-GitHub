@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>로그인 페이지</title>
 
-<!-- 부트스트랩 링크 -->
+<!-- bootstrap -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -20,7 +20,7 @@
 	crossorigin="anonymous">
 </script>
 
-<!-- 제이쿼리 -->
+<!-- jQuery -->
 <script
   src="https://code.jquery.com/jquery-3.6.3.js"
   integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="

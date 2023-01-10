@@ -18,6 +18,23 @@
 		WHERE email=#{email}
 	</select>
 	
+	
+	<select id="selectCount" resultType="int">
+		SELECT count(*) FROM member
+	</select>
+	
+	<select id="getNickName" resultType="int" parameterType="String">
+		select count(*) from
+		member
+		where nickname =#{nickname}
+	</select>
+	
+	<select id="getEmail" resultType="int" parameterType="String">
+		select count(*) from
+		member
+		where email =#{email}
+	</select>
+	
 	<insert id="insertMember" parameterType="member">
 		INSERT INTO member (email, password,birth, address, phone,name,nickname)
 		VALUES(#{email},#{password},#{birth},

@@ -14,6 +14,13 @@ public class RegisterService { // 회원정보를 저장하기 위한 기능을 
 	@Autowired
 	private MemberDao dao;
 	
+	
+	public int getNickNameMember(String nickname) {
+		System.out.println(nickname);
+        return dao.getNickName(nickname);
+    }
+	
+	
 	public void regist(RegisterRequest req) {
 		Member member = dao.selectByEmail(req.getEmail());
 		
@@ -27,6 +34,12 @@ public class RegisterService { // 회원정보를 저장하기 위한 기능을 
 		
 		dao.insertMember(newMember);
 		
+	}
+
+
+	public int getEmailMember(String email) {
+		System.out.println(email);
+        return dao.getEmail(email);
 	}
 	
 }

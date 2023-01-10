@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler;
 
 import spring.exception.AlreadyExistingMemberException;
 import spring.service.RegisterService;
 import spring.vaildator.RegisterRequestValidator;
+import spring.vo.Member;
 import spring.vo.RegisterRequest;
 
 @Controller
@@ -27,25 +30,50 @@ public class RegisterController {
 		return "member/register";
 	}
 	
-	@PostMapping("registerPost")
-	public String memberRegisterPost(@ModelAttribute("formData")  RegisterRequest regReq ,Errors errors) {
+	@PostMapping(value = "registerPost",consumes="application/json")
+	@ResponseBody
+	public String memberRegisterPost(@RequestBody RegisterRequest regReq ,Errors errors) {
 		new RegisterRequestValidator().validate(regReq, errors);
+		
+		String result;
 		
 		if(errors.hasErrors()) {
 			// 에러 객체에 에러가 하나라도 검출이 되었다면
-			return "member/register"; 
+			result = "0"; 
 		}
 		
 		
 		//받아온 데이터를 DB에 저장
 		try {
 			registerService.regist(regReq);
-			return "member/login";
+			result = "1";
 
 		}catch (AlreadyExistingMemberException e) {
 			errors.rejectValue("email", "duplicate");
-			return "member/register";
+			result =  "0";
 		}
+		
+		return result;
 	}
 	
+	
+	
+	@ResponseBody
+    @PostMapping(value="checkNickName",consumes="application/json")
+    public int nickNameCheck(@RequestBody RegisterRequest regReq ) {
+		
+        int result = registerService.getNickNameMember(regReq.getNickname());
+        
+        
+        return result;
+    }
+	
+	@ResponseBody
+	@PostMapping(value = "checkEmail", consumes="application/json")
+	public int checkEmail(@RequestBody RegisterRequest regReq) {
+		int result = registerService.getEmailMember(regReq.getEmail());
+				
+		return result;		
+				
+	}
 }

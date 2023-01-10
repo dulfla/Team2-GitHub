@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import spring.vo.Member;
+import spring.vo.RegisterRequest;
 
 @Repository
 public class MemberDao {
@@ -35,6 +36,15 @@ public class MemberDao {
 	
 	public void insertMember(Member m) {
 		sqlSession.insert(nameSpace+"insertMember",m);
+	}
+
+	public int getNickName(String nickname) {
+		return sqlSession.selectOne(nameSpace+"getNickName",nickname);
+	}
+
+	public int getEmail(String email) {
+		
+		return sqlSession.selectOne(nameSpace+"getEmail",email);
 	}
 
 }
