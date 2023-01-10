@@ -11,16 +11,16 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
-<script src="${path}resources/script/chat/chattingRoom.js"></script>
 <script src="${path}resources/script//.js"></script>
+<link rel="stylesheet" href="${path}resources/style/basicStryle.css">
 <style type="text/css">
 	#container{
 		position: relative;
 	}
 	.index{
-		width:30vw;
-		font-size:0.4em;
-		padding: 10px 10px;
+		width:25vw;
+		font-size:0.4vw;
+		padding: 20px 10px;
 		border-top-left-radius: 15px;
 		border-top-right-radius: 15px;
 		border:1px solid black;
@@ -30,25 +30,28 @@
 		
 	}
 	#second{
+		position: absolute;
+		
 		
 	}
 	#third{
 		
 	}
 	.page{
+		width:100%;
 		position: absolute;
 		top: 0;
 	}
 	.data{
-		padding:3vh 5vw;
 		border: 1px solid black;
 		border-radius: 15px;
 	}
+	#first 
 </style>
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
-	<div id="container" class="container">
+<%-- 	<div id="container" class="container">
 		<div class="page">
 			<button type="button" id="first" class="index bg-light">회원수 추이</button>
 		    <div class="position-relative data bg-light">
@@ -62,23 +65,19 @@
 		    </div>
 		</div>
 		<div class="page">
-			<button type="button" id="second" class="index bg-light">년도별 탈퇴건수</button>
+			<button type="button" id="third" class="index bg-light">월별 가입/탈퇴</button>
 		    <div class="position-relative data bg-light">
-		        <canvas id="withdrawByYear"></canvas>
-		    </div>
+		    	<select class="form-select position-absolute top-0 end-0 m-3" id="selectYear_memberAdminByMonth" style="width:15%">
+		    		<option value="default">==선택==</option>
+		    		<c:forEach items="${memberAdmin['memberAdmin'][0]['countByYear'][0]['years']}" var="year" varStatus="c">
+			    		<option value="${c.index}">${year}</option>
+		    		</c:forEach>
+		    	</select>
+		        <canvas id="memberAdminByMonth"></canvas>
+			</div>
 		</div>
-		<button type="button" id="third" class="index bg-light">월별 가입/탈퇴</button>
-	    <div class="position-relative data bg-light">
-	    	<select class="form-select position-absolute top-0 end-0 m-3" id="selectYear_memberAdminByMonth" style="width:15%">
-	    		<option value="default">==선택==</option>
-	    		<c:forEach items="${memberAdmin['memberAdmin'][0]['countByYear'][0]['years']}" var="year" varStatus="c">
-		    		<option value="${c.index}">${year}</option>
-	    		</c:forEach>
-	    	</select>
-	        <canvas id="memberAdminByMonth"></canvas>
-		</div>
-	</div>
-	<div id="container" class="container">
+	</div> --%>
+ 	<div id="container" class="container">
 	    <div class="position-relative chart-container">
 	        <canvas id="memberAdminByYear"></canvas>
 	    </div>
@@ -86,7 +85,7 @@
 	        <canvas id="withdrawByYear"></canvas>
 	    </div>
 	    <div class="position-relative chart-container">
-	    	<select class="form-select position-absolute top-0 end-0 m-3" id="selectYear_memberAdminByMonth" style="width:15%">
+	    	<select class="form-select text-center position-absolute top-0 end-0 m-3" id="selectYear_memberAdminByMonth" style="width:15%">
 	    		<option value="default">==선택==</option>
 	    		<c:forEach items="${memberAdmin['memberAdmin'][0]['countByYear'][0]['years']}" var="year" varStatus="c">
 		    		<option value="${c.index}">${year}</option>

@@ -11,7 +11,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
-<script src="${path}resources/script/chat/chattingRoom.js"></script>
 <script src="${path}resources/script//.js"></script>
 <link rel="stylesheet" href="${path}resources/style/basicStryle.css">
 </head>
