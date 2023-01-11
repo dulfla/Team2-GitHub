@@ -129,6 +129,8 @@ CREATE TABLE chatMessage(
     idx NUMBER CONSTRAINT chatMessage_pk_idx PRIMARY KEY,
     c_id VARCHAR2(50),
     message NCLOB NOT NULL,
+    messType varchar(10), -- 메세지 타입 구분(text, jpg, mp4, mp3..)
+    sender VARCHAR2(50), --  보낸사람이 누군지
     read char(1) NOT NULL, -- 읽음 : 0, 안 읽음 : 1
     send_date DATE NOT NULL
 );
@@ -301,6 +303,18 @@ values('tid5', 'pid5', 'hong@naver.com');
 
 
 -- 프로시저 ---------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE newChattingRoom(
+    p_id IN chatInfomation.p_id%TYPE,
+    email IN chatParticipants.sender_email%TYPE,
+    c_id OUT chatInfomation.c_id%TYPE)
+IS
+    chatR chatInfomation.c_id%TYPE:= 'chat'||chatInfomation_seq.NEXTVAL;
+BEGIN
+    INSERT INTO chatInfomation VALUES(chatR, p_id);
+    INSERT INTO chatParticipants VALUES(chatParticipants_seq.NEXTVAL, chatR, email, sysdate);
+    c_id := chatR;
+END;
 
 CREATE OR REPLACE PROCEDURE member_sampleDate
 IS

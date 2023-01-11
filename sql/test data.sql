@@ -18,6 +18,11 @@ SELECT * FROM productHistory;
 
 ------------------------------------------------------------------------------------------------------------------
 
+delete CHATINFOMATION;
+delete CHATPARTICIPANTS;
+
+------------------------------------------------------------------------------------------------------------------
+
 ROLLBACK;
 COMMIT;
 
@@ -28,7 +33,10 @@ INSERT INTO chatInfomation
 VALUES('chat1', 'pid1');
 INSERT INTO chatParticipants
 VALUES(1, 'chat1', 'choi@naver.com', '2020/11/12');
-
+INSERT INTO chatInfomation
+VALUES('chat2', 'pid11');
+INSERT INTO chatParticipants
+VALUES(2, 'chat2', 'hong@naver.com', '2020/11/12');
 
 -- 상품 현황
 INSERT INTO productDetail
@@ -46,19 +54,14 @@ where p_id='pid10';
 insert into trade
 values('tid15', 'pid11', 'pack@naver.com');
 
+CREATE SEQUENCE chatInfomation_seq
+START WITH 3
+NOCACHE
+NOCYCLE;
 
+CREATE SEQUENCE chatParticipants_seq
+START WITH 3
+NOCACHE
+NOCYCLE;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+EXECUTE newChattingRoom('pid3', 'hong@naver.com');
