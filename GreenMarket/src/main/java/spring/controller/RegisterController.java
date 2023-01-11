@@ -1,5 +1,7 @@
 package spring.controller;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 
 import spring.exception.AlreadyExistingMemberException;
 import spring.service.RegisterService;
+import spring.vaildator.EmailValidator;
 import spring.vaildator.RegisterRequestValidator;
 import spring.vo.Member;
 import spring.vo.RegisterRequest;
@@ -62,6 +65,7 @@ public class RegisterController {
     @PostMapping(value="checkNickName",consumes="application/json")
     public int nickNameCheck(@RequestBody RegisterRequest regReq ) {
 		
+		
         int result = registerService.getNickNameMember(regReq.getNickname());
         
         
@@ -70,10 +74,26 @@ public class RegisterController {
 	
 	@ResponseBody
 	@PostMapping(value = "checkEmail", consumes="application/json")
-	public int checkEmail(@RequestBody RegisterRequest regReq) {
+	public int checkEmail(@RequestBody RegisterRequest regReq,
+			HttpServletResponse response, Errors errors) {
+		
+		new EmailValidator().validate(regReq, errors);
+		
 		int result = registerService.getEmailMember(regReq.getEmail());
-				
-		return result;		
+		
+		
+		if (errors.hasErrors()) { // 이메일 형식이 아님
+			result = 2;
+			System.out.println(result);
+		}
+		try {
+			return result;
+			 
+		}catch(AlreadyExistingMemberException e) { //이메일이 중복되는 경우
+			errors.rejectValue("email", "duplicate"); 
+			System.out.println(errors);
+			return result; 
+		}		
 				
 	}
 	

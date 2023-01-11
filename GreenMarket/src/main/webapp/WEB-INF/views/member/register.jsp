@@ -66,7 +66,7 @@ body {
 			<div class="input-form col-md-12 mx-auto">
 				<h4 class="mb-3">회원가입</h4>
 				<form:form action="registerPost"
-					class="validation-form" method="post" novalidate="novalidate">
+					class="validation-form" novalidate="novalidate">
 					<div class="row">
 						<div class="col-md-6 mb-3">
 							<label for="name">이름</label> <input type="text"
@@ -127,8 +127,8 @@ body {
 					<div class="mb-4"></div>
 					<button class="btn btn-primary btn-lg btn-block" id="button" type="button">가입
 						완료</button>
-					<button class="btn btn-primary btn-lg btn-block" type="reset">
-					다시작성</button>
+					<button class="btn btn-primary btn-lg btn-block" id="button" type="reset">다시 작성
+					</button>	
 				</form:form>
 			</div>
 
@@ -161,6 +161,9 @@ body {
        	var confirmPassword = $('#confirmPassword').val();
        	const check = document.getElementById("result_checkPwd2");
         
+       	const pwdCheck = document.getElementsByClassName('form-control')[4];
+       	const pwdCheck2 = document.getElementsByClassName('form-control')[5];
+       	
         var jsonData ={
         		"password" : password,
         		"confirmPassword" : confirmPassword
@@ -178,10 +181,16 @@ body {
 						$("#result_checkPwd").html('');						 
 					 }else{
 						check.setAttribute('value','success');
+						pwdCheck.setAttribute('class','form-control');
+						pwdCheck2.setAttribute('class','form-control');
+						
 					 	$("#result_checkPwd").html('비밀번호가 일치합니다.').css("color","green");
 					 }
 				 }else{
 					 check.setAttribute('value','pwdFail');
+					 pwdCheck.setAttribute('class','form-control is-invalid');
+					 pwdCheck2.setAttribute('class','form-control is-invalid');
+					 
 					 $("#result_checkPwd").html('비밀번호가 일치하지 않습니다.').css("color","red");
 				 }
 				 
@@ -193,7 +202,7 @@ body {
 	
 	
 	window.addEventListener('load', () => {
-        
+		const nicknameCheck3 = document.getElementsByClassName('form-control')[2].getAttribute('class');
 	    const forms = document.getElementsByClassName('validation-form');
 		const button = document.getElementById('button');
 		
@@ -201,42 +210,77 @@ body {
 	    
 	    button.addEventListener('click', function (event) {
 	    	
-   		var inputed = $('#password').val();
-        var reinputed = $('#confirmPassword').val();
-    	var resultCheck = $('#result_checkNickname').val(); 
-        const pwdCheck = document.getElementById('result_checkPwd2').getAttribute('value');
-        const nicknameCheck = document.getElementById('result_checkNickname2').getAttribute('value');
-        const emailCheck = document.getElementById('result_email2').getAttribute('value');
-        
-        
-        if (form.checkValidity() === false) {
-          event.preventDefault();
-          event.stopPropagation();
-          form.classList.add('was-validated');
-          
-        }else if(pwdCheck == 'pwdFail'){
-        	Swal.fire({
-	        	icon: 'warning',
-			    title: '비밀번호를 확인해주세요.!',
-        	});    
-        }else if(nicknameCheck == 'nicknameFail'){
-        	Swal.fire({
-	        	icon: 'warning',
-			    title: '닉네임을 확인해주세요.!',
-        	}); 
-       
-        }else if(emailCheck == 'emailFail'){
-        	Swal.fire({
-	        	icon: 'warning',
-			    title: '이메일을 확인해주세요.!',
-        	}); 
-        }
-        else{
-        	registerAjax()
-        }
-				
-      });
-    });
+	   		var inputed = $('#password').val();
+	        var reinputed = $('#confirmPassword').val();
+	    	var resultCheck = $('#result_checkNickname').val();
+	    	
+	        const pwdCheck = document.getElementById('result_checkPwd2').getAttribute('value');
+	        const pwdCheck2 = document.getElementsByClassName('form-control')[5].getAttribute('class');
+	        
+	        const nicknameCheck = document.getElementById('result_checkNickname2').getAttribute('value');
+	        const nicknameCheck2 = document.getElementsByClassName('form-control')[2].getAttribute('class');
+	        
+	        const emailCheck = document.getElementById('result_email2').getAttribute('value');
+	        const emailCheck2 = document.getElementsByClassName('form-control')[3].getAttribute('class');
+        	
+	        function emailAlert(){
+	        	form.classList.remove('was-validated');
+        		Swal.fire({
+		        	icon: 'warning',
+				    title: '이메일을 확인해주세요.!',
+	        	}); 	
+	        }
+	        
+	        function nicknameAlert(){
+	        	form.classList.remove('was-validated');
+	        	Swal.fire({
+		        	icon: 'warning',
+				    title: '닉네임을 확인해주세요.!',
+	        	}); 
+	        }
+	        
+	        function pwdCheckAlert(){
+	        	form.classList.remove('was-validated');
+	        	Swal.fire({
+		        	icon: 'warning',
+				    title: '비밀번호를 확인해주세요.!',
+	        	});   
+	        }
+	        
+	        if (form.checkValidity() == false) {
+	        	
+	           	event.preventDefault(); 
+	           	event.stopPropagation(); 
+	           	form.classList.add('was-validated');
+	           	
+	           	if(nicknameCheck2 == 'form-control is-invalid'){
+	           		
+	           		nicknameAlert();
+	           		
+	           	}else if(emailCheck2 == 'form-control is-invalid'){
+	           		
+		        	emailAlert();
+	           	}else if(pwdCheck2 == 'form-control is-invalid'){
+	           		
+	           		pwdCheckAlert();
+	           	};
+	        	
+	        }else if(pwdCheck == 'pwdFail'){
+	        	pwdCheckAlert();
+	        	
+	        }else if(nicknameCheck == 'nicknameFail'){
+	        	nicknameCheck();
+	        	
+	        }else if(emailCheck == 'emailFail'){
+	        	emailAlert();
+	        	
+	        }
+	        else{
+	        	registerAjax()
+	        }
+					
+	      });
+	    });
  });
 
 	
@@ -295,6 +339,10 @@ body {
 	function checkNick() {
         var nickname = $("#nickname").val();
         const check = document.getElementById("result_checkNickname2");
+        const check2 = document.getElementsByClassName('form-control')[2];
+        
+        /* const check2 = document.querySelector(".form-control"); */
+        console.log(check2);
         console.log(nickname);
         var jsonData={
         	"nickname" : nickname	
@@ -313,12 +361,14 @@ body {
                     	$("#result_checkNickname").html('');
                     }else{
                     	check.setAttribute('value','success');
+                    	check2.setAttribute('class','form-control');
 	                	$("#result_checkNickname").html('사용가능한 닉네임입니다.').css("color","green");
 	                	return result;
                     }
                 	
                 } else {
                 	check.setAttribute('value','nicknameFail');
+                	check2.setAttribute('class','form-control is-invalid');
                 	$("#result_checkNickname").html('중복된 닉네임입니다.').css("color","red");
                 	
                 } 
@@ -329,6 +379,7 @@ body {
 	function checkEmail(){
 		var email = $("#email").val();
 		const check = document.getElementById("result_email2");
+		const check2 = document.getElementsByClassName('form-control')[3];
 		
         var jsonData={
         	"email" : email	
@@ -342,17 +393,28 @@ body {
 			dataType : 'json', 
 			contentType : 'application/json;charset=UTF-8', 
             success : function(result) {
-            	console.log(result);
-                if(result == 0) {
+            	
+            	if(result == 2){ // 이메일형식
+            		if(email =='' || email == null){
+                    	$("#result_email").html('');
+                    }else{
+                    	check.setAttribute('value','success');
+                    	check2.setAttribute('class','form-control');
+                    	$("#result_email").html('이메일 형식이 아닙니다.').css("color","red");
+                    }
+            	
+            	}else if(result == 0) { // 사용가능
                 	if(email =='' || email == null){
                     	$("#result_email").html('');
                     }else{
                     	check.setAttribute('value','success');
+                    	check2.setAttribute('class','form-control');
 	                	$("#result_email").html('사용가능한 이메일입니다.').css("color","green");
                     }
                 	
-                } else {
+                } else { // 중복
                 	check.setAttribute('value','emailFail');
+                	check2.setAttribute('class','form-control is-invalid');
                 	$("#result_email").html('중복된 이메일입니다.').css("color","red");
                 } 
             }

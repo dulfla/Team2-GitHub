@@ -51,6 +51,7 @@ public class RegisterRequestValidator implements Validator{
 			}
 		}
 		
+		
 		// 이름 체크
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "required");
 		// target 객체에서 name 필드(getName())가 비어있거나 공백 문자인경우
@@ -67,13 +68,12 @@ public class RegisterRequestValidator implements Validator{
 			errors.rejectValue("confirmPassword", "nomatch");
 			
 		}
+				
+		 
 		
 		// 검증용 객체 => 어디서 검증??
 		
-		
-		
 	}
-	
 	
 	
 }

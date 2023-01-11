@@ -51,7 +51,7 @@
 			        		<li><a class="dropdown-item" href="#">채팅방 보기</a></li>
 				            <li><a class="dropdown-item" href="#">판매목록</a></li>
 				            <li><a class="dropdown-item" href="#">구매목록</a></li>
-				            <li><a class="dropdown-item" href="#">정보수정</a></li>
+				            <li><a class="dropdown-item" href="memberDetail">정보수정</a></li>
 				            <li><hr class="dropdown-divider"></li>
 			            </c:if>
 			            <li><a class="dropdown-item" href="logout">로그아웃</a></li>
