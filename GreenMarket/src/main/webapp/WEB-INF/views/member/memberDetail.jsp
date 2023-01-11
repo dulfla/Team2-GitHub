@@ -25,13 +25,65 @@
 <jsp:include page="../include/header.jsp"/>
 </head>
 <body>
-	<div id="container">
+	<%-- <div id="container">
 		<a href="changePassword">비밀번호 변경</a>
 		<a href="changeMemberInfo">회원정보 변경</a>
 		<a href="unRegister">회원탈퇴</a>
-		${member.nickname}
-	</div>
-
+		${member.nickname} --%>
+	<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-2"></div>
+                <div class="col-sm-9">
+                    <h2 class="text-center">회원 정보 보기</h2>
+                    <table class="table table-striped">
+                      <tr>
+                        <td>이름</td>
+                        <td>${member.name}</td>
+                      </tr>
+                       
+                      <tr>
+                        <td>이메일</td>
+                        <td>${member.email}</td>
+                      </tr>
+                       
+                      <tr>
+                        <td>닉네임</td>
+                        <td>${member.nickname}</td>
+                      </tr>
+                       
+                      <tr>
+                        <td>생년월일</td>
+                        <td>${member.birth}</td>
+                      </tr>
+                       
+                      <tr>
+                        <td>전화번호</td>
+                        <td>${member.phone}</td>
+                      </tr>
+                       
+                     <tr>
+                        <td>주소</td>
+                        <td>${member.address}</td>
+                      </tr>
+                       
+                    <tr>
+                         <td class="text-center" colspan="2">
+<button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">회원수정</button>
+<button onclick="location.href='MemberDeleteForm.jsp?id='" class="btn btn-danger">회원삭제</button>
+<button onclick="location.href='MemberList.jsp'" class="btn btn-warning">비밀번호 변경</button>
+<button onclick="location.href='MemberJoin.jsp'" class="btn btn-success">회원가입</button>
+                          
+                         </td>    
+                    </tr> 
+                 
+                       
+                    </table>
+                </div>
+        </div> <!-- col-sm-12 -->
+    </div><!-- row -->
+</div> <!-- container end-->
+     
 </body>
 <jsp:include page="../include/footer.jsp"/>
 </html>

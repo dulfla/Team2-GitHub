@@ -240,7 +240,7 @@ function loginCheck(){
 function loginAjax(){
 	var email = $("#email").val();
 	var password = $("#password").val();
-
+	
 	var jsonData ={
 		"email" : email,
 		"password" : password

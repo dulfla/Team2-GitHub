@@ -148,7 +148,7 @@ body {
 		   .replace(/[^0-9]/g, '')
 		  .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
 	}
-	
+	// 생년월일 숫자길이 = 8
 	function numberMaxLength(e){
 	    if(e.value.length > e.maxLength){
 	

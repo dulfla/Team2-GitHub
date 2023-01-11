@@ -21,7 +21,7 @@
 				        </ul>
 				    </li>		    	
 		    	</c:if>
-		    	<c:if test="${empty member }"><!-- && member.type=='M' -->
+		    	<c:if test="${empty member}"><!-- && member.type=='M' -->
 				    <li>
 				    	<a href="#" class="nav-link px-2 link-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">현황 관리</a>
 				        <ul class="dropdown-menu text-small">

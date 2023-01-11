@@ -25,13 +25,14 @@ public class MemberDao {
 	}
 	
 	public Member selectByEmail(String email) {
-		System.out.println(email);
 		return sqlSession.selectOne(nameSpace+"selectByEmail",email);	
 	}
 	
-	public int count() {
-		return sqlSession.selectOne(nameSpace+"selectCount");	
+	public Member selectByName(String name) {
+		System.out.println(name);
+		return sqlSession.selectOne(nameSpace+"selectByEmail",name);	
 	}
+	
 	
 	public void insertMember(Member m) {
 		sqlSession.insert(nameSpace+"insertMember",m);
