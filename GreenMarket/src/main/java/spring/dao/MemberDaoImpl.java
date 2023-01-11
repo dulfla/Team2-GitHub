@@ -30,5 +30,12 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.selectList("mybatis.mapper.member.category");
 	}
 
+	// 상품조회
+	@Override
+	public ProductVO productDetail(String p_id) {
+		return sqlSession.selectOne("mybatis.mapper.member.productDetail", p_id);
+	}
+
+
 	
 }

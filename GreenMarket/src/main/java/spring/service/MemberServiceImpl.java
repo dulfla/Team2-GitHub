@@ -32,6 +32,11 @@ public class MemberServiceImpl implements MemberService {
 	public List<CategoryVO> category(){
 		return dao.category();
 	}
+
+	@Override
+	public ProductVO productDetail(String p_id) {
+		return dao.productDetail(p_id);
+	}
 	
 	
 }

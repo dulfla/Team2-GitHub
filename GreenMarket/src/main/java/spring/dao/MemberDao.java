@@ -14,4 +14,7 @@ public interface MemberDao {
 	
 	// 카테고리
 	public List<CategoryVO> category();
+	
+	// 상품 조회
+	public ProductVO productDetail(String p_id);
 }

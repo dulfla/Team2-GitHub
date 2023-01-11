@@ -14,4 +14,7 @@ public interface MemberService {
 	
 	// 카테고리
 	public List<CategoryVO> category(); 
+	
+	// 상품조회
+	public ProductVO productDetail(String p_id);
 }
