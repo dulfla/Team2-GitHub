@@ -1,46 +1,53 @@
+window.onload = function scroll(){
+	let messageBox = document.getElementById('messageBox');
+	messageBox.scrollTo(0, messageBox.scrollHeight);
+	
+	let message = document.getElementsByName("message")[0];
+	message.addEventListener('change', (e) => {
+		let sendBtn = document.getElementsByName("sendBtn")[0];
+		if(e.currentTarget.value!=null && e.currentTarget.value!=""){
+			sendBtn.addEventListener('click', sendMessage, false);
+		}else{
+			sendBtn.removeEventListener('click', sendMessage);
+		}
+	}, false);
+	
+}
 
 function sendMessage(){
-	
+
 	let messageList = document.getElementById("messageBox");
 	let message = document.getElementsByName("message")[0];
-
+	
 	$.ajax({
-		type:"get",
-		url:"chatting",
-		data:{
-			
+		url:"SendMessage",
+		type:"POST",
+		contentType:'application/json; charset=UTF-8',
+		data : JSON.stringify({
+			c_id : "chat26",
+    		p_id : "pid2",
+    		email : "hong@naver.com"
+    	}),
+    	error:function(){
+			console.log('통신실패!!');
 		},
-		datatype:"text",// 서버로 부터 응답 받을 데이터 타입  :: text, xml, json
-		success:function(data){
-			if(message.value!=''){
-				let myText = document.createElement('div');
-				myText.classList.add('messageBox');
-				
-				let myMessage = document.createElement('p');
-				myMessage.classList.add('myMessage');
-				
-				myMessage.innerHTML = message.value;
-				message.value = null;
+		success:function(){
+			let myText = document.createElement('div');
+			myText.classList.add('messageBox', 'myMessageBox');
 			
-				myText.appendChild(myMessage);
-				messageList.appendChild(myText);
-			}
-			if(data!=null){
-				let reciveText = document.createElement('div');
-				reciveText.classList.add('messageBox');
-				reciveText.classList.add('recive');
-				
-				let sendingMessage = document.createElement('p');
-				sendingMessage.classList.add('myMessage');
-				
-				sendingMessage.innerHTML;
+			let myMessage = document.createElement('p');
+			myMessage.classList.add('message', 'myMessage');
 			
-				reciveText.appendChild(sendingMessage);
-				messageList.appendChild(reciveText);
-			}
-		},
-		error:function(){
-			alert('서버 에러! 전송이 되지 않았습니다.')
+			myMessage.innerHTML = message.value;
+			message.value = null;
+		
+			let nowPosition = messageBox.scrollTop;
+			let result = approximateCheck(nowPosition);
+			
+			myText.appendChild(myMessage);
+			messageList.appendChild(myText);
+			
+			scrollCheck(result);
 		},
 		complate:function(){
 			
@@ -50,4 +57,35 @@ function sendMessage(){
 	// let messageTemp = document.createElement('p');
 	// messageTemp.classList.add('reciveMessage');
 	
+	//	if(data!=null){
+	//		let reciveText = document.createElement('div');
+	//		reciveText.classList.add('messageBox');
+	//		reciveText.classList.add('recive');
+	//		
+	//		let sendingMessage = document.createElement('p');
+	//		sendingMessage.classList.add('myMessage');
+	//		
+	//		sendingMessage.innerHTML;
+	//	
+	//		reciveText.appendChild(sendingMessage);
+	//		messageList.appendChild(reciveText);
+	//	}
+	
+}
+
+function scrollCheck(result){
+	if(result){
+		messageBox.scrollTo(0, messageBox.scrollHeight);
+	}else{
+		messagePopup();
+	}
+}
+
+function approximateCheck(nowPosition){
+	let originPosition = messageBox.scrollHeight-messageBox.offsetHeight;
+	if(originPosition==nowPosition | originPosition-nowPosition<=5){
+		return true;
+	}else{
+		return false;
+	}
 }

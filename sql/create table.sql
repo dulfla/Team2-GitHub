@@ -125,6 +125,11 @@ CREATE TABLE chatInfomation(
     p_id VARCHAR2(10)
 );
 
+CREATE SEQUENCE chatMessage_seq
+START WITH 1
+NOCACHE
+NOCYCLE;
+
 CREATE TABLE chatMessage(
     idx NUMBER CONSTRAINT chatMessage_pk_idx PRIMARY KEY,
     c_id VARCHAR2(50),

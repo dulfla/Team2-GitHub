@@ -2,7 +2,7 @@
 function chatting(prod_id){
 	prod_id = "pid2"
 	$.ajax({
-	    url: "chatRoomCheck",
+	    url: "ChatRoomCheck",
 	    method: "POST",
 	    dataType : 'json',
     	contentType : 'application/json; charset=UTF-8',

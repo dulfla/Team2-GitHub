@@ -1,5 +1,6 @@
 package spring.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -7,12 +8,14 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import chat.service.ChatService;
+import spring.vo.ChatMessageVo;
 import spring.vo.ChattingRoomBringingCommand;
 import spring.vo.MemberVo;
 
@@ -41,14 +44,28 @@ public class ChatConnectionController {
 	private ChatService chatService;
 	
 	@RequestMapping("Chat")
-	public String chattings(String c) {
-		chatService.getProductInfo(c);
-		chatService.getPreviousMessages(c);
+	public String chattings(String c, Model model) {
+		model.addAttribute("productInfo", chatService.getProductInfo(c));
+		model.addAttribute("messages", chatService.getPreviousMessages(c));
+//		List<ChatMessageVo> list = (List<ChatMessageVo>)model.getAttribute("messages");
+//		for(int i=0; i<list.size(); i++) {
+//			System.out.println(list.get(i).getSender());
+//		}
 		return "chat/chatting";
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="chatRoomCheck", method=RequestMethod.POST)
+	@RequestMapping(value="SendMessage", method=RequestMethod.POST)
+	public void sendMessage(@RequestBody Map<String, String> map) {
+		System.out.println(map.get("c_id"));
+		System.out.println(map.get("p_id"));
+		System.out.println(map.get("email"));
+		System.out.println("서버 안녕");
+		return;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="ChatRoomCheck", method=RequestMethod.POST)
 	public JSONObject bringingChatRoomInfo(@RequestBody Map<String, String> map, HttpSession session) {
 		ChattingRoomBringingCommand crbc = new ChattingRoomBringingCommand();
 		crbc.setP_id(map.get("p_id"));

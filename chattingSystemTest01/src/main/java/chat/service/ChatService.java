@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import chat.vo.ProductVo;
 import spring.dao.ChatDao;
 import spring.vo.ChatMessageVo;
 import spring.vo.ChattingRoomBringingCommand;
@@ -25,8 +26,8 @@ public class ChatService {
 		return result;
 	}
 
-	public void getProductInfo(String c) {
-		// productVo 반환
+	public ProductVo getProductInfo(String c) {
+		return null;
 	}
 
 	public List<ChatMessageVo> getPreviousMessages(String c_id) {

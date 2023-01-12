@@ -28,7 +28,7 @@ public class ChatDao {
 	}
 
 	public List<ChatMessageVo> selectAllMessagesInChatRoom(String c_id) {
-		return sqlSesison.selectList("mybatis.mapper.chat.", c_id);
+		return sqlSesison.selectList("mybatis.mapper.chat.selectAllMessages", c_id);
 	}
 	
 }
