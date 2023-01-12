@@ -61,7 +61,6 @@ window.addEventListener('load', () => {
 			}
 
 			if (form.checkValidity() == false) {
-				form.classList.remove('was-validated');
 
 				event.preventDefault();
 				event.stopPropagation();
@@ -93,9 +92,9 @@ window.addEventListener('load', () => {
 				registerAjax()
 			}
 
-		});
+		},false);
 	});
-});
+},false);
 
 
 function registerAjax() {
@@ -174,8 +173,9 @@ function checkNick() {
 				if (nickname == '' || nickname == null) {
 					$("#result_checkNickname").html('');
 				} else {
+					console.log(check2);
 					check.setAttribute('value', 'success');
-					check2.setAttribute('class', 'form-control');
+					check2.setAttribute('class', 'form-control is-valid');
 					$("#result_checkNickname").html('사용가능한 닉네임입니다.').css("color", "green");
 					return result;
 				}
@@ -222,7 +222,7 @@ function checkEmail() {
 					$("#result_email").html('');
 				} else {
 					check.setAttribute('value', 'success');
-					check2.setAttribute('class', 'form-control');
+					check2.setAttribute('class', 'form-control is-valid');
 					$("#result_email").html('사용가능한 이메일입니다.').css("color", "green");
 				}
 
@@ -260,8 +260,8 @@ function checkPwd() {
 					$("#result_checkPwd").html('');
 				} else {
 					check.setAttribute('value', 'success');
-					pwdCheck.setAttribute('class', 'form-control');
-					pwdCheck2.setAttribute('class', 'form-control');
+					pwdCheck.setAttribute('class', 'form-control is-valid');
+					pwdCheck2.setAttribute('class', 'form-control is-valid');
 
 					$("#result_checkPwd").html('비밀번호가 일치합니다.').css("color", "green");
 				}
