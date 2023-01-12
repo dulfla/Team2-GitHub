@@ -45,14 +45,16 @@ public class LoginController {
 		if (errors.hasErrors()) {
 			result ="0";
 		}
-
+		
 		try {
 			AuthInfo authInfo = authService.authenticate(loginCommand);
 
-			session.setAttribute("member", authInfo);
+			session.setAttribute("authInfo", authInfo);
 			result ="1";
 		} catch (IdPasswordNotMatchingException e) {
+			
 			result ="0";
+			
 		}
 		return result;
 	}

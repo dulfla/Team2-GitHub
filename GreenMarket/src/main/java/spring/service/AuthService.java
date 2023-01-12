@@ -33,10 +33,7 @@ public class AuthService { // 실제 로그인 기능을 담당할 객체
 				.setNickname(member.getNickname())
 				.setEmail(member.getEmail())
 				.setName(member.getName())
-				.setType(member.getType())
-				.setAddress(member.getAddress())
-				.setBirth(member.getBirth())
-				.setPhone(member.getPhone());
+				.setType(member.getType());
 		
 		return authInfo;
 	}

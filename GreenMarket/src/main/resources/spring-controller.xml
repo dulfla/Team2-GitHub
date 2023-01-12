@@ -12,4 +12,6 @@
 	
 	<bean id="RegisterController" class="spring.controller.RegisterController"/>
 	
+	<bean id="ChangeMemberInfoController" class="spring.controller.ChangeMemberInfoController"/>
+	
 </beans>

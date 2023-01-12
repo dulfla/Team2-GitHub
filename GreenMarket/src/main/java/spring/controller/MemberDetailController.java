@@ -1,8 +1,11 @@
 package spring.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -18,16 +21,17 @@ public class MemberDetailController {
 	
 	
 	
-	@GetMapping("memberDetail")
-	public String memberDetail() {
+	@GetMapping("memberDetail{email}")
+	public String memberDetail(String email, HttpSession session, Model model) {
+		Member member = memberDao.selectByEmail(email);
 		
+		if(member == null) {
+			throw new MemberNotFoundException();
+		}
+		session.setAttribute("member", member);
+		//model.addAttribute("member",member);
 		return "member/memberDetail";
 	}
 	
-	@GetMapping("changeMemberInfo")
-	public String changeMemberInfo() {
-		
-		return "member/changeMemberInfo";
-	}
 	
 }

@@ -31,37 +31,57 @@
 
 						<table class="table table-striped">
 							<tr>
-								<td>아이디</td>
-								<td></td>
+								<td>이름</td>
+								<td><input type="text" value="${member.name}"
+									name="name" class="form-control"></td>
+								<td><button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">수정</button>
+								</td>	
 							</tr>
 
 							<tr>
 								<td>이메일</td>
 								<td><input type="email" value="${member.email}"
 									name="email" class="form-control"></td>
+								<td><button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">수정</button>
+								</td>
 							</tr>
 
 							<tr>
-								<td>전화</td>
-								<td><input type="tel" value="${member.phone}"
-									name="email" class="form-control"></td>
+								<td>닉네임</td>
+								<td><input type="text" value="${member.nickname}"
+									name="phone" class="form-control"></td>
+								<td><button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">수정</button>
+								</td>	
 							</tr>
 
 							<tr>
-								<td>패스워드</td>
-								<td><input type="password" value=""
-									name="pass1" class="form-control"></td>
+								<td>생년월일</td>
+								<td><input type="number" value="${member.birth}"
+									name="birth" class="form-control"></td>
+								<td><button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">수정</button>
+								</td>	
 							</tr>
-
 							<tr>
-								<td colspan="2" class="text-center"><input type="submit"
-									value="회원 수정하기" class="btn btn-success">
-									<button type="button" class="btn btn-warning"
-										onclick="location.href='MemberList.jsp'">회원 전체 보기</button></td>
+								<td>전화번호</td>
+								<td><input type="text" value="${member.phone}"
+									name="phone" class="form-control"></td>
+								<td><button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">수정</button>
+								</td>	
 							</tr>
-
+							<tr>
+								<td>주소</td>
+								<td><input type="text" value="${member.address}"
+									name="address" class="form-control"></td>
+								<td><button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">수정</button>
+								</td>	
+							</tr>
+							<tr>
+								<td colspan="2" class="text-center"><input type="button"
+									value="나가기" class="btn btn-success" onclick="window.history.go(-1)" >
+								</td>
+								<td></td>
+							</tr>
 						</table>
-
 					</form>
 
 				</div>
@@ -72,5 +92,11 @@
 	</div>
 	<!-- container end-->
 </body>
+<script type="text/javascript">
+
+	
+</script>
+
 <jsp:include page="../include/footer.jsp"/>
+<script type="text/javascript" defer="defer" src="${path}resources/script/member.js"></script>
 </html>
