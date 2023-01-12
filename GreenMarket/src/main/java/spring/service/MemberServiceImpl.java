@@ -12,6 +12,7 @@ import jdk.nashorn.internal.runtime.logging.Logger;
 import spring.dao.MemberDao;
 import spring.dao.MemberDaoImpl;
 import spring.vo.CategoryVO;
+import spring.vo.Product1VO;
 import spring.vo.ProductVO;
 
 @Service
@@ -23,8 +24,10 @@ public class MemberServiceImpl implements MemberService {
 	
 	// 상품등록
 	@Override
-	public void productRegister(ProductVO vo) {
+	public void productRegister(ProductVO vo, Product1VO vo1) {
 		dao.productRegister(vo);
+		vo1.setProductId(vo.getProductId());
+		dao.productRegister1(vo1);
 	}
 	
 	// 카테고리
@@ -33,10 +36,20 @@ public class MemberServiceImpl implements MemberService {
 		return dao.category();
 	}
 
+	// 상품 조회
 	@Override
 	public ProductVO productDetail(String p_id) {
 		return dao.productDetail(p_id);
 	}
+
+	// 상품 삭제
+	@Override
+	public void productDelete(String p_id) {
+		dao.productDelete(p_id);
+	}
+
+
+
 	
 	
 }

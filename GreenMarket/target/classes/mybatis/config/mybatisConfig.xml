@@ -8,6 +8,7 @@
 	</typeAliases>	 -->
 	<typeAliases>
 		<typeAlias type="spring.vo.ProductVO" alias="ProductVO"/>
+		<typeAlias type="spring.vo.Product1VO" alias="Product1VO"/>
 		<typeAlias type="spring.vo.CategoryVO" alias="CategoryVO"/>
 	</typeAliases>	
 </configuration>  

@@ -26,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import spring.service.MemberService;
 import spring.service.MemberServiceImpl;
 import spring.vo.CategoryVO;
+import spring.vo.Product1VO;
 import spring.vo.ProductVO;
 
 
@@ -41,13 +42,8 @@ public class ProductController {
 	// 카테고리
 	@RequestMapping(value="/product/register", method = RequestMethod.GET)
 	public String registerProduct(Model model) throws Exception {
-	//	logger.info("product register");
-		
-		/* ObjectMapper objm = new ObjectMapper(); */
 		
 		List<CategoryVO> list = memberServiceImpl.category();
-		
-		/* String category = objm.writeValueAsString(list); */
 		
 		model.addAttribute("category", list);
 	
@@ -56,10 +52,9 @@ public class ProductController {
 	
 	// 상품 등록
 	@RequestMapping(value="/product/register", method = RequestMethod.POST)
-	public String registerProduct(ProductVO vo) {
-		
-		
-		memberServiceImpl.productRegister(vo);
+	public String registerProduct(ProductVO vo, Product1VO vo1) {
+			
+		memberServiceImpl.productRegister(vo, vo1);
 		
 		return "redirect:/index";
 	}
@@ -67,10 +62,26 @@ public class ProductController {
 	// 상품 조회
 	@RequestMapping(value = "/product/productDetail", method= RequestMethod.GET)
 	public void productDetail(@RequestParam("p_id") String p_id, Model model) throws Exception {
-		
-		
+				
 		ProductVO product = memberServiceImpl.productDetail(p_id);
 		model.addAttribute("product", product);
+	}
+	
+	// 상품 수정
+	@RequestMapping(value = "/product/productModify", method= RequestMethod.GET)
+	public void productModify(@RequestParam("p_id") String p_id, Model model) throws Exception {
+				
+		ProductVO product = memberServiceImpl.productDetail(p_id);
+		model.addAttribute("product", product);
+	}
+	
+	// 상품 삭제
+	@RequestMapping(value = "/product/productDelete", method= RequestMethod.POST)
+	public String deleteProduct(@RequestParam("p_id") String p_id) throws Exception {
+		
+		memberServiceImpl.productDelete(p_id);
+		
+		return "redirect:/index";		
 	}
 	
 	// 사진 첨부	

@@ -6,10 +6,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>상품 상세 페이지</title>
+<title>상품 페이지</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <script src="${path}resources/script/product/productDetailJsForChat.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
 <style type="text/css">
 	#container{
 		width:100%;
@@ -20,11 +21,12 @@
 <body>
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
-		<form action="" method="post" autocomplete="off">
+		<form role='form' method="post" autocomplete="off">
+			<input type="hidden" name="p_id" value="${product.p_id}" />
 
 			<div class="inputArea"> 
 			 <label>카테고리</label>
-			 <span class="category">${product.category}</span>        
+			 <span class="category">${product.category}</span>  	      
 			</div>
 			
 			<div class="inputArea"> 
@@ -34,7 +36,7 @@
 			
 			<!-- 거래위치 -->
 			
-			<!-- 안불러와짐 -->
+			
 			<div class="inputArea"> 
 			 <label>조회수</label>
 			 <span class="views">${product.views}</span>        
@@ -44,15 +46,15 @@
 			 <label for="p_name">상품명</label>
 			 <span>${product.p_name}</span>
 			</div>
-	<!-- 		
-			<div class="inputArea">
+		
+ 			 <div class="inputArea">
 			 <label for="email">판매자</label>
-			 <span></span>
-			</div>
-			 -->
+			 <span>${product.email}</span>
+			</div>  
+			 
 			<div class="inputArea">
 			 <label for="price">상품가격</label>
-			 <span><fmt:formatNumber value="${product.price}" pattern="###,###,###"/></span>
+			 <span><fmt:formatNumber value="${product.price}"  pattern="###,###,###"/>원</span>
 			</div>			
 			
 			<div class="inputArea">
@@ -62,8 +64,8 @@
 			
 			<!-- 작성자, 관리자만 보이도록 수정 해야됨 -->
 			<div class="inputArea">
-			 <button type="button" id="register_Btn" class="btn btn-warning">수정</button>
-			 <button type="button" id="register_Btn" class="btn btn-danger">삭제</button>
+			 <button type="button" id="modify_Btn" class="btn btn-warning">수정</button>
+			 <button type="button" id="delete_Btn" class="btn btn-danger">삭제</button>
 			</div>
 			
 			</form>
@@ -72,5 +74,20 @@
 		
 	</div>
 	<%@ include file="../include/footer.jsp" %>
+	
+	<script>
+	  var formObj = $("form[role='form']");
+	  
+	  $("#modify_Btn").click(function(){
+	   formObj.attr("action", "/product/productModify");
+	   formObj.attr("method", "get")
+	   formObj.submit();
+	  });
+	  
+	  $("#delete_Btn").click(function(){    
+	   formObj.attr("action", "/product/delete");
+	   formObj.submit();
+	  });
+ 	</script>
 </body>
 </html>

@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class ProductVO {
 
+	// productDetail tbl
 	private String p_id;
 	private String p_name;
 	private String description;
@@ -12,6 +13,25 @@ public class ProductVO {
 	private int views;
 	private int price;
 	
+	private String productId;
+	private String email;
+	
+	
+	
+	
+	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getProductId() {
+		return productId;
+	}
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
 	public String getP_id() {
 		return p_id;
 	}
@@ -54,10 +74,15 @@ public class ProductVO {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	
 	@Override
 	public String toString() {
 		return "ProductVO [p_id=" + p_id + ", p_name=" + p_name + ", description=" + description + ", category="
-				+ category + ", regdate=" + regdate + ", views=" + views + ", price=" + price + "]";
-	}		
+				+ category + ", regdate=" + regdate + ", views=" + views + ", price=" + price + ", productId="
+				+ productId + ", email=" + email + "]";
+	}
+	
+
+
+		
+		
 }

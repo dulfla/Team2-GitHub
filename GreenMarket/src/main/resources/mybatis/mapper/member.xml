@@ -57,12 +57,30 @@
 	</select>
 	
 	<insert id="productReg" parameterType="ProductVO">
+		<selectKey keyProperty="productId" resultType="String" order="BEFORE">
+    		SELECT 'pid'||pid_seq.nextval from dual
+    	</selectKey>
 		insert into productdetail (p_id,p_name,description,category,regdate,price)
-    	values ('pid'||pid_seq.nextval,#{p_name},#{description},#{category},sysdate,#{price})
+    	values (#{productId},#{p_name},#{description},#{category},sysdate,#{price})
 	</insert>
+ 		
+ 		<!-- 합치고 세션으로 이메일 받아보자 -->
+	<insert id="product" parameterType="Product1VO">
+		insert into product(idx,email,p_id)
+		values (product_seq.nextval,'hong@naver.com',#{productId})	
+	</insert>
+<!--	
+	사진상세정보 먼저 입력해야됨
+	<insert id="productPic">
+		insert into productPic(idx,p_id,f_id)
+		values (Pic_seq.nextval,#{productId},)
+	</insert>
+	 -->
 	
 	<select id="productDetail" resultType="ProductVO">
-		SELECT * FROM "PRODUCTDETAIL" where p_id = #{p_id}
+		select p_name, description, category, regdate, views, price, p_id,
+		(select email from product where p_id=#{p_id}) as email
+		from productDetail where p_id = #{p_id}
 	</select>
 	
 <!-- 	
@@ -71,9 +89,19 @@
 		 p_name=#{p_name}, description=#{description}, category=#{category}, price=#{price}
      	 where p_name = ${p_name}
 	</update>
-	
+	 -->
+	 
+	 <!-- 상품 삭제할때 상품상세정보를 마지막에 지워야함 -->
+<!-- 	 <delete id="tradeDelete">
+		delete trade where p_id=#{p_id}
+	</delete>
+	 <delete id="productDelete1">
+		delete product where p_id=#{p_id}
+	</delete>
 	<delete id="productDelete">
 		delete productDetail where p_id=#{p_id}
-	</delete>
- -->
+	</delete> -->
+
+	
+
 </mapper>
