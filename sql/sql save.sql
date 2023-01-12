@@ -2,6 +2,45 @@
 -- <![CDATA[ "쿼리 작성" ]]> '<'나 '>'가 있는 쿼리부분을 저 틀안에 작성해야 함
 ------------------------------------------------------------------------------------------------------------------
 
+-- 해당 이메일의 회원이 특정 제품에 구매 희망자로 참여하고 있는 채팅방
+SELECT c_id
+FROM chatInfomation
+WHERE 
+    c_id IN (SELECT c_id FROM chatParticipants WHERE sender_email='hong@naver.com')
+    AND p_id='pid1';
+
+-- 해당 제품에 특정 이메일의 회원이 구매 희망자로 참여하고 있는 채팅방
+SELECT c_id
+FROM chatParticipants
+WHERE
+    c_id IN (SELECT c_id FROM chatInfomation WHERE p_id='pid1')
+    AND sender_email='choi@naver.com';
+
+-- 특정 회원이 판매자로 참여하는 채팅방
+SELECT cr.c_id, cr.p_id
+FROM
+    chatInfomation cr,(SELECT p_id FROM product WHERE email='hong@naver.com') p
+WHERE cr.p_id=p.p_id;
+
+-- 특정 회원이 구매자로 참여하는 채팅방
+SELECT cr.c_id, cr.p_id
+FROM chatInfomation cr,
+    (SELECT c_id FROM chatParticipants WHERE sender_email='hong@naver.com') m
+WHERE cr.c_id=m.c_id;
+
+-- 특정 회원의 구매자 혹은 판매자로 참여하는 모든 채팅방 목록 보기
+SELECT cr.c_id, cr.p_id, 'sell' AS "type" -- 내가 판매자인 채팅방
+FROM chatInfomation cr,
+    (SELECT p_id FROM product WHERE email='hong@naver.com') p
+WHERE cr.p_id=p.p_id
+UNION
+SELECT cr.c_id, cr.p_id, 'buy' AS "type" -- 내가 구매자인 채팅방
+FROM chatInfomation cr,
+    (SELECT c_id FROM chatParticipants WHERE sender_email='hong@naver.com') m
+WHERE cr.c_id=m.c_id;
+
+------------------------------------------------------------------------------------------------------------------
+
 -- 회원 기록이 있는 년도
 SELECT TO_CHAR(trakingDate,'YYYY') as "year"
 FROM memberHistory

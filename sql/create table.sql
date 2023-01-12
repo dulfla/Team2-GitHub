@@ -1,7 +1,7 @@
 SELECT 'DROP TABLE "' || TABLE_NAME || '" CASCADE CONSTRAINTS;'
 FROM user_tables;
 
--- 혹시 모르니 테이블 삭제 ----------------------------------------------------------------------------------------
+-- 혹시 모르니 삭제 ------------------------------------------------------------------------------------------------
 DROP TABLE member CASCADE CONSTRAINTS;
 DROP TABLE search CASCADE CONSTRAINTS;
 DROP TABLE product CASCADE CONSTRAINTS;
@@ -15,6 +15,28 @@ DROP TABLE chatParticipants CASCADE CONSTRAINTS;
 DROP TABLE trade CASCADE CONSTRAINTS;
 DROP TABLE memberHistory CASCADE CONSTRAINTS;
 DROP TABLE productHistory CASCADE CONSTRAINTS;
+
+DROP SEQUENCE sampleMessage_seq;
+DROP SEQUENCE chatMessage_seq;
+DROP SEQUENCE memberTracking_seq;
+DROP SEQUENCE productTracking_seq;
+DROP SEQUENCE chatInfomation_seq;
+DROP SEQUENCE chatParticipants_seq;
+
+-- 시퀀스
+CREATE SEQUENCE ; -- member(micname) - 샘플데이터 5개
+CREATE SEQUENCE memberTracking_seq START WITH 1 NOCYCLE NOCACHE; -- memberHistory(idx)
+CREATE SEQUENCE ; -- search(idx) - 샘플데이터 3개
+CREATE SEQUENCE ; -- productDetail(p_id) - 샘플데이터 5개
+CREATE SEQUENCE ; -- product() - 샘플데이터 5개
+CREATE SEQUENCE ; -- PicDetail(f_id)
+CREATE SEQUENCE ; -- productPic(idx)
+CREATE SEQUENCE ; -- trade(t_id) - 샘플데이터 5개
+CREATE SEQUENCE productTracking_seq START WITH 1 NOCYCLE NOCACHE; -- productHistory(idx)
+CREATE SEQUENCE chatInfomation_seq START WITH 3 NOCACHE NOCYCLE; -- chatInfomation(c_id) - 샘플데이터 2개
+CREATE SEQUENCE chatParticipants_seq START WITH 3 NOCACHE NOCYCLE; -- chatParticipants(idx) - 샘플데이터 2개
+CREATE SEQUENCE sampleMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(message)
+CREATE SEQUENCE chatMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(idx)
 
 
 -- 회원 관련 테이블 ------------------------------------------------------------------------------------------------
@@ -85,7 +107,7 @@ CREATE TABLE PicDetail(
     CONSTRAINT  PicDetail_pk_f_id PRIMARY KEY(f_id)
 );
 
-create table trade(
+CREATE TABLE trade(
     t_id varchar2(20) CONSTRAINT trade_pk_t_id PRIMARY KEY,
     p_id varchar2(10),
     email varchar2(50)
@@ -124,11 +146,6 @@ CREATE TABLE chatInfomation(
     c_id VARCHAR2(50) CONSTRAINT chatInfomation_pk_c_id PRIMARY KEY,
     p_id VARCHAR2(10)
 );
-
-CREATE SEQUENCE chatMessage_seq
-START WITH 1
-NOCACHE
-NOCYCLE;
 
 CREATE TABLE chatMessage(
     idx NUMBER CONSTRAINT chatMessage_pk_idx PRIMARY KEY,
@@ -189,13 +206,6 @@ ADD CONSTRAINT trade_fk_email FOREIGN KEY(email) REFERENCES member(email) ON DEL
 
 
 -- 트리거 ---------------------------------------------------------------------------------------------------------
-
-DROP SEQUENCE memberTracking_seq;
-CREATE SEQUENCE memberTracking_seq
-START WITH 1
-NOCYCLE
-NOCACHE;
-
 CREATE OR REPLACE TRIGGER memberAdmin
 BEFORE INSERT OR DELETE
     ON member
@@ -209,12 +219,6 @@ BEGIN
         VALUES(memberTracking_seq.NEXTVAL, :OLD.email,:OLD.regdate, 'OUT'); -- sysdate 여야 함
     END IF;
 END memberAdmin;
-
-DROP SEQUENCE productTracking_seq;
-CREATE SEQUENCE productTracking_seq
-START WITH 1
-NOCYCLE
-NOCACHE;
 
 CREATE OR REPLACE TRIGGER trackingProduct
 BEFORE INSERT OR UPDATE OR DELETE
@@ -306,9 +310,45 @@ values('tid4', 'pid4', 'pack@naver.com');
 insert into trade
 values('tid5', 'pid5', 'hong@naver.com');
 
+-- 채팅
+INSERT INTO chatInfomation
+VALUES('chat1', 'pid1');
+INSERT INTO chatInfomation
+VALUES('chat2', 'pid11');
+INSERT INTO chatParticipants
+VALUES(1, 'chat1', 'choi@naver.com', '2020/11/12');
+INSERT INTO chatParticipants
+VALUES(2, 'chat2', 'hong@naver.com', '2020/11/12');
+
 
 -- 프로시저 ---------------------------------------------------------------------------------------------------
 
+-- 채팅방 정보와 채팅 참여자 정보를 읽어와서 해당 채팅방에 샘플 메세지를 데이터 넣을 프로시저
+CREATE OR REPLACE PROCEDURE chattingMessageSample
+IS
+    csor_c_id chatParticipants.c_id%TYPE;
+    csor_sender_email chatParticipants.sender_email%TYPE;
+    timeset DATE;
+    CURSOR chattingRoomMember
+    IS
+        SELECT c_id, email AS "sender_email" FROM chatInfomation c, product p WHERE c.p_id=p.p_id
+        UNION
+        SELECT c_id, sender_email FROM chatParticipants;
+BEGIN
+    OPEN chattingRoomMember;
+    LOOP
+        FETCH chattingRoomMember INTO csor_c_id, csor_sender_email;
+        EXIT WHEN chattingRoomMember%NOTFOUND;
+        FOR  idx IN 1..15 LOOP
+            timeset := TO_DATE('2022121017'||TO_CHAR(idx, '00')||TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0, 59)), '00'), 'YYYYMMDDHH24MISS');
+            INSERT INTO chatMessage
+            VALUES(chatMessage_seq.NEXTVAL, csor_c_id, 'messageSample'||sampleMessage_seq.NEXTVAL, 'TEXT', csor_sender_email, 0, timeset);
+        END LOOP;
+    END LOOP;
+    CLOSE chattingRoomMember;
+END;
+
+-- 채팅방이 없는 경우 채팅방을 새롭게 만들어주는 프로시저 :: 여기서 실행 안 함
 CREATE OR REPLACE PROCEDURE newChattingRoom(
     p_id IN chatInfomation.p_id%TYPE,
     email IN chatParticipants.sender_email%TYPE,
@@ -321,6 +361,7 @@ BEGIN
     c_id := chatR;
 END;
 
+-- 회원 샘플 데이터를 넣어주는 프로시저
 CREATE OR REPLACE PROCEDURE member_sampleDate
 IS
     maxinput NUMBER:=2000;
@@ -343,6 +384,7 @@ BEGIN
     END LOOP;
 END;
 
+-- 샘플로 가입한 일부 회원의 탈퇴를 진행하는 프로시저
 CREATE OR REPLACE PROCEDURE withdraw_sampleDate
 IS
     maxinput NUMBER:=300;
@@ -351,7 +393,7 @@ IS
 BEGIN
     FOR idx  IN 1..maxinput LOOP
         LOOP
-            nums:=ROUND(DBMS_RANDOM.VALUE(1, 2000));
+            nums:=ROUND(DBMS_RANDOM.VALUE(1, 2000)); -- 샘플로 넣은 데이터 최대치로 지정
             SELECT COUNT(*) INTO deleteCheck FROM member WHERE email = 'mail'||nums||'@naver.com';
             IF 0<deleteCheck THEN
                 DELETE member
@@ -362,6 +404,7 @@ BEGIN
     END LOOP;
 END;
 
+EXECUTE chattingMessageSample;
 EXECUTE member_sampleDate;
 EXECUTE withdraw_sampleDate;
 

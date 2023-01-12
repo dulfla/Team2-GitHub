@@ -1,5 +1,11 @@
+let messageBox;
+let message;
+
 window.onload = function scroll(){
-	let messageBox = document.getElementById('messageBox');
+	
+	messageBox = document.getElementById('messageBox');
+	message = document.getElementsByName("message")[0];
+	
 	messageBox.scrollTo(0, messageBox.scrollHeight);
 	
 	let message = document.getElementsByName("message")[0];
@@ -15,9 +21,6 @@ window.onload = function scroll(){
 }
 
 function sendMessage(){
-
-	let messageList = document.getElementById("messageBox");
-	let message = document.getElementsByName("message")[0];
 	
 	$.ajax({
 		url:"SendMessage",
@@ -26,7 +29,8 @@ function sendMessage(){
 		data : JSON.stringify({
 			c_id : "chat26",
     		p_id : "pid2",
-    		email : "hong@naver.com"
+    		email : "hong@naver.com",
+    		message : message.value
     	}),
     	error:function(){
 			console.log('통신실패!!');
@@ -41,35 +45,15 @@ function sendMessage(){
 			myMessage.innerHTML = message.value;
 			message.value = null;
 		
-			let nowPosition = messageBox.scrollTop;
-			let result = approximateCheck(nowPosition);
-			
 			myText.appendChild(myMessage);
 			messageList.appendChild(myText);
 			
-			scrollCheck(result);
+			scrollCheck(true);
 		},
 		complate:function(){
 			
 		}
 	});
-	
-	// let messageTemp = document.createElement('p');
-	// messageTemp.classList.add('reciveMessage');
-	
-	//	if(data!=null){
-	//		let reciveText = document.createElement('div');
-	//		reciveText.classList.add('messageBox');
-	//		reciveText.classList.add('recive');
-	//		
-	//		let sendingMessage = document.createElement('p');
-	//		sendingMessage.classList.add('myMessage');
-	//		
-	//		sendingMessage.innerHTML;
-	//	
-	//		reciveText.appendChild(sendingMessage);
-	//		messageList.appendChild(reciveText);
-	//	}
 	
 }
 
@@ -89,3 +73,28 @@ function approximateCheck(nowPosition){
 		return false;
 	}
 }
+
+
+/*
+	
+	let messageTemp = document.createElement('p');
+	messageTemp.classList.add('reciveMessage');
+	
+	if(data!=null){
+		let reciveText = document.createElement('div');
+		reciveText.classList.add('messageBox');
+		reciveText.classList.add('recive');
+		
+		let sendingMessage = document.createElement('p');
+		sendingMessage.classList.add('myMessage');
+		
+		sendingMessage.innerHTML = data.message;
+		
+		let nowPosition = messageBox.scrollTop;
+		let result = approximateCheck(nowPosition);
+		
+		reciveText.appendChild(sendingMessage);
+		messageList.appendChild(reciveText);
+	}
+	
+*/
