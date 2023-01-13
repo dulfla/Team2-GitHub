@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,17 +56,18 @@ public class ChatConnectionController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="SendMessage", method=RequestMethod.POST)
+	@PostMapping("SendMessage")
 	public void sendMessage(@RequestBody Map<String, String> map) {
 		System.out.println(map.get("c_id"));
 		System.out.println(map.get("p_id"));
 		System.out.println(map.get("email"));
+		System.out.println(map.get("message"));
 		System.out.println("서버 안녕");
 		return;
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="ChatRoomCheck", method=RequestMethod.POST)
+	@PostMapping("ChatRoomCheck")
 	public JSONObject bringingChatRoomInfo(@RequestBody Map<String, String> map, HttpSession session) {
 		ChattingRoomBringingCommand crbc = new ChattingRoomBringingCommand();
 		crbc.setP_id(map.get("p_id"));
@@ -73,7 +75,26 @@ public class ChatConnectionController {
 		
 		JSONObject json = new JSONObject();
 		json.put("chattingRoomId", chatService.checkOutChattingRoom(crbc));
+		
+		// 클라이언트 생성
+		
 		return json;
+	}
+	
+	@ResponseBody
+	@PostMapping("ConnecteWithClientServer")
+	public void openClientSoket(HttpSession session) {
+		System.out.println("클라이언트 연결 실행");
+		chatService.connection("hong@naver.com"); // ((MemberVo)session.getAttribute("AuthInfo")).getEmail()
+		return;
+	}
+	
+	@ResponseBody
+	@PostMapping("BreakeOffClientServer")
+	public void closeClientSoket(HttpSession session) {
+		System.out.println("클라이언트 연결 해제");
+		chatService.close("hong@naver.com"); // ((MemberVo)session.getAttribute("AuthInfo")).getEmail()
+		return;
 	}
 	
 }

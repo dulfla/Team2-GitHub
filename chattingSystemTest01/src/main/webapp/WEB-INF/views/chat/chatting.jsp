@@ -17,11 +17,14 @@
 	<div class="bg-light" id="container">
 		<div class="fixed-top bg-light container row" id="info">
 			<div class="p-0 col-3">
-				<img class="rounded-circle" src="${path}resources/img/sample.jpg" alt="${product.p_name} 사진">
+				<img class="rounded-circle" src="" alt="${product.p_name} 사진"> <!-- ${path}resources/img/sample.jpg -->
 			</div>
-			<div id="text" class="col-9 mt-2">
+			<div id="text" class="col-8 mt-2">
 				<h2>${product.p_name} 상품명</h2>
 				<p>${product.p_name} 상품 설명</p>
+			</div>
+			<div class="col-1 mt-3">
+				<button id="close" type="button" class="btn btn-outline-danger">X</button>
 			</div>
 		</div>
 		<div id="messageBox" class="overflow-auto p-3">

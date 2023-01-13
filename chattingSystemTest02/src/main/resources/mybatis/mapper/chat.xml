@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="mybatis.mapper.chat">
+	
+	<!-- 내 채팅방 목록 보기 :: 내가 (구매자/판매자로)참여하고 있는 모든 채팅방 확인 -->
+	<select id="selectAllChatRoomByEmil" parameterType="String" resultType="chattingRoomInfosVo">
+		SELECT cr.c_id, cr.p_id, 'sell' AS "type"
+		FROM chatInfomation cr,
+		    (SELECT p_id FROM product WHERE email=#{email}) p
+		WHERE cr.p_id=p.p_id
+		UNION
+		SELECT cr.c_id, cr.p_id, 'buy' AS "type"
+		FROM chatInfomation cr,
+		    (SELECT c_id FROM chatParticipants WHERE sender_email=#{email}) m
+		WHERE cr.c_id=m.c_id
+	</select>
+	
+	<!-- 채팅하기를 누른 상품에 이미 참여했던 채팅방이 있는지 확인 -->
+	<select id="selectChattingRoom" parameterType="chatRoomSearchInfoVo" resultType="String">
+ 		SELECT c_id
+ 		FROM chatInfomation
+ 		WHERE c_id IN (SELECT c_id FROM chatParticipants WHERE sender_email=#{email})
+ 			AND p_id=#{p_id}
+ 	</select>
+<!--<select id="selectChattingRoom" parameterType="chatRoomSearchInfoVo" resultType="String">
+	 	SELECT c_id
+		FROM chatParticipants
+		WHERE c_id IN (SELECT c_id FROM chatInfomation WHERE p_id=#{p_id})
+			AND sender_email=#{email}
+	</select> -->
+	
+	<!-- 채팅방이 없던 상품에 대해 채팅을 시도하는 경우 새로운 채팅방 만들기 && 새로운 채팅방에 입장했다는 데이터 입력 :: 프로시저 사용 -->
+	<select id="insertNewChatRoomInfo" parameterType="chatRoomSearchInfoVo" statementType="CALLABLE">
+ 		{CALL newChattingRoom(
+ 			#{p_id  , mode=IN , jdbcType=VARCHAR}
+		    , #{email  , mode=IN , jdbcType=VARCHAR}
+		    , #{c_id , mode=OUT, jdbcType=VARCHAR}
+ 		)}
+ 	</select>
+ 	
+ 	<!-- 해당 채팅방의 모든 채팅 긁어오기 -->
+ 	<select id="selectAllMessages" parameterType="String" resultType="chatMessageVo">
+ 		SELECT message, messType, sender, read, send_date
+ 		FROM chatMessage
+ 		WHERE c_id=#{c_id}
+ 		ORDER BY TO_CHAR(send_date, 'YYYYMMDDHH24MISS') ASC
+ 	</select>
+	
+</mapper>

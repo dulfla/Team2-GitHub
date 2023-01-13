@@ -1,10 +1,26 @@
 let messageBox;
-let message;
+let msg;
 
 window.onload = function scroll(){
+		
+	let close = document.getElementById('close');
+	close.addEventListener('click', () => {
+		$.ajax({
+			url : "BreakeOffClientServer",
+			type : "POST",
+			async : false,
+			success:function(){   
+				console.log('서버와의 연결이 정상적으로 해제되었습니다.');
+				self.close();
+			},   
+			error:function(){  
+				console.log('서버와의 연결이 해제되지 않았습니다.');
+			}
+		});
+	}, false);
 	
 	messageBox = document.getElementById('messageBox');
-	message = document.getElementsByName("message")[0];
+	msg = document.getElementsByName('message')[0];
 	
 	messageBox.scrollTo(0, messageBox.scrollHeight);
 	
@@ -30,7 +46,7 @@ function sendMessage(){
 			c_id : "chat26",
     		p_id : "pid2",
     		email : "hong@naver.com",
-    		message : message.value
+    		message : msg.value
     	}),
     	error:function(){
 			console.log('통신실패!!');
@@ -42,11 +58,11 @@ function sendMessage(){
 			let myMessage = document.createElement('p');
 			myMessage.classList.add('message', 'myMessage');
 			
-			myMessage.innerHTML = message.value;
-			message.value = null;
+			myMessage.innerHTML = msg.value;
+			msg.value = null;
 		
 			myText.appendChild(myMessage);
-			messageList.appendChild(myText);
+			messageBox.appendChild(myText);
 			
 			scrollCheck(true);
 		},

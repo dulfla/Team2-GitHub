@@ -12,13 +12,18 @@ DROP TABLE category CASCADE CONSTRAINTS;
 DROP TABLE chatInfomation CASCADE CONSTRAINTS;
 DROP TABLE chatMessage CASCADE CONSTRAINTS;
 DROP TABLE chatParticipants CASCADE CONSTRAINTS;
-DROP TABLE trade CASCADE CONSTRAINTS;
 DROP TABLE memberHistory CASCADE CONSTRAINTS;
 DROP TABLE productHistory CASCADE CONSTRAINTS;
 
+DROP SEQUENCE ;
+DROP SEQUENCE memberTracking_seq;
+DROP SEQUENCE ;
+DROP SEQUENCE pid_seq;
+DROP SEQUENCE product_seq;
+DROP SEQUENCE fid_seq;
+DROP SEQUENCE picture_seq
 DROP SEQUENCE sampleMessage_seq;
 DROP SEQUENCE chatMessage_seq;
-DROP SEQUENCE memberTracking_seq;
 DROP SEQUENCE productTracking_seq;
 DROP SEQUENCE chatInfomation_seq;
 DROP SEQUENCE chatParticipants_seq;
@@ -27,11 +32,10 @@ DROP SEQUENCE chatParticipants_seq;
 CREATE SEQUENCE ; -- member(micname) - 샘플데이터 5개
 CREATE SEQUENCE memberTracking_seq START WITH 1 NOCYCLE NOCACHE; -- memberHistory(idx)
 CREATE SEQUENCE ; -- search(idx) - 샘플데이터 3개
-CREATE SEQUENCE ; -- productDetail(p_id) - 샘플데이터 5개
-CREATE SEQUENCE ; -- product() - 샘플데이터 5개
-CREATE SEQUENCE ; -- PicDetail(f_id)
-CREATE SEQUENCE ; -- productPic(idx)
-CREATE SEQUENCE ; -- trade(t_id) - 샘플데이터 5개
+CREATE SEQUENCE pid_seq START WITH 6 NOCYCLE NOCACHE; -- productDetail(p_id) - 샘플데이터 5개
+CREATE SEQUENCE product_seq START WITH 6 NOCYCLE NOCACHE; -- product(idx) - 샘플데이터 5개
+CREATE SEQUENCE fid_seq START WITH 1 NOCYCLE NOCACHE; -- PicDetail(f_id)
+CREATE SEQUENCE picture_seq START WITH 1 NOCYCLE NOCACHE; -- productPic(idx)
 CREATE SEQUENCE productTracking_seq START WITH 1 NOCYCLE NOCACHE; -- productHistory(idx)
 CREATE SEQUENCE chatInfomation_seq START WITH 3 NOCACHE NOCYCLE; -- chatInfomation(c_id) - 샘플데이터 2개
 CREATE SEQUENCE chatParticipants_seq START WITH 3 NOCACHE NOCYCLE; -- chatParticipants(idx) - 샘플데이터 2개
@@ -89,6 +93,7 @@ CREATE TABLE productDetail(
     regdate date NOT NULL,
     views number DEFAULT 0 NOT NULL,
     price number NOT NULL,
+    trade varchar2(5) DEFAULT 'TRADE' NOT NULL, -- 거래 중 : TRADE, 거래 완료 : CLEAR
     CONSTRAINT  productDetail_pk_p_id PRIMARY KEY(p_id)
 );
 
@@ -105,12 +110,6 @@ CREATE TABLE PicDetail(
     f_origin_name nvarchar2(250) NOT NULL,
     f_proxy_name nvarchar2(250) NOT NULL,
     CONSTRAINT  PicDetail_pk_f_id PRIMARY KEY(f_id)
-);
-
-CREATE TABLE trade(
-    t_id varchar2(20) CONSTRAINT trade_pk_t_id PRIMARY KEY,
-    p_id varchar2(10),
-    email varchar2(50)
 );
 
 CREATE TABLE category(
@@ -137,7 +136,7 @@ CREATE TABLE productHistory(
     p_id varchar2(10),
     category nvarchar2(20),
     trackDate date not null,
-    type char(5)
+    type varchar2(5)
 );
 
 
@@ -229,26 +228,19 @@ BEGIN
         INSERT INTO productHistory
         VALUES(productTracking_seq.NEXTVAL, :NEW.p_id, :NEW.category, :NEW.regdate, 'IN');
     ELSIF updating THEN
-        UPDATE productHistory
-        SET category = :NEW.category
-        WHERE p_id=:OLD.p_id;
+        IF :NEW.category<>:OLD.category THEN
+            UPDATE productHistory
+            SET category = :NEW.category
+            WHERE p_id=:OLD.p_id;
+        END IF;
+        IF :NEW.trade<>:OLD.trade THEN
+            INSERT INTO productHistory
+            VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :OLD.category, :OLD.regdate, NEW:trade); -- sysdate 여야 함
+        END IF;
     ELSIF deleting THEN
         INSERT INTO productHistory
         VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :OLD.category, :OLD.regdate, 'OUT'); -- sysdate 여야 함
     END if;
-END;
-
-CREATE OR REPLACE TRIGGER trackingProductTrade
-BEFORE INSERT ON trade
-FOR EACH ROW
-DECLARE
-    trackdate DATE;
-    category NVARCHAR2(20);
-BEGIN
-    SELECT regdate INTO trackdate FROM productDetail WHERE p_id=:NEW.p_id; -- sysdate 여야 함
-    SELECT category INTO category FROM productDetail WHERE p_id=:NEW.p_id;
-    INSERT INTO productHistory
-    VALUES(productTracking_seq.NEXTVAL, :NEW.p_id, category, trackdate, 'TRADE');
 END;
 
 
@@ -297,18 +289,6 @@ insert into product
 values(4, 'jeong@naver.com', 'pid4');
 insert into product
 values(5, 'choi@naver.com', 'pid5');
-
--- 거래
-insert into trade
-values('tid1', 'pid1', 'choi@naver.com');
-insert into trade
-values('tid2', 'pid2', 'choi@naver.com');
-insert into trade
-values('tid3', 'pid3', 'jeong@naver.com');
-insert into trade
-values('tid4', 'pid4', 'pack@naver.com');
-insert into trade
-values('tid5', 'pid5', 'hong@naver.com');
 
 -- 채팅
 INSERT INTO chatInfomation
@@ -421,7 +401,6 @@ SELECT * FROM PRODUCTDETAIL;
 SELECT * FROM PRODUCTPIC;
 SELECT * FROM PICDETAIL;
 SELECT * FROM CATEGORY;
-SELECT * FROM TRADE;
 
 SELECT * FROM CHATINFOMATION;
 SELECT * FROM CHATMESSAGE;

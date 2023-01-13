@@ -13,6 +13,18 @@ function chatting(prod_id){
 	    	console.log('통신실패!!');
 	    },
 	    success: function(data) { // 채팅방으로 연결
+	    
+	    	$.ajax({
+				url : "ConnecteWithClientServer",
+				type : "POST",
+				success:function(){   
+					console.log('서버와의 연결이 정상적으로 이어졌습니다.');
+				},   
+				error:function(){  
+					console.log('서버와의 연결이 이어지지 않았습니다.'); 
+				}
+			});
+	
 	    	let url="Chat?c="+data.map.chattingRoomId;
 		    let w = 450;
 		    let h = 600;
@@ -24,7 +36,6 @@ function chatting(prod_id){
 				', width='+w+', height='+h+', left='+popupX+', top='+popupY);
 	    }
 	});
-
 }
 
 function eixt(){

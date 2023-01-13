@@ -1,0 +1,51 @@
+@charset "UTF-8";
+*{
+	padding:0;
+	margin:0;
+	box-sizing:border-box;
+}
+#container{
+	height:100vh;
+	width:100vw;
+}
+#text{
+	display:inline-block;
+}
+.offcanvas-header{
+	height:130px;
+}
+#message{
+	height:50px;
+}
+#messageBox{
+	height:calc(100% - 180px);
+	width:100%;
+	position: absolute;
+	top:130px;
+}
+.messageBox{
+	display:block;
+	width:60%;
+	padding:0px 10px;
+	padding-top:10px;
+}
+.myMessageBox{
+	float:right;
+}
+.reciveMessageBox{
+	float:left;
+}
+.message{
+	margin:0;
+	display:inline-block;
+	padding:5px 12px;
+	border-radius:15px;
+}
+.send{
+	float:right;
+	background-color:rgb(232, 255, 198);
+}
+.recive{
+	float:left;
+	background-color:rgb(232, 255, 198);
+}

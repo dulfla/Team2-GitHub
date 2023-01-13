@@ -33,5 +33,13 @@ public class ChatService {
 	public List<ChatMessageVo> getPreviousMessages(String c_id) {
 		return cdao.selectAllMessagesInChatRoom(c_id);
 	}
+
+	public void connection(String email) {
+		System.out.println(System.currentTimeMillis()+" : "+email+" 서버에 연결 완료");
+	}
+
+	public void close(String email) {
+		System.out.println(System.currentTimeMillis()+" : "+email+" 서버와 연결 해제");
+	}
 	
 }
