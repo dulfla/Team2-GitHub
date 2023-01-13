@@ -39,13 +39,27 @@ public class MemberDaoImpl implements MemberDao{
 	public ProductVO productDetail(String p_id) {
 		return sqlSession.selectOne("mybatis.mapper.member.productDetail", p_id);
 	}
+	
+	// 상품수정
+	@Override
+	public void productModify(ProductVO vo) {
+		sqlSession.update("mybatis.mapper.member.productModify", vo);
+	}
+
 
 	// 상품 삭제
 	@Override
 	public void productDelete(String p_id) {
-		sqlSession.delete("mybatis.mapper.member.productDelete", p_id);
-		
+		sqlSession.delete("mybatis.mapper.member.productDelete1", p_id);
+		sqlSession.delete("mybatis.mapper.member.productDelete",p_id);
+			
 	}
+
+
+
+
+
+
 
 
 

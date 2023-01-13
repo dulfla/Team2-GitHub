@@ -15,12 +15,17 @@
 
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
-		<form action="" id="regForm" method="POST" autocomplete="off" enctype="multipart/form-data">
+		<form action="productModify" id="modiForm" method="POST" autocomplete="off" enctype="multipart/form-data">
+			<input type="hidden" name="p_id" value="${product.p_id}" />
 			<div>
 				<span>카테고리</span>
 				<select class="category" name="category">
 					<option value="null">선택</option>
-					<c:forEach items="${category}" var="cate"><option value="${cate.category}">${cate.category}</option></c:forEach>
+					<c:forEach items="${category}" var="cate">
+						<option value="${cate.category}" <c:if test ="${product.category eq cate.category}">selected="selected"</c:if>>
+							${cate.category}
+						</option>
+					</c:forEach>
 				</select>
 			</div>	
 			<div>
@@ -36,15 +41,18 @@
 			<div>
 			<textarea rows="5" cols="50" name="description" placeholder="내용을 입력하세요">${product.description}</textarea>
 			</div>
-			<button>상품등록</button>
-			<button type="button">목록</button>
+			<button>등록</button>
+			<button type="button" id="back_Btn">취소</button>
 		</form>
 				
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script type="text/javascript">
-			
+	
+		$("#back_Btn").click(function(){
+			history.back();	// 뒤로가기
+		});
 	</script>
 </body>
 </html>

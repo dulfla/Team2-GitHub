@@ -16,15 +16,20 @@
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
 		<form action="" id="regForm" method="POST" autocomplete="off" enctype="multipart/form-data">
+			<span class="contact100-form-title">
+				상품 등록
+			</span>
 			<div>
 				<span>카테고리</span>
 				<select class="category" name="category">
 					<option value="null">선택</option>
 					<c:forEach items="${category}" var="cate"><option value="${cate.category}">${cate.category}</option></c:forEach>
 				</select>
-			</div>	
-			<div>
-			<input type="text" name="p_name" placeholder="상품명을 입력해주세요">
+			</div>
+			<label class="label-input100" for="email">상품명</label>
+			<div class="wrap-input100 validate-input">
+				<input type="text" class="input100" name="p_name" placeholder="상품명을 입력해주세요">
+			<span class="focus-input100"></span>	
 			</div>
 			<div>
 			<input type="text" name="price" placeholder="상품가격">
@@ -33,8 +38,10 @@
 				<label>사진 업로드</label>
 				<input type="file" name='uploadFile' style="height: 30px;">
 			</div>
-			<div>
-			<textarea rows="5" cols="50" name="description" placeholder="내용을 입력하세요"></textarea>
+			<label class="label-input100" for="message">상품 정보</label>
+			<div class="wrap-input100 validate-input">
+				<textarea id="message" class="input100" name="description" placeholder="상품 정보를 입력해주세요"></textarea>
+				<span class="focus-input100"></span>
 			</div>
 			<button>상품등록</button>
 			<button type="button">목록</button>

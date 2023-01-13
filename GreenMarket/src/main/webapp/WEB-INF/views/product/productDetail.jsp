@@ -21,7 +21,7 @@
 <body>
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
-		<form role='form' method="post" autocomplete="off">
+		<form role='form' method="POST" autocomplete="off">
 			<input type="hidden" name="p_id" value="${product.p_id}" />
 
 			<div class="inputArea"> 
@@ -78,15 +78,19 @@
 	<script>
 	  var formObj = $("form[role='form']");
 	  
-	  $("#modify_Btn").click(function(){
-	   formObj.attr("action", "/product/productModify");
+	  $("#modify_Btn").click(function(){ 
+	   formObj.attr("action", "/GreenMarket/product/productModify");
 	   formObj.attr("method", "get")
 	   formObj.submit();
 	  });
 	  
-	  $("#delete_Btn").click(function(){    
-	   formObj.attr("action", "/product/delete");
-	   formObj.submit();
+	  $("#delete_Btn").click(function(){   
+		var con = confirm("정말로 삭제하시겠습니까?");  
+		 
+		if(con){
+			formObj.attr("action", "/GreenMarket/product/productDelete");
+		   	formObj.submit();
+		}
 	  });
  	</script>
 </body>

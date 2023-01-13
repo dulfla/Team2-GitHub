@@ -41,12 +41,21 @@ public class MemberServiceImpl implements MemberService {
 	public ProductVO productDetail(String p_id) {
 		return dao.productDetail(p_id);
 	}
+	
+	// 상품 수정
+	@Override
+	public void productModify(ProductVO vo) {
+		 dao.productModify(vo);
+		
+	}
 
 	// 상품 삭제
 	@Override
 	public void productDelete(String p_id) {
 		dao.productDelete(p_id);
 	}
+
+
 
 
 
