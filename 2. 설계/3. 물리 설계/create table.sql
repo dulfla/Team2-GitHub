@@ -1,9 +1,9 @@
 SELECT 'DROP TABLE "' || TABLE_NAME || '" CASCADE CONSTRAINTS;'
 FROM user_tables;
 
--- 혹시 모르니 테이블 삭제 ----------------------------------------------------------------------------------------
-drop table member CASCADE CONSTRAINTS;
-drop table search CASCADE CONSTRAINTS;
+-- 혹시 모르니 삭제 ------------------------------------------------------------------------------------------------
+DROP TABLE member CASCADE CONSTRAINTS;
+DROP TABLE search CASCADE CONSTRAINTS;
 DROP TABLE product CASCADE CONSTRAINTS;
 DROP TABLE productDetail CASCADE CONSTRAINTS;
 DROP TABLE productPic CASCADE CONSTRAINTS;
@@ -12,8 +12,36 @@ DROP TABLE category CASCADE CONSTRAINTS;
 DROP TABLE chatInfomation CASCADE CONSTRAINTS;
 DROP TABLE chatMessage CASCADE CONSTRAINTS;
 DROP TABLE chatParticipants CASCADE CONSTRAINTS;
-DROP TABLE withdraw CASCADE CONSTRAINTS;
-drop table trade cascade constraints;
+DROP TABLE memberHistory CASCADE CONSTRAINTS;
+DROP TABLE productHistory CASCADE CONSTRAINTS;
+
+DROP SEQUENCE ;
+DROP SEQUENCE memberTracking_seq;
+DROP SEQUENCE ;
+DROP SEQUENCE pid_seq;
+DROP SEQUENCE product_seq;
+DROP SEQUENCE fid_seq;
+DROP SEQUENCE picture_seq
+DROP SEQUENCE sampleMessage_seq;
+DROP SEQUENCE chatMessage_seq;
+DROP SEQUENCE productTracking_seq;
+DROP SEQUENCE chatInfomation_seq;
+DROP SEQUENCE chatParticipants_seq;
+
+-- 시퀀스
+CREATE SEQUENCE ; -- member(micname) - 샘플데이터 5개
+CREATE SEQUENCE memberTracking_seq START WITH 1 NOCYCLE NOCACHE; -- memberHistory(idx)
+CREATE SEQUENCE ; -- search(idx) - 샘플데이터 3개
+CREATE SEQUENCE pid_seq START WITH 6 NOCYCLE NOCACHE; -- productDetail(p_id) - 샘플데이터 5개
+CREATE SEQUENCE product_seq START WITH 6 NOCYCLE NOCACHE; -- product(idx) - 샘플데이터 5개
+CREATE SEQUENCE fid_seq START WITH 1 NOCYCLE NOCACHE; -- PicDetail(f_id)
+CREATE SEQUENCE picture_seq START WITH 1 NOCYCLE NOCACHE; -- productPic(idx)
+CREATE SEQUENCE productTracking_seq START WITH 1 NOCYCLE NOCACHE; -- productHistory(idx)
+CREATE SEQUENCE chatInfomation_seq START WITH 3 NOCACHE NOCYCLE; -- chatInfomation(c_id) - 샘플데이터 2개
+CREATE SEQUENCE chatParticipants_seq START WITH 3 NOCACHE NOCYCLE; -- chatParticipants(idx) - 샘플데이터 2개
+CREATE SEQUENCE sampleMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(message)
+CREATE SEQUENCE chatMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(idx)
+
 
 -- 회원 관련 테이블 ------------------------------------------------------------------------------------------------
 CREATE TABLE member(
@@ -30,9 +58,11 @@ CREATE TABLE member(
     CONSTRAINT PK_member_email PRIMARY KEY(email)
 );
 
-CREATE TABLE withdraw(
-    email VARCHAR2(50) CONSTRAINT withdraw_pk_email PRIMARY KEY,
-    wd_date DATE NOT NULL
+CREATE TABLE memberHistory(
+    idx NUMBER CONSTRAINT memberHistory_pk_idx PRIMARY KEY,
+    email VARCHAR2(50) NOT NULL,
+    trakingDate DATE NOT NULL,
+    type char(5) NOT NULL
 );
 
 
@@ -63,6 +93,7 @@ CREATE TABLE productDetail(
     regdate date NOT NULL,
     views number DEFAULT 0 NOT NULL,
     price number NOT NULL,
+    trade varchar2(5) DEFAULT 'TRADE' NOT NULL, -- 거래 중 : TRADE, 거래 완료 : CLEAR
     CONSTRAINT  productDetail_pk_p_id PRIMARY KEY(p_id)
 );
 
@@ -79,12 +110,6 @@ CREATE TABLE PicDetail(
     f_origin_name nvarchar2(250) NOT NULL,
     f_proxy_name nvarchar2(250) NOT NULL,
     CONSTRAINT  PicDetail_pk_f_id PRIMARY KEY(f_id)
-);
-
-create table trade(
-    t_id varchar2(20) CONSTRAINT trade_pk_t_id PRIMARY KEY,
-    p_id varchar2(10),
-    email varchar2(50)
 );
 
 CREATE TABLE category(
@@ -106,6 +131,14 @@ INSERT INTO category VALUES('가공식품');
 INSERT INTO category VALUES('반려동물 물품');
 INSERT INTO category VALUES('기타 중고물품');
 
+CREATE TABLE productHistory(
+    idx number CONSTRAINT productHistory_pk_idx PRIMARY key,
+    p_id varchar2(10),
+    category nvarchar2(20),
+    trackDate date not null,
+    type varchar2(5)
+);
+
 
 -- 채팅 관련 테이블 ------------------------------------------------------------------------------------------------
 CREATE TABLE chatInfomation(
@@ -117,6 +150,8 @@ CREATE TABLE chatMessage(
     idx NUMBER CONSTRAINT chatMessage_pk_idx PRIMARY KEY,
     c_id VARCHAR2(50),
     message NCLOB NOT NULL,
+    messType varchar(10), -- 메세지 타입 구분(text, jpg, mp4, mp3..)
+    sender VARCHAR2(50), --  보낸사람이 누군지
     read char(1) NOT NULL, -- 읽음 : 0, 안 읽음 : 1
     send_date DATE NOT NULL
 );
@@ -129,99 +164,84 @@ CREATE TABLE chatParticipants(
 );
 
 -- FORING KEY 작성-----------------------------------------------------------------------------------------------
+
 -- 검색어 fk 추가
-ALTER TABLE search ADD CONSTRAINT fk_search_email FOREIGN KEY(email) REFERENCES member(email);
+ALTER TABLE search
+ADD CONSTRAINT fk_search_email FOREIGN KEY(email) REFERENCES member(email) ON DELETE CASCADE;
 
 -- 상품 fk 추가
 ALTER TABLE product
-ADD CONSTRAINT product_fk_email FOREIGN KEY(email) REFERENCES member(email);
+ADD CONSTRAINT product_fk_email FOREIGN KEY(email) REFERENCES member(email) ON DELETE CASCADE;
 ALTER TABLE product
-ADD CONSTRAINT product_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id);
+ADD CONSTRAINT product_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) ON DELETE CASCADE;
 
 -- 상품 상세보기 fk 추가
 ALTER TABLE productDetail
-ADD CONSTRAINT productDetail_fk_category FOREIGN KEY(category) REFERENCES category(category);
+ADD CONSTRAINT productDetail_fk_category FOREIGN KEY(category) REFERENCES category(category) ON DELETE CASCADE;
 
 -- 상품 사진 fk 추가
 ALTER TABLE productPic
-ADD CONSTRAINT productPic_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id);
+ADD CONSTRAINT productPic_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) ON DELETE CASCADE;
 ALTER TABLE productPic
-ADD CONSTRAINT productPic_fk_f_id FOREIGN KEY(f_id) REFERENCES picDetail(f_id);
+ADD CONSTRAINT productPic_fk_f_id FOREIGN KEY(f_id) REFERENCES picDetail(f_id) ON DELETE CASCADE;
 
 -- 채팅방 fk 추가
 ALTER TABLE chatInfomation
-ADD CONSTRAINT chatInfomation_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id);
+ADD CONSTRAINT chatInfomation_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) ON DELETE CASCADE;
 
 -- 채팅 메세지 fk 추가
 ALTER TABLE chatMessage
-ADD CONSTRAINT chatMessage_fk_c_id FOREIGN KEY(c_id) REFERENCES chatInfomation(c_id);
+ADD CONSTRAINT chatMessage_fk_c_id FOREIGN KEY(c_id) REFERENCES chatInfomation(c_id) ON DELETE CASCADE;
 
 -- 채팅 인원 fk 추가
 ALTER TABLE chatParticipants
-ADD CONSTRAINT chatParticipants_fk_c_id FOREIGN KEY(c_id) REFERENCES chatInfomation(c_id)
-ADD CONSTRAINT chatPartic_fk_sender_email FOREIGN KEY(sender_email) REFERENCES member(email);
+ADD CONSTRAINT chatParticipants_fk_c_id FOREIGN KEY(c_id) REFERENCES chatInfomation(c_id) ON DELETE CASCADE
+ADD CONSTRAINT chatPartic_fk_sender_email FOREIGN KEY(sender_email) REFERENCES member(email) ON DELETE CASCADE;
 
 -- 상품 거래 fk 추가
 ALTER TABLE trade
-ADD CONSTRAINT trade_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id)
-ADD CONSTRAINT trade_fk_email FOREIGN KEY(email) REFERENCES member(email);
+ADD CONSTRAINT trade_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) ON DELETE CASCADE
+ADD CONSTRAINT trade_fk_email FOREIGN KEY(email) REFERENCES member(email) ON DELETE CASCADE;
 
 
--- 프로시저 ---------------------------------------------------------------------------------------------------
-
-DROP SEQUENCE year_seq;
-DROP SEQUENCE month_seq;
-DROP sequence day_seq;
-
-CREATE SEQUENCE year_seq
-START WITH 20 INCREMENT BY 1 minvalue 20 maxvalue 22
-NOCACHE CYCLE;
-SET SERVEROUTPUT ON;
-CREATE SEQUENCE month_seq
-START WITH 1 INCREMENT BY 1 maxvalue 12
-NOCACHE CYCLE;
-CREATE SEQUENCE day_seq
-START WITH 1 INCREMENT BY 3 maxvalue 28
-NOCACHE CYCLE;
-
-CREATE TABLE member(
-    email VARCHAR2(50),
-    password VARCHAR2(50) NOT NULL,
-    birth NUMBER NOT NULL,
-    address VARCHAR2(200) NOT NULL,
-    phone CHAR(13) NOT NULL,
-    name NVARCHAR2(20) not null,
-    nickname NVARCHAR2(20) UNIQUE not null,
-    type CHAR(1) DEFAULT 'U' NOT NULL, -- 회원 : U, 관리자 : M
-    regdate date DEFAULT sysdate NOT NULL,
-    
-    CONSTRAINT PK_member_email PRIMARY KEY(email)
-);
-
-CREATE OR REPLACE PROCEDURE member_sampleDate
-IS
-    maxinput number:=200;
+-- 트리거 ---------------------------------------------------------------------------------------------------------
+CREATE OR REPLACE TRIGGER memberAdmin
+BEFORE INSERT OR DELETE
+    ON member
+FOR EACH ROW
 BEGIN
-    FOR idx  IN 1..maxinput LOOP
-        INSERT INTO member
-        VALUES('mail'||idx||'@naver.com', '1234', 19990101, '주소'||idx, '010'||LPAD(to_char(idx),8, '0'), '이름'||idx,'회원'||idx, 'U',
-            TO_DATE('20'||LPAD(to_char(year_seq.nextval), 2, '0')||LPAD(to_char(month_seq.nextval),2, '0')||LPAD(to_char(day_seq.nextval),2, '0'), 'YYYY/MM/DD'));
-    END LOOP;
-END;
+    IF INSERTING THEN
+        INSERT INTO memberHistory
+        VALUES(memberTracking_seq.NEXTVAL, :NEW.email,:NEW.regdate, 'IN'); -- sysdate 여야 함
+    ELSIF DELETING THEN
+        INSERT INTO memberHistory
+        VALUES(memberTracking_seq.NEXTVAL, :OLD.email,:OLD.regdate, 'OUT'); -- sysdate 여야 함
+    END IF;
+END memberAdmin;
 
-CREATE OR REPLACE PROCEDURE withdraw_sampleDate
-IS
-    maxinput number:=200;
+CREATE OR REPLACE TRIGGER trackingProduct
+BEFORE INSERT OR UPDATE OR DELETE
+    ON productDetail
+FOR EACH ROW
 BEGIN
-    FOR idx  IN 1..maxinput LOOP
-        INSERT INTO withdraw
-        VALUES('email'||idx||'@naver.com',
-            TO_DATE('20'||LPAD(to_char(year_seq.nextval), 2, '0')||LPAD(to_char(month_seq.nextval),2, '0')||LPAD(to_char(day_seq.nextval),2, '0'), 'YYYY/MM/DD'));
-    END LOOP;
+    IF inserting THEN
+        INSERT INTO productHistory
+        VALUES(productTracking_seq.NEXTVAL, :NEW.p_id, :NEW.category, :NEW.regdate, 'IN');
+    ELSIF updating THEN
+        IF :NEW.category<>:OLD.category THEN
+            UPDATE productHistory
+            SET category = :NEW.category
+            WHERE p_id=:OLD.p_id;
+        END IF;
+        IF :NEW.trade<>:OLD.trade THEN
+            INSERT INTO productHistory
+            VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :OLD.category, :OLD.regdate, NEW:trade); -- sysdate 여야 함
+        END IF;
+    ELSIF deleting THEN
+        INSERT INTO productHistory
+        VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :OLD.category, :OLD.regdate, 'OUT'); -- sysdate 여야 함
+    END if;
 END;
-
-EXECUTE member_sampleDate;
-EXECUTE withdraw_sampleDate;
 
 
 -- 샘플 데이터 ---------------------------------------------------------------------------------------------------
@@ -270,19 +290,108 @@ values(4, 'jeong@naver.com', 'pid4');
 insert into product
 values(5, 'choi@naver.com', 'pid5');
 
--- 거래
-insert into trade
-values('tid1', 'pid1', 'choi@naver.com');
-insert into trade
-values('tid2', 'pid2', 'choi@naver.com');
-insert into trade
-values('tid3', 'pid3', 'jeong@naver.com');
-insert into trade
-values('tid4', 'pid4', 'pack@naver.com');
-insert into trade
-values('tid5', 'pid5', 'hong@naver.com');
+-- 채팅
+INSERT INTO chatInfomation
+VALUES('chat1', 'pid1');
+INSERT INTO chatInfomation
+VALUES('chat2', 'pid11');
+INSERT INTO chatParticipants
+VALUES(1, 'chat1', 'choi@naver.com', '2020/11/12');
+INSERT INTO chatParticipants
+VALUES(2, 'chat2', 'hong@naver.com', '2020/11/12');
+
+
+-- 프로시저 ---------------------------------------------------------------------------------------------------
+
+-- 채팅방 정보와 채팅 참여자 정보를 읽어와서 해당 채팅방에 샘플 메세지를 데이터 넣을 프로시저
+CREATE OR REPLACE PROCEDURE chattingMessageSample
+IS
+    csor_c_id chatParticipants.c_id%TYPE;
+    csor_sender_email chatParticipants.sender_email%TYPE;
+    timeset DATE;
+    CURSOR chattingRoomMember
+    IS
+        SELECT c_id, email AS "sender_email" FROM chatInfomation c, product p WHERE c.p_id=p.p_id
+        UNION
+        SELECT c_id, sender_email FROM chatParticipants;
+BEGIN
+    OPEN chattingRoomMember;
+    LOOP
+        FETCH chattingRoomMember INTO csor_c_id, csor_sender_email;
+        EXIT WHEN chattingRoomMember%NOTFOUND;
+        FOR  idx IN 1..15 LOOP
+            timeset := TO_DATE('2022121017'||TO_CHAR(idx, '00')||TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0, 59)), '00'), 'YYYYMMDDHH24MISS');
+            INSERT INTO chatMessage
+            VALUES(chatMessage_seq.NEXTVAL, csor_c_id, 'messageSample'||sampleMessage_seq.NEXTVAL, 'TEXT', csor_sender_email, 0, timeset);
+        END LOOP;
+    END LOOP;
+    CLOSE chattingRoomMember;
+END;
+
+-- 채팅방이 없는 경우 채팅방을 새롭게 만들어주는 프로시저 :: 여기서 실행 안 함
+CREATE OR REPLACE PROCEDURE newChattingRoom(
+    p_id IN chatInfomation.p_id%TYPE,
+    email IN chatParticipants.sender_email%TYPE,
+    c_id OUT chatInfomation.c_id%TYPE)
+IS
+    chatR chatInfomation.c_id%TYPE:= 'chat'||chatInfomation_seq.NEXTVAL;
+BEGIN
+    INSERT INTO chatInfomation VALUES(chatR, p_id);
+    INSERT INTO chatParticipants VALUES(chatParticipants_seq.NEXTVAL, chatR, email, sysdate);
+    c_id := chatR;
+END;
+
+-- 회원 샘플 데이터를 넣어주는 프로시저
+CREATE OR REPLACE PROCEDURE member_sampleDate
+IS
+    maxinput NUMBER:=2000;
+    yearNum NUMBER(2);
+    monthNum NUMBER(2);
+    dayNum NUMBER(2);
+    dayDate DATE;
+BEGIN
+    FOR idx  IN 1..maxinput LOOP
+        yearNum:=ROUND(DBMS_RANDOM.VALUE(19, 22));
+        monthNum:=ROUND(DBMS_RANDOM.VALUE(1, 12));
+        dayNum:=ROUND(DBMS_RANDOM.VALUE(1, 28));
+        dayDate:=TO_DATE('20'||yearNum||LPAD(to_char(monthNum),2, '0')||LPAD(to_char(dayNum),2, '0'), 'YYYY/MM/DD');
+        
+        INSERT INTO member
+        VALUES('mail'||idx||'@naver.com',
+               '1234', 19990101, '주소'||idx,
+               '010'||LPAD(to_char(idx),8, '0'),
+               '이름'||idx,'회원'||idx, 'U', dayDate);
+    END LOOP;
+END;
+
+-- 샘플로 가입한 일부 회원의 탈퇴를 진행하는 프로시저
+CREATE OR REPLACE PROCEDURE withdraw_sampleDate
+IS
+    maxinput NUMBER:=300;
+    nums NUMBER(4);
+    deleteCheck NUMBER(1);
+BEGIN
+    FOR idx  IN 1..maxinput LOOP
+        LOOP
+            nums:=ROUND(DBMS_RANDOM.VALUE(1, 2000)); -- 샘플로 넣은 데이터 최대치로 지정
+            SELECT COUNT(*) INTO deleteCheck FROM member WHERE email = 'mail'||nums||'@naver.com';
+            IF 0<deleteCheck THEN
+                DELETE member
+                WHERE email='mail'||nums||'@naver.com';
+                EXIT;
+            END IF;
+        END LOOP;
+    END LOOP;
+END;
+
+EXECUTE chattingMessageSample;
+EXECUTE member_sampleDate;
+EXECUTE withdraw_sampleDate;
+
 
 -- 테이블 확인 ---------------------------------------------------------------------------------------------------
+ROLLBACK;
+COMMIT;
 
 SELECT * FROM SEARCH;
 SELECT * FROM MEMBER;
@@ -292,10 +401,10 @@ SELECT * FROM PRODUCTDETAIL;
 SELECT * FROM PRODUCTPIC;
 SELECT * FROM PICDETAIL;
 SELECT * FROM CATEGORY;
-SELECT * FROM TRADE;
 
 SELECT * FROM CHATINFOMATION;
 SELECT * FROM CHATMESSAGE;
 SELECT * FROM CHATPARTICIPANTS;
 
-SELECT * FROM WITHDRAW;
+SELECT * FROM memberHistory;
+SELECT * FROM productHistory;
