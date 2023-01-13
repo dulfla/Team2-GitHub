@@ -45,12 +45,12 @@ public class ChatService {
 		return arr;
 	}
 
-	public void connection(String email) {
-		System.out.println(System.currentTimeMillis()+" : "+email+" 서버에 연결 완료");
+	public void connection(String c_id, String email) {
+		System.out.println(System.currentTimeMillis()+" : "+email+", "+c_id+"에 연결 완료");
 	}
 
-	public void close(String email) {
-		System.out.println(System.currentTimeMillis()+" : "+email+" 서버와 연결 해제");
+	public void close(String c_id, String email) {
+		System.out.println(System.currentTimeMillis()+" : "+email+", "+c_id+"에 연결 해제");
 	}
 	
 }

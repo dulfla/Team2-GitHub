@@ -35,6 +35,8 @@ public class ChatConnectionController {
 			해당 p_id에 할당된 채팅방이 존재하는지, 해당 채팅방 중 내가 속한 채팅방이 존재하는지 확인 하고,
 			내가 속한 c_id가 존재한다면 해당 c_id 반환, 없을 경우 새로운 c_id를 만들어서 반환하고, 해당 내용을 chatInfo~Tbl에 insert			   
 		*/
+		
+		
 	}
 	
 	@RequestMapping("PD")
@@ -48,9 +50,13 @@ public class ChatConnectionController {
 	@ResponseBody
 	@PostMapping("ChatRoomCheck")
 	public JSONObject bringingChatRoomInfo(@RequestBody Map<String, String> map, HttpSession session) {
+		MemberVo auth = new MemberVo();
+		auth.setEmail("hong@naver.com");
+		session.setAttribute("authInfo", auth);
+		
 		ChattingRoomBringingCommand crbc = new ChattingRoomBringingCommand();
-		crbc.setP_id(map.get("p_id"));
-		crbc.setEmail("hong@naver.com"); // ((MemberVo)session.getAttribute("member")).getEmail()
+		crbc.setP_id(map.get("p_id"));System.out.println(((MemberVo)session.getAttribute("authInfo")).getEmail());
+		crbc.setEmail(((MemberVo)session.getAttribute("authInfo")).getEmail()); // "hong@naver.com"
 		
 		JSONObject json = new JSONObject();
 		json.put("chattingRoomId", chatService.checkOutChattingRoom(crbc));
@@ -62,10 +68,9 @@ public class ChatConnectionController {
 	
 	@ResponseBody
 	@PostMapping("ConnecteWithClientServer")
-	public Object openClientSoket(@RequestBody Map<String, String> map, HttpSession session) {
-		System.out.println(map.get("c_id")+"에 클라이언트 연결 실행");
-		chatService.connection("hong@naver.com"); // ((MemberVo)session.getAttribute("AuthInfo")).getEmail()
-		return null;
+	public int openClientSoket(@RequestBody Map<String, String> map, HttpSession session) {
+		chatService.connection(map.get("c_id"), ((MemberVo)session.getAttribute("authInfo")).getEmail());
+		return 1;
 	}
 	
 	@ResponseBody	
@@ -74,21 +79,16 @@ public class ChatConnectionController {
 		JSONObject json = new JSONObject();
 		json.put("productInfo", chatService.getProductInfo(map.get("c_id")));
 		json.put("messages", chatService.getPreviousMessages(map.get("c_id")));
-		json.put("me", "hong@naver.com"); // ((MemberVo)session.getAttribute("member")).getEmail()
-//		JSONArray list = (JSONArray)json.get("messages");
-//		System.out.println(list);
-//		for(int i=0; i<list.length(); i++) {
-//			System.out.println(list.get(i));
-//		}
+		json.put("me", ((MemberVo)session.getAttribute("authInfo")).getEmail());
 		return json;
 	}
 	
 	@ResponseBody
 	@PostMapping("SendMessage")
-	public void sendMessage(@RequestBody Map<String, String> map) {
+	public void sendMessage(@RequestBody Map<String, String> map, HttpSession session) {
 		System.out.println(map.get("c_id"));
 		System.out.println(map.get("p_id"));
-		System.out.println(map.get("email"));
+		System.out.println(((MemberVo)session.getAttribute("authInfo")).getEmail());
 		System.out.println(map.get("message"));
 		System.out.println("서버 안녕");
 		return;
@@ -96,10 +96,9 @@ public class ChatConnectionController {
 
 	@ResponseBody
 	@PostMapping("BreakeOffClientServer")
-	public Object closeClientSoket(@RequestBody Map<String, String> map, HttpSession session) {
-		System.out.println("클라이언트 연결 해제");
-		chatService.close("hong@naver.com"); // ((MemberVo)session.getAttribute("AuthInfo")).getEmail()
-		return null;
+	public int closeClientSoket(@RequestBody Map<String, String> map, HttpSession session) {
+		chatService.close(map.get("c_id"), ((MemberVo)session.getAttribute("authInfo")).getEmail());
+		return 1;
 	}
 	
 }
