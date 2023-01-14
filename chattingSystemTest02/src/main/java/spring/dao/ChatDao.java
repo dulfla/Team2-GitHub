@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 
 import spring.vo.ChatMessageVo;
 import spring.vo.ChattingRoomBringingCommand;
+import spring.vo.ChattingRoomInfoListVo;
 
 public class ChatDao {
 
@@ -29,6 +30,10 @@ public class ChatDao {
 
 	public List<ChatMessageVo> selectAllMessagesInChatRoom(String c_id) {
 		return sqlSesison.selectList("mybatis.mapper.chat.selectAllMessages", c_id);
+	}
+
+	public Collection<ChattingRoomInfoListVo> selectChattingRoomByPId(String p_id) {
+		return sqlSesison.selectList("mybatis.mapper.chat.selectChattingRoomByPId", p_id);
 	}
 	
 }

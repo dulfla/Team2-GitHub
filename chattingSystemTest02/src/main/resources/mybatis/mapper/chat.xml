@@ -5,6 +5,13 @@
   
 <mapper namespace="mybatis.mapper.chat">
 	
+	<!-- 내 특정 상품에 존재하는 채팅방 목록 보기 -->
+	<select id="selectChattingRoomByPId" parameterType="String" resultType="chattingRoomInfosVo">
+		SELECT c_id, p_id, 'sell' AS "type"
+		FROM chatInfomation
+		WHERE p_id=#{p_id}
+	</select>
+	
 	<!-- 내 채팅방 목록 보기 :: 내가 (구매자/판매자로)참여하고 있는 모든 채팅방 확인 -->
 	<select id="selectAllChatRoomByEmil" parameterType="String" resultType="chattingRoomInfosVo">
 		SELECT cr.c_id, cr.p_id, 'sell' AS "type"

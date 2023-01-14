@@ -1,5 +1,6 @@
 package chat.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -11,6 +12,7 @@ import chat.vo.ProductVo;
 import spring.dao.ChatDao;
 import spring.vo.ChatMessageVo;
 import spring.vo.ChattingRoomBringingCommand;
+import spring.vo.ChattingRoomInfoListVo;
 
 @Service
 public class ChatService {
@@ -51,6 +53,10 @@ public class ChatService {
 
 	public void close(String c_id, String email) {
 		System.out.println(System.currentTimeMillis()+" : "+email+", "+c_id+"에 연결 해제");
+	}
+
+	public Collection<ChattingRoomInfoListVo> selectChatRoomInfoByPId(String p_id) {
+		return cdao.selectChattingRoomByPId(p_id);
 	}
 	
 }

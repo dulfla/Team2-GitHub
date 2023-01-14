@@ -4,48 +4,65 @@
 	margin:0;
 	box-sizing:border-box;
 }
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+/* 공통 */
 #container{
 	height:100vh;
 	width:100vw;
 }
-#text{
-	display:inline-block;
+.offcanvas{
+	height:100%;
 }
 .offcanvas-header{
 	height:130px;
 }
-#message{
-	height:50px;
-}
-#messageBox{
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+/* messageBox */
+#messageBox{ /* 주고받은 메세지들이 담길 공간 */
 	height:calc(100% - 180px);
 	width:100%;
 	position: absolute;
 	top:130px;
 }
-.messageBox{
+#message{ /* input-group을 묶는 상위 container */
+	height:50px;
+}
+.messageBox{ /* 실제 메세지 text가 담길 div 공간 */
 	display:block;
 	width:60%;
 	padding:0px 10px;
 	padding-top:10px;
 }
-.myMessageBox{
+.myMessageBox{ /* 보낸 메세지 text가 담길 div 공간  */
 	float:right;
 }
-.reciveMessageBox{
+.reciveMessageBox{ /* 받은 메세지 text가 담길 div 공간  */
 	float:left;
 }
-.message{
+.message{ /* 메세지 text */
 	margin:0;
 	display:inline-block;
 	padding:5px 12px;
 	border-radius:15px;
 }
-.send{
+.send{ /* 보낸 메세지 text  */
 	float:right;
 	background-color:rgb(232, 255, 198);
 }
-.recive{
+.recive{ /* 받은 메세지 text  */
 	float:left;
 	background-color:rgb(232, 255, 198);
 }
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+/* chatRoomList */
+.chatRoomImg{ /* 채팅방 앞의 작은 이미지 */
+	width:32px;
+	height:32px;
+}
+

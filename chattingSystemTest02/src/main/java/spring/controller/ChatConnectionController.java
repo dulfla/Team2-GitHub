@@ -3,6 +3,7 @@ package spring.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
@@ -48,15 +49,24 @@ public class ChatConnectionController {
 	private ChatService chatService;
 	
 	@ResponseBody
+	@PostMapping("SelectChatRoom")
+	public JSONObject bringingChatRoomByPId(@RequestBody Map<String, String> map) {
+		JSONObject json = new JSONObject();
+		json.put("chattingRoomList", chatService.selectChatRoomInfoByPId(map.get("p_id")));
+		return json;
+	}
+	
+	@ResponseBody
 	@PostMapping("ChatRoomCheck")
 	public JSONObject bringingChatRoomInfo(@RequestBody Map<String, String> map, HttpSession session) {
-		MemberVo auth = new MemberVo();
-		auth.setEmail("hong@naver.com");
-		session.setAttribute("authInfo", auth);
+//		MemberVo auth = new MemberVo();
+//		auth.setEmail("hong@naver.com");
+//		session.setAttribute("authInfo", auth);
 		
 		ChattingRoomBringingCommand crbc = new ChattingRoomBringingCommand();
-		crbc.setP_id(map.get("p_id"));System.out.println(((MemberVo)session.getAttribute("authInfo")).getEmail());
-		crbc.setEmail(((MemberVo)session.getAttribute("authInfo")).getEmail()); // "hong@naver.com"
+		crbc.setP_id(map.get("p_id"));
+		crbc.setEmail(map.get("email"));
+		// "hong@naver.com" // ((MemberVo)session.getAttribute("authInfo")).getEmail()
 		
 		JSONObject json = new JSONObject();
 		json.put("chattingRoomId", chatService.checkOutChattingRoom(crbc));
@@ -69,7 +79,7 @@ public class ChatConnectionController {
 	@ResponseBody
 	@PostMapping("ConnecteWithClientServer")
 	public int openClientSoket(@RequestBody Map<String, String> map, HttpSession session) {
-		chatService.connection(map.get("c_id"), ((MemberVo)session.getAttribute("authInfo")).getEmail());
+		chatService.connection(map.get("c_id"), map.get("email"));
 		return 1;
 	}
 	
@@ -79,25 +89,24 @@ public class ChatConnectionController {
 		JSONObject json = new JSONObject();
 		json.put("productInfo", chatService.getProductInfo(map.get("c_id")));
 		json.put("messages", chatService.getPreviousMessages(map.get("c_id")));
-		json.put("me", ((MemberVo)session.getAttribute("authInfo")).getEmail());
+		json.put("me", map.get("email"));
 		return json;
 	}
 	
 	@ResponseBody
 	@PostMapping("SendMessage")
 	public void sendMessage(@RequestBody Map<String, String> map, HttpSession session) {
-		System.out.println(map.get("c_id"));
-		System.out.println(map.get("p_id"));
-		System.out.println(((MemberVo)session.getAttribute("authInfo")).getEmail());
-		System.out.println(map.get("message"));
-		System.out.println("서버 안녕");
+		System.out.println("메세지 보내기, 보낼 채팅방 아이디 : "+map.get("c_id"));
+		System.out.println("메세지 보내기, 관련된 상품 아이디 : "+map.get("p_id"));
+		System.out.println("메세지 보내기, 보내는 사람 이메일 : "+map.get("email"));
+		System.out.println("메세지 보내기, 보낼 메세지 : "+map.get("message"));
 		return;
 	}
 
 	@ResponseBody
 	@PostMapping("BreakeOffClientServer")
 	public int closeClientSoket(@RequestBody Map<String, String> map, HttpSession session) {
-		chatService.close(map.get("c_id"), ((MemberVo)session.getAttribute("authInfo")).getEmail());
+		chatService.close(map.get("c_id"), map.get("email"));
 		return 1;
 	}
 	

@@ -39,6 +39,17 @@ FROM chatInfomation cr,
     (SELECT c_id FROM chatParticipants WHERE sender_email='hong@naver.com') m
 WHERE cr.c_id=m.c_id;
 
+-- [확인용]전체 채팅 목록 보기
+SELECT cr.c_id, cr.p_id, 'sell' AS "type", email
+FROM chatInfomation cr,
+    (SELECT p_id, email FROM product) p
+WHERE cr.p_id=p.p_id
+UNION
+SELECT cr.c_id, cr.p_id, 'buy' AS "type", email
+FROM chatInfomation cr,
+    (SELECT c_id, sender_email AS email FROM chatParticipants) m
+WHERE cr.c_id=m.c_id;
+
 ------------------------------------------------------------------------------------------------------------------
 
 -- 회원 기록이 있는 년도
