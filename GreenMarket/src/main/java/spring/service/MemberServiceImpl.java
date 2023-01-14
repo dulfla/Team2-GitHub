@@ -45,8 +45,7 @@ public class MemberServiceImpl implements MemberService {
 	// 상품 수정
 	@Override
 	public void productModify(ProductVO vo) {
-		 dao.productModify(vo);
-		
+		 dao.productModify(vo);	
 	}
 
 	// 상품 삭제
@@ -54,6 +53,8 @@ public class MemberServiceImpl implements MemberService {
 	public void productDelete(String p_id) {
 		dao.productDelete(p_id);
 	}
+
+
 
 
 

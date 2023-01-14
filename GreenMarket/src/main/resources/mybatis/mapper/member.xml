@@ -85,15 +85,12 @@
 		
 	<update id="productModify" parameterType="ProductVO">
 		 update productDetail set
-		 p_name=#{p_name}, description=#{description}, category=#{category}, price=#{price}
+		 p_name=#{p_name}, description=#{description}, category=#{category}, price=#{price}, trade=#{trade}
      	 where p_id = #{p_id}
 	</update>
 	
 	 
 	 <!-- 상품 삭제할때 상품상세정보를 마지막에 지워야함 -->
-<!-- 	 <delete id="tradeDelete">
-		delete trade where p_id=#{p_id}
-	</delete> -->
 	 <delete id="productDelete1">
 		delete product where p_id=#{p_id}
 	</delete>

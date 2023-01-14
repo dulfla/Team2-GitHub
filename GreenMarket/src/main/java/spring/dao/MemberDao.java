@@ -22,7 +22,7 @@ public interface MemberDao {
 	
 	// 상품 수정
 	public void productModify(ProductVO vo);
-	
+
 	// 상품 삭제
 	public void productDelete(String p_id);
 }

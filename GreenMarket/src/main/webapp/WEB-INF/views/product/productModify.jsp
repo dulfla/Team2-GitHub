@@ -41,6 +41,14 @@
 			<div>
 			<textarea rows="5" cols="50" name="description" placeholder="내용을 입력하세요">${product.description}</textarea>
 			</div>
+			<div>
+				<span>판매상태</span>
+				<select class="trade" name="trade">
+					<option value="trade">판매중</option>
+					<option value="clear">판매완료</option>
+				</select>
+			</div>
+			
 			<button>등록</button>
 			<button type="button" id="back_Btn">취소</button>
 		</form>

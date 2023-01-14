@@ -6,9 +6,43 @@
 <head>
 <meta charset="UTF-8">
 <title>상품 등록 페이지</title>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js" crossorigin="anonymous"></script> 
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.js" crossorigin="anonymous"></script> -->
+<script
+  src="https://code.jquery.com/jquery-3.6.3.js"
+  integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+  crossorigin="anonymous"></script>
+<style type="text/css">
+	#result_card img{
+		max-width: 100%;
+	    height: auto;
+	    display: block;
+	    padding: 5px;
+	    margin-top: 10px;
+	    margin: auto;	
+	}
+	#result_card {
+		position: relative;
+	}
+	.imgDeleteBtn{
+	    position: absolute;
+	    top: 0;
+	    right: 5%;
+	    background-color: #ef7d7d;
+	    color: wheat;
+	    font-weight: 900;
+	    width: 30px;
+	    height: 30px;
+	    border-radius: 50%;
+	    line-height: 26px;
+	    text-align: center;
+	    border: none;
+	    display: block;
+	    cursor: pointer;	
+	}	
+</style>
 
 </head>
 <body>
@@ -36,7 +70,9 @@
 			</div>
 			<div>
 				<label>사진 업로드</label>
-				<input type="file" name='uploadFile' style="height: 30px;">
+				<input type="file" id="fileItem" name='uploadFile' style="height: 30px;">
+					<div id="uploadResult">
+					</div>
 			</div>
 			<label class="label-input100" for="message">상품 정보</label>
 			<div class="wrap-input100 validate-input">
@@ -51,31 +87,40 @@
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script type="text/javascript">
-/* 		
-  	$("input[type='file']").on("change", function(e){
+		$("input[type='file']").on("change", function(e){
 			
-			var formData = new FormData();
-			
+			let formData = new FormData();
 			let fileInput = $('input[name="uploadFile"]');
 			let fileList = fileInput[0].files;
 			let fileObj = fileList[0];
-						
+			
+			/*
 			if(!fileCheck(fileObj.name, fileObj.size)){
 				return false;
+			} 
+			*/
+			// 사용자가 선택한 파일을 FormData에 "uploadFile"이란 이름(key)으로 추가해주는 코드
+			for(let i = 0; i < fileList.length; i++){
+				formData.append("uploadFile", fileList[i]);
 			}
-			formData.append("uploadFile", fileObj);
-			
 			$.ajax({
-				type : 'POST',
-				url: '/member/uploadAjaxAction',
+				url: '/GreenMarket/product/uploadAjaxAction',
 		    	processData : false,
 		    	contentType : false,
-		    	data : formData,		    	
-		    	dataType : 'json'
-			});			
+		    	data : formData,
+		    	type : 'POST',
+		    	dataType : 'json',
+		    	success : function(result){
+		    		console.log(result);
+		    		showUploadImage(result);
+		    	},
+		    	error : function(result){
+		    		alert("이미지 파일이 아닙니다.");
+		    	}
+			});	
 		});
 		
-		let regex = new RegExp("(.*?)\.(jpg|jpeg|png)$");
+		let regex = new RegExp("(.*?)\.(jpg|png)$");
 		let maxSize = 1048576; //1MB	
 		
 		function fileCheck(fileName, fileSize){
@@ -90,7 +135,28 @@
 				return false;
 			}			
 			return true;					
-		}   */			
+		}
+		/* 이미지 출력 */
+		function showUploadImage(uploadResultArr){
+			
+			/* 전달받은 데이터 검증 */
+			if(!uploadResultArr || uploadResultArr.length == 0){return}
+			
+			let uploadResult = $("#uploadResult");
+			
+			let obj = uploadResultArr[0];
+			
+			let str = "";
+			
+			let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
+			
+			str += "<div id='result_card'>";
+			str += "<img src='/GreenMarket/product/display?fileName=" + fileCallPath +"'>";
+			str += "<div class='imgDeleteBtn'>x</div>";
+			str += "</div>";		
+			
+	   		uploadResult.append(str); 
+		}
 	</script>
 </body>
 </html>

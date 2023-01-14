@@ -12,14 +12,19 @@ public class ProductVO {
 	private Date regdate;
 	private int views;
 	private int price;
+	private String trade;
 	
 	private String productId;
 	private String email;
 	
 	
 	
-	
-	
+	public String getTrade() {
+		return trade;
+	}
+	public void setTrade(String trade) {
+		this.trade = trade;
+	}
 	public String getEmail() {
 		return email;
 	}
@@ -77,9 +82,10 @@ public class ProductVO {
 	@Override
 	public String toString() {
 		return "ProductVO [p_id=" + p_id + ", p_name=" + p_name + ", description=" + description + ", category="
-				+ category + ", regdate=" + regdate + ", views=" + views + ", price=" + price + ", productId="
-				+ productId + ", email=" + email + "]";
+				+ category + ", regdate=" + regdate + ", views=" + views + ", price=" + price + ", trade=" + trade
+				+ ", productId=" + productId + ", email=" + email + "]";
 	}
+
 	
 
 
