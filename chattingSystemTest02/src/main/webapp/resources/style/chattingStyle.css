@@ -58,6 +58,14 @@
 	background-color:rgb(232, 255, 198);
 }
 
+.backSpageBtn{
+	border:none;
+	background:none;
+	font-size:1.7em;
+	font-weight:bold;
+	color:gray;
+}
+
 /* ---------------------------------------------------------------------------------------------------------- */
 
 /* chatRoomList */

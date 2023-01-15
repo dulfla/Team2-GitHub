@@ -198,11 +198,6 @@ ALTER TABLE chatParticipants
 ADD CONSTRAINT chatParticipants_fk_c_id FOREIGN KEY(c_id) REFERENCES chatInfomation(c_id) ON DELETE CASCADE
 ADD CONSTRAINT chatPartic_fk_sender_email FOREIGN KEY(sender_email) REFERENCES member(email) ON DELETE CASCADE;
 
--- 상품 거래 fk 추가
-ALTER TABLE trade
-ADD CONSTRAINT trade_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) ON DELETE CASCADE
-ADD CONSTRAINT trade_fk_email FOREIGN KEY(email) REFERENCES member(email) ON DELETE CASCADE;
-
 
 -- 트리거 ---------------------------------------------------------------------------------------------------------
 CREATE OR REPLACE TRIGGER memberAdmin
@@ -219,7 +214,7 @@ BEGIN
     END IF;
 END memberAdmin;
 
-CREATE OR REPLACE TRIGGER trackingProduct
+CREATE OR REPLACE TRIGGER trackingProduct -- 바인딩 입력하라고 뜸.. 찾아 보기
 BEFORE INSERT OR UPDATE OR DELETE
     ON productDetail
 FOR EACH ROW
@@ -247,15 +242,15 @@ END;
 -- 샘플 데이터 ---------------------------------------------------------------------------------------------------
 
 -- 상품 상세
-INSERT INTO productDetail
+INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
 VALUES('pid1','컴퓨터','최신형 컴퓨터입니다','디지털 기기','2022/05/30',0,1000000);
-INSERT INTO productDetail
+INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
 VALUES('pid2','K5','상태 좋습니다','중고차','2022/11/13',1,30000000);
-INSERT INTO productDetail
+INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
 VALUES('pid3','지갑','상태 굿','잡화','2022/09/20',60,500000);
-INSERT INTO productDetail
+INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
 VALUES('pid4','츄르','츄르 2박스 입니다','반려동물 물품','2022/11/03',0,15000);
-INSERT INTO productDetail
+INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
 VALUES('pid5','에어팟 맥스','에어팟 맥스 미개봉 상품입니다','디지털 기기','2022/12/25',115,600000);
 
 -- 회원 상세
@@ -294,7 +289,7 @@ values(5, 'choi@naver.com', 'pid5');
 INSERT INTO chatInfomation
 VALUES('chat1', 'pid1');
 INSERT INTO chatInfomation
-VALUES('chat2', 'pid11');
+VALUES('chat2', 'pid3');
 INSERT INTO chatParticipants
 VALUES(1, 'chat1', 'choi@naver.com', '2020/11/12');
 INSERT INTO chatParticipants
