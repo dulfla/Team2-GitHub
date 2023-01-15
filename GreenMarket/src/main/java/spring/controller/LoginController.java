@@ -35,25 +35,25 @@ public class LoginController {
 	
 	@PostMapping(value = "postLogin",consumes="application/json")
 	@ResponseBody
-	public String memberLoginPost(@RequestBody LoginCommand loginCommand, HttpSession session,
+	public AuthInfo memberLoginPost(@RequestBody LoginCommand loginCommand, HttpSession session,
 			HttpServletResponse response, Errors errors) {
 
 		new LoginCommandValidator().validate(loginCommand, errors);
 		
-		String result; // ajax 반환받기 위한 변수
+		AuthInfo result; // ajax 반환받기 위한 변수
 		
 		if (errors.hasErrors()) {
-			result ="0";
+			result = null;
 		}
 		
 		try {
 			AuthInfo authInfo = authService.authenticate(loginCommand);
 
 			session.setAttribute("authInfo", authInfo);
-			result ="1";
+			result = authInfo;
 		} catch (IdPasswordNotMatchingException e) {
 			
-			result ="0";
+			result = null;
 			
 		}
 		return result;

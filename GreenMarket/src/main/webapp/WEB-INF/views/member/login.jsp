@@ -255,11 +255,11 @@ function loginAjax(){
 			contentType : 'application/json;charset=UTF-8', 
 			 success: function(result){
 				 console.log(result);
-				 if(result == "1"){
+				 if(result != null){
 					 Swal.fire({
 						    icon: 'success',
 						    title: '로그인성공!',
-						    text: '환영합니다.'
+						    text: result.nickname +'님 환영합니다.'
 
 					    }).then(result => {
 					      // 만약 Promise리턴을 받으면,
@@ -268,17 +268,14 @@ function loginAjax(){
 							 document.location.href = "index";  
 					      }
 					    });
-				}else{
-					Swal.fire({
-					    icon: 'error',
-					    title: '로그인실패',
-					    text: '아이디와 비밀번호를 확인해주세요!'
-					  });
 				}
 			 		
 		  	},error : function(error) {
-		  		console.log(result);
-				alert("전송에 실패하였습니다.");
+		  		Swal.fire({
+				    icon: 'error',
+				    title: '로그인실패',
+				    text: '아이디와 비밀번호를 확인해주세요!'
+				  });
 			}
 		})
 	}

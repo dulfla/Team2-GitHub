@@ -22,16 +22,20 @@ public class MemberDetailController {
 	
 	
 	@GetMapping("memberDetail{email}")
-	public String memberDetail(String email, HttpSession session, Model model) {
+	public String memberDetail(String email, HttpSession session) {
 		Member member = memberDao.selectByEmail(email);
 		
 		if(member == null) {
 			throw new MemberNotFoundException();
 		}
 		session.setAttribute("member", member);
-		//model.addAttribute("member",member);
+		
 		return "member/memberDetail";
 	}
 	
+	@GetMapping("changeMemberInfo")
+	public String changeMemberInfo(String email) {
+		return "member/changeMemberInfo";
+	}
 	
 }
