@@ -19,18 +19,23 @@ public class ChangeMemberInfoService {
 	public void changeMember(ChangeMemberInfoCommand changeCommand) {
 		
 		
-		Member member = dao.selectByEmail(changeCommand.getEmail());
 		
-		if(member == null) {
-			throw new IdPasswordNotMatchingException();
-		}
+		System.out.println(changeCommand.getEmail());	
 		
-	  Member updateMember = new
-	  Member(changeCommand.getEmail(),changeCommand.getBirth(),changeCommand.getAddress(),
-			  changeCommand.getPhone(), changeCommand.getName(),changeCommand.getNickname());
-	 
-        dao.update(updateMember);
+		Member updateMember = new
+		Member(changeCommand.getEmail(),changeCommand.getBirth(),changeCommand.getAddress(),
+				  changeCommand.getPhone(), changeCommand.getName(),changeCommand.getNickname());
+		 
+	    dao.update(updateMember);
     }
+
+	public int getEmailMember(String email) {
+		return dao.getEmail(email);
+	}
+
+	public int getNicknameMember(String nickname) {
+		return dao.getNickName(nickname);
+	}
 	
 	
 }

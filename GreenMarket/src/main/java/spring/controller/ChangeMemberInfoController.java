@@ -26,38 +26,158 @@ public class ChangeMemberInfoController {
 	private ChangeMemberInfoService changeMemberInfoService;
 	
 	@PostMapping("updateName")
-	public Member updateName(@RequestBody ChangeMemberInfoCommand changeCommand ,HttpSession session,
+	public int updateName(@RequestBody ChangeMemberInfoCommand changeCommand ,HttpSession session,
 				Errors errors) {
 		new ChangeMemberInfoValidator().validate(changeCommand, errors);
+		
+		
 		if(errors.hasErrors()) {
 			// 에러 객체에 에러가 하나라도 검출이 되었다면
-			return null;
+			return 0;
 		}
 		
 		Member loginMember = (Member) session.getAttribute("member");
+		
+		if(loginMember.getName().equals(changeCommand.getName())) {
+			return 2;
+		}
+		
 		changeMemberInfoService.changeMember(changeCommand);
 		
 		try {
-			return loginMember;
+			return 1;
 
 		}catch (AlreadyExistingMemberException e) {
 			errors.rejectValue("name", "duplicate");
 			
-			return null;
+			return 0;
 		}
 		
-		
-		
-		
 	}
 	
 	
-	public String changeNickname() {
+	@PostMapping("updateBirth")
+	public int updateBirth(@RequestBody ChangeMemberInfoCommand changeCommand ,HttpSession session,
+				Errors errors) {
+		new ChangeMemberInfoValidator().validate(changeCommand, errors);
 		
 		
+		if(errors.hasErrors()) {
+			// 에러 객체에 에러가 하나라도 검출이 되었다면
+			return 0;
+		}
 		
-		return null;
+		Member loginMember = (Member) session.getAttribute("member");
+		
+		if(loginMember.getBirth() == changeCommand.getBirth()) {
+			return 2;
+		}
+		
+		changeMemberInfoService.changeMember(changeCommand);
+		
+		try {
+			return 1;
+
+		}catch (AlreadyExistingMemberException e) {
+			errors.rejectValue("birth", "duplicate");
+			
+			return 0;
+		}
+		
 	}
 	
+	@PostMapping("updatePhone")
+	public int updatePhone(@RequestBody ChangeMemberInfoCommand changeCommand ,HttpSession session,
+				Errors errors) {
+		new ChangeMemberInfoValidator().validate(changeCommand, errors);
+		
+		
+		if(errors.hasErrors()) {
+			// 에러 객체에 에러가 하나라도 검출이 되었다면
+			return 0;
+		}
+		
+		Member loginMember = (Member) session.getAttribute("member");
+		
+		if(loginMember.getPhone().equals(changeCommand.getPhone())) {
+			return 2;
+		}
+		
+		changeMemberInfoService.changeMember(changeCommand);
+		
+		try {
+			return 1;
+
+		}catch (AlreadyExistingMemberException e) {
+			errors.rejectValue("phone", "duplicate");
+			
+			return 0;
+		}
+		
+	}
+	
+	@PostMapping("updateAddress")
+	public int updateAddress(@RequestBody ChangeMemberInfoCommand changeCommand ,HttpSession session,
+				Errors errors) {
+		new ChangeMemberInfoValidator().validate(changeCommand, errors);
+		
+		
+		if(errors.hasErrors()) {
+			// 에러 객체에 에러가 하나라도 검출이 되었다면
+			return 0;
+		}
+		
+		Member loginMember = (Member) session.getAttribute("member");
+		System.out.println(loginMember.getAddress());
+		System.out.println(changeCommand.getAddress());
+		if(loginMember.getAddress().equals(changeCommand.getAddress())) {
+			return 2;
+		}
+		
+		changeMemberInfoService.changeMember(changeCommand);
+		
+		try {
+			return 1;
+
+		}catch (AlreadyExistingMemberException e) {
+			errors.rejectValue("phone", "duplicate");
+			
+			return 0;
+		}
+		
+	}
+	
+	@PostMapping("updateEmail")
+	public int updateEmail(@RequestBody ChangeMemberInfoCommand changeCommand ,
+				Errors errors) {
+		new ChangeMemberInfoValidator().validate(changeCommand, errors);
+		
+		int result = changeMemberInfoService.getEmailMember(changeCommand.getEmail());
+		
+		if(errors.hasErrors()) {
+			// 에러 객체에 에러가 하나라도 검출이 되었다면
+			return 2;
+		}
+		
+		changeMemberInfoService.changeMember(changeCommand);
+		
+		try {
+			return result;
+
+		}catch (AlreadyExistingMemberException e) {
+			errors.rejectValue("email", "duplicate");
+			
+			return result;
+		}
+		
+	}
+	
+	@PostMapping("updateNickname")
+	public int updateNickname(@RequestBody ChangeMemberInfoCommand changeCommand) {
+		int result = changeMemberInfoService.getNicknameMember(changeCommand.getNickname());
+		changeMemberInfoService.changeMember(changeCommand);
+		
+		return result;
+	}
 	
 }

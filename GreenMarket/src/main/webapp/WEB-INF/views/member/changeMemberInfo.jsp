@@ -45,7 +45,7 @@
 								<td>이름</td>
 								<td><input type="text" value="${member.name}"
 									name="name" id="name" class="form-control"></td>
-								<td><button onclick="updateNameCheck()" class="btn btn-primary">수정</button>
+								<td><button onclick="updateName()" class="btn btn-primary">수정</button>
 								</td>	
 							</tr>
 
@@ -53,7 +53,7 @@
 								<td>이메일</td>
 								<td><input type="email" value="${member.email}"
 									name="email" id="email" class="form-control"></td>
-								<td><button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">수정</button>
+								<td><button onclick="updateEmail()" class="btn btn-primary">수정</button>
 								</td>
 							</tr>
 
@@ -61,34 +61,34 @@
 								<td>닉네임</td>
 								<td><input type="text" value="${member.nickname}"
 									name="nickname" id="nickname" class="form-control"></td>
-								<td><button onclick="location.href='changeNickname?email=${member.email}'" class="btn btn-primary">수정</button>
+								<td><button onclick="updateNickname()" class="btn btn-primary">수정</button>
 								</td>	
 							</tr>
 
 							<tr>
 								<td>생년월일</td>
 								<td><input type="number" value="${member.birth}"
-									name="birth" id=birth class="form-control"></td>
-								<td><button onclick="updateNameCheck()" class="btn btn-primary">수정</button>
+									name="birth" id=birth maxlength="8" oninput="numberMaxLength(this);"  class="form-control"></td>
+								<td><button onclick="updateBirth()" class="btn btn-primary">수정</button>
 								</td>	
 							</tr>
 							<tr>
 								<td>전화번호</td>
 								<td><input type="text" value="${member.phone}"
-									name="phone" id="phone" class="form-control"></td>
-								<td><button onclick="updateNameCheck()" class="btn btn-primary">수정</button>
+									name="phone" id="phone" oninput="autoHyphen2(this)" maxlength="13"  class="form-control"></td>
+								<td><button onclick="updatePhone()" class="btn btn-primary">수정</button>
 								</td>	
 							</tr>
 							<tr>
 								<td>주소</td>
 								<td><input type="text" value="${member.address}"
 									id="address_kakao" name="address" class="form-control"></td>
-								<td><button onclick="updateNameCheck()" class="btn btn-primary">수정</button>
+								<td><button onclick="updateAddress()" class="btn btn-primary">수정</button>
 								</td>	
 							</tr>
 							<tr>
 								<td colspan="2" class="text-center"><input type="button"
-									value="나가기" class="btn btn-success" onclick="window.history.go(-1)" >
+									value="나가기" class="btn btn-success" onclick="window.history.go(-2)" >
 								</td>
 								<td></td>
 							</tr>
@@ -122,6 +122,20 @@ window.onload = function () {
 
 <script type="text/javascript">
 
+//전화번호 정규식
+const autoHyphen2 = (target) => {
+	target.value = target.value
+		.replace(/[^0-9]/g, '')
+		.replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+}
+// 생년월일 숫자길이 = 8
+function numberMaxLength(e) {
+	if (e.value.length > e.maxLength) {
+
+		e.value = e.value.slice(0, e.maxLength);
+	}
+}
+
 
 function ModifySuccess() {
 	Swal.fire({
@@ -139,7 +153,7 @@ function noValue() {
     })
 }
 
-function updateNameCheck(){
+function updatePhone() {
 	var email = $("#email").val();
 	var birth = $("#birth").val();
 	var address = $("#address_kakao").val();
@@ -156,6 +170,94 @@ function updateNameCheck(){
 		"address": address
 	};
 	
+	$.ajax({
+		type:"POST",
+		url:"updatePhone",
+		data : JSON.stringify(jsonData),  
+		dataType : 'json', 
+		contentType : 'application/json;charset=UTF-8', 
+		 success: function(result){
+			 console.log(result +'전화번호');
+			 if(result == 2){
+					Swal.fire({
+					    icon: 'warning',
+					    title: '이미 같은 전화번호 입니다.'
+
+				    });
+				}else if(result == 0){
+					noValue();
+					
+				}else{
+					ModifySuccess();
+				}
+			 
+		 		
+	  	}
+	})
+}
+
+function updateBirth(){
+	var email = $("#email").val();
+	var birth = $("#birth").val();
+	var address = $("#address_kakao").val();
+	var phone = $("#phone").val();
+	var name = $("#name").val();
+	var nickname = $("#nickname").val();
+	
+	var jsonData ={
+		"name": name,
+		"nickname": nickname,
+		"email": email,
+		"birth": birth,
+		"phone": phone,
+		"address": address
+	};
+	
+	$.ajax({
+		type:"POST",
+		url:"updateBirth",
+		data : JSON.stringify(jsonData),  
+		dataType : 'json', 
+		contentType : 'application/json;charset=UTF-8', 
+		 success: function(result){
+			 console.log(result);
+				if(result == 2){
+					Swal.fire({
+					    icon: 'warning',
+					    title: '이미 같은 생년월일 입니다.'
+
+				    });
+				}else if(result == 0){
+					noValue();
+					
+				}else{
+					ModifySuccess();
+				}
+			 
+		 		
+	  	}
+	})
+}
+
+function updateName(){
+	var email = $("#email").val();
+	var birth = $("#birth").val();
+	var address = $("#address_kakao").val();
+	var phone = $("#phone").val();
+	var name = $("#name").val();
+	var nickname = $("#nickname").val();
+	
+	var jsonData ={
+		"name": name,
+		"nickname": nickname,
+		"email": email,
+		"birth": birth,
+		"phone": phone,
+		"address": address
+	};
+	
+	
+	
 	console.log(jsonData);
 	
 		$.ajax({
@@ -165,28 +267,168 @@ function updateNameCheck(){
 			dataType : 'json', 
 			contentType : 'application/json;charset=UTF-8', 
 			 success: function(result){
-				 console.log(result.name)
-				 if(result == null){
-					 noValue();
-			
-				}else if(result.name == name){
+				 console.log(result);
+				if(result == 2){
 					Swal.fire({
 					    icon: 'warning',
-					    title: '이미 같은 이름입니다.'
+					    title: '이미 같은 이름 입니다.'
 
 				    });
-				}else if(result != null){
-					ModifySuccess();
+				}else if(result == 0){
+					noValue();
 					
+				}else{
+					ModifySuccess();
 				}
-				 
 			 		
 		  	}
 		})
+		
+		
 	}
 	
+function updateAddress(){
+	
+	var email = $("#email").val();
+	var birth = $("#birth").val();
+	var address = $("#address_kakao").val();
+	var phone = $("#phone").val();
+	var name = $("#name").val();
+	var nickname = $("#nickname").val();
+	
+	var jsonData ={
+		"name": name,
+		"nickname": nickname,
+		"email": email,
+		"birth": birth,
+		"phone": phone,
+		"address": address
+	};
+	
+	
+	$.ajax({
+		type:"POST",
+		url:"updateAddress",
+		data : JSON.stringify(jsonData),  
+		dataType : 'json', 
+		contentType : 'application/json;charset=UTF-8', 
+		 success: function(result){
+			 console.log(result +'주소')
+			 if(result == 2){
+					Swal.fire({
+					    icon: 'warning',
+					    title: '이미 같은 주소 입니다.'
+
+				    });
+				}else if(result == 0){
+					noValue();
+					
+				}else{
+					ModifySuccess();
+				}
+		 		
+	  	}
+	})
+	
+}	
+
+function updateEmail(){
+	
+	var email = $("#email").val();
+	var birth = $("#birth").val();
+	var address = $("#address_kakao").val();
+	var phone = $("#phone").val();
+	var name = $("#name").val();
+	var nickname = $("#nickname").val();
+	
+	var jsonData ={
+		"name": name,
+		"nickname": nickname,
+		"email": email,
+		"birth": birth,
+		"phone": phone,
+		"address": address
+	};
+	
+	
+	$.ajax({
+		type:"POST",
+		url:"updateEmail",
+		data : JSON.stringify(jsonData),  
+		dataType : 'json', 
+		contentType : 'application/json;charset=UTF-8', 
+		 success: function(result){
+			 console.log(result +'이메일')
+			 if(email == null || email == ''){
+				 noValue();
+			 
+			 }else if(result == 2){
+					Swal.fire({
+					    icon: 'warning',
+					    title: '이메일 형식이아닙니다.'
+
+				    });
+				}else if(result == 1){
+					Swal.fire({
+					    icon: 'warning',
+					    title: '이미 있는 이메일 입니다.'
+
+				    });
+					
+				}else{
+					ModifySuccess();
+				}
+		 		
+	  	}
+	})
+	
+}	
+
+function updateNickname(){
+	
+	var email = $("#email").val();
+	var birth = $("#birth").val();
+	var address = $("#address_kakao").val();
+	var phone = $("#phone").val();
+	var name = $("#name").val();
+	var nickname = $("#nickname").val();
+	
+	var jsonData ={
+		"name": name,
+		"nickname": nickname,
+		"email": email,
+		"birth": birth,
+		"phone": phone,
+		"address": address
+	};
+	
+	
+	$.ajax({
+		type:"POST",
+		url:"updateEmail",
+		data : JSON.stringify(jsonData),  
+		dataType : 'json', 
+		contentType : 'application/json;charset=UTF-8', 
+		 success: function(result){
+			 console.log(result +'닉네임')
+			 if(nickname == '' || nickname == null){
+				 noValue();
+			 } else if(result == 1){
+					Swal.fire({
+					    icon: 'warning',
+					    title: '이미 있는 닉네임 입니다.'
+
+				    });
+					
+			}else{
+				ModifySuccess();
+			}
+		 		
+	  	}
+	})
+	
+}	
 </script>
 
 <jsp:include page="../include/footer.jsp"/>
-<script type="text/javascript" defer="defer" src="${path}resources/script/member.js"></script>
 </html>

@@ -41,11 +41,7 @@ public class MemberDao {
 	}
 	
 	public void update(Member updateMember) {
-		System.out.println(updateMember.getName());
 		System.out.println(updateMember.getEmail());
-		System.out.println(updateMember.getAddress());
-		System.out.println(updateMember.getNickname());
-		System.out.println(updateMember.getPhone());
 		sqlSession.update(nameSpace+"updateMember",updateMember);
 	}
 	
