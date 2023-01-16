@@ -2,6 +2,8 @@ package spring.vo;
 
 import java.util.Date;
 
+import java.util.List;
+
 public class ProductVO {
 
 	// productDetail tbl
@@ -15,10 +17,16 @@ public class ProductVO {
 	private String trade;
 	
 	private String productId;
-	private String email;
+	private String email;	
+	//이미지 정보
+	private List<ProductImageVO> imageList;
 	
-	
-	
+	public List<ProductImageVO> getImageList() {
+		return imageList;
+	}
+	public void setImageList(List<ProductImageVO> imageList) {
+		this.imageList = imageList;
+	}
 	public String getTrade() {
 		return trade;
 	}
@@ -83,12 +91,8 @@ public class ProductVO {
 	public String toString() {
 		return "ProductVO [p_id=" + p_id + ", p_name=" + p_name + ", description=" + description + ", category="
 				+ category + ", regdate=" + regdate + ", views=" + views + ", price=" + price + ", trade=" + trade
-				+ ", productId=" + productId + ", email=" + email + "]";
+				+ ", productId=" + productId + ", email=" + email + ", imageList=" + imageList + "]";
 	}
-
 	
-
-
-		
-		
+			
 }

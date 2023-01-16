@@ -64,23 +64,26 @@
     	values (#{productId},#{p_name},#{description},#{category},sysdate,#{price})
 	</insert>
  		
- 		<!-- 합치고 이메일 수정해야됨 -->
 	<insert id="product" parameterType="Product1VO">
 		insert into product(idx,email,p_id)
 		values (product_seq.nextval,'hong@naver.com',#{productId})	
 	</insert>
-<!--	
-	사진상세정보 먼저 입력해야됨
-	<insert id="productPic">
-		insert into productPic(idx,p_id,f_id)
-		values (Pic_seq.nextval,#{productId},)
+	
+	<insert id="productPic" parameterType="ProductImageVO">
+		insert into productPic(p_id, fileName, uploadPath, uuid)
+		values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
 	</insert>
-	 -->
+
+
 		<!-- 합치고 이메일을 닉네임으로 변경 (아마도 세션으로?) -->
 	<select id="productDetail" resultType="ProductVO">
 		select p_name, description, category, regdate, views, price, p_id,
 		(select email from product where p_id=#{p_id}) as email
 		from productDetail where p_id = #{p_id}
+	</select>
+	
+	<select id="productImage" resultType="ProductImageVO">
+		select * from ProductPic where p_id = #{p_id}
 	</select>
 		
 	<update id="productModify" parameterType="ProductVO">

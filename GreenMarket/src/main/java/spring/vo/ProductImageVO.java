@@ -6,6 +6,7 @@ public class ProductImageVO {
 	private String uploadPath;
 	private String uuid;
 	private String fileName;
+	private String productId;
 	
 	public String getP_id() {
 		return p_id;
@@ -31,12 +32,16 @@ public class ProductImageVO {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	
+	public String getProductId() {
+		return productId;
+	}
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
 	@Override
 	public String toString() {
 		return "ProductImageVO [p_id=" + p_id + ", uploadPath=" + uploadPath + ", uuid=" + uuid + ", fileName="
-				+ fileName + "]";
+				+ fileName + ", productId=" + productId + "]";
 	}
-
 	
 }

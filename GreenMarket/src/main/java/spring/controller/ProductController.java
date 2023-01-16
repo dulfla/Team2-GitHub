@@ -1,10 +1,12 @@
 package spring.controller;
 
 import java.awt.Graphics2D;
+
 import java.awt.image.BufferedImage;
 import java.io.Console;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,14 +69,11 @@ public class ProductController {
 	// 상품 등록
 	@RequestMapping(value = "/product/register", method = RequestMethod.POST)
 	public String registerProduct(ProductVO vo, Product1VO vo1) {
-		logger.info("productRegisterPOST..........");
+		logger.info("productRegisterPOST.........." + vo);
 		
-		logger.info("상품 이름 : " + vo.getP_name());
-		logger.info("상품 카테고리 : " + vo.getCategory());
-		logger.info("상품 가격 : " + vo.getPrice());
-
 		memberServiceImpl.productRegister(vo, vo1);
 
+		
 		return "redirect:/index";
 	}
 	// 이미지
@@ -195,6 +194,7 @@ public class ProductController {
 				return result;
 			}
 
+	// 썸네일 이미지 
 	@RequestMapping(value = "/product/display", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getImage(String fileName){
 		
@@ -218,6 +218,37 @@ public class ProductController {
 		
 		return result;
 	}
+	
+	// 이미지삭제
+	
+	@RequestMapping(value = "/product/deleteFile", method = RequestMethod.POST)
+	public ResponseEntity<String> deleteFile(String fileName){
+		logger.info("deleteFile........... " + fileName);
+		
+		File file = null;
+		
+		try {
+			// 썸네일 이미지 삭제
+			file = new File("c:\\upload\\" + URLDecoder.decode(fileName, "UTF-8"));
+			
+			file.delete();
+			
+			// 원본 파일 삭제
+			String originFileName = file.getAbsolutePath().replace("s_", "");
+			
+			logger.info("originFileName : " + originFileName);
+			
+			file = new File(originFileName);
+			
+			file.delete();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+			return new ResponseEntity<String>("fail", HttpStatus.NOT_IMPLEMENTED);
+		}
+		return new ResponseEntity<String>("success", HttpStatus.OK);
+	}
 
 	// 상품 조회
 	@RequestMapping(value = "/product/productDetail", method = RequestMethod.GET)
@@ -225,6 +256,18 @@ public class ProductController {
 
 		ProductVO product = memberServiceImpl.productDetail(p_id);
 		model.addAttribute("product", product);
+	}
+	
+	// 이미지 데이터 변환
+	@RequestMapping(value = "/product/productImage", 
+			produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+	public ResponseEntity<List<ProductImageVO>> ProductImage(String p_id){
+		
+		logger.info("ProductImage............" + p_id);
+		
+		logger.info("이미지 데이터 변환 뭐가 문제야 : " );
+		
+		return new ResponseEntity<List<ProductImageVO>>(memberServiceImpl.ProductImage(p_id), HttpStatus.OK);
 	}
 
 	// 상품 수정
