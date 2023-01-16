@@ -24,6 +24,7 @@ CREATE TABLE chatParticipants(
 SELECT * FROM CHATINFOMATION;
 SELECT * FROM CHATPARTICIPANTS;
 SELECT * FROM CHATMESSAGE;
+delete CHATMESSAGE;
 
 -- 전체 채팅 목록 보기
 SELECT cr.c_id, cr.p_id, 'sell' AS "type", email
@@ -52,6 +53,9 @@ SELECT message, messType, sender, read, send_date
  		ORDER BY TO_CHAR(send_date, 'YYYYMMDDHH24MISS') ASC;
 
 
-
-
-
+INSERT INTO chatMessage
+VALUES(chatMessage_seq.NEXTVAL, 'chat2', '안녕', 'TEXT', 'hong@naver.com', 0, sysdate);
+SELECT chatMessage_seq.NEXTVAL from dual;
+SELECT message, messType, sender, read, send_date
+FROM chatMessage
+WHERE idx=161;

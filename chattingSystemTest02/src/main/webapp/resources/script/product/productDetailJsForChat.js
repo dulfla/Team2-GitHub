@@ -65,7 +65,6 @@ function closeServer(){ // 오프캔버스를 닫을 때 동작할 기능
 		}
 	}else if(memberType=='sell'){ // 판매자라면, 캔버스가 열려 있어도 채팅서버 연결이 아닐 수 있으므로 해당 창이 채팅방에 접속 상태인지 확인 후 연결 끊기
 		if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingOpen')){
-			chattingClose();
 			backToChattRooms();
 		}else if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingRooms')){
 			roomBox.innerHTML = null;
@@ -135,7 +134,6 @@ function chattingRoom(){
 }
 
 function backToChattRooms(){
-	chatRoomId = null;
 	chattingClose();
 	
 	if(offCanvas.classList.contains('chattingOpen')){

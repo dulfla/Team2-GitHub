@@ -290,10 +290,14 @@ INSERT INTO chatInfomation
 VALUES('chat1', 'pid1');
 INSERT INTO chatInfomation
 VALUES('chat2', 'pid3');
+INSERT INTO chatInfomation
+VALUES('chat3', 'pid2');
 INSERT INTO chatParticipants
 VALUES(1, 'chat1', 'choi@naver.com', '2020/11/12');
 INSERT INTO chatParticipants
 VALUES(2, 'chat2', 'hong@naver.com', '2020/11/12');
+INSERT INTO chatParticipants
+VALUES(3, 'chat3', 'hong@naver.com', '2021/11/12');
 
 
 -- 프로시저 ---------------------------------------------------------------------------------------------------

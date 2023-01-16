@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.finalProject.chattingSystemTest01">
+	<logger name="com.finalProject.chattingSystemTest02">
 		<level value="info" />
 	</logger>
 	
