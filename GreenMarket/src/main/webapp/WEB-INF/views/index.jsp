@@ -19,7 +19,6 @@
 	<%@ include file="include/header.jsp" %>
 	<div id="container">
 		<!-- 메인 공간 -->
-		${authInfo.name}
 	</div>
 	<%@ include file="include/footer.jsp" %>
 </body>

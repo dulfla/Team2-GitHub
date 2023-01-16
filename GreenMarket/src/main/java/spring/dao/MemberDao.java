@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import spring.vo.ChangeMemberInfoCommand;
 import spring.vo.Member;
 
 @Repository
@@ -38,7 +39,17 @@ public class MemberDao {
 	public void insertMember(Member m) {
 		sqlSession.insert(nameSpace+"insertMember",m);
 	}
-
+	
+	public void update(Member updateMember) {
+		System.out.println(updateMember.getName());
+		System.out.println(updateMember.getEmail());
+		System.out.println(updateMember.getAddress());
+		System.out.println(updateMember.getNickname());
+		System.out.println(updateMember.getPhone());
+		sqlSession.update(nameSpace+"updateMember",updateMember);
+	}
+	
+	
 	public int getNickName(String nickname) {
 		return sqlSession.selectOne(nameSpace+"getNickName",nickname);
 	}

@@ -43,7 +43,7 @@ public class LoginController {
 		AuthInfo result; // ajax 반환받기 위한 변수
 		
 		if (errors.hasErrors()) {
-			result = null;
+			return null;
 		}
 		
 		try {
@@ -53,7 +53,7 @@ public class LoginController {
 			result = authInfo;
 		} catch (IdPasswordNotMatchingException e) {
 			
-			result = null;
+			return null;
 			
 		}
 		return result;

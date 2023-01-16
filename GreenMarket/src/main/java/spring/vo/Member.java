@@ -27,7 +27,19 @@ public class Member {
 		this.name = name;
 		this.nickname = nickname;
 	}
+	
+	
 
+	
+
+	public Member(String email, int birth, String address, String phone, String name, String nickname) {
+		this.email = email;
+		this.birth = birth;
+		this.address = address;
+		this.phone = phone;
+		this.name = name;
+		this.nickname = nickname;
+	}
 
 	public String getType() {
 		return type;

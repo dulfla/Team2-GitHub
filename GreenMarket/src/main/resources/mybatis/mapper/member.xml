@@ -56,4 +56,11 @@
 			   #{address},#{phone},#{name},#{nickname})
 	</insert>
 	
+	<update id="updateMember" parameterType="member">
+		UPDATE member 
+		SET name =#{name},birth=#{birth},address=#{address},
+			phone=#{phone}
+		WHERE email=#{email}
+	</update>
+	
 </mapper>

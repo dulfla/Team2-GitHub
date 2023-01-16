@@ -39,13 +39,12 @@
 				<div class="col-sm-9">
 					<h2 class="text-center">회원 정보 수정하기</h2>
 
-					<!-- <form action="" method="post" > -->
 
 						<table class="table table-striped">
 							<tr>
 								<td>이름</td>
 								<td><input type="text" value="${member.name}"
-									name="name" class="form-control"></td>
+									name="name" id="name" class="form-control"></td>
 								<td><button onclick="updateNameCheck()" class="btn btn-primary">수정</button>
 								</td>	
 							</tr>
@@ -53,7 +52,7 @@
 							<tr>
 								<td>이메일</td>
 								<td><input type="email" value="${member.email}"
-									name="email" class="form-control"></td>
+									name="email" id="email" class="form-control"></td>
 								<td><button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">수정</button>
 								</td>
 							</tr>
@@ -61,7 +60,7 @@
 							<tr>
 								<td>닉네임</td>
 								<td><input type="text" value="${member.nickname}"
-									name="phone" class="form-control"></td>
+									name="nickname" id="nickname" class="form-control"></td>
 								<td><button onclick="location.href='changeNickname?email=${member.email}'" class="btn btn-primary">수정</button>
 								</td>	
 							</tr>
@@ -69,22 +68,22 @@
 							<tr>
 								<td>생년월일</td>
 								<td><input type="number" value="${member.birth}"
-									name="birth" class="form-control"></td>
-								<td><button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">수정</button>
+									name="birth" id=birth class="form-control"></td>
+								<td><button onclick="updateNameCheck()" class="btn btn-primary">수정</button>
 								</td>	
 							</tr>
 							<tr>
 								<td>전화번호</td>
 								<td><input type="text" value="${member.phone}"
-									name="phone" class="form-control"></td>
-								<td><button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">수정</button>
+									name="phone" id="phone" class="form-control"></td>
+								<td><button onclick="updateNameCheck()" class="btn btn-primary">수정</button>
 								</td>	
 							</tr>
 							<tr>
 								<td>주소</td>
 								<td><input type="text" value="${member.address}"
 									id="address_kakao" name="address" class="form-control"></td>
-								<td><button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">수정</button>
+								<td><button onclick="updateNameCheck()" class="btn btn-primary">수정</button>
 								</td>	
 							</tr>
 							<tr>
@@ -122,13 +121,41 @@ window.onload = function () {
 </script>
 
 <script type="text/javascript">
+
+
+function ModifySuccess() {
+	Swal.fire({
+	    icon: 'success',
+	    title: '수정이 완료되었습니다.'
+
+    })
+}
+
+function noValue() {
+	Swal.fire({
+	    icon: 'warning',
+	    title: '수정할 값을 입력해주세요.'
+
+    })
+}
+
 function updateNameCheck(){
 	var email = $("#email").val();
-	var password = $("#password").val();
+	var birth = $("#birth").val();
+	var address = $("#address_kakao").val();
+	var phone = $("#phone").val();
+	var name = $("#name").val();
+	var nickname = $("#nickname").val();
 	
 	var jsonData ={
-		"name" : name
+		"name": name,
+		"nickname": nickname,
+		"email": email,
+		"birth": birth,
+		"phone": phone,
+		"address": address
 	};
+	
 	console.log(jsonData);
 	
 		$.ajax({
@@ -138,23 +165,23 @@ function updateNameCheck(){
 			dataType : 'json', 
 			contentType : 'application/json;charset=UTF-8', 
 			 success: function(result){
-				 console.log(result);
+				 console.log(result.name)
 				 if(result == null){
-					 Swal.fire({
-						    icon: 'success',
-						    title: '로그인성공!',
-						    text: result.nickname +'님 환영합니다.'
+					 noValue();
+			
+				}else if(result.name == name){
+					Swal.fire({
+					    icon: 'warning',
+					    title: '이미 같은 이름입니다.'
 
-					    })
+				    });
+				}else if(result != null){
+					ModifySuccess();
+					
 				}
+				 
 			 		
-		  	},error : function(error) {
-		  		Swal.fire({
-				    icon: 'error',
-				    title: '로그인실패',
-				    text: '아이디와 비밀번호를 확인해주세요!'
-				  });
-			}
+		  	}
 		})
 	}
 	
