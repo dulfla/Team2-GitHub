@@ -18,15 +18,11 @@ public class ChangeMemberInfoService {
 	
 	public void changeMember(ChangeMemberInfoCommand changeCommand) {
 		
-		
-		
-		System.out.println(changeCommand.getEmail());	
-		
 		Member updateMember = new
 		Member(changeCommand.getEmail(),changeCommand.getBirth(),changeCommand.getAddress(),
 				  changeCommand.getPhone(), changeCommand.getName(),changeCommand.getNickname());
-		 
-	    dao.update(updateMember);
+		
+		dao.updateMember(updateMember);
     }
 
 	public int getEmailMember(String email) {
@@ -35,6 +31,15 @@ public class ChangeMemberInfoService {
 
 	public int getNicknameMember(String nickname) {
 		return dao.getNickName(nickname);
+	}
+
+	public void changeEmail(ChangeMemberInfoCommand changeCommand) {
+		System.out.println(changeCommand.getEmail());	
+		Member updateMember = new
+				Member(changeCommand.getEmail(),changeCommand.getBirth(),changeCommand.getAddress(),
+						  changeCommand.getPhone(), changeCommand.getName(),changeCommand.getNickname());
+		
+		dao.updateEmail(updateMember);
 	}
 	
 	

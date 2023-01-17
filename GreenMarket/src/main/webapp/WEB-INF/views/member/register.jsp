@@ -140,7 +140,7 @@ window.onload = function () {
 	});
 }
 </script>
-<script type="text/javascript" defer="defer" src="${path}resources/script/member.js"></script>
+<script type="text/javascript" defer="defer" src="${path}resources/script/register.js"></script>
 
 
 </html>

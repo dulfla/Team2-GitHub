@@ -5,16 +5,6 @@
   
 <mapper namespace="mybatis.mapper.member">	
 
-	<resultMap type="member" id="memVo">
-		<result column="email" property="email" />
-		<result column="password" property="password" />
-		<result column="birth" property="birth" />
-		<result column="address" property="address" />
-		<result column="phone" property="phone" />
-		<result column="name" property="name" />
-		<result column="nickname" property="nickname" />
-	</resultMap>
-	
 	<sql id="selectAllMember">
 		select * from member
 	</sql>
@@ -27,15 +17,6 @@
 	<select id="selectByEmail" resultType="member" parameterType="String">
 		<include refid="selectAllMember"/>
 		WHERE email=#{email}
-	</select>
-	
-	<select id="selectByName" resultMap="memVo"  parameterType="String">
-		<include refid="selectAllMember"/>
-		WHERE name=#{name}
-	</select>
-	
-	<select id="selectCount" resultType="int">
-		SELECT count(*) FROM member
 	</select>
 	
 	<select id="getNickName" resultType="int" parameterType="String">
@@ -59,8 +40,15 @@
 	<update id="updateMember" parameterType="member">
 		UPDATE member 
 		SET name =#{name},birth=#{birth},address=#{address},
-			phone=#{phone},email=#{email},nickname=#{nickname}
+			phone=#{phone},nickname=#{nickname}
 		WHERE email=#{email}
 	</update>
+	
+	<update id="updateEmail" parameterType="member">
+		UPDATE member 
+		SET email=#{email}
+		WHERE name=#{name}
+	</update>
+	
 	
 </mapper>

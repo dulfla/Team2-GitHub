@@ -37,4 +37,5 @@ public class AuthService { // 실제 로그인 기능을 담당할 객체
 		
 		return authInfo;
 	}
+	
 }

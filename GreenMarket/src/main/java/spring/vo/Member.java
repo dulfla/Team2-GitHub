@@ -99,5 +99,10 @@ public class Member {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+
+	public void changePassword(String oldPassword, String newPassword) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

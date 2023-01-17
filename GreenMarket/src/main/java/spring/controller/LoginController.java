@@ -19,6 +19,7 @@ import spring.service.AuthService;
 import spring.vaildator.LoginCommandValidator;
 import spring.vo.AuthInfo;
 import spring.vo.LoginCommand;
+import spring.vo.Member;
 
 @Controller
 public class LoginController {
@@ -48,7 +49,7 @@ public class LoginController {
 		
 		try {
 			AuthInfo authInfo = authService.authenticate(loginCommand);
-
+			
 			session.setAttribute("authInfo", authInfo);
 			result = authInfo;
 		} catch (IdPasswordNotMatchingException e) {

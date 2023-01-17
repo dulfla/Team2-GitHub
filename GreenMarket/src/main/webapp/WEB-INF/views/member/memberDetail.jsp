@@ -71,10 +71,10 @@
 	                  <td class="text-center" colspan="2">
 						<button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">회원수정</button>
 						<button onclick="location.href='memberWithDrawal'" class="btn btn-danger">회원탈퇴</button>
-						<button onclick="location.href='MemberList.jsp'" class="btn btn-warning">비밀번호 변경</button>
+						<button onclick="location.href='changePassword'" class="btn btn-warning">비밀번호 변경</button>
 						<button onclick="location.href='register'" class="btn btn-success">회원가입</button>
 	                  
-	                 	</td>    
+	                 </td>    
 	           		</tr> 
 	            </table>
 			</div>

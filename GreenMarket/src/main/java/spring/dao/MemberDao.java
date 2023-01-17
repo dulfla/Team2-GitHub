@@ -21,27 +21,16 @@ public class MemberDao {
 		this.sqlSession = sqlSession;
 	}
 	
-	public List<Member> selectAll(){
-		return sqlSession.selectList(nameSpace+"selectAll");
-	}
-	
 	public Member selectByEmail(String email) {
 		System.out.println(email);
 		return sqlSession.selectOne(nameSpace+"selectByEmail",email);	
 	}
 	
-	public Member selectByName(String name) {
-		System.out.println(name);
-		return sqlSession.selectOne(nameSpace+"selectByEmail",name);	
-	}
-	
-	
 	public void insertMember(Member m) {
 		sqlSession.insert(nameSpace+"insertMember",m);
 	}
 	
-	public void update(Member updateMember) {
-		System.out.println(updateMember.getEmail());
+	public void updateMember(Member updateMember) {
 		sqlSession.update(nameSpace+"updateMember",updateMember);
 	}
 	
@@ -53,6 +42,18 @@ public class MemberDao {
 	public int getEmail(String email) {
 		
 		return sqlSession.selectOne(nameSpace+"getEmail",email);
+	}
+
+	public void updateEmail(Member updateMember) {
+		System.out.println(updateMember.getEmail());
+		sqlSession.update(nameSpace+"updateEmail",updateMember);
+		
+	}
+
+
+	public void updatePassword(Member member) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -42,6 +42,7 @@ public class ChangeMemberInfoValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birth", "required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phone", "required");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "nickname", "required");
 		ValidationUtils.rejectIfEmpty(errors, "address", "required");
 	}
 

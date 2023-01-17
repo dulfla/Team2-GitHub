@@ -42,9 +42,9 @@ public class ChangeMemberInfoController {
 			return 2;
 		}
 		
-		changeMemberInfoService.changeMember(changeCommand);
 		
 		try {
+			changeMemberInfoService.changeMember(changeCommand);
 			return 1;
 
 		}catch (AlreadyExistingMemberException e) {
@@ -73,9 +73,9 @@ public class ChangeMemberInfoController {
 			return 2;
 		}
 		
-		changeMemberInfoService.changeMember(changeCommand);
 		
 		try {
+			changeMemberInfoService.changeMember(changeCommand);
 			return 1;
 
 		}catch (AlreadyExistingMemberException e) {
@@ -103,9 +103,9 @@ public class ChangeMemberInfoController {
 			return 2;
 		}
 		
-		changeMemberInfoService.changeMember(changeCommand);
 		
 		try {
+			changeMemberInfoService.changeMember(changeCommand);
 			return 1;
 
 		}catch (AlreadyExistingMemberException e) {
@@ -149,7 +149,7 @@ public class ChangeMemberInfoController {
 	
 	@PostMapping("updateEmail")
 	public int updateEmail(@RequestBody ChangeMemberInfoCommand changeCommand ,
-				Errors errors) {
+				Errors errors,HttpSession session) {
 		new ChangeMemberInfoValidator().validate(changeCommand, errors);
 		
 		int result = changeMemberInfoService.getEmailMember(changeCommand.getEmail());
@@ -159,9 +159,9 @@ public class ChangeMemberInfoController {
 			return 2;
 		}
 		
-		changeMemberInfoService.changeMember(changeCommand);
-		
 		try {
+			changeMemberInfoService.changeEmail(changeCommand);
+			session.invalidate();
 			return result;
 
 		}catch (AlreadyExistingMemberException e) {
@@ -173,11 +173,35 @@ public class ChangeMemberInfoController {
 	}
 	
 	@PostMapping("updateNickname")
-	public int updateNickname(@RequestBody ChangeMemberInfoCommand changeCommand) {
-		int result = changeMemberInfoService.getNicknameMember(changeCommand.getNickname());
-		changeMemberInfoService.changeMember(changeCommand);
+	public int updateNickname(@RequestBody ChangeMemberInfoCommand changeCommand, Errors errors) {
+		new ChangeMemberInfoValidator().validate(changeCommand, errors);
 		
-		return result;
+		int result = changeMemberInfoService.getNicknameMember(changeCommand.getNickname());
+		
+		if(errors.hasErrors()) {
+			// 에러 객체에 에러가 하나라도 검출이 되었다면
+			System.out.println("에러");
+			return 1;
+		}
+		
+		
+		try {
+			if(result == 1) {
+				return result;
+
+			}else {
+				changeMemberInfoService.changeMember(changeCommand);
+				System.out.println(result);
+				return result;
+			}
+			
+			
+		}catch (AlreadyExistingMemberException e) {
+			errors.rejectValue("nickname", "duplicate");
+			
+			return 1;
+		}
+		
 	}
 	
 }
