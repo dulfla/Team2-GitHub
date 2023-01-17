@@ -25,7 +25,8 @@
 				            <li><a class="dropdown-item" href="MemberStatus">회원 현황</a></li>
 				            <li><a class="dropdown-item" href="ProductStatus">게시물 현황</a></li>
 				        </ul>
-				    </li>	    	
+				    </li>
+				    <li><a href="Server" class="nav-link px-2 link-dark">서버 설정</a></li>  	
 		    	</c:if>
 		    </ul>
 	

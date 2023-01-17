@@ -24,7 +24,7 @@ import spring.vo.ChatMessageVo;
 
 public class SocketServer {
 	
-	private int max = 5;
+	private int max = 20;
 	private ServerSocket serverSocket;
 	private ExecutorService threadPool = Executors.newFixedThreadPool(max);
 	private static Map<String, Map<String, SocketClient>> chatRoom = Collections.synchronizedMap(new HashMap<>());

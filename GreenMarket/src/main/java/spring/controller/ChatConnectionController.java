@@ -1,34 +1,24 @@
 package spring.controller;
 
 import java.io.IOException;
-import java.net.Socket;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import chat.server.ChatClient;
-import chat.server.SocketClient;
 import chat.server.SocketServer;
 import spring.business.ChatService;
-import spring.vo.ChatMessageVo;
 import spring.vo.ChattingRoomBringingCommand;
-import spring.vo.MemberVo;
 
 @Controller
 public class ChatConnectionController {
@@ -36,10 +26,25 @@ public class ChatConnectionController {
 	@Autowired
 	private SocketServer ss;
 	
-	@RequestMapping("PD")
-	public String pdpage() throws IOException {
+	@RequestMapping("Server")
+	public String server() {
+		return "chat/serverOnOff";
+	}
+	
+	@ResponseBody
+	@PostMapping("ServerOpen")
+	public void serverOpen(HttpServletRequest req) throws IOException { System.out.println("연결 시도");
 		ss.start();
-		return "product/productDetail";
+		ServletContext app = req.getServletContext();
+		app.setAttribute("serverOption", "On");
+	}
+	
+	@ResponseBody
+	@PostMapping("ServerClose")
+	public void serverClose(HttpServletRequest req) throws IOException { System.out.println("종료 시도");
+		ss.stop();
+		ServletContext app = req.getServletContext();
+		app.setAttribute("serverOption", "Off");
 	}
 	
 	@Autowired
@@ -77,7 +82,7 @@ public class ChatConnectionController {
 	@PostMapping("Chat")
 	public JSONObject chattings(@RequestBody Map<String, String> map, HttpSession session) {
 		JSONObject json = new JSONObject();
-		json.put("productInfo", chatService.getProductInfo(map.get("c_id")));
+		json.put("productInfo", ""); // chatService.getProductInfo(map.get("c_id"))
 		json.put("messages", chatService.getPreviousMessages(map.get("c_id")));
 		json.put("me", map.get("email"));
 		return json;

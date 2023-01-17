@@ -19,7 +19,6 @@ import spring.dao.ChatDao;
 import spring.vo.ChatMessageVo;
 import spring.vo.ChattingRoomBringingCommand;
 import spring.vo.ChattingRoomInfoListVo;
-import spring.vo.ProductVo;
 
 @Service
 public class ChatService {
@@ -36,10 +35,6 @@ public class ChatService {
 			result = cdao.insertNewChatRoomInfo(crbc);
 		}
 		return result;
-	}
-
-	public ProductVo getProductInfo(String c) {
-		return null;
 	}
 
 	public JSONArray getPreviousMessages(String c_id) {

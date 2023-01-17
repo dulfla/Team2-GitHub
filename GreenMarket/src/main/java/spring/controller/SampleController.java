@@ -1,5 +1,6 @@
 package spring.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,11 @@ import spring.vo.CountByYearVo;
 
 @Controller
 public class SampleController {
+	
+	@RequestMapping("PD")
+	public String pdpage() throws IOException {
+		return "product/productDetail";
+	}
 	
 //--------------------------------------------------------------------------------------
 	

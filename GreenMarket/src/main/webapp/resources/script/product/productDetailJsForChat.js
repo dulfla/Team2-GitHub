@@ -55,14 +55,6 @@ window.onload = function(){
 	
 	let closeBtn = document.getElementById('closeBtn');
 	closeBtn.addEventListener('click', closeServer, false);
-	
-	
-	
-	/* 웹 소캣 테스트 */
-	const socket = new WebSocket('ws://localhost:8085');
-	socket.addEventListener('message', function(event) {
-	    console.log('Message from server ', event.data);
-	});
 }
 
 function closeServer(){ // 오프캔버스를 닫을 때 동작할 기능
@@ -81,7 +73,7 @@ function closeServer(){ // 오프캔버스를 닫을 때 동작할 기능
 
 function chattingRoom(){
 	$.ajax({
-	    url: "SelectChatRoom", /* 서버가서 만들어야 함 */
+	    url: "SelectChatRoom",
 	    type: "POST",
 	    dataType : 'json',
     	contentType : 'application/json; charset=UTF-8',
