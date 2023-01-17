@@ -3,9 +3,12 @@ package spring.vo;
 import java.util.Date;
 
 public class ChatMessageVo {
+
 	private long idx;
 	private String c_id;
-	private String Message;
+	private String message;
+	private String messType;
+	private String sender;
 	private char read;
 	private Date send_date;
 	
@@ -22,10 +25,22 @@ public class ChatMessageVo {
 		this.c_id = c_id;
 	}
 	public String getMessage() {
-		return Message;
+		return message;
 	}
 	public void setMessage(String message) {
-		Message = message;
+		this.message = message;
+	}
+	public String getMessType() {
+		return messType;
+	}
+	public void setMessType(String messType) {
+		this.messType = messType;
+	}
+	public String getSender() {
+		return sender;
+	}
+	public void setSender(String sender) {
+		this.sender = sender;
 	}
 	public char getRead() {
 		return read;

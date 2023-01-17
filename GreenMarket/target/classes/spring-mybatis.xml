@@ -39,11 +39,11 @@
 		<constructor-arg index="0" ref="sqlSessionFactory"/>
 	</bean>	
 	
-	<bean id="chatDao" class="spring.dao.ChatDao">
+	<bean id="adminDao" class="spring.dao.AdminDao">
 		<constructor-arg ref="sqlSession"/>
 	</bean>
 	
-	<bean id="adminDao" class="spring.dao.AdminDao">
+	<bean id="chatDao" class="spring.dao.ChatDao">
 		<constructor-arg ref="sqlSession"/>
 	</bean>
 

@@ -5,12 +5,17 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
+	
 	<context:component-scan base-package="spring.business"/>
+	
+	<bean id="jsonParser" class="org.json.simple.parser.JSONParser"></bean>
 	
 <!-- 
 	<bean id="jaonArr" class="org.json.simple.JSONArray"></bean>
 	<bean id="jsonObj" class="org.json.simple.JSONObject"></bean>
 -->
-	<bean id="jsonParser" class="org.json.simple.parser.JSONParser"></bean>
-
+	
+	<context:annotation-config />
+	<bean id="server" class="chat.server.SocketServer"></bean>
+	
 </beans>

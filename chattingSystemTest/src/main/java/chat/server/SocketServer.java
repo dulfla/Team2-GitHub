@@ -3,9 +3,11 @@ package chat.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -15,6 +17,10 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import chat.service.ChatService;
 import spring.dao.ChatDao;
@@ -27,8 +33,6 @@ public class SocketServer {
 	private ExecutorService threadPool = Executors.newFixedThreadPool(max);
 	private static Map<String, Map<String, SocketClient>> chatRoom = Collections.synchronizedMap(new HashMap<>());
 	
-	@Autowired
-	private SocketServer ss;
 	@Autowired
 	private ChatService cs;
 	
@@ -99,7 +103,6 @@ public class SocketServer {
 		}
 	}
 
-	
 	public ExecutorService getThreadPool() {
 		return threadPool;
 	}
