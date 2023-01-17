@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jdk.nashorn.internal.runtime.logging.Logger;
 import spring.controller.ProductController;
@@ -28,7 +29,6 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private MemberDaoImpl dao;
 	
-	
 	// 상품등록
 	@Override
 	public void productRegister(ProductVO vo, Product1VO vo1) {
@@ -44,13 +44,7 @@ public class MemberServiceImpl implements MemberService {
 			attach.setProductId(vo.getProductId());
 			
 			dao.imageRegister(attach);
-		}
-		
-		
-//		vo.getImageList().forEach(attach ->{
-//			
-//			dao.imageRegister(attach);
-//		});
+		}				
 	}
 	
 	// 카테고리
@@ -65,27 +59,49 @@ public class MemberServiceImpl implements MemberService {
 	public ProductVO productDetail(String p_id) {
 		return dao.productDetail(p_id);
 	}
-	
-	// 이미지 데이터 변환
+
 	@Override
-	public List<ProductImageVO> ProductImage(String p_id) {
+	public List<ProductImageVO> getImageList(String p_id) {	
 		
-		logger.info("getProductImage................" + p_id);
-		
-		return dao.ProductImage(p_id);
+		logger.info("getImageList");
+		return dao.getImageList(p_id);
 	}
 	
 	// 상품 수정
 	@Override
-	public void productModify(ProductVO vo) {
-		 dao.productModify(vo);	
+	public void productModify(ProductVO vo) {		
+		logger.info("상품 수정 service......................." + vo);
+		
+		dao.productModify(vo);
+		
+		if (vo.getImageList() != null && vo.getImageList().size() > 0) {
+			
+			dao.deleteImage(vo.getP_id());
+
+			for(ProductImageVO attach : vo.getImageList()) {
+			
+				attach.setP_id(vo.getP_id());
+				logger.info("deleteImageFor........" + attach);
+				dao.modifyImage(attach);
+			}	
+		}
+		
 	}
 
 	// 상품 삭제
 	@Override
 	public void productDelete(String p_id) {
+		
+		dao.deleteImage(p_id);		
 		dao.productDelete(p_id);
 	}
+	// 상품 이미지 정보 얻기
+	@Override
+	public List<ProductImageVO> getImageInfo(String p_id) {
+		logger.info("getImageInfo.............");
+		return dao.getImageInfo(p_id);
+	}
+
 
 
 

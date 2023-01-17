@@ -26,11 +26,20 @@ public interface MemberDao {
 	public ProductVO productDetail(String p_id);
 	
 	// 이미지 데이터 반환
-	public List<ProductImageVO> ProductImage(String p_id);
+	public List<ProductImageVO> getImageList(String p_id);
 	
 	// 상품 수정
 	public void productModify(ProductVO vo);
+	
+	// 상품 이미지 삭제
+	public void deleteImage(String p_id);
+	
+	// 상푸 이미지 수정 업데이트
+	public void modifyImage(ProductImageVO vo);
 
 	// 상품 삭제
 	public void productDelete(String p_id);
+	
+	// 상품 이미지 정보 얻기
+	public List<ProductImageVO> getImageInfo(String p_id);
 }

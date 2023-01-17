@@ -73,6 +73,11 @@
 		insert into productPic(p_id, fileName, uploadPath, uuid)
 		values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
 	</insert>
+	
+	<insert id="modifyPic" parameterType="ProductImageVO">
+		insert into productPic(p_id, fileName, uploadPath, uuid)
+		values (#{p_id}, #{fileName}, #{uploadPath}, #{uuid})
+	</insert>
 
 
 		<!-- 합치고 이메일을 닉네임으로 변경 (아마도 세션으로?) -->
@@ -94,12 +99,22 @@
 	
 	 
 	 <!-- 상품 삭제할때 상품상세정보를 마지막에 지워야함 -->
+	 <!-- 상품 삭제 -->
 	 <delete id="productDelete1">
 		delete product where p_id=#{p_id}
 	</delete>
+	<!-- 상품상세보기 삭제 -->
 	<delete id="productDelete">
 		delete productDetail where p_id=#{p_id}
 	</delete> 
+	<!-- 이미지 삭제 -->
+	<delete id="deleteImage">	
+		delete from productPic where p_id=#{p_id}
+	</delete>
+	
+	<select id="getImageInfo" resultType="ProductImageVO">
+		select * from productPic where p_id=#{p_id}
+	</select>
 
 	
 

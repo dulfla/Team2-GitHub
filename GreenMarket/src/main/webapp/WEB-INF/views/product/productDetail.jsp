@@ -97,16 +97,19 @@
 	  
 	  $(document).ready(function(){
 		  /* 이미지 정보 호출 */
-		  let p_id = '<c:out value="${Product.p_id}"/>';
+		  let p_id = '<c:out value="${product.p_id}"/>';
 		  let uploadResult = $("uploadResult");
 		 
 		  
-		  $.getJSON("/GreenMarket/product/productImage", {p_id : p_id}, function(arr){
+		  $.getJSON("/GreenMarket/getImageList", {p_id : p_id}, function(arr){
 			  
 			 	console.log(arr);
 			 	if(arr.length === 0){	
 				  
+			 		
+			 		
 					let str = "";
+					
 					str += "<div id='result_card'>";
 					str += "<img src='../resources/img/noImage.png'>";
 					str += "</div>";
@@ -114,7 +117,6 @@
 					//uploadResult.html(str);
 					//$("#uploadResult").append(str);
 					$("#uploadResult").html(str);
-					console.log('펑션되나2?');
 					return;
 				} 
 			  
@@ -129,7 +131,6 @@
 				str += "</div>";		
 				//uploadResult.html(str);
 				$("#uploadResult").html(str);
-				console.log('펑션되나3?');
 		  });		
 	  }); 
 	  $("#modify_Btn").click(function(){ 

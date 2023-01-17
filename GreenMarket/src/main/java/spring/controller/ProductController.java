@@ -2,12 +2,15 @@ package spring.controller;
 
 import java.awt.Graphics2D;
 
+
 import java.awt.image.BufferedImage;
 import java.io.Console;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,6 +43,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.coobird.thumbnailator.Thumbnails;
+import spring.dao.MemberDaoImpl;
 import spring.service.MemberService;
 import spring.service.MemberServiceImpl;
 import spring.vo.CategoryVO;
@@ -54,6 +58,8 @@ public class ProductController {
 
 	@Autowired
 	private MemberServiceImpl memberServiceImpl;
+	@Autowired
+	private MemberDaoImpl memberDaoImpl;
 
 	// 카테고리
 	@RequestMapping(value = "/product/register", method = RequestMethod.GET)
@@ -198,8 +204,6 @@ public class ProductController {
 	@RequestMapping(value = "/product/display", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getImage(String fileName){
 		
-		logger.info("getImage().........." + fileName);
-		
 		File file = new File("c:\\upload\\" + fileName);
 		
 		ResponseEntity<byte[]> result = null;
@@ -223,7 +227,6 @@ public class ProductController {
 	
 	@RequestMapping(value = "/product/deleteFile", method = RequestMethod.POST)
 	public ResponseEntity<String> deleteFile(String fileName){
-		logger.info("deleteFile........... " + fileName);
 		
 		File file = null;
 		
@@ -234,9 +237,7 @@ public class ProductController {
 			file.delete();
 			
 			// 원본 파일 삭제
-			String originFileName = file.getAbsolutePath().replace("s_", "");
-			
-			logger.info("originFileName : " + originFileName);
+			String originFileName = file.getAbsolutePath().replace("s_", "");			
 			
 			file = new File(originFileName);
 			
@@ -257,17 +258,10 @@ public class ProductController {
 		ProductVO product = memberServiceImpl.productDetail(p_id);
 		model.addAttribute("product", product);
 	}
-	
-	// 이미지 데이터 변환
-	@RequestMapping(value = "/product/productImage", 
-			produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
-	public ResponseEntity<List<ProductImageVO>> ProductImage(String p_id){
+	@GetMapping(value="/getImageList", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<ProductImageVO>> getImageList(String p_id){
 		
-		logger.info("ProductImage............" + p_id);
-		
-		logger.info("이미지 데이터 변환 뭐가 문제야 : " );
-		
-		return new ResponseEntity<List<ProductImageVO>>(memberServiceImpl.ProductImage(p_id), HttpStatus.OK);
+		return new ResponseEntity(memberDaoImpl.getImageList(p_id),HttpStatus.OK);	
 	}
 
 	// 상품 수정
@@ -284,8 +278,9 @@ public class ProductController {
 	@RequestMapping(value = "/product/productModify", method = RequestMethod.POST)
 	public String postProductModify(ProductVO vo) throws Exception{
 
-		 memberServiceImpl.productModify(vo);
-
+		logger.info("상품 수정 controller.................." + vo);
+		memberServiceImpl.productModify(vo);
+	
 		return "redirect:/index";
 	}
 	
@@ -293,7 +288,28 @@ public class ProductController {
 	// 상품 삭제
 	@RequestMapping(value = "/product/productDelete", method = RequestMethod.POST)
 	public String deleteProduct(@RequestParam("p_id") String p_id) throws Exception {
-
+		
+		List<ProductImageVO> fileList = memberServiceImpl.getImageInfo(p_id);
+		
+		if(fileList != null) {
+			
+			List<Path> pathList = new ArrayList();
+			
+			fileList.forEach(vo ->{
+				// 원본 이미지
+				Path path = Paths.get("C:\\upload", vo.getUploadPath(), vo.getUuid() + "_" + vo.getFileName());
+				pathList.add(path);
+				
+				// 섬네일 이미지
+				path = Paths.get("C:\\upload", vo.getUploadPath(), "s_" + vo.getUuid()+"_" + vo.getFileName());
+				pathList.add(path);
+			});
+			
+			pathList.forEach(path ->{
+				path.toFile().delete();
+			});
+		}
+		
 		memberServiceImpl.productDelete(p_id);
 
 		return "redirect:/index";
