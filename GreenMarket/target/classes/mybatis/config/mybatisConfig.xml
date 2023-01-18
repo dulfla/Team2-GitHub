@@ -16,6 +16,17 @@
 		<typeAlias type="spring.vo.CountByCategory" alias="cCategoryVo"/>
 
 		<typeAlias type="spring.vo.Member" alias="member"/>
+<<<<<<< HEAD
 		<typeAlias type="spring.vo.ChangeMemberInfoCommand" alias="changeCommand"/>
 	</typeAliases>
 </configuration>
+=======
+	</typeAliases>	 -->
+	<typeAliases>
+		<typeAlias type="spring.vo.ProductVO" alias="ProductVO"/>
+		<typeAlias type="spring.vo.Product1VO" alias="Product1VO"/>
+		<typeAlias type="spring.vo.CategoryVO" alias="CategoryVO"/>
+		<typeAlias type="spring.vo.ProductImageVO" alias="ProductImageVO"/>
+	</typeAliases>	
+</configuration>  
+>>>>>>> cfe22a4d47d37e793bfa24b2bd0fad0bec283628

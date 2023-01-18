@@ -15,4 +15,6 @@
 	<bean id="jsonObj" class="org.json.simple.JSONObject"></bean>
 -->
 	<bean id="server" class="chat.server.SocketServer"></bean>
+			
+	
 </beans>

@@ -4,6 +4,7 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+<<<<<<< HEAD
 	<context:annotation-config/>
 	<context:component-scan base-package="spring.service"/>
 	<context:component-scan base-package="spring.business"/>
@@ -16,3 +17,11 @@
 -->
 	<bean id="server" class="chat.server.SocketServer"></bean>
 </beans>
+=======
+
+	<context:component-scan base-package="spring.service"></context:component-scan>
+			
+	
+</beans>
+
+>>>>>>> cfe22a4d47d37e793bfa24b2bd0fad0bec283628

@@ -17,5 +17,10 @@
 
 		<typeAlias type="spring.vo.Member" alias="member"/>
 		<typeAlias type="spring.vo.ChangeMemberInfoCommand" alias="changeCommand"/>
+		
+		<typeAlias type="spring.vo.ProductVO" alias="ProductVO"/>
+		<typeAlias type="spring.vo.Product1VO" alias="Product1VO"/>
+		<typeAlias type="spring.vo.CategoryVO" alias="CategoryVO"/>
+		<typeAlias type="spring.vo.ProductImageVO" alias="ProductImageVO"/>
 	</typeAliases>
 </configuration>
