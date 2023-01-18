@@ -15,7 +15,7 @@ import spring.vo.ProductImageVO;
 import spring.vo.ProductVO;
 
 @Repository
-public class MemberDaoImpl implements MemberDao{
+public class MemberDaoImpl implements MemberDaoInterface{
 	
 	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(MemberDaoImpl.class);
 

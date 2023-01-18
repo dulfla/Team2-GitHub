@@ -38,7 +38,6 @@
 	</insert>
 	
 	<update id="updateMember" parameterType="member">
-<<<<<<< HEAD
 		UPDATE member 
 		SET name =#{name},birth=#{birth},address=#{address},
 			phone=#{phone},nickname=#{nickname}
@@ -57,12 +56,6 @@
 		WHERE email=#{email}
 	</update>
 	
-	
-=======
-		UPDATE member
-		SET name=#{name}, password=#{password} 
-		WHERE email =#{email}
-	</update> -->
 	<select id="category" resultType="CategoryVO">
 		select category from category
 	</select>
@@ -126,8 +119,4 @@
 	<select id="getImageInfo" resultType="ProductImageVO">
 		select * from productPic where p_id=#{p_id}
 	</select>
-
-	
-
->>>>>>> cfe22a4d47d37e793bfa24b2bd0fad0bec283628
 </mapper>

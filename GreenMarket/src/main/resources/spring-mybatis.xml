@@ -45,6 +45,7 @@
 	
 	<bean id="chatDao" class="spring.dao.ChatDao">
 		<constructor-arg ref="sqlSession"/>
+	</bean>
 		
 	<bean id="memberDaoImpl" class="spring.dao.MemberDaoImpl">
 		<property name="sqlSession" ref="sqlSession" />

@@ -5,7 +5,6 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-<<<<<<< HEAD
 	<context:component-scan base-package="spring.controller"/>
 	
 	<!-- 확인 필요 -->
@@ -24,7 +23,4 @@
 	
 	<bean id="ChangePasswordController" class="spring.controller.ChangePasswordController"/>
  -->
-=======
-	<context:component-scan base-package="spring.controller"></context:component-scan>
->>>>>>> cfe22a4d47d37e793bfa24b2bd0fad0bec283628
 </beans>

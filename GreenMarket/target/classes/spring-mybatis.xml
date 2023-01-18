@@ -38,7 +38,6 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory"/>
 	</bean>	
-<<<<<<< HEAD
 	
 	<bean id="adminDao" class="spring.dao.AdminDao">
 		<constructor-arg ref="sqlSession"/>
@@ -46,10 +45,10 @@
 	
 	<bean id="chatDao" class="spring.dao.ChatDao">
 		<constructor-arg ref="sqlSession"/>
-=======
-	<bean id="memberDao" class="spring.dao.MemberDaoImpl">
+	</bean>
+		
+	<bean id="memberDaoImpl" class="spring.dao.MemberDaoImpl">
 		<property name="sqlSession" ref="sqlSession" />
->>>>>>> cfe22a4d47d37e793bfa24b2bd0fad0bec283628
 	</bean>
 
 	<!-- 네번째 빈 : MemberDao -->

@@ -16,9 +16,7 @@
 	
 	
 	<dependencies>
-<<<<<<< HEAD
 		<!-- 마이바티스 -->
-=======
 		<!-- Quartz (배치 프로그램 환경설정) -->
 		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz-jobs -->
 		<dependency>
@@ -65,7 +63,6 @@
 		    <version>2.12.1</version>
 		</dependency>		
 		<!-- 마이바이스 -->
->>>>>>> cfe22a4d47d37e793bfa24b2bd0fad0bec283628
 		<dependency>
 		    <groupId>org.mybatis</groupId>
 		    <artifactId>mybatis</artifactId>
