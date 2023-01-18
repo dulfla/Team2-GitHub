@@ -7,6 +7,7 @@
 
 	<context:component-scan base-package="spring.controller"/>
 	
+<<<<<<< HEAD
 	<!-- 확인 필요 -->
 <!-- 
 	<context:annotation-config/>
@@ -23,4 +24,6 @@
 	
 	<bean id="ChangePasswordController" class="spring.controller.ChangePasswordController"/>
  -->
+=======
+>>>>>>> 6ceef483497810d1584f85698742269024ce2f66
 </beans>

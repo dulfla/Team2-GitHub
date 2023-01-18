@@ -7,6 +7,7 @@
 	</configSuffixes>
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
+<<<<<<< HEAD
 		<config>src/main/resources/mybatis/mapper/admin.xml</config>
 	</configs>
 	<autoconfigs>
@@ -20,6 +21,10 @@
 	</configs>
 	<autoconfigs>
 >>>>>>> cfe22a4d47d37e793bfa24b2bd0fad0bec283628
+=======
+	</configs>
+	<autoconfigs>
+>>>>>>> 6ceef483497810d1584f85698742269024ce2f66
 	</autoconfigs>
 	<configSets>
 	</configSets>

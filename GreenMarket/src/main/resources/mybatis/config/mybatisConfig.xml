@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+<<<<<<< HEAD
 	<typeAliases>
 		<typeAlias type="spring.vo.ChattingRoomInfoListVo" alias="chattingRoomInfosVo"/>
 		<typeAlias type="spring.vo.ChattingRoomBringingCommand" alias="chatRoomSearchInfoVo"/>
@@ -22,5 +23,8 @@
 		<typeAlias type="spring.vo.Product1VO" alias="Product1VO"/>
 		<typeAlias type="spring.vo.CategoryVO" alias="CategoryVO"/>
 		<typeAlias type="spring.vo.ProductImageVO" alias="ProductImageVO"/>
+		
+		<typeAlias type="spring.vo.ProductListVO" alias="pListVO"/>		
+		<typeAlias type="spring.vo.ProductSellListVO" alias="psListVO"/>
 	</typeAliases>
 </configuration>
