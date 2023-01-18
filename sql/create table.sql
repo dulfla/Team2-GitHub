@@ -7,7 +7,6 @@ DROP TABLE search CASCADE CONSTRAINTS;
 DROP TABLE product CASCADE CONSTRAINTS;
 DROP TABLE productDetail CASCADE CONSTRAINTS;
 DROP TABLE productPic CASCADE CONSTRAINTS;
-DROP TABLE PicDetail CASCADE CONSTRAINTS;
 DROP TABLE category CASCADE CONSTRAINTS;
 DROP TABLE chatInfomation CASCADE CONSTRAINTS;
 DROP TABLE chatMessage CASCADE CONSTRAINTS;
@@ -20,7 +19,6 @@ DROP SEQUENCE memberTracking_seq;
 DROP SEQUENCE ;
 DROP SEQUENCE pid_seq;
 DROP SEQUENCE product_seq;
-DROP SEQUENCE fid_seq;
 DROP SEQUENCE picture_seq
 DROP SEQUENCE sampleMessage_seq;
 DROP SEQUENCE chatMessage_seq;
@@ -34,7 +32,6 @@ CREATE SEQUENCE memberTracking_seq START WITH 1 NOCYCLE NOCACHE; -- memberHistor
 CREATE SEQUENCE ; -- search(idx) - 샘플데이터 3개
 CREATE SEQUENCE pid_seq START WITH 6 NOCYCLE NOCACHE; -- productDetail(p_id) - 샘플데이터 5개
 CREATE SEQUENCE product_seq START WITH 6 NOCYCLE NOCACHE; -- product(idx) - 샘플데이터 5개
-CREATE SEQUENCE fid_seq START WITH 1 NOCYCLE NOCACHE; -- PicDetail(f_id)
 CREATE SEQUENCE picture_seq START WITH 1 NOCYCLE NOCACHE; -- productPic(idx)
 CREATE SEQUENCE productTracking_seq START WITH 1 NOCYCLE NOCACHE; -- productHistory(idx)
 CREATE SEQUENCE chatInfomation_seq START WITH 3 NOCACHE NOCYCLE; -- chatInfomation(c_id) - 샘플데이터 2개
@@ -98,18 +95,11 @@ CREATE TABLE productDetail(
 );
 
 CREATE TABLE productPic(
-    idx number,
-    p_id varchar2(10) NOT NULL,
-    f_id varchar2(10) NOT NULL,
-    CONSTRAINT  productPic_pk_idx PRIMARY KEY(idx)
-);
-
-CREATE TABLE PicDetail(
-    f_id varchar2(10),
-    f_type varchar2(50) NOT NULL,
-    f_origin_name nvarchar2(250) NOT NULL,
-    f_proxy_name nvarchar2(250) NOT NULL,
-    CONSTRAINT  PicDetail_pk_f_id PRIMARY KEY(f_id)
+    p_id varchar2(10),
+    fileName nvarchar2(250) NOT NULL,
+    uploadPath varchar2(250) NOT NULL,
+    uuid nvarchar2(250),
+    CONSTRAINT  productPic_pk_uuid PRIMARY KEY(uuid)
 );
 
 CREATE TABLE category(
@@ -181,9 +171,7 @@ ADD CONSTRAINT productDetail_fk_category FOREIGN KEY(category) REFERENCES catego
 
 -- 상품 사진 fk 추가
 ALTER TABLE productPic
-ADD CONSTRAINT productPic_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) ON DELETE CASCADE;
-ALTER TABLE productPic
-ADD CONSTRAINT productPic_fk_f_id FOREIGN KEY(f_id) REFERENCES picDetail(f_id) ON DELETE CASCADE;
+ADD CONSTRAINT productPic_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id);
 
 -- 채팅방 fk 추가
 ALTER TABLE chatInfomation
@@ -398,7 +386,6 @@ SELECT * FROM MEMBER;
 SELECT * FROM PRODUCT;
 SELECT * FROM PRODUCTDETAIL;
 SELECT * FROM PRODUCTPIC;
-SELECT * FROM PICDETAIL;
 SELECT * FROM CATEGORY;
 
 SELECT * FROM CHATINFOMATION;
