@@ -13,48 +13,52 @@ let personalId; /* 임시 */
 
 window.onload = function(){
 	offCanvas = document.getElementById('offcanvasRight');
-	memberType = document.getElementById('offcanvasRight').getAttribute('type'); // 들어온 사람이 판매자 본인인지 다른 회원(구매 희망자 이하 구매자)인지 구분
-	productId = "pid2"; /* 임시 */ // document.getElementById('').value;
-	chatRoomId = null;
-
-	if(memberType=='buy'){ // 첫 접속에 메세지 박스가 있으려면 일단 구매자여야 함
-		roomBox = null;
-		messageBox = document.getElementById('messageBox');
-		messageBox.innerHTML = null;
-		msg = document.getElementsByName('message')[0];
-	}else if(memberType=='sell'){
-		messageBox = null;
-		roomBox = document.getElementById('chattingRooms');
-		roomBox.innerHTML = null;
-		offCanvas.classList.add('chattingRooms');
-	}
-
-	window.onbeforeunload = function(event) { // 페이지 새로 고침, 창 닫기 시 채팅 서버랑 연결되어 있다면 해당 연결 끊기
-		event.preventDefault();
-		closeServer();
-	};
-
-	document.addEventListener('click', (e) => { // 오프캔버스를 닫을 경우 서버와 연결 끊기
-		let activeE = document.activeElement;
-		let body = document.getElementsByTagName('body')[0];
-		if(activeE==body){
-			closeServer();
+	if(offCanvas){
+		memberType = document.getElementById('offcanvasRight').getAttribute('type'); // 들어온 사람이 판매자 본인인지 다른 회원(구매 희망자 이하 구매자)인지 구분
+		productId = "pid2"; /* 임시 */ // document.getElementById('').value;
+		chatRoomId = null;
+		
+		if(memberType=='buy'){ // 첫 접속에 메세지 박스가 있으려면 일단 구매자여야 함
+			roomBox = null;
+			messageBox = document.getElementById('messageBox');
+			messageBox.innerHTML = null;
+			msg = document.getElementsByName('message')[0];
+		}else if(memberType=='sell'){
+			messageBox = null;
+			roomBox = document.getElementById('chattingRooms');
+			roomBox.innerHTML = null;
+			offCanvas.classList.add('chattingRooms');
 		}
-	}, false);
-
-
-	let startBtn = document.getElementById('openChattingBtn');
-	startBtn.addEventListener('click', function (){ // 채팅 버튼을 클릭 했을 때 오프캔버스에 띄울 기능
-		personalId = document.getElementById('email').value; /* 임시 */ console.log('현재 로그인 : '+personalId)
-		if(memberType=='buy'){ // 구매자라면 바로 채팅기능으로 넘기기
-			chatting();
-		}else if(memberType=='sell'){ // 판매자라면 해당 상품에 대한 모든 채팅방을 먼저 보여주고 해당 채팅방에서 골라 들어가게 작성
-			chattingRoom();
-		}
-	}, false);
 	
-	let closeBtn = document.getElementById('closeBtn');
-	closeBtn.addEventListener('click', closeServer, false);
+		window.onbeforeunload = function(event) { // 페이지 새로 고침, 창 닫기 시 채팅 서버랑 연결되어 있다면 해당 연결 끊기
+			event.preventDefault();
+			closeServer();
+		};
+	
+		document.addEventListener('click', (e) => { // 오프캔버스를 닫을 경우 서버와 연결 끊기
+			let activeE = document.activeElement;
+			let body = document.getElementsByTagName('body')[0];
+			if(activeE==body){
+				closeServer();
+			}
+		}, false);
+	
+	
+		let startBtn = document.getElementById('openChattingBtn');
+		startBtn.addEventListener('click', function (){ // 채팅 버튼을 클릭 했을 때 오프캔버스에 띄울 기능
+			personalId = document.getElementById('userEmail').value; /* 임시 */ console.log('현재 로그인 : '+personalId)
+			if(memberType=='buy'){ // 구매자라면 바로 채팅기능으로 넘기기
+				chatting();
+			}else if(memberType=='sell'){ // 판매자라면 해당 상품에 대한 모든 채팅방을 먼저 보여주고 해당 채팅방에서 골라 들어가게 작성
+				chattingRoom();
+			}
+		}, false);
+		
+		let closeBtn = document.getElementById('closeBtn');
+		closeBtn.addEventListener('click', closeServer, false);
+	}else{
+		console.log('로그인 안함')
+	}
 }
 
 function closeServer(){ // 오프캔버스를 닫을 때 동작할 기능

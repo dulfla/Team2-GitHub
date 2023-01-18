@@ -1,4 +1,4 @@
-package spring.business;
+package spring.service;
 
 import java.io.IOException;
 import java.util.Collection;

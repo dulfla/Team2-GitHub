@@ -20,7 +20,7 @@ import spring.dao.ChatDao;
 import spring.vo.CountByYearVo;
 
 @Controller
-public class SampleController {
+public class AdminController {
 	
 	@RequestMapping("PD")
 	public String pdpage() throws IOException {

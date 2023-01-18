@@ -51,7 +51,6 @@
 		<property name="sqlSession" ref="sqlSession" />
 	</bean>
 
-	<!-- 네번째 빈 : MemberDao -->
 	<bean id="memberDao" class="spring.dao.MemberDao">
 		<property name="sqlSession" ref="sqlSession"/>
 	</bean>

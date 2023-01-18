@@ -7,13 +7,8 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import spring.business.ChatService;
-import spring.dao.ChatDao;
+import spring.service.ChatService;
 import spring.vo.ChatMessageVo;
 
 public class SocketClient {

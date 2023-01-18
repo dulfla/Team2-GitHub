@@ -51,32 +51,6 @@
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
-<%-- 	<div id="container" class="container">
-		<div class="page">
-			<button type="button" id="first" class="index bg-light">회원수 추이</button>
-		    <div class="position-relative data bg-light">
-		        <canvas id="memberAdminByYear"></canvas>
-		    </div>
-		</div>
-		<div class="page">
-			<button type="button" id="second" class="index bg-light">년도별 탈퇴건수</button>
-		    <div class="position-relative data bg-light">
-		        <canvas id="withdrawByYear"></canvas>
-		    </div>
-		</div>
-		<div class="page">
-			<button type="button" id="third" class="index bg-light">월별 가입/탈퇴</button>
-		    <div class="position-relative data bg-light">
-		    	<select class="form-select position-absolute top-0 end-0 m-3" id="selectYear_memberAdminByMonth" style="width:15%">
-		    		<option value="default">==선택==</option>
-		    		<c:forEach items="${memberAdmin['memberAdmin'][0]['countByYear'][0]['years']}" var="year" varStatus="c">
-			    		<option value="${c.index}">${year}</option>
-		    		</c:forEach>
-		    	</select>
-		        <canvas id="memberAdminByMonth"></canvas>
-			</div>
-		</div>
-	</div> --%>
  	<div id="container" class="container">
 	    <div class="position-relative chart-container">
 	        <canvas id="memberAdminByYear"></canvas>

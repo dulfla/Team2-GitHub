@@ -12,17 +12,13 @@
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="${path}resources/script/chat/chattingRoom.js"></script>
 <script src="${path}resources/script/product/productDetailJsForChat.js"></script>
+
 <link rel="stylesheet" href="${path}resources/style/basicStryle.css">
 <link rel="stylesheet" href="${path}resources/style/chattingStyle.css">
 
-<%-- <script src="${path}resources/script/product/productDetailJsForChat.js"></script> --%>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
 <style type="text/css">
-	#container{
-		width:100%;
-		height:100vh;
-	}
 	#result_card img{
 		max-width: 100%;
 	    height: auto;
@@ -101,10 +97,12 @@
 			
 			</form>
 		
-		<button onclick="chatting()">채팅하기</button>
-		
+		<button id="openChattingBtn" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+			채팅하기
+		</button>
+		<input type="hidden" placeholder="email" name="email" id="userEmail" value="${authInfo.email}">
+		<%@ include file="../include/chat.jsp" %>
 	</div>
-	<%@ include file="../include/chat.jsp" %>
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script>

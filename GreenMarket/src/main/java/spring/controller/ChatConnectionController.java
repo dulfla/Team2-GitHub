@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import chat.server.ChatClient;
 import chat.server.SocketServer;
-import spring.business.ChatService;
+import spring.service.ChatService;
 import spring.vo.ChattingRoomBringingCommand;
 
 @Controller

@@ -101,16 +101,5 @@ public class MemberServiceImpl implements MemberService {
 		logger.info("getImageInfo.............");
 		return dao.getImageInfo(p_id);
 	}
-
-
-
-
-
-
-
-
-
-
-	
 	
 }

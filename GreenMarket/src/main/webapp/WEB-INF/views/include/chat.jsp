@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <c:choose>
-	<c:when test="${!empty authInfo}"></c:when> <%-- ${empty authInfo} --%>
+	<c:when test="${empty authInfo}"></c:when> <%-- empty authInfo} --%>
 	<c:otherwise>
 		<c:choose>
-			<c:when test="${!empty authInfo}"> <%-- ${! authInfo.email eq Product.email} --%>
+			<c:when test="${empty authInfo}"> <%-- ! authInfo.email eq product.email --%>
 				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" type="buy">
 					<div class="offcanvas-header">
 					  	<div class="p-0 col-3">
@@ -27,7 +27,7 @@
 					</div>
 				</div>
 			</c:when>
-			<c:when test="${empty authInfo}"> <%-- ${authInfo.email eq Product.email} --%>
+			<c:when test="${! empty authInfo}"> <%-- authInfo.email eq product.email --%>
 				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" type="sell">
 					<div class="offcanvas-header">
 					  	<div class="p-0 col-3">
