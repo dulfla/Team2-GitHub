@@ -11,6 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <%-- <script src="${path}resources/script/product/productDetailJsForChat.js"></script> --%>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
 <style type="text/css">
 	#container{
 		width:100%;
@@ -78,6 +79,13 @@
 																										
 				</div>
             </div>
+            
+            <div class="inputArea">
+            	 <div class="inputArea_title">
+		            <label>직거래 위치</label>
+		        </div>
+            	<div id="map" style="width:350px;height:350px;"></div>
+            </div>
 			
 			<!-- 작성자, 관리자만 보이도록 수정 해야됨 -->
 			<div class="inputArea">
@@ -93,6 +101,33 @@
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script>
+	
+	
+	
+	
+
+	/* ============================================================= */
+	
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new kakao.maps.LatLng(37.267868108956456, 127.00053552238002), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	
+	// 마커가 표시될 위치입니다 
+	var markerPosition  = new kakao.maps.LatLng(37.267868108956456, 127.00053552238002); 
+	
+	// 마커를 생성합니다
+	var marker = new kakao.maps.Marker({
+	    position: markerPosition
+	});
+	
+	// 마커가 지도 위에 표시되도록 설정합니다
+	marker.setMap(map);
+	
+	
 	  var formObj = $("form[role='form']");
 	  
 	  $(document).ready(function(){
