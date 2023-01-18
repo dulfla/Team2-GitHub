@@ -5,7 +5,7 @@
 	<!--  SQL 쿼리 문장 -->
 <!--	<logger name="jdbc.sqlonly" additivity="false"> 
 	    <level value="info"/> 
-	    <appender-ref ref="console"/> 
+	    <appender-ref ref="console"/>
 	</logger> -->
 	<!-- SQL 결과 조회된 데이터의 table을 로그 -->
 <!--	<logger name="jdbc.resultsettable" additivity="false"> 

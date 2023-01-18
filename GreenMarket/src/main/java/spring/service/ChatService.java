@@ -37,19 +37,8 @@ public class ChatService {
 		return result;
 	}
 
-	public JSONArray getPreviousMessages(String c_id) {
-		List<ChatMessageVo> messageList = cdao.selectAllMessagesInChatRoom(c_id);
-		JSONArray arr = new JSONArray();
-		for(int i=0; i<messageList.size(); i++) {
-			JSONObject json = new JSONObject();
-			json.put("message", messageList.get(i).getMessage());
-			json.put("messType", messageList.get(i).getMessType());
-			json.put("sender", messageList.get(i).getSender());
-			json.put("read", messageList.get(i).getRead());
-			json.put("send_date", messageList.get(i).getSend_date());
-			arr.put(json);
-		}
-		return arr;
+	public List<ChatMessageVo> getPreviousMessages(String c_id) {
+		return cdao.selectAllMessagesInChatRoom(c_id);
 	}
 
 	public void connection(ChatClient client, String c_id, String email) throws IOException {

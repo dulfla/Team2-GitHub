@@ -85,17 +85,17 @@ function chattingRoom(){
     		p_id : productId,
     		email : personalId /* 임시 */
     	}),
-	    error: function() {
+	    error: function(data) {
+	    	console.log(JSON.stringify(data));
 	    	console.log('통신실패!!');
 	    },
 	    success: function(data) { // 채팅방 리스트 보여주기
 	    	if(data!=null){
-				let room = data.map.chattingRoomList.myArrayList;
-				room.forEach((r) => {
+				data.forEach((r) => {
 					let aT = document.createElement('a');
 					aT.classList.add('list-group-item', 'list-group-item-action', 'd-flex', 'gap-3', 'py-3');
 					aT.setAttribute('aria-current', true);
-					aT.setAttribute('connection', r.map.c_id);
+					aT.setAttribute('connection', r.c_id);
 
 					let imgT = document.createElement('img');
 					imgT.setAttribute('src', 'https://github.com/twbs.png');
@@ -247,7 +247,6 @@ function openChatting(e){
 }
 
 function msgNullcheck(){
-	console.log("msg.value : "+msg.value);
 	if(msg.value!=null && msg.value!=""){
 		sendMessage();
 	}
@@ -263,18 +262,18 @@ function chatting(){ // 채팅방 연결 - 채팅방이 있으면 해당 채팅�
 	$.ajax({
 	    url: "ChatRoomCheck",
 	    type: "POST",
-	    dataType : 'json',
+	    dataType : 'text',
     	contentType : 'application/json; charset=UTF-8',
     	data : JSON.stringify({ // 연결할 채팅방 아이디 확인
     		p_id : productId,
     		email : personalId /* 임시 */
     	}),
-	    error: function() {
+	    error: function(){
 	    	console.log('통신실패!!');
 	    },
 	    success: function(data) { // 채팅방으로 연결
 	    	if(data!=null){
-	    		chatRoomId = data.map.chattingRoomId;
+	    		chatRoomId = data;
 	    		connecteToSocket();
 	    	}
 	    }
@@ -285,7 +284,7 @@ function connecteToSocket(){ // 채팅 서버 연결
 	$.ajax({
 		url : "ConnecteWithClientServer",
 		type : "POST",
-	    dataType : 'json',
+	    dataType : 'text',
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
 			c_id : chatRoomId, 
@@ -313,20 +312,20 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 			c_id : chatRoomId, 
 			email : personalId /* 임시 */
 		}),
-		error:function(){  
+		error:function(){
 			console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
 		},
 		success:function(messages){
-			let msgL = messages.map.messages.myArrayList;
+			let msgL = messages.messages;
 			msgL.forEach((m) => {
-				if(m.map.sender == personalId){ /* 임시 */
+				if(m.sender == personalId){ /* 임시 */
 					let myText = document.createElement('div');
 					myText.classList.add('messageBox', 'myMessageBox');
 					
 					let myMessage = document.createElement('p');
 					myMessage.classList.add('message', 'send');
 					
-					myMessage.innerHTML = m.map.message;
+					myMessage.innerHTML = m.message;
 				
 					myText.appendChild(myMessage);
 					messageBox.appendChild(myText);
@@ -337,7 +336,7 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 					let sendingMessage = document.createElement('p');
 					sendingMessage.classList.add('message', 'recive');
 					
-					sendingMessage.innerHTML = m.map.message;
+					sendingMessage.innerHTML = m.message;
 					
 					reciveText.appendChild(sendingMessage);
 					messageBox.appendChild(reciveText);

@@ -1,6 +1,9 @@
 package spring.controller;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -19,6 +22,7 @@ import chat.server.ChatClient;
 import chat.server.SocketServer;
 import spring.service.ChatService;
 import spring.vo.ChattingRoomBringingCommand;
+import spring.vo.ChattingRoomInfoListVo;
 
 @Controller
 public class ChatConnectionController {
@@ -50,24 +54,29 @@ public class ChatConnectionController {
 	@Autowired
 	private ChatService chatService;
 	
+//	@ResponseBody
+//	@PostMapping("SelectChatRoom")
+//	public JSONObject bringingChatRoomByPId(@RequestBody Map<String, String> map) {
+//		JSONObject json = new JSONObject();
+//		json.put("chattingRoomList", chatService.selectChatRoomInfoByPId(map.get("p_id")));
+//		System.out.println(json);
+//		return json;
+//	}
+	
 	@ResponseBody
 	@PostMapping("SelectChatRoom")
-	public JSONObject bringingChatRoomByPId(@RequestBody Map<String, String> map) {
-		JSONObject json = new JSONObject();
-		json.put("chattingRoomList", chatService.selectChatRoomInfoByPId(map.get("p_id")));
-		return json;
+	public Collection<ChattingRoomInfoListVo> bringingChatRoomByPId(@RequestBody Map<String, String> map) {
+		return chatService.selectChatRoomInfoByPId(map.get("p_id"));
 	}
 	
 	@ResponseBody
 	@PostMapping("ChatRoomCheck")
-	public JSONObject bringingChatRoomInfo(@RequestBody Map<String, String> map, HttpSession session) {
+	public String bringingChatRoomInfo(@RequestBody Map<String, String> map, HttpSession session) {
 		ChattingRoomBringingCommand crbc = new ChattingRoomBringingCommand();
 		crbc.setP_id(map.get("p_id"));
 		crbc.setEmail(map.get("email")); // ((MemberVo)session.getAttribute("authInfo")).getEmail()
 		
-		JSONObject json = new JSONObject();
-		json.put("chattingRoomId", chatService.checkOutChattingRoom(crbc));
-		return json;
+		return chatService.checkOutChattingRoom(crbc);
 	}
 	
 	@ResponseBody
@@ -80,12 +89,12 @@ public class ChatConnectionController {
 	
 	@ResponseBody	
 	@PostMapping("Chat")
-	public JSONObject chattings(@RequestBody Map<String, String> map, HttpSession session) {
-		JSONObject json = new JSONObject();
-		json.put("productInfo", ""); // chatService.getProductInfo(map.get("c_id"))
-		json.put("messages", chatService.getPreviousMessages(map.get("c_id")));
-		json.put("me", map.get("email"));
-		return json;
+	public Map<String, Object> chattings(@RequestBody Map<String, String> map, HttpSession session) {
+		Map<String, Object> msgList = new HashMap<>();
+		msgList.put("productInfo", null); // chatService.getProductInfo(map.get("c_id"))
+		msgList.put("messages", chatService.getPreviousMessages(map.get("c_id")));
+		msgList.put("me", map.get("email"));
+		return msgList;
 	}
 	
 	@ResponseBody

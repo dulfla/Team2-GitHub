@@ -16,7 +16,6 @@
  
 </head>
 <body>
-	<button onclick="location.href='sample2'">이동하기</button>
     <input type="text" id="message" />
     <input type="button" id="sendBtn" value="submit"/>
     <div id="messageArea"></div>

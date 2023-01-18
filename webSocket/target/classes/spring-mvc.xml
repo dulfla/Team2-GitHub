@@ -16,4 +16,6 @@
 	<mvc:view-controller path="/Main" view-name="sample"/>
 	<mvc:view-controller path="/" view-name="sample"/>
 
+	<bean id="asdf" class="controller.Xontroller"></bean>
+
 </beans>

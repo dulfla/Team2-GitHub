@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+${authInfo.email}, ${product.email}
 <c:choose>
-	<c:when test="${empty authInfo}"></c:when> <%-- empty authInfo} --%>
+	<c:when test="${empty authInfo}"></c:when> <%-- empty authInfo --%>
 	<c:otherwise>
 		<c:choose>
-			<c:when test="${empty authInfo}"> <%-- ! authInfo.email eq product.email --%>
+			<c:when test="${! (authInfo.email eq product.email)}"> <%-- empty authInfo --%><%-- ! authInfo.email eq product.email --%>
 				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" type="buy">
 					<div class="offcanvas-header">
 					  	<div class="p-0 col-3">
@@ -27,15 +28,15 @@
 					</div>
 				</div>
 			</c:when>
-			<c:when test="${! empty authInfo}"> <%-- authInfo.email eq product.email --%>
+			<c:when test="${authInfo.email eq product.email}"> <%-- ! empty authInfo --%><%-- authInfo.email eq product.email --%>
 				<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" type="sell">
 					<div class="offcanvas-header">
 					  	<div class="p-0 col-3">
 							<img class="rounded-circle" src="" alt="${product.p_name} 사진"> <%-- ${path}resources/img/sample.jpg --%>
 						</div>
 						<div class="col-8 mt-2" class="offcanvas-title" id="offcanvasScrollingLabel">
-							<h2>${product.p_name} 상품명</h2>
-							<p>${product.p_name} 상품 설명</p>
+							<h2>${product.p_name}</h2>
+							<p>판매자 : ${product.email}</p>
 						</div>
 					  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeBtn"></button>
 					</div>
