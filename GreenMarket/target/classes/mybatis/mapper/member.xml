@@ -50,5 +50,11 @@
 		WHERE name=#{name}
 	</update>
 	
+	<update id="updatePassword" parameterType="member">
+		UPDATE member 
+		SET password=#{password}
+		WHERE email=#{email}
+	</update>
+	
 	
 </mapper>

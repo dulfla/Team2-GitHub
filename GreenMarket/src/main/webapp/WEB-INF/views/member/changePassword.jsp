@@ -30,7 +30,7 @@
 		body {
 			min-height: 100vh;
 		}
-		button{
+		.button{
 			width: 600px;
 		}
 		.input-form {
@@ -56,19 +56,18 @@
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
 				<h4 class="mb-3">비밀번호 변경</h4>
-					<form:form class="validation-form" novalidate="novalidate">
 					<div class="mb-3">
 						<label for="currentPassword">현재 비밀번호</label> <input type="password" class="form-control" id="currentPassword"
 							name="currentPassword" oninput="checkPwd()" required>
 					</div>
 					
 					<div class="mb-3">
-						<label for="password">새 비밀번호</label> <input type="password" class="form-control" id="password"
-							name="password" oninput="checkPwd()" required>
+						<label for="newPassword">새 비밀번호</label> <input type="password" class="form-control" id="newPassword"
+							name="newPassword" oninput="checkPwd()" required>
 					</div>
 					<div class="mb-3">
-						<label for="confirmPassword">새 비밀번호 확인</label> <input type="password" class="form-control"
-							id="confirmPassword" name="confirmPassword" oninput="checkPwd()" required>
+						<label for="newPassword2">새 비밀번호 확인</label> <input type="password" class="form-control"
+							id="newPassword2" name="newPassword2" oninput="checkPwd()" required>
 						<div>
 							<span id="result_checkPwd" style="font-size: 14px;"></span>
 							<input type="hidden" id="result_checkPwd2" value="">
@@ -76,9 +75,8 @@
 					</div>
 
 					<div class="mb-3">
-						<button class="btn btn-primary btn-lg btn-block" type="button" onclick="changePasswordCheck()">변경하기</button>
+						<button class="btn btn-primary btn-lg btn-block button" type="button" onclick="changePasswordCheck()">변경하기</button>
 					</div>
-				</form:form>	
 			</div>
 		</div>
 	</div>
@@ -86,14 +84,16 @@
 <script type="text/javascript">
 
 function changePasswordCheck() {
-	var password = $('#password').val();
-	var confirmPassword = $('#confirmPassword').val();
-
-	var jsonData = {
-		"password": password,
-		"confirmPassword": confirmPassword
-	};
+	var currentPassword = $('#currentPassword').val();
+	var newPassword = $('#newPassword').val();
+	var newPassword2 = $('#newPassword2').val();
 	
+	var jsonData = {
+		"currentPassword" : currentPassword,	
+		"newPassword": newPassword,
+		"newPassword2": newPassword2
+	};
+	console.log(currentPassword);
 	$.ajax({
 		type: "POST",
 		url: "changePasswordPost",
@@ -101,12 +101,19 @@ function changePasswordCheck() {
 		dataType: 'json',
 		contentType: 'application/json;charset=UTF-8',
 		success: function (result) {
-			console.log(password);
-			console.log(confirmPassword);
+			console.log(result);
 			if (result == 1) {
-				
+				Swal.fire({
+				    icon: 'error',
+				    title: '비밀번호가 일치하지 않습니다.'
+
+			    })
 			} else {
- 
+				Swal.fire({
+				    icon: 'success',
+				    title: '수정이 완료되었습니다.'
+
+			    })
 			}
 
 
@@ -115,30 +122,26 @@ function changePasswordCheck() {
 }
 
 function checkPwd() {
-	var password = $('#password').val();
-	var confirmPassword = $('#confirmPassword').val();
-	const check = document.getElementById("result_checkPwd2");
-
-	const pwdCheck = document.getElementsByClassName('form-control')[4];
-	const pwdCheck2 = document.getElementsByClassName('form-control')[5];
+	var newPassword = $('#newPassword').val();
+	var newPassword2 = $('#newPassword2').val();
 
 	var jsonData = {
-		"password": password,
-		"confirmPassword": confirmPassword
+		"newPassword": newPassword,
+		"newPassword2": newPassword2
 	};
 
 	$.ajax({
 		type: "POST",
-		url: "confirmPassword",
+		url: "updateConfirmPassword",
 		data: JSON.stringify(jsonData),
 		dataType: 'json',
 		contentType: 'application/json;charset=UTF-8',
 		success: function (result) {
-			console.log(password);
-			console.log(confirmPassword);
+			console.log(newPassword);
+			console.log(newPassword2);
 			if (result == 1) {
 				
-				if (confirmPassword == '') {
+				if (newPassword2 == '') {
 					$("#result_checkPwd").html('');
 				} else {
 

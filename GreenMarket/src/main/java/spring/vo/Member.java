@@ -2,6 +2,8 @@ package spring.vo;
 
 import java.util.Date;
 
+import spring.exception.IdPasswordNotMatchingException;
+
 public class Member {
 	private String email;
 	private String password;
@@ -31,7 +33,7 @@ public class Member {
 	
 
 	
-
+	// 회원수정 객체
 	public Member(String email, int birth, String address, String phone, String name, String nickname) {
 		this.email = email;
 		this.birth = birth;
@@ -40,7 +42,16 @@ public class Member {
 		this.name = name;
 		this.nickname = nickname;
 	}
-
+	
+	// 비밀번호 변경객체
+	public void changePassword(String oldPassword, String newPassword) {
+		if(!this.password.equals(oldPassword)) {
+			throw new IdPasswordNotMatchingException();
+		}
+		this.password = newPassword;
+		
+	}
+	
 	public String getType() {
 		return type;
 	}
@@ -100,9 +111,5 @@ public class Member {
 		this.nickname = nickname;
 	}
 
-	public void changePassword(String oldPassword, String newPassword) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

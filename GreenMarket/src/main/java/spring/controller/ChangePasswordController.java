@@ -8,6 +8,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import spring.exception.IdPasswordNotMatchingException;
 import spring.service.ChangePasswordService;
@@ -30,11 +31,20 @@ public class ChangePasswordController {
 	
 	
 	@PostMapping("changePasswordPost")
+	@ResponseBody
 	public int submit(@RequestBody ChangePwdCommand changePwdCommand, Errors errors,HttpSession session) {
 		// 1.입력 값 검증
 		new ChangePwdCommandValidator().validate(changePwdCommand, errors);
 		
+		System.out.println(changePwdCommand.getCurrentPassword());
+		System.out.println(changePwdCommand.getNewPassword());
+		System.out.println(changePwdCommand.getNewPassword2());
+		
 		if(errors.hasErrors()) { 
+			return 1;
+		}
+		if(!changePwdCommand.getNewPassword().equals
+				(changePwdCommand.getNewPassword2())) {
 			return 1;
 		}
 		
@@ -53,8 +63,11 @@ public class ChangePasswordController {
 	}
 	
 	
-	@PostMapping("confirmPassword")
+	@PostMapping("updateConfirmPassword")
+	@ResponseBody
 	public int confirmPassword(@RequestBody ChangePwdCommand changePwdCommand) {
+		System.out.println(changePwdCommand.getNewPassword()+"테스트");
+		System.out.println(changePwdCommand.getNewPassword2());
 		int result = 0;
 		if(changePwdCommand.getNewPassword().equals(changePwdCommand.getNewPassword2())) {
 			result = 1;

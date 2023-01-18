@@ -52,8 +52,8 @@ public class MemberDao {
 
 
 	public void updatePassword(Member member) {
-		// TODO Auto-generated method stub
-		
+		System.out.println();
+		sqlSession.update(nameSpace+"updatePassword",member);
 	}
 
 }

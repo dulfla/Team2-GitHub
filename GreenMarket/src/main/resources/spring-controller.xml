@@ -16,5 +16,5 @@
 	
 	<bean id="MemberWithDrawal" class="spring.controller.MemberWithDrawal"/>
 	
-	<bean id="ChangePasswordController" class="spring.controller.ChangePasswordController"></bean>	
+	<bean id="ChangePasswordController" class="spring.controller.ChangePasswordController"/>	
 </beans>

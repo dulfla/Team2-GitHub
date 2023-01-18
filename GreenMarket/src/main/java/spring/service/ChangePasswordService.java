@@ -12,17 +12,19 @@ import spring.vo.Member;
 public class ChangePasswordService {
 	
 	@Autowired
-	private MemberDao dao; //= new MemberDao();
+	private MemberDao dao; 
 	
 	
 	
-	@Transactional // @Transactional가 붙은 메서드는 하나의 트랜젝션 영역 -> 논리적 기능의 단위
+	@Transactional 
 	public void changePassword(String email,String oldPassword, String newPassword) {
 		
 		Member member = dao.selectByEmail(email);
 		if(member==null) {
 			throw new MemberNotFoundException();
 		}
+		System.out.println(oldPassword);
+		System.out.println(newPassword);
 		
 		member.changePassword(oldPassword, newPassword);
 		
