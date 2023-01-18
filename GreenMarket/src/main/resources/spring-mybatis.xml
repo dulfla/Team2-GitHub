@@ -20,9 +20,10 @@
 	
 	<!-- 두번째 빈 : sqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
+		<property name="dataSource" ref="dataSource"/>  
 		<property name="configLocation" value="classpath:mybatis/config/mybatisConfig.xml"/>
 		<property name="mapperLocations" value="classpath*:mybatis/mapper/*.xml"/>	<!-- * = 모두쓸때 -->
+		<!-- 세터 일때 프로퍼티 -->
 	</bean>
 	
 	<!-- 세번째 빈 : SqlSession -->
@@ -30,8 +31,14 @@
 		<constructor-arg index="0" ref="sqlSessionFactory"/>
 	</bean>	
 	
+	<!-- 6) 한번만하면됨 -->
 	<bean id="productListDAO" class="spring.dao.ProductListDAO">
-		<constructor-arg name="sqlSession" ref="sqlSession" />
+		<constructor-arg name="sqlSession" ref="sqlSession" /> <!-- 생성자 일때 콘스트럭터 앍 -->
+	</bean>
+	
+	<bean id="memberProductListDAO" class="spring.dao.MemberProductListDAO">
+		<constructor-arg name="sqlSession" ref="sqlSession" /> <!-- 생성자 일때 콘스트럭터 앍 -->
 	</bean>
 
+	
 </beans>

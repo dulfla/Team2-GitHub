@@ -5,11 +5,92 @@
   
 <mapper namespace="mybatis.mapper.productList">
 
-	<select id="selectAll" resultType="pListVO">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email
-		FROM productDetail pd, product p
-		WHERE pd.p_id = p.p_id
+	<!-- 8-1) 생성된 쿼리 -->				<!-- 9)pListVO (mybatisConfig.xml)-->
+	<select id="selectAll" resultType="pListVO"><!-- spring.vo.ProductListVO -->
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,f_proxy_name,description
+		FROM productDetail pd, product p,
+            (select min(fd.f_proxy_name) as f_proxy_name, p_id from PICDETAIL fd, PRODUCTPIC p where fd.f_id = p.f_id group by p_id) f
+		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id
 	</select>
+	
+	<select id="category" parameterType="String" resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,f_proxy_name,description
+		FROM productDetail pd, product p,
+			(select min(fd.f_proxy_name) as f_proxy_name, p_id from PICDETAIL fd, PRODUCTPIC p where fd.f_id = p.f_id group by p_id) f 
+		WHERE pd.p_id = p.p_id AND f.p_id = p.p_id AND category = #{category}  
+	</select>
+	
+	<select id="brandNew" resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,f_proxy_name,description
+		FROM productDetail pd, product p,
+		(select min(fd.f_proxy_name) as f_proxy_name, p_id from PICDETAIL fd, PRODUCTPIC p where fd.f_id = p.f_id group by p_id) f
+		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id ORDER BY regdate DESC
+	</select>
+	
+	<select id="priceLow" resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,f_proxy_name,description
+		FROM productDetail pd, product p,
+            (select min(fd.f_proxy_name) as f_proxy_name, p_id from PICDETAIL fd, PRODUCTPIC p where fd.f_id = p.f_id group by p_id) f
+		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id ORDER BY price ASC
+	</select>
+	
+	<select id="priceHigh" resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,f_proxy_name,description
+		FROM productDetail pd, product p,
+            (select min(fd.f_proxy_name) as f_proxy_name, p_id from PICDETAIL fd, PRODUCTPIC p where fd.f_id = p.f_id group by p_id) f
+		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id ORDER BY price DESC
+	</select>
+	
+	<select id="viewsLevel" resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,f_proxy_name,description
+		FROM productDetail pd, product p,
+            (select min(fd.f_proxy_name) as f_proxy_name, p_id from PICDETAIL fd, PRODUCTPIC p where fd.f_id = p.f_id group by p_id) f
+		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id ORDER BY views DESC
+	</select>
+	
+	<!-- ================================================================ -->
+	
+	<select id="sellList" resultType="psListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price
+       	FROM productDetail pd,trade tr 
+       	WHERE 
+            pd.p_id = tr.p_id
+            AND
+            tr.p_id IN (SELECT p_id from product WHERE email=#{email})
+	</select>
+	
+	<select id="buyList" resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email
+       	FROM productDetail pd, product p
+       	WHERE
+            pd.p_id = p.p_id
+            AND
+            pd.p_id IN 
+            (SELECT p_id FROM trade WHERE email=#{email})
+	</select>
+	
+	
+	
+	<!-- 
+	SELECT pd.p_id,p_name,category,regdate,views,price
+       FROM productDetail pd,trade tr 
+       WHERE 
+            pd.p_id = tr.p_id
+            AND
+            tr.p_id IN (SELECT p_id from product WHERE email='hong@naver.com');  email=#{email}  (판매내역)
+             상품들중 내가 등록한 상품들중 거래된걸 찾아와
+            
+SELECT pd.p_id,p_name,category,regdate,views,price,email
+       FROM productDetail pd, product p
+       WHERE
+            pd.p_id = p.p_id
+            AND
+            pd.p_id IN 
+            (SELECT p_id FROM trade WHERE email = 'hong@naver.com');  email=#{email}  (구매내역)
+             거래된 상품들중 산 아이디가 나인걸 찾아와 -->
+	
+	
+	<!-- 그냥 상품목록에서 불러버리기 -->
 	
 	<!-- <resultMap type="member" id="memVO">
 		<result column="id" property="id"/>
