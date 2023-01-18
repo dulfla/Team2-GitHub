@@ -154,19 +154,22 @@ public class AdminJsonParsing {
 				json += "[";
 				for(int sc=0, s=0; sc<memberAdminYears.length; sc++) {
 					json += "[";
-					for(int m=1; m<13; m++) {
-						if(memberAdminYears[sc]==Integer.parseInt(count.get(s).getYear())) {
+					if(0<count.size()) {
+						for(int m=1; m<13; m++) {System.out.println("m : "+m);
 							if(m!=1) { json += ", "; }
-							if(Integer.parseInt(count.get(s).getMonth())!=m) {
-								json += 0;
+							if(memberAdminYears[sc]==Integer.parseInt(count.get(s).getYear())) {
+								if(Integer.parseInt(count.get(s).getMonth())!=m) {
+									json += 0;
+								}else {
+									json += count.get(s).getCnt();
+									if(s<count.size()-1) { s++; }
+								}
 							}else {
-								json += count.get(s).getCnt();
-								if(s<count.size()-1) { s++; }
+								json += 0;
 							}
-						}else {
-							if(m!=1) { json += ", "; }
-							json += 0;
 						}
+					}else {
+						json += "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0";
 					}
 					json += "]";
 					if(sc<memberAdminYears.length-1) { json += ", "; }

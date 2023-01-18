@@ -35,7 +35,7 @@
 	      	</form>
 	
 	      	<div class="dropdown text-end">
-	      		<c:if test="false"> <!-- ${empty member} -->
+	      		<c:if test="true"> <!-- ${empty member} -->
 				    <button type="button" class="btn btn-outline-dark me-2">로그인</button>
 	        		<button type="button" class="btn btn-warning">회원가입</button>
 		    	</c:if>
