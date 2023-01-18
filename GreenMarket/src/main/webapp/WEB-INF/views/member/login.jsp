@@ -199,7 +199,7 @@ input {
 				<span>or use your account</span>
 				<input type="email"	name="email" id="email"  placeholder="이메일" /> 
 				<input type="password" name="password" id="password" placeholder="비밀번호" /> 
-				<a href="#">Forgot your password?</a>
+				<a href="findPassword">비밀번호 찾기</a>
 				<button type="button" onclick="return loginCheck()">Log In</button>
 			</form>	
 		</div>

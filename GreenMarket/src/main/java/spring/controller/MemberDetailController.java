@@ -38,4 +38,10 @@ public class MemberDetailController {
 		return "member/changeMemberInfo";
 	}
 	
+	@GetMapping("changePassword")
+	public String changePassword() {
+		
+		return "member/changePassword";
+	}
+	
 }

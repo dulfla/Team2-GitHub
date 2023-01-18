@@ -118,7 +118,7 @@ window.onload = function () {
 	});
 }
 </script>
-<script type="text/javascript" defer="defer" src="${path}resources/script/changeMemberInfo.js"></script>
+<script type="text/javascript" defer="defer" src="${path}resources/script/member/changeMemberInfo.js"></script>
 
 <jsp:include page="../include/footer.jsp"/>
 </html>
