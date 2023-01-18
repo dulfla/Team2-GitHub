@@ -8,20 +8,12 @@
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/resources/mybatis/mapper/admin.xml</config>
-		<config>src/main/resources/spring-servies.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/resources/spring-controller.xml</config>
 		<config>src/main/resources/spring-mvc.xml</config>
 		<config>src/main/resources/spring-mybatis.xml</config>
-<<<<<<< HEAD
-=======
-		<config>src/main/resources/spring-service.xml</config>
-	</configs>
-	<autoconfigs>
-		<config>src/main/resources/spring-member.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
->>>>>>> 14cf1b462b4e3082cbbdaea67fde356195ce3d15
 	</autoconfigs>
 	<configSets>
 	</configSets>

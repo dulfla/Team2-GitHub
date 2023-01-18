@@ -2,8 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 	<context:property-placeholder location="classpath:message/db.properties"/>
 
@@ -39,7 +39,6 @@
 		<constructor-arg index="0" ref="sqlSessionFactory"/>
 	</bean>	
 	
-<<<<<<< HEAD
 	<bean id="adminDao" class="spring.dao.AdminDao">
 		<constructor-arg ref="sqlSession"/>
 	</bean>
@@ -48,11 +47,8 @@
 		<constructor-arg ref="sqlSession"/>
 	</bean>
 
-=======
 	<!-- 네번째 빈 : MemberDao -->
 	<bean id="memberDao" class="spring.dao.MemberDao">
 		<property name="sqlSession" ref="sqlSession"/>
 	</bean>
-	
->>>>>>> 14cf1b462b4e3082cbbdaea67fde356195ce3d15
 </beans>

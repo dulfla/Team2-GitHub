@@ -18,3 +18,4 @@
 		<typeAlias type="spring.vo.Member" alias="member"/>
 		<typeAlias type="spring.vo.ChangeMemberInfoCommand" alias="changeCommand"/>
 	</typeAliases>
+</configuration>
