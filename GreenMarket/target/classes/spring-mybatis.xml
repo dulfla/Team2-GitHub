@@ -39,8 +39,6 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory"/>
 	</bean>	
-	
-<<<<<<< HEAD
 	<bean id="adminDao" class="spring.dao.AdminDao">
 		<constructor-arg ref="sqlSession"/>
 	</bean>
@@ -57,8 +55,7 @@
 	<bean id="memberDao" class="spring.dao.MemberDao">
 		<property name="sqlSession" ref="sqlSession"/>
 	</bean>
-=======
-	<!-- 6) 한번만하면됨 -->
+	
 	<bean id="productListDAO" class="spring.dao.ProductListDAO">
 		<constructor-arg name="sqlSession" ref="sqlSession" /> <!-- 생성자 일때 콘스트럭터 앍 -->
 	</bean>
@@ -67,6 +64,4 @@
 		<constructor-arg name="sqlSession" ref="sqlSession" /> <!-- 생성자 일때 콘스트럭터 앍 -->
 	</bean>
 
-	
->>>>>>> 6ceef483497810d1584f85698742269024ce2f66
 </beans>
