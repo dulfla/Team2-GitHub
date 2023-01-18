@@ -62,7 +62,7 @@ public class ProductController {
 	private MemberDaoImpl memberDaoImpl;
 
 	// 카테고리
-	@RequestMapping(value = "/product/register", method = RequestMethod.GET)
+	@RequestMapping(value = "productRegister", method = RequestMethod.GET)
 	public String registerProduct(Model model) throws Exception {
 
 		List<CategoryVO> list = memberServiceImpl.category();
@@ -73,7 +73,7 @@ public class ProductController {
 	}
 
 	// 상품 등록
-	@RequestMapping(value = "/product/register", method = RequestMethod.POST)
+	@RequestMapping(value = "productRegister", method = RequestMethod.POST)
 	public String registerProduct(ProductVO vo, Product1VO vo1) {
 		logger.info("productRegisterPOST.........." + vo);
 		
@@ -83,7 +83,7 @@ public class ProductController {
 		return "redirect:/index";
 	}
 	// 이미지
-	@RequestMapping(value = "/product/uploadAjaxAction",
+	@RequestMapping(value = "uploadAjaxAction",
 			produces = MediaType.APPLICATION_JSON_VALUE ,method = RequestMethod.POST)
 	public ResponseEntity<List<ProductImageVO>> uploadAjaxActionPOST(@RequestParam MultipartFile[] uploadFile) {
 		
@@ -201,7 +201,7 @@ public class ProductController {
 			}
 
 	// 썸네일 이미지 
-	@RequestMapping(value = "/product/display", method = RequestMethod.GET)
+	@RequestMapping(value = "display", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getImage(String fileName){
 		
 		File file = new File("c:\\upload\\" + fileName);
@@ -225,7 +225,7 @@ public class ProductController {
 	
 	// 이미지삭제
 	
-	@RequestMapping(value = "/product/deleteFile", method = RequestMethod.POST)
+	@RequestMapping(value = "deleteFile", method = RequestMethod.POST)
 	public ResponseEntity<String> deleteFile(String fileName){
 		
 		File file = null;
@@ -252,20 +252,20 @@ public class ProductController {
 	}
 
 	// 상품 조회
-	@RequestMapping(value = "/product/productDetail", method = RequestMethod.GET)
+	@RequestMapping(value = "productDetail", method = RequestMethod.GET)
 	public void productDetail(@RequestParam("p_id") String p_id, Model model) throws Exception {
 
 		ProductVO product = memberServiceImpl.productDetail(p_id);
 		model.addAttribute("product", product);
 	}
-	@GetMapping(value="/getImageList", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="getImageList", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ProductImageVO>> getImageList(String p_id){
 		
 		return new ResponseEntity(memberDaoImpl.getImageList(p_id),HttpStatus.OK);	
 	}
 
 	// 상품 수정
-	@RequestMapping(value = "/product/productModify", method = RequestMethod.GET)
+	@RequestMapping(value = "productModify", method = RequestMethod.GET)
 	public void getProductModify(@RequestParam("p_id") String p_id, Model model) throws Exception {
 
 		List<CategoryVO> list = memberServiceImpl.category();
@@ -275,7 +275,7 @@ public class ProductController {
 		model.addAttribute("category", list);
 	}
 
-	@RequestMapping(value = "/product/productModify", method = RequestMethod.POST)
+	@RequestMapping(value = "productModify", method = RequestMethod.POST)
 	public String postProductModify(ProductVO vo) throws Exception{
 
 		logger.info("상품 수정 controller.................." + vo);
@@ -286,7 +286,7 @@ public class ProductController {
 	
 
 	// 상품 삭제
-	@RequestMapping(value = "/product/productDelete", method = RequestMethod.POST)
+	@RequestMapping(value = "productDelete", method = RequestMethod.POST)
 	public String deleteProduct(@RequestParam("p_id") String p_id) throws Exception {
 		
 		List<ProductImageVO> fileList = memberServiceImpl.getImageInfo(p_id);

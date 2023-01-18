@@ -157,7 +157,7 @@
 				formData.append("uploadFile", fileList[i]);
 			}
 			$.ajax({
-				url: '/GreenMarket/product/uploadAjaxAction',
+				url: 'uploadAjaxAction',
 		    	processData : false,
 		    	contentType : false,
 		    	data : formData,
@@ -204,7 +204,7 @@
 			let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
 			
 			str += "<div id='result_card'>";
-			str += "<img src='/GreenMarket/product/display?fileName=" + fileCallPath +"'>";
+			str += "<img src='display?fileName=" + fileCallPath +"'>";
 			str += "<div class='imgDeleteBtn' data-file='"+ fileCallPath +"'>x</div>";
 			str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
 			str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
@@ -228,7 +228,7 @@
 			let targetDiv = $("#result_card");
 			
 			$.ajax({
-				url: '/GreenMarket/product/deleteFile',
+				url: 'deleteFile',
 				data : {fileName : targetFile},
 				dataType : 'text',
 				type : 'POST',

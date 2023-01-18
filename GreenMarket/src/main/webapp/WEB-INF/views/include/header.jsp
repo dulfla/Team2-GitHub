@@ -16,7 +16,7 @@
 				    <li>
 				    	<a href="#" class="nav-link px-2 link-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">내 물건</a>
 				        <ul class="dropdown-menu text-small">
-				            <li><a class="dropdown-item" href="#">상품 등록</a></li>
+				            <li><a class="dropdown-item" href="productRegister">상품 등록</a></li>
 				            <li><a class="dropdown-item" href="#">상품 관리</a></li>				            
 				        </ul>
 				    </li>		    	

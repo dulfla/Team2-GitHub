@@ -167,14 +167,14 @@
 				str += "<div id='result_card'";
 				str += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "'";
 				str += ">";
-				str += "<img src='/GreenMarket/product/display?fileName=" + fileCallPath +"'>";
+				str += "<img src='display?fileName=" + fileCallPath +"'>";
 				str += "</div>";		
 				//uploadResult.html(str);
 				$("#uploadResult").html(str);
 		  });		
 	  }); 
 	  $("#modify_Btn").click(function(){ 
-	   formObj.attr("action", "/GreenMarket/product/productModify");
+	   formObj.attr("action", "productModify");
 	   formObj.attr("method", "get")
 	   formObj.submit();
 	  });
@@ -183,7 +183,7 @@
 		var con = confirm("정말로 삭제하시겠습니까?");  
 		 
 		if(con){
-			formObj.attr("action", "/GreenMarket/product/productDelete");
+			formObj.attr("action", "productDelete");
 		   	formObj.submit();
 		}
 	  });
