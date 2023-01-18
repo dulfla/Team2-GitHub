@@ -14,5 +14,7 @@
 		<typeAlias type="spring.vo.CountByYearVo" alias="cYearVo"/>
 		<typeAlias type="spring.vo.CountByMonthVo" alias="cMonthVo"/>
 		<typeAlias type="spring.vo.CountByCategory" alias="cCategoryVo"/>
+
+		<typeAlias type="spring.vo.Member" alias="member"/>
+		<typeAlias type="spring.vo.ChangeMemberInfoCommand" alias="changeCommand"/>
 	</typeAliases>
-</configuration>  

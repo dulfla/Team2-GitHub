@@ -4,6 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
+<<<<<<< HEAD
 		<typeAlias type="spring.vo.ChattingRoomInfoListVo" alias="chattingRoomInfosVo"/>
 		<typeAlias type="spring.vo.ChattingRoomBringingCommand" alias="chatRoomSearchInfoVo"/>
 		<typeAlias type="spring.vo.ChatInfoVo" alias="chatInfoVo"/>
@@ -16,3 +17,11 @@
 		<typeAlias type="spring.vo.CountByCategory" alias="cCategoryVo"/>
 	</typeAliases>
 </configuration>  
+=======
+		<typeAlias type="spring.vo.Member" alias="member"/>
+		<typeAlias type="spring.vo.ChangeMemberInfoCommand" alias="changeCommand"/>
+	</typeAliases>
+	
+</configuration>  
+
+>>>>>>> 14cf1b462b4e3082cbbdaea67fde356195ce3d15

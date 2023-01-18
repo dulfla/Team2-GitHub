@@ -4,7 +4,23 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+<<<<<<< HEAD
 
 	<context:component-scan base-package="spring.controller"/>
 	
+=======
+	<context:annotation-config/>
+	<!-- <context:component-scan base-package="spring.controller"/> -->
+	<bean id="MemberDetailController" class="spring.controller.MemberDetailController"/>
+	
+	<bean id="LoginController" class="spring.controller.LoginController"/>
+	
+	<bean id="RegisterController" class="spring.controller.RegisterController"/>
+	
+	<bean id="ChangeMemberInfoController" class="spring.controller.ChangeMemberInfoController"/>
+	
+	<bean id="MemberWithDrawal" class="spring.controller.MemberWithDrawal"/>
+	
+	<bean id="ChangePasswordController" class="spring.controller.ChangePasswordController"/>	
+>>>>>>> 14cf1b462b4e3082cbbdaea67fde356195ce3d15
 </beans>

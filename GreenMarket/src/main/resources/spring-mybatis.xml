@@ -47,4 +47,10 @@
 		<constructor-arg ref="sqlSession"/>
 	</bean>
 
+	<!-- 네번째 빈 : MemberDao -->
+	<bean id="memberDao" class="spring.dao.MemberDao">
+		<property name="sqlSession" ref="sqlSession"/>
+	</bean>
+	
+>>>>>>> 14cf1b462b4e3082cbbdaea67fde356195ce3d15
 </beans>
