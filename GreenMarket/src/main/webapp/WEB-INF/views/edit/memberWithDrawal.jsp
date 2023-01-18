@@ -35,6 +35,8 @@
 			-moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
 			box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15) */
 		}
+		
+		
 </style>
 <jsp:include page="../include/header.jsp"/>
 </head>
@@ -55,18 +57,23 @@
 					<div class="mb-3">
 						이메일 <input type="email" class="form-control"
 							id="newPassword2" name="newPassword2" readonly="readonly" oninput="checkPwd()" value="${member.email}" required>
+							<a href="" class="button2">인증</a>
 						<div>
 							<span id="result_checkPwd" style="font-size: 14px;"></span>
 							<input type="hidden" id="result_checkPwd2" value="">
 						</div>
 					</div>
-						<button type="button">인증</button>	
+						
 					<div class="mb-3">
 						<button class="btn btn-primary btn-lg btn-block button" type="button" onclick="changePasswordCheck()">변경하기</button>
 					</div>
 			</div>
 		</div>
 	</div>
+	
+	
+	<!-- dribbble -->
+<a class="dribbble" href="https://dribbble.com/shots/7441241-Button-Hover-Effects" target="_blank"><img src="https://cdn.dribbble.com/assets/dribbble-ball-mark-2bd45f09c2fb58dbbfb44766d5d1d07c5a12972d602ef8b32204d28fa3dda554.svg" alt=""></a>
 </body>
 <jsp:include page="../include/footer.jsp"/>
 </html>

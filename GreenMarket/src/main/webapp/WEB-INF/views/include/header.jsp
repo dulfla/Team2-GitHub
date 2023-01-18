@@ -48,7 +48,7 @@
 			            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
 			        </a>
 			        <ul class="dropdown-menu text-small">
-			        	<c:if test="${!empty authInfo && authInfo.type=='u'}">
+			        	<c:if test="${!empty authInfo && authInfo.type=='U'}">
 			        		<li><a class="dropdown-item" href="#">채팅방 보기</a></li>
 				            <li><a class="dropdown-item" href="#">판매목록</a></li>
 				            <li><a class="dropdown-item" href="#">구매목록</a></li>
