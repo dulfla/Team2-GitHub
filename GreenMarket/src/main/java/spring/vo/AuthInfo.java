@@ -2,6 +2,11 @@ package spring.vo;
 
 import java.util.Date;
 
+/*
+ * 윤성혁
+ * 로그인 인증을위한 커맨드객체
+ * */
+
 public class AuthInfo { 
 	
 	private String email;

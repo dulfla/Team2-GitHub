@@ -88,7 +88,7 @@
 							</tr>
 							<tr>
 								<td colspan="2" class="text-center"><input type="button"
-									value="나가기" class="btn btn-success" onclick="window.history.go(-2)" >
+									value="나가기" class="btn btn-success" onclick="location.href='index'" >
 								</td>
 								<td></td>
 							</tr>
@@ -118,7 +118,7 @@ window.onload = function () {
 	});
 }
 </script>
-<script type="text/javascript" defer="defer" src="${path}resources/script/member/changeMemberInfo.js"></script>
+<script type="text/javascript" defer="defer" src="${path}resources/script/edit/changeMemberInfo.js"></script>
 
 <jsp:include page="../include/footer.jsp"/>
 </html>

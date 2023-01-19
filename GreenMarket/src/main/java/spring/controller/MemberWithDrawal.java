@@ -41,8 +41,9 @@ public class MemberWithDrawal {
 		
 		try {
 			
-			System.out.println("테스트키 : "+mailSendService.key);
 			int getKey = mailSendService.key;
+			System.out.println("테스트키 : "+mailSendService.key);
+			
 			memberWithDrawalService.withDrawal(mailAuth,getKey);
 			session.invalidate();
 			return 0;

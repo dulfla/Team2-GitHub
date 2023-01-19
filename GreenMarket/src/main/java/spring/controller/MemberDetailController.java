@@ -35,13 +35,13 @@ public class MemberDetailController {
 	
 	@GetMapping("changeMemberInfo")
 	public String changeMemberInfo(String email) {
-		return "member/changeMemberInfo";
+		return "edit/changeMemberInfo";
 	}
 	
 	@GetMapping("changePassword")
 	public String changePassword() {
 		
-		return "member/changePassword";
+		return "edit/changePassword";
 	}
 	
 }

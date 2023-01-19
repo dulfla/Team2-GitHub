@@ -75,7 +75,7 @@
 								id="memMail" name="memMail" readonly="readonly" value="${member.email}" required>
 								<!-- <span id="result_checkPwd" style="font-size: 14px;"></span>
 									<input type="hidden" id="result_checkPwd2" value=""> -->
-							<input value="인증" class="btn btn-primary btn-lg btn-block button2" id="mailAuth" type="button" onclick="changeBtnName()">	
+							<input value="이메일인증" class="btn btn-primary btn-lg btn-block button2" id="mailAuth" type="button" onclick="changeBtnName()">	
 						</div>	
 						</div>
 					</div>
@@ -88,8 +88,8 @@
 					<div class="mb-4">
 						<button class="btn btn-primary btn-lg btn-block button" id="button" type="button">탈퇴하기</button>
 					</div>
+				</div>
 			</div>
-		</div>
 		</form>
 	</div>
 	
@@ -110,15 +110,15 @@ window.addEventListener('load', () => {
 	  const button = document.getElementById('button');
 
 	  Array.prototype.filter.call(forms, (form) => {
-	    form.addEventListener('click', function (event) {
-	      if (form.checkValidity() === false) {
+		  button.addEventListener('click', function (event) {
+	      if (form.checkValidity() == false) {
 	        event.preventDefault();
 	        event.stopPropagation();
+	      	form.classList.add('was-validated');
 	      }else{
 	    	  withDrawalCheck();
 	      }
 
-	      form.classList.add('was-validated');
 	    }, false);
 	  });
 	}, false);
