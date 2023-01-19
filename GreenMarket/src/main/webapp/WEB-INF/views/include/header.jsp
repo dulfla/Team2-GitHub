@@ -12,7 +12,7 @@
 
 		    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 			    <li><a href="productResult?command=productList" class="nav-link px-2 link-dark">중고 거래</a></li>
-		    	<c:if test="${!empty authInfo && authInfo.type=='u'}"> 
+		    	<c:if test="${!empty authInfo && authInfo.type=='U'}"> 
 				    <li>
 				    	<a href="#" class="nav-link px-2 link-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">내 물건</a>
 				        <ul class="dropdown-menu text-small">

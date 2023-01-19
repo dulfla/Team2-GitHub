@@ -56,6 +56,12 @@
 		WHERE email=#{email}
 	</update>
 	
+	
+  <delete id="deleteMember" parameterType="member">
+    delete from member 
+    where email = #{email}
+  </delete>
+	
 	<select id="category" resultType="CategoryVO">
 		select category from category
 	</select>

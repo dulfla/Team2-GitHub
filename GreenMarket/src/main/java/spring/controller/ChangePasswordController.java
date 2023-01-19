@@ -26,10 +26,6 @@ public class ChangePasswordController {
 		// 1.입력 값 검증
 		new ChangePwdCommandValidator().validate(changePwdCommand, errors);
 		
-		System.out.println(changePwdCommand.getCurrentPassword());
-		System.out.println(changePwdCommand.getNewPassword());
-		System.out.println(changePwdCommand.getNewPassword2());
-		
 		if(errors.hasErrors()) { 
 			return 1;
 		}

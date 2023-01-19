@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>그린마켓</title>
 <!-- bootstrap -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
@@ -16,12 +16,25 @@
 	integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
 	crossorigin="anonymous">
 </script>
+
+<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.6.3.js"
+		integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous">
+		</script>
+
+<!-- sweetalert -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+	
 <style type="text/css">
 	body {
 			min-height: 100vh;
 		}
 		.button{
-			width: 600px;
+			width: 610px;
+		}
+		.button2{
+			float:left;
 		}
 		.input-form {
 			max-width: 680px;
@@ -42,38 +55,163 @@
 </head>
 <body>
 	<div class="container">
+		<form class="validation-form" novalidate="novalidate">
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
 				<h4 class="mb-3" align="center">회원탈퇴</h4>
-					<div class="mb-3">
-						 이름 <input type="text" class="form-control" id="currentPassword"
-							name="currentPassword" oninput="checkPwd()" value="${member.name}" readonly="readonly" required>
+					<div class="mb-4">
+						  <input type="text" class="form-control" id="name"
+							name="name" value="${member.name}" readonly="readonly" required>
 					</div>
 					
-					<div class="mb-3">
-						<label for="newPassword">비밀번호</label> <input type="password" class="form-control" id="newPassword"
-							name="newPassword" oninput="checkPwd()" required>
+					<div class="mb-4">
+						 <input type="password" class="form-control" id="password"
+							name="password"  placeholder="비밀번호 입력" required>
 					</div>
-					<div class="mb-3">
-						이메일 <input type="email" class="form-control"
-							id="newPassword2" name="newPassword2" readonly="readonly" oninput="checkPwd()" value="${member.email}" required>
-							<a href="" class="button2">인증</a>
-						<div>
-							<span id="result_checkPwd" style="font-size: 14px;"></span>
-							<input type="hidden" id="result_checkPwd2" value="">
+					<div class="form-group">
+					<div class="mb-4">
+						<div class="input-group">
+							 <input type="email" path="memMail"  class="form-control"
+								id="memMail" name="memMail" readonly="readonly" value="${member.email}" required>
+								<!-- <span id="result_checkPwd" style="font-size: 14px;"></span>
+									<input type="hidden" id="result_checkPwd2" value=""> -->
+							<input value="인증" class="btn btn-primary btn-lg btn-block button2" id="mailAuth" type="button" onclick="changeBtnName()">	
+						</div>	
 						</div>
 					</div>
-						
-					<div class="mb-3">
-						<button class="btn btn-primary btn-lg btn-block button" type="button" onclick="changePasswordCheck()">변경하기</button>
+					
+					<div class="mb-4">
+						 <input type="text" class="form-control" id="authKey"
+							name="authKey" oninput="return false;" placeholder="인증번호 입력" required>
+					</div>
+											
+					<div class="mb-4">
+						<button class="btn btn-primary btn-lg btn-block button" id="button" type="button">탈퇴하기</button>
 					</div>
 			</div>
 		</div>
+		</form>
 	</div>
 	
 	
-	<!-- dribbble -->
-<a class="dribbble" href="https://dribbble.com/shots/7441241-Button-Hover-Effects" target="_blank"><img src="https://cdn.dribbble.com/assets/dribbble-ball-mark-2bd45f09c2fb58dbbfb44766d5d1d07c5a12972d602ef8b32204d28fa3dda554.svg" alt=""></a>
 </body>
+
+<script type="text/javascript">
+function changeBtnName()  {
+	  const btnElement 
+	    = document.getElementById('mailAuth');
+	  
+	  btnElement.value = "재전송";
+}
+
+
+window.addEventListener('load', () => {
+	  const forms = document.getElementsByClassName('validation-form');
+	  const button = document.getElementById('button');
+
+	  Array.prototype.filter.call(forms, (form) => {
+	    form.addEventListener('click', function (event) {
+	      if (form.checkValidity() === false) {
+	        event.preventDefault();
+	        event.stopPropagation();
+	      }else{
+	    	  withDrawalCheck();
+	      }
+
+	      form.classList.add('was-validated');
+	    }, false);
+	  });
+	}, false);
+
+function withDrawalCheck(){
+	var email = $("#memMail").val();
+	var password = $("#password").val();
+	var authKey = $("#authKey").val();
+	
+	var jsonData ={
+		"email": email,
+		"password": password,
+		"authKey": authKey,
+	};
+	console.log(memMail);
+	console.log(jsonData.email);
+	$.ajax({
+		type:"POST",
+		url:"memberWithDrawalPost",
+		data : JSON.stringify(jsonData),  
+		dataType : 'json', 
+		contentType : 'application/json;charset=UTF-8', 
+		 success: function(result){
+			 console.log(result);
+			if(result == 2){
+				Swal.fire({
+				    icon: 'error',
+				    title: '인증번호가 일치하지 않습니다.'
+
+			    });
+			}else if(result == 1){
+				Swal.fire({
+				    icon: 'error',
+				    title: '비밀번호가 일치하지 않습니다.'
+
+			    });	
+			
+			}else{
+				Swal.fire({
+					   title: '정말로 회원탈퇴 하시겠습니까?',
+					   text: '다시 되돌릴 수 없습니다. 신중하세요.',
+					   icon: 'warning',
+					   
+					   showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+					   confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+					   cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+					   confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+					   cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+					   
+					   reverseButtons: true, // 버튼 순서 거꾸로
+					   
+					}).then(result => {
+					   // 만약 Promise리턴을 받으면,
+					   if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+					   
+						   Swal.fire({
+							   title: '회원탈퇴가 완료되었습니다.',
+							   text: '화끈하시네요~!',
+							   icon: 'success',
+						   }).then(result => {
+							   
+							   if(result.isConfirmed){
+								   document.location.href = "index";
+							   }
+						   })
+					      
+					   }
+					})
+				}
+		 	}
+		})
+	}
+
+$("#mailAuth").on("click",function(e){
+    isMailAuthed=true;
+    $.ajax({
+        url : "mailAuth.wow" 
+        ,data : {"mail" : $("input[name='memMail']").val()}
+        ,success: function(data){
+        	Swal.fire({
+        	    icon: 'success',
+        	    title: '이메일을 전송했습니다.'
+
+            })
+        },error : function(req,status,err){
+            console.log(req);
+        }
+    });//ajax
+});//mailCheck
+
+
+
+</script>
+
 <jsp:include page="../include/footer.jsp"/>
 </html>
