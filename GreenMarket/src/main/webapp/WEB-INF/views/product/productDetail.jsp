@@ -141,7 +141,7 @@
 		  let uploadResult = $("uploadResult");
 		 
 		  
-		  $.getJSON("/GreenMarket/getImageList", {p_id : p_id}, function(arr){
+		  $.getJSON("getImageList", {p_id : p_id}, function(arr){
 			  
 			 	console.log(arr);
 			 	if(arr.length === 0){	
@@ -151,7 +151,7 @@
 					let str = "";
 					
 					str += "<div id='result_card'>";
-					str += "<img src='../resources/img/noImage.png'>";
+					str += "<img src='./resources/img/noImage.png'>";
 					str += "</div>";
 						
 					//uploadResult.html(str);

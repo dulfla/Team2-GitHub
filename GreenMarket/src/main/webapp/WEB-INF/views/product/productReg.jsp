@@ -14,10 +14,12 @@
   integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
   crossorigin="anonymous"></script>
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
+ <%--  <link href="${path}resources/style/productreg.css" rel="stylesheet" type="text/css"> --%>
   
 <style type="text/css">
 	#result_card img{
-		max-width: 100%;
+		/* max-width: 100%; */
 	    height: auto;
 	    display: block;
 	    padding: 5px;
@@ -50,7 +52,44 @@
 
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
+		<%-- <div class="wrapper">
+	        <form action="" id="regForm" method="POST" autocomplete="off" enctype="multipart/form-data">
+	            <input type="hidden" name="email" value="${authInfo.email}">
+	            <div id="wizard">
+	                <!-- SECTION 1 -->
+	                <h4></h4>
+	                <section>
+	                    <div class="form-row"> <input type="text" class="form-control" name="p_name" placeholder="상품명을 입력해주세요"> </div>
+	                    <div class="form-row"> <input type="text" class="form-control" name="price" placeholder="상품가격"> </div>
+	                    <div class="form-row">
+	                        <select class="form-control" name="category">
+	                            <option value="null">선택</option>
+	                            <c:forEach items="${category}" var="cate"><option value="${cate.category}">${cate.category}</option></c:forEach>
+	                        </select>
+	                     </div>  
+	                     <div class="form-row" style="margin-bottom: 18px"> <textarea name="description" id="message" class="form-control" placeholder="상품 정보를 입력해주세요" style="height: 108px"></textarea> </div>
+	                </section> <!-- SECTION 2 -->
+	                <h4></h4>
+	                <section>
+	                    <input type="file" class="form-control" id="fileItem" name='uploadFile'>
+	                    <div id="uploadResult">
+	                    </div>
+	                    
+	                </section> <!-- SECTION 3 -->
+	                <h4></h4>
+	                <section>
+	                        <div class="inputArea_title">
+	                             <label>거래 희망 위치</label>
+	                        </div>
+	                        <div id="map" style="width:350px;height:350px;"></div>
+	                        <p><em>지도를 클릭해주세요!</em></p> 
+	                        <div id="clickLatlng"></div>
+	                </section>
+	            </div>
+	        </form>
+	    </div>  --%>
 		<form action="" id="regForm" method="POST" autocomplete="off" enctype="multipart/form-data">
+			<input type="hidden" name="email" value="${authInfo.email}">
 			<span class="contact100-form-title">
 				상품 등록
 			</span>
@@ -61,7 +100,7 @@
 					<c:forEach items="${category}" var="cate"><option value="${cate.category}">${cate.category}</option></c:forEach>
 				</select>
 			</div>
-			<label class="label-input100" for="email">상품명</label>
+			<label class="label-input100" for="name">상품명</label>
 			<div class="wrap-input100 validate-input">
 				<input type="text" class="input100" name="p_name" placeholder="상품명을 입력해주세요">
 			<span class="focus-input100"></span>	
@@ -245,6 +284,59 @@
 				}
 	       });
 		}
+		$(function(){
+			$("#wizard").steps({
+		        headerTag: "h4",
+		        bodyTag: "section",
+		        transitionEffect: "fade",
+		        enableAllSteps: true,
+		        transitionEffectSpeed: 500,
+		        onStepChanging: function (event, currentIndex, newIndex) { 
+		            if ( newIndex === 1 ) {
+		                $('.steps ul').addClass('step-2');
+		            } else {
+		                $('.steps ul').removeClass('step-2');
+		            }
+		            if ( newIndex === 2 ) {
+		                $('.steps ul').addClass('step-3');
+		            } else {
+		                $('.steps ul').removeClass('step-3');
+		            }
+
+		            if ( newIndex === 3 ) {
+		                $('.steps ul').addClass('step-4');
+		                $('.actions ul').addClass('step-last');
+		            } else {
+		                $('.steps ul').removeClass('step-4');
+		                $('.actions ul').removeClass('step-last');
+		            }
+		            return true; 
+		        },
+		        labels: {
+		            finish: "등록",
+		            next: "Next",
+		            previous: "Previous"
+		        }
+		    });
+		    // Custom Steps Jquery Steps
+		    $('.wizard > .steps li a').click(function(){
+		    	$(this).parent().addClass('checked');
+				$(this).parent().prevAll().addClass('checked');
+				$(this).parent().nextAll().removeClass('checked');
+		    });
+		    // Custom Button Jquery Steps
+		    $('.forward').click(function(){
+		    	$("#wizard").steps('next');
+		    })
+		    $('.backward').click(function(){
+		        $("#wizard").steps('previous');
+		    })
+		    // Checkbox
+		    $('.checkbox-circle label').click(function(){
+		        $('.checkbox-circle label').removeClass('active');
+		        $(this).addClass('active');
+		    })
+		})
 	</script>
 </body>
 </html>

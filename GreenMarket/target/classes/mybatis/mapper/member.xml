@@ -70,7 +70,7 @@
  		
 	<insert id="product" parameterType="Product1VO">
 		insert into product(idx,email,p_id)
-		values (product_seq.nextval,'hong@naver.com',#{productId})	
+		values (product_seq.nextval,#{email},#{productId})	
 	</insert>
 	
 	<insert id="productPic" parameterType="ProductImageVO">

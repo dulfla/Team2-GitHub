@@ -253,10 +253,12 @@ public class ProductController {
 
 	// 상품 조회
 	@RequestMapping(value = "productDetail", method = RequestMethod.GET)
-	public void productDetail(@RequestParam("p_id") String p_id, Model model) throws Exception {
+	public String productDetail(@RequestParam("p_id") String p_id, Model model) throws Exception {
 
 		ProductVO product = memberServiceImpl.productDetail(p_id);
 		model.addAttribute("product", product);
+		
+		return "product/productDetail";
 	}
 	@GetMapping(value="getImageList", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ProductImageVO>> getImageList(String p_id){
@@ -266,13 +268,15 @@ public class ProductController {
 
 	// 상품 수정
 	@RequestMapping(value = "productModify", method = RequestMethod.GET)
-	public void getProductModify(@RequestParam("p_id") String p_id, Model model) throws Exception {
+	public String getProductModify(@RequestParam("p_id") String p_id, Model model) throws Exception {
 
 		List<CategoryVO> list = memberServiceImpl.category();
 
 		ProductVO product = memberServiceImpl.productDetail(p_id);
 		model.addAttribute("product", product);
 		model.addAttribute("category", list);
+		
+		return "product/productModify";
 	}
 
 	@RequestMapping(value = "productModify", method = RequestMethod.POST)
