@@ -33,7 +33,10 @@
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
 		<form role='form' method="POST" autocomplete="off">
-			<input type="hidden" name="p_id" value="${product.p_id}" />
+			<input type="hidden" name="p_id" value="${product.p_id}" >
+			<input type="hidden" name="p_email" value="${product.email}">
+			<input type="hidden" name="authEmail" value="${authInfo.email}">
+			<input type="hidden" name="nickname" value="${product.nickname}">
 
 			<div class="inputArea"> 
 			 <label>카테고리</label>
@@ -60,7 +63,7 @@
 		
  			 <div class="inputArea">
 			 <label for="email">판매자</label>
-			 <span>${product.email}</span>
+			 <span>${product.nickname}</span>
 			</div>  
 			 
 			<div class="inputArea">
@@ -89,11 +92,10 @@
             	<div id="map" style="width:350px;height:350px;"></div>
             </div>
 			
-			<!-- 작성자, 관리자만 보이도록 수정 해야됨 -->
-			<div class="inputArea">
-			 <button type="button" id="modify_Btn" class="btn btn-warning">수정</button>
-			 <button type="button" id="delete_Btn" class="btn btn-danger">삭제</button>
-			</div>
+			<c:if test="${product.email == authInfo.email}">
+				<button type="button" id="modify_Btn" class="btn btn-warning">수정</button>
+				<button type="button" id="delete_Btn" class="btn btn-danger">삭제</button>
+			</c:if>
 			
 			</form>
 		
@@ -114,6 +116,8 @@
 	/* ============================================================= */
 	
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	
+	
     mapOption = { 
         center: new kakao.maps.LatLng(37.267868108956456, 127.00053552238002), // 지도의 중심좌표
         level: 3 // 지도의 확대 레벨

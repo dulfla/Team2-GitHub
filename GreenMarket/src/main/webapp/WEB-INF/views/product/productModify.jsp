@@ -10,7 +10,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" crossorigin="anonymous"></script> 
-
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
 <style type="text/css">
 	#result_card img{
 		max-width: 100%;
@@ -39,13 +40,115 @@
 	    display: block;
 	    cursor: pointer;	
 	}	
+	body {
+    font-family: 'Lato', sans-serif;
+	}
+	
+	h1 {
+	    margin-bottom: 40px;
+	}
+	
+	label {
+	    color: #333;
+	}
+	.help-block.with-errors {
+	    color: #ff5050;
+	    margin-top: 5px;	
+	}
+	.card{
+		margin-left: 10px;
+		margin-right: 10px;
+	}
 </style>
 </head>
 <body>
 
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
-		<form action="productModify" id="modiForm" method="POST" autocomplete="off" enctype="multipart/form-data">
+		<div class=" text-center mt-5 ">
+	    <h1 >상품 수정</h1>                   
+		</div>
+		<div class="row ">
+		    <div class="col-lg-7 mx-auto">
+		        <div class="card mt-2 mx-auto p-4 bg-light">
+		            <div class="card-body bg-light">
+		                <div class = "container">
+		                    <form action="productModify" id="contact-form" role="form" method="POST" autocomplete="off" enctype="multipart/form-data">
+		                        <input type="hidden" name="p_id" value="${product.p_id}">
+		                        <div>
+		                            <span>판매상태</span>
+		                            <select class="trade" name="trade">
+		                                <option value="trade">판매중</option>
+		                                <option value="clear">판매완료</option>
+		                            </select>
+		                        </div>
+		                        <div class="controls">
+		                            <div class="row">
+		                                <div class="col-md-12">
+		                                    <div class="form-group">
+		                                        <label for="form_name">상품명</label>
+		                                        <input id="form_name" type="text" name="p_name" class="form-control" placeholder="상품명을 입력해주세요 *" required data-error="상품명은 필수입력입니다." value="${product.p_name}">                        
+		                                    </div>
+		                                </div>
+		                            </div>
+		                            <div class="row">
+		                                <div class="col-md-6">
+		                                    <div class="form-group">
+		                                        <label for="form_lastname">상품 가격</label>
+		                                        <input id="form_lastname" type="text" name="price" class="form-control" placeholder="가격을 입력해주세요 *" required data-error="가격은 필수입력입니다." value="${product.price}">
+		                                    </div>
+		                                </div>
+		                                <div class="col-md-6">
+		                                    <div class="form-group">
+		                                        <label for="form_need">카테고리</label>
+		                                        <select id="form_need" name="category" class="form-control" required="required" data-error="카테고리는 필수 입력입니다.">
+		                                            <option value="" disabled>-카테고리를 골라주세요-</option>
+		                                            <c:forEach items="${category}" var="cate">
+								                        <option value="${cate.category}" <c:if test ="${product.category eq cate.category}">selected="selected"</c:if>>
+									                        ${cate.category}
+								                        </option>
+							                        </c:forEach>
+		                                        </select>          
+		                                    </div>
+		                                </div>
+		                            </div>
+		                            <div class="row">
+		                                <div class="col-md-12">
+		                                    <div class="form-group">
+		                                        <label for="form_message">상품 정보</label>
+		                                        <textarea id="form_message" name="description" class="form-control" placeholder="상품 정보를 입력해주세요." rows="4" required data-error="상품 정보는 필수입력입니다.">${product.description}</textarea>
+		                                    </div>
+		                                </div>
+		                            </div>  
+		                            <div class="row">
+			                            <div class="col-md-12">
+	                                        <div class="form-group">
+	                                            <label for="form_message">상품 이미지</label>
+	                                            <input type="file" id="fileItem" name='uploadFile' style="height: 30px;">
+	                                            <div id="uploadResult"></div>
+	                                        </div>
+                                    	</div>
+		                            	<div class="col-md-12">
+			                                <div class="form-group">
+			                                    <label for="form_message">거래 위치</label>
+			                                    <div id="map" style="width:350px;height:350px;"></div>
+			                                        <p><em>지도를 클릭해주세요!</em></p> 
+			                                    <div id="clickLatlng"></div>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                            <div class="col-md-12">
+		                                <button type="submit" class="btn btn-success btn-send  pt-2 btn-block">상품 수정</button> 
+		                                <button type="button" class="btn btn-danger btn-send  pt-2 btn-block" id="back_Btn">취소</button>
+		                            </div>
+		                        </div>
+		                    </form> 
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		<%-- <form action="productModify" id="modiForm" method="POST" autocomplete="off" enctype="multipart/form-data">
 			<input type="hidden" name="p_id" value="${product.p_id}" />
 			<div>
 				<span>카테고리</span>
@@ -90,12 +193,36 @@
 			
 			<button>등록</button>
 			<button type="button" id="back_Btn">취소</button>
-		</form>
+		</form> --%>
 				
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script type="text/javascript">
+
+	
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+    mapOption = { 
+        center: new kakao.maps.LatLng(37.267868108956456, 127.00053552238002), // 지도의 중심좌표
+        level: 3 // 지도의 확대 레벨
+    };
+
+	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	
+	// 마커가 표시될 위치입니다 
+	var markerPosition  = new kakao.maps.LatLng(37.267868108956456, 127.00053552238002); 
+	
+	// 마커를 생성합니다
+	var marker = new kakao.maps.Marker({
+	    position: markerPosition
+	});
+	
+	// 마커가 지도 위에 표시되도록 설정합니다
+	marker.setMap(map);
+	
+	
+	/* ============================================================= */
+	
 	
 	$("input[type='file']").on("change", function(e){
 		
@@ -197,7 +324,7 @@
 			  let uploadResult = $("uploadResult");
 			 
 			  
-			  $.getJSON("/GreenMarket/getImageList", {p_id : p_id}, function(arr){
+			  $.getJSON("getImageList", {p_id : p_id}, function(arr){
 				  
 				 	if(arr.length === 0){	
 					  

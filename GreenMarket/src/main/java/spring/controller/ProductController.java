@@ -47,6 +47,7 @@ import spring.dao.MemberDaoImpl;
 import spring.service.MemberService;
 import spring.service.MemberServiceImpl;
 import spring.vo.CategoryVO;
+import spring.vo.Member;
 import spring.vo.Product1VO;
 import spring.vo.ProductImageVO;
 import spring.vo.ProductVO;
@@ -154,27 +155,6 @@ public class ProductController {
 					try {
 						multipartFile.transferTo(saveFile);
 						
-						/* 썸네일 생성(ImageIO) */
-//						File thumbnailFile = new File(uploadPath, "s_" + uploadFileName);
-//						
-//						BufferedImage bo_image = ImageIO.read(saveFile);
-//						
-//						/* 비율 */
-//						double ratio = 3;
-//						/*넓이 높이*/
-//						int width = (int) (bo_image.getWidth() / ratio);
-//						int height = (int) (bo_image.getHeight() / ratio);
-//						
-//						BufferedImage bt_image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-//										
-//						Graphics2D graphic = bt_image.createGraphics();
-//						
-//											//좌표 X,Y, 넓이, 높이
-//						graphic.drawImage(bo_image, 0, 0,width,height, null);
-//							
-//						ImageIO.write(bt_image, "jpg", thumbnailFile);
-						
-						/* 방법 2 */
 						File thumbnailFile = new File(uploadPath, "s_" + uploadFileName);
 						
 						BufferedImage bo_image = ImageIO.read(saveFile);

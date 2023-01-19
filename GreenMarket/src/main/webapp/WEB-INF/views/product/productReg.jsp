@@ -51,44 +51,81 @@
 <body>
 
 	<%@ include file="../include/header.jsp" %>
-	<div id="container">
-		<%-- <div class="wrapper">
-	        <form action="" id="regForm" method="POST" autocomplete="off" enctype="multipart/form-data">
-	            <input type="hidden" name="email" value="${authInfo.email}">
-	            <div id="wizard">
-	                <!-- SECTION 1 -->
-	                <h4></h4>
-	                <section>
-	                    <div class="form-row"> <input type="text" class="form-control" name="p_name" placeholder="상품명을 입력해주세요"> </div>
-	                    <div class="form-row"> <input type="text" class="form-control" name="price" placeholder="상품가격"> </div>
-	                    <div class="form-row">
-	                        <select class="form-control" name="category">
-	                            <option value="null">선택</option>
-	                            <c:forEach items="${category}" var="cate"><option value="${cate.category}">${cate.category}</option></c:forEach>
-	                        </select>
-	                     </div>  
-	                     <div class="form-row" style="margin-bottom: 18px"> <textarea name="description" id="message" class="form-control" placeholder="상품 정보를 입력해주세요" style="height: 108px"></textarea> </div>
-	                </section> <!-- SECTION 2 -->
-	                <h4></h4>
-	                <section>
-	                    <input type="file" class="form-control" id="fileItem" name='uploadFile'>
-	                    <div id="uploadResult">
-	                    </div>
-	                    
-	                </section> <!-- SECTION 3 -->
-	                <h4></h4>
-	                <section>
-	                        <div class="inputArea_title">
-	                             <label>거래 희망 위치</label>
-	                        </div>
-	                        <div id="map" style="width:350px;height:350px;"></div>
-	                        <p><em>지도를 클릭해주세요!</em></p> 
-	                        <div id="clickLatlng"></div>
-	                </section>
-	            </div>
-	        </form>
-	    </div>  --%>
-		<form action="" id="regForm" method="POST" autocomplete="off" enctype="multipart/form-data">
+	<div id="container">	
+	    <div class=" text-center mt-5 ">
+	        <h1 >상품 등록</h1>                   
+	    </div>
+	    <div class="row ">
+	        <div class="col-lg-7 mx-auto">
+	            <div class="card mt-2 mx-auto p-4 bg-light">
+	                <div class="card-body bg-light">
+	                    <div class = "container">
+	                        <form id="contact-form" role="form" method="POST" autocomplete="off" enctype="multipart/form-data">
+	                        	<input type="hidden" name="email" value="${authInfo.email}">
+	                        	<input type="hidden" name="p_id" value="${product.p_id}">
+	                            <div class="controls">
+	                                <div class="row">
+	                                    <div class="col-md-12">
+	                                        <div class="form-group">
+	                                            <label for="form_name">상품명</label>
+	                                            <input id="form_name" type="text" name="p_name" class="form-control" placeholder="상품명을 입력해주세요 *" required data-error="상품명은 필수입력입니다.">                        
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="row">
+	                                    <div class="col-md-6">
+	                                        <div class="form-group">
+	                                            <label for="form_lastname">상품 가격</label>
+	                                            <input id="form_lastname" type="text" id="price" name="price" class="form-control" placeholder="가격을 입력해주세요  *" required data-error="가격은 필수입력입니다.">
+	                                        </div>
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                        <div class="form-group">
+	                                            <label for="form_need">카테고리</label>
+	                                            <select id="form_need" name="category" class="form-control" required="required" data-error="카테고리는 필수 입력입니다.">
+	                                                <option value="" selected disabled>-카테고리를 골라주세요-</option>
+	                                                <c:forEach items="${category}" var="cate"><option value="${cate.category}">${cate.category}</option></c:forEach>
+	                                            </select>          
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="row">
+	                                    <div class="col-md-12">
+	                                        <div class="form-group">
+	                                            <label for="form_message">상품 정보</label>
+	                                            <textarea id="form_message" name="description" class="form-control" placeholder="상품 정보를 입력해주세요 *" rows="4" required data-error="상품 정보는 필수입력입니다."></textarea>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="form_message">사진 업로드</label>
+                                            <input type="file" id="fileItem" name='uploadFile' style="height: 30px;">
+                                            <div id="uploadResult"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="form_message">거래 위치</label>
+                                            <div id="map" style="width:350px;height:350px;"></div>
+                                                <p><em>지도를 클릭해주세요!</em></p> 
+                                            <div id="clickLatlng"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-success btn-send  pt-2 btn-block">상품 등록</button> 
+                                        <button type="button" class="btn btn-danger btn-send  pt-2 btn-block">목록</button>
+                                    </div>
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<%-- 		<form action="" id="regForm" method="POST" autocomplete="off" enctype="multipart/form-data">
 			<input type="hidden" name="email" value="${authInfo.email}">
 			<span class="contact100-form-title">
 				상품 등록
@@ -129,7 +166,7 @@
 			</div>
 			<button>상품등록</button>
 			<button type="button">목록</button>
-		</form>
+		</form> --%>
 				
 	</div>
 	<%@ include file="../include/footer.jsp" %>
@@ -163,12 +200,20 @@
 		    // 마커 위치를 클릭한 위치로 옮깁니다
 		    marker.setPosition(latlng);
 		    
-		    var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+			/* 		   
+			var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
 		    message += '경도는 ' + latlng.getLng() + ' 입니다';
 		    
 		    var resultDiv = document.getElementById('clickLatlng'); 
-		    resultDiv.innerHTML = message;
+		    resultDiv.innerHTML = message; 
+		    */
 		    
+		    var lat = latlng.getLat();
+		    var lng = latlng.getLng();
+		    
+		    console.log('위도 : ' + lat);
+		    console.log('경도 : ' + lng);
+
 		});
 	
 	
@@ -284,59 +329,15 @@
 				}
 	       });
 		}
-		$(function(){
-			$("#wizard").steps({
-		        headerTag: "h4",
-		        bodyTag: "section",
-		        transitionEffect: "fade",
-		        enableAllSteps: true,
-		        transitionEffectSpeed: 500,
-		        onStepChanging: function (event, currentIndex, newIndex) { 
-		            if ( newIndex === 1 ) {
-		                $('.steps ul').addClass('step-2');
-		            } else {
-		                $('.steps ul').removeClass('step-2');
-		            }
-		            if ( newIndex === 2 ) {
-		                $('.steps ul').addClass('step-3');
-		            } else {
-		                $('.steps ul').removeClass('step-3');
-		            }
-
-		            if ( newIndex === 3 ) {
-		                $('.steps ul').addClass('step-4');
-		                $('.actions ul').addClass('step-last');
-		            } else {
-		                $('.steps ul').removeClass('step-4');
-		                $('.actions ul').removeClass('step-last');
-		            }
-		            return true; 
-		        },
-		        labels: {
-		            finish: "등록",
-		            next: "Next",
-		            previous: "Previous"
-		        }
-		    });
-		    // Custom Steps Jquery Steps
-		    $('.wizard > .steps li a').click(function(){
-		    	$(this).parent().addClass('checked');
-				$(this).parent().prevAll().addClass('checked');
-				$(this).parent().nextAll().removeClass('checked');
-		    });
-		    // Custom Button Jquery Steps
-		    $('.forward').click(function(){
-		    	$("#wizard").steps('next');
-		    })
-		    $('.backward').click(function(){
-		        $("#wizard").steps('previous');
-		    })
-		    // Checkbox
-		    $('.checkbox-circle label').click(function(){
-		        $('.checkbox-circle label').removeClass('active');
-		        $(this).addClass('active');
-		    })
-		})
+		var price = document.getElementById
+		function fn_onlyNum(num){
+			  var regExp = /^[0-9]*$/;
+			  if(!regExp.test(num)){
+			    alert("숫자만 입력 가능합니다. 다시 입력해주세요.");
+			    return false;
+			  }
+			  return true;
+			}
 	</script>
 </body>
 </html>

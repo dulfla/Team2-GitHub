@@ -77,20 +77,23 @@
 		insert into productPic(p_id, fileName, uploadPath, uuid)
 		values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
 	</insert>
-	
-	<insert id="modifyPic" parameterType="ProductImageVO">
-		insert into productPic(p_id, fileName, uploadPath, uuid)
-		values (#{p_id}, #{fileName}, #{uploadPath}, #{uuid})
-	</insert>
 
+		<!-- 합치고 이메일을 닉네임으로 변경 (아마도 세션으로?) -->		
 
-		<!-- 합치고 이메일을 닉네임으로 변경 (아마도 세션으로?) -->
-	<select id="productDetail" resultType="ProductVO">
+  	<select id="productDetail" resultType="ProductVO">
 		select p_name, description, category, regdate, views, price, p_id,
-		(select email from product where p_id=#{p_id}) as email
+		(select email from product where p_id=#{p_id}) as email,
+		(select nickname from member where email=#{email}) as nickname
 		from productDetail where p_id = #{p_id}
 	</select>
-	
+
+<!-- 	 
+	<select id="productDetail" resultType="ProductVO">
+		select p_name, description, category, regdate, views, price, p_id,
+		(select nickname from member where email=#{email}) as nickname
+		from productDetail where p_id = #{p_id}
+	</select>
+ -->
 	<select id="productImage" resultType="ProductImageVO">
 		select * from ProductPic where p_id = #{p_id}
 	</select>
@@ -99,7 +102,11 @@
 		 update productDetail set
 		 p_name=#{p_name}, description=#{description}, category=#{category}, price=#{price}, trade=#{trade}
      	 where p_id = #{p_id}
-	</update>
+	</update>		
+	<insert id="modifyPic" parameterType="ProductImageVO">
+		insert into productPic(p_id, fileName, uploadPath, uuid)
+		values (#{p_id},#{fileName},#{uploadPath},#{uuid})
+	</insert>
 	
 	 
 	 <!-- 상품 삭제할때 상품상세정보를 마지막에 지워야함 -->
