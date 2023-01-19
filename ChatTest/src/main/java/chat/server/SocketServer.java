@@ -12,23 +12,27 @@ import java.util.concurrent.Executors;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.socket.WebSocketSession;
 
 import spring.service.ChatService;
 import spring.vo.ChatMessageVo;
 
 public class SocketServer {
 	
-	private int max = 20;
+	private int max = 100;
 	private ServerSocket serverSocket;
 	private ExecutorService threadPool = Executors.newFixedThreadPool(max);
 	private static Map<String, Map<String, SocketClient>> chatRoom = Collections.synchronizedMap(new HashMap<>());
+	private static Map<String, Map<String, WebSocketSession>> webSessions = Collections.synchronizedMap(new HashMap<>());
 	
 	@Autowired
 	private ChatService cs;
 	
+	@Autowired
+	private ChattingWebSocket cws;
+	
 	public void start() throws IOException {
 		serverSocket = new ServerSocket(12005);
-		System.out.println("[서버] 시작됨");
 		
 		Thread thread = new Thread(() -> {
 			try {
@@ -44,40 +48,44 @@ public class SocketServer {
 		thread.start();
 	}
 	
-	public void addSocketClient(SocketClient socketClient) {System.out.println("연결 : "+socketClient);
+	public void addSocketClient(SocketClient socketClient) {
 		String key = socketClient.getChatName()+"@"+socketClient.getClientIp();
 		if(0<chatRoom.size()) {
-			if(chatRoom.containsKey(socketClient.getChatName())) {
-				chatRoom.get(socketClient.getChatName()).put(key, socketClient);
+			if(chatRoom.containsKey(socketClient.getChatRoom())) {
+				chatRoom.get(socketClient.getChatRoom()).put(key, socketClient);
 				return;
 			}
 		}
 		Map<String, SocketClient> map = new HashMap<>();
 		map.put(key, socketClient);
-		chatRoom.put(socketClient.getChatName(), map);
+		chatRoom.put(socketClient.getChatRoom(), map);
 	}
 	
-	public void removeSocketClient(SocketClient socketClient) {System.out.println("제거 : "+socketClient);
+	public void removeSocketClient(SocketClient socketClient) {
 		String key = socketClient.getChatName()+"@"+socketClient.getClientIp();
-		chatRoom.get(socketClient.getChatName()).remove(key, socketClient);
+		chatRoom.get(socketClient.getChatRoom()).remove(key, socketClient);
 	}
 	
-	public void sendToAll(SocketClient sender, ChatMessageVo message) {System.out.println("전송 : "+sender);
+	public void sendToAll(SocketClient sender, ChatMessageVo message) throws Exception {
 		JSONObject root = new JSONObject();
 		root.put("clientIp", sender.getClientIp());
 		root.put("chatName", sender.getChatName());
-		root.put("room", sender.getChatName());
+		root.put("room", sender.getChatRoom());
 		root.put("message", message.getMessage());
 		root.put("messType", message.getMessType());
 		String jsonStr = root.toString();
-		
-		System.out.println("<"+sender.getChatName()+"님 발신> "+message.getMessage());
 		
 		Map<String, SocketClient> roomClient = chatRoom.get(root.getString("room"));
 		Collection<SocketClient> socketClients = roomClient.values();
 		for(SocketClient sc : socketClients) {
 			if(sc!=sender) {
 				sc.send(jsonStr);
+			}
+		}
+		Collection<WebSocketSession> sessions = webSessions.get(sender.getChatRoom()).values();
+		for(WebSocketSession s : sessions) {
+			if(s!=webSessions.get(sender.getChatRoom()).get(sender.getChatName())) {
+				cws.sendMessage(s, root);
 			}
 		}
 	}
@@ -87,14 +95,34 @@ public class SocketServer {
 			serverSocket.close();
 			threadPool.shutdownNow();
 			chatRoom.values().stream().forEach(crm -> crm.values().stream().forEach(sc -> sc.close()));
-			System.out.println("[서버] 종료됨");
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
+	public void saveWebSession(Map<String, String> info, WebSocketSession session) {
+		String key = info.get("email"); // +"@"+session.getId()
+		if(0<webSessions.size()) {
+			if(webSessions.containsKey(info.get("c_id"))) {
+				webSessions.get(info.get("c_id")).put(key, session);
+				return;
+			}
+		}
+		Map<String, WebSocketSession> map = new HashMap<>();
+		map.put(key, session);
+		webSessions.put(info.get("c_id"), map);
+	}
+
+	public void removeWebSesseion(Map<String, String> info, WebSocketSession session) {
+		String key = info.get("email"); // +"@"+session.getId()
+		webSessions.get(info.get("c_id")).remove(key, session);
+	}
+
 	public ExecutorService getThreadPool() {
 		return threadPool;
+	}
+	public Map<String, Map<String, WebSocketSession>> getWebSessions(){
+		return webSessions;
 	}
 	
 }

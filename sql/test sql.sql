@@ -59,3 +59,14 @@ SELECT chatMessage_seq.NEXTVAL from dual;
 SELECT message, messType, sender, read, send_date
 FROM chatMessage
 WHERE idx=161;
+
+
+SELECT cr.c_id, cr.p_id, 'sell' AS "type"
+		FROM chatInfomation cr,
+		    (SELECT p_id FROM product WHERE email='lee@naver.com') p
+		WHERE cr.p_id=p.p_id
+		UNION
+		SELECT cr.c_id, cr.p_id, 'buy' AS "type"
+		FROM chatInfomation cr,
+		    (SELECT c_id FROM chatParticipants WHERE sender_email='lee@naver.com') m
+		WHERE cr.c_id=m.c_id;

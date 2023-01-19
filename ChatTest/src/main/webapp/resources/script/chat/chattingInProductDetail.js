@@ -9,15 +9,15 @@ let roomBox;
 let productId;
 let chatRoomId;
 
-let sock; /************/
+let sock;
 
-let personalId; /* 임시 */
+let personalId;
 
 window.onload = function(){
 	offCanvas = document.getElementById('offcanvasRight');
 	if(offCanvas){
 		memberType = document.getElementById('offcanvasRight').getAttribute('type'); // 들어온 사람이 판매자 본인인지 다른 회원(구매 희망자 이하 구매자)인지 구분
-		productId = "pid2"; /* 임시 */ // document.getElementById('').value;
+		productId = document.getElementById('productId').value;
 		chatRoomId = null;
 		
 		if(memberType=='buy'){ // 첫 접속에 메세지 박스가 있으려면 일단 구매자여야 함
@@ -284,24 +284,27 @@ function chatting(){ // 채팅방 연결 - 채팅방이 있으면 해당 채팅�
 
 function connecteToSocket(){ // 채팅 서버 연결
 	sock = new SockJS("http://localhost:8085/GreenMarket/server?c_id="+chatRoomId+"&email="+personalId); /************/
+	sock.onmessage = onMessage;
 	
-	$.ajax({
-		url : "ConnecteWithClientServer",
-		type : "POST",
-	    dataType : 'text',
-    	contentType : 'application/json; charset=UTF-8',
-		data : JSON.stringify({ 
-			c_id : chatRoomId, 
-			email : personalId /* 임시 */
-		}),
-		error:function(){  
-			console.log('서버와의 연결이 이어지지 않았습니다.'); 
-		},
-		success:function(data){
-			if(data==1){console.log('서버와의 연결이 정상적으로 이어졌습니다.');}
-			chattingStart();
-		}
-	});
+	setTimeout(() => {
+		$.ajax({
+			url : "ConnecteWithClientServer",
+			type : "POST",
+		    dataType : 'text',
+	    	contentType : 'application/json; charset=UTF-8',
+			data : JSON.stringify({ 
+				c_id : chatRoomId, 
+				email : personalId /* 임시 */
+			}),
+			error:function(){  
+				console.log('서버와의 연결이 이어지지 않았습니다.'); 
+			},
+			success:function(data){
+				if(data==1){console.log('서버와의 연결이 정상적으로 이어졌습니다.');}
+				chattingStart();
+			}
+		});
+	}, 500);
 }
 
 function onMessage(msg) { /**************/
@@ -368,11 +371,11 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 }
 
 function chattingClose(){ // 서버 연결 끊고, messageBox 비우기
-	sock.onClose; /************/
-	sock = null; /************/
+	sock = null;
 	
 	document.removeEventListener('keydown', enterSend, false);
 	document.getElementsByName("sendBtn")[0].removeEventListener('click', msgNullcheck, false);
+	
 	$.ajax({
 		url : "BreakeOffClientServer",
 		method : "POST",
@@ -408,6 +411,7 @@ function sendMessage(){ // 메세지 보내기
 		},
 		success:function(data){
 			if(data==1){console.log('메세지 전달 완료')}
+			
 			let myText = document.createElement('div');
 			myText.classList.add('messageBox', 'myMessageBox');
 			
@@ -423,6 +427,32 @@ function sendMessage(){ // 메세지 보내기
 			scrollCheck(true);
 		}
 	});
+}
+
+function onMessage(msg) {
+	let data = msg.data.split(",");
+	let msgInfo = [];
+	for(let i=0; i<data.length; i++){
+		let str = data[i].split(":");
+		msgInfo.push(str);
+	}
+	
+	let reciveText = document.createElement('div');
+	reciveText.classList.add('messageBox', 'reciveMessageBox');
+	
+	let sendingMessage = document.createElement('p');
+	sendingMessage.classList.add('message', 'recive');
+	
+	sendingMessage.innerHTML = msgInfo[2][1];
+	
+	reciveText.appendChild(sendingMessage);
+	
+	let nowPosition = messageBox.scrollTop;
+	let result = approximateCheck(nowPosition);
+	
+	messageBox.appendChild(reciveText);
+	
+	scrollCheck(result);
 }
 
 function scrollCheck(result){ // 스크롤이 맨 아래에 있다면 새 메세지를 보내거나 받았을 때 스크롤을 아래로 고정, 맨 아래가 아니라면 위치 그대로에, 메세지 보내고, 팝업 띄우기
@@ -441,8 +471,3 @@ function approximateCheck(nowPosition){ // 위치 확인 - 맨 아래 스크롤�
 		return false; // 스크롤 위치 변경됨
 	}
 }
-
-/*				
-	let nowPosition = messageBox.scrollTop;
-	let result = approximateCheck(nowPosition);
-*/

@@ -10,11 +10,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="${path}resources/style/basicStryle.css">
-
-<c:if test="${! empty authInfo && authInfo.type=='U'}">
-	<!-- 모든 페이지 필수 요소(어디서튼 회원이 선택하면 채팅방을 볼 수 있어야 함) -->
-	<script src="${path}resources/script/chat/chattingRoom.js"></script>
-</c:if>
 </head>
 <body>
 	<%@ include file="include/header.jsp" %>
