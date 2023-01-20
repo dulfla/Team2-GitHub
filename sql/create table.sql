@@ -106,7 +106,6 @@ CREATE TABLE category(
     category NVARCHAR2(20) CONSTRAINT category_pk_category PRIMARY KEY
 );
 
-INSERT INTO category VALUES('인기매물');
 INSERT INTO category VALUES('디지털 기기');
 INSERT INTO category VALUES('생활가전');
 INSERT INTO category VALUES('생활주방');
