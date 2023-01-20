@@ -22,6 +22,10 @@
 	integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous">
 </script>
 
+<!-- sweetalert -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
 <style type="text/css">
 body {
     margin: 0;
@@ -43,10 +47,12 @@ body {
     box-shadow: 0 0 20px gainsboro;
 }
 
-#sign-up-container, #sign-in-container {
+#sign-up-container {
     padding: 60px 80px;
     width: 320px;
     display: inline-block;
+    position: relative;
+    top: -50px;
 }
 
 form input:not(:last-of-type) {
@@ -54,10 +60,10 @@ form input:not(:last-of-type) {
     margin-bottom: 20px;
     border: 1px solid #E5E9F5;
     background-color: #F6F7FA;
-    padding: 20px;
+    padding: 10px;
     margin-top: 10px;
     border-radius: 10px;
-    width: 100%;
+    width: 200px%;
 }
 
 #form-controls {
@@ -65,7 +71,7 @@ form input:not(:last-of-type) {
 }
 
 
-h3 {
+h2 {
     color: red;
     font-size: 150%;
     font-weight: 500;
@@ -81,27 +87,27 @@ label {
     letter-spacing: 1.2px;
 }
 
-#form-controls button {
+ .button {
     border: none;
     font-size: 120%;
 }
 
-#form-controls button:hover {
+ .button:hover {
     cursor: pointer;
 }
 
-button[type="submit"] {
+#form-controls .button[type="button"] {
     padding: 16px 75px;
     background-color: #ED4B5E;
     border-radius: 10px;
     color: white;
 }
 
-button[type="submit"]:hover {
+.button[type="button"]:hover {
     background-color: #ff6678;
 }
 
-button[type="button"] {
+#form-controls .button[type="button"] {
     padding: 16px 0 16px 35px;
     background-color: transparent;
     color: #ED4B5E;
@@ -136,12 +142,11 @@ label[for="terms"] {
     text-decoration: none;
 }
 
-.hide {
-    display: none!important;
-}
 
 #animation-container {
     display: inline-block;
+    position: relative;
+    top: 50px;
 }
 
 /* responsive display */
@@ -203,21 +208,27 @@ label[for="terms"] {
   <div id="form-container">
       <div id="form-inner-container">
         <!-- Sign up form -->
-        <div id="sign-up-container">
-          <h3>비밀번호 찾기</h3>
+	  	<div id="sign-up-container">
+          <h2>비밀번호 찾기</h2>
           <form>
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name" placeholder="Name">
-
-            <label for="email">Email</label>
-            <input type="email" name="email" id="email" placeholder="Email">
+            <label for="memMail">이메일</label>
+            <input type="email" name="memMail" id="memMail" placeholder="이메일 입력">
+            
+			<div id="form-controls">
+              <input type="button" value="메일전송" id="mailAuth" class="btn btn-danger" onclick="changeBtnName()">
+            </div>
+            
+            <label for="authKey">인증번호 입력</label>
+            <input type="text" name="authKey" id="authKey" placeholder="인증번호 입력">
 
 
             <div id="form-controls">
-              <button type="button">인증</button>
+              <button type="button" class="btn btn-danger" onclick="findPasswordCheck()">인증하기</button>
             </div>
-
-            <input type="checkbox" name="terms" id="terms">
+			<div id="form-controls">
+            </div>
+			
+            <input type="hidden" name="terms" id="terms">
           </form>
         </div>
 
@@ -236,5 +247,89 @@ label[for="terms"] {
 
 
 </body>
+<script type="text/javascript">
+
+function changeBtnName()  {
+	var email = $("#memMail").val();
+	const btnElement 
+	    = document.getElementById('mailAuth');
+	 
+	console.log(email == '');
+	if(email !=''){
+	  btnElement.value = "재전송";
+	}
+	
+}
+
+$("#mailAuth").on("click",function(e){
+	var email = $("#memMail").val();
+    isMailAuthed=true;
+    
+    if(email == null || email == ''){
+    	Swal.fire({
+    	    icon: 'warning',
+    	    title: '이메일을 입력해주세요.'
+
+        })
+    }else{
+    	$.ajax({
+            url : "mailAuth.wow" 
+            ,data : {"mail" : $("input[name='memMail']").val()}
+            ,success: function(data){
+            	Swal.fire({
+            	    icon: 'success',
+            	    title: '이메일을 전송했습니다.'
+
+                })
+            },error : function(req,status,err){
+                console.log(req);
+            }
+        });//ajax
+    }
+   });//mailCheck
+
+function findPasswordCheck() {
+	var email = $("#memMail").val();
+	var authKey = $("#authKey").val();
+	
+	var jsonData ={
+			"email": email,
+			"authKey": authKey,
+		};
+	$.ajax({
+		type:"POST",
+		url:"findPasswordAuth",
+		data : JSON.stringify(jsonData),  
+		dataType : 'json', 
+		contentType : 'application/json;charset=UTF-8', 
+		success: function(result){
+			 if(result == 0){
+				 Swal.fire({
+					    icon: 'success',
+					    title: '인증 완료!'
+
+				    }).then(result => {
+				      // 만약 Promise리턴을 받으면,
+				      if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+
+						 document.location.href = "mailAuthSuccess";  
+				      }
+				    });
+			 }else{
+				 Swal.fire({
+					    icon: 'error',
+					    title: '인증번호가 일치하지 않습니다.'
+
+				    });
+			 }
+		}
+		
+	})// ajax
+	
+}
+
+</script>
+
+
 <jsp:include page="../include/footer.jsp"/>
 </html>

@@ -1,6 +1,7 @@
 package spring.vo;
 
-public class LoginCommand { // 커맨드 객체 : 클라이언트의 데이터를 묶어서 서버(controller)로 보내주는 역할
+public class LoginCommand { 
+// 커맨드 객체 : 클라이언트의 데이터를 묶어서 서버(controller)로 보내주는 역할
 	private String email;
 	private String password;
 	
