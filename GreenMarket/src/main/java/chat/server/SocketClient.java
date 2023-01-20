@@ -37,7 +37,7 @@ public class SocketClient {
 		}
 	}
 	
-	public void receive() {
+	public void receive(){
 		chatServer.getThreadPool().execute(() -> {
 			try {
 				while(true) {
@@ -58,19 +58,31 @@ public class SocketClient {
 						message.setMessage("들어오셨습니다.");
 						message.setMessType("TEXT");
 						chatServer.addSocketClient(this);
-						chatServer.sendToAll(this, message);
+						try {
+							chatServer.sendToAll(this, message);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 						break;
 					case "message":
 						long idx = jsonObject.getLong("msgIdx");
 						ChatMessageVo msg = cs.selectSendedMessage(idx);
-						chatServer.sendToAll(this, msg);
+						try {
+							chatServer.sendToAll(this, msg);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}catch (IOException e) {
 				ChatMessageVo message = new ChatMessageVo();
 				message.setMessage("나가셨습니다.");
 				message.setMessType("TEXT");
-				chatServer.sendToAll(this, message);
+				try {
+					chatServer.sendToAll(this, message);
+				} catch (Exception ee) {
+					ee.printStackTrace();
+				}
 				chatServer.removeSocketClient(this);
 			}
 		});

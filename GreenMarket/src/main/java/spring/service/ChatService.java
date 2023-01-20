@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import chat.server.ChatClient;
+import chat.server.ChattingWebSocket;
 import chat.server.SocketServer;
+import oracle.net.aso.c;
 import spring.dao.ChatDao;
 import spring.vo.ChatMessageVo;
 import spring.vo.ChattingRoomBringingCommand;
@@ -25,6 +27,12 @@ public class ChatService {
 
 	@Autowired
 	private ChatDao cdao;
+	
+	@Autowired
+	private SocketServer ss;
+	
+	@Autowired
+	private ChattingWebSocket cws;
 	
 	private static Map<String, Map<String, ChatClient>> chatRoom = Collections.synchronizedMap(new HashMap<>());
 	private JSONObject json;
@@ -42,6 +50,8 @@ public class ChatService {
 	}
 
 	public void connection(ChatClient client, String c_id, String email) throws IOException {
+		client.setSs(ss);
+		client.setCws(cws);
 		client.setChatRoom(c_id);
 		client.setChatName(email);
 		client.connect();
@@ -52,8 +62,6 @@ public class ChatService {
 		json.put("room", c_id);
 		String jsonStr = json.toString();
 		client.send(jsonStr);
-		
-		System.out.println(System.currentTimeMillis()+" : "+email+", "+c_id+"에 연결 완료");
 	}
 
 	public void sendMessage(ChatClient client, Map<String, String> map) throws IOException {
@@ -78,7 +86,6 @@ public class ChatService {
 			client.unconnect();
 			chatRoom.get(c_id).remove(email, client);
 		}
-		System.out.println(System.currentTimeMillis()+" : "+email+", "+c_id+"에 연결 해제");
 	}
 
 	public Collection<ChattingRoomInfoListVo> selectChatRoomInfoByPId(String p_id) {
@@ -114,6 +121,10 @@ public class ChatService {
 
 	public ChatMessageVo selectSendedMessage(long idx) {
 		return cdao.selectSendedMessage(idx);
+	}
+
+	public Collection<ChattingRoomInfoListVo> selectChatRoomInfoByEmail(String email) {
+		return cdao.selectChattingRoomByEmail(email);
 	}
 	
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import chat.server.ChatClient;
 import chat.server.SocketServer;
 import spring.service.ChatService;
+import spring.vo.AuthInfo;
 import spring.vo.ChattingRoomBringingCommand;
 import spring.vo.ChattingRoomInfoListVo;
 
@@ -37,7 +38,7 @@ public class ChatConnectionController {
 	
 	@ResponseBody
 	@PostMapping("ServerOpen")
-	public void serverOpen(HttpServletRequest req) throws IOException { System.out.println("연결 시도");
+	public void serverOpen(HttpServletRequest req) throws IOException {
 		ss.start();
 		ServletContext app = req.getServletContext();
 		app.setAttribute("serverOption", "On");
@@ -45,7 +46,7 @@ public class ChatConnectionController {
 	
 	@ResponseBody
 	@PostMapping("ServerClose")
-	public void serverClose(HttpServletRequest req) throws IOException { System.out.println("종료 시도");
+	public void serverClose(HttpServletRequest req) throws IOException {
 		ss.stop();
 		ServletContext app = req.getServletContext();
 		app.setAttribute("serverOption", "Off");
@@ -54,19 +55,20 @@ public class ChatConnectionController {
 	@Autowired
 	private ChatService chatService;
 	
-//	@ResponseBody
-//	@PostMapping("SelectChatRoom")
-//	public JSONObject bringingChatRoomByPId(@RequestBody Map<String, String> map) {
-//		JSONObject json = new JSONObject();
-//		json.put("chattingRoomList", chatService.selectChatRoomInfoByPId(map.get("p_id")));
-//		System.out.println(json);
-//		return json;
-//	}
-	
 	@ResponseBody
 	@PostMapping("SelectChatRoom")
 	public Collection<ChattingRoomInfoListVo> bringingChatRoomByPId(@RequestBody Map<String, String> map) {
 		return chatService.selectChatRoomInfoByPId(map.get("p_id"));
+	}
+	
+	@ResponseBody
+	@PostMapping("SelectChatRooms")
+	public Map<String, Object> bringingChatRoomByType(HttpSession session) { // @RequestBody Map<String, String> map, 
+		String email = ((AuthInfo)session.getAttribute("authInfo")).getEmail();
+		Map<String, Object> data = new HashMap<>();
+		data.put("person", email);
+		data.put("data", chatService.selectChatRoomInfoByEmail(email)); // map.get("email")
+		return data;
 	}
 	
 	@ResponseBody

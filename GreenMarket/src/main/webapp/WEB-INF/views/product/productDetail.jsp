@@ -7,15 +7,12 @@
 <meta charset="UTF-8">
 <title>상품 페이지</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="${path}resources/script/chat/chattingRoom.js"></script>
-<script src="${path}resources/script/product/productDetailJsForChat.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 
 <link rel="stylesheet" href="${path}resources/style/basicStryle.css">
-<link rel="stylesheet" href="${path}resources/style/chattingStyle.css">
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
 <style type="text/css">
@@ -96,12 +93,46 @@
 			</div>
 			
 			</form>
-		
-		<button id="openChattingBtn" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-			채팅하기
-		</button>
-		<input type="hidden" placeholder="email" name="email" id="userEmail" value="${authInfo.email}">
-		<%@ include file="../include/chat.jsp" %>
+		<c:choose>
+			<c:when test="${empty authInfo}">
+				<button id="chatBtn" class="btn btn-primary" type="button">채팅하기</button>
+				<script type="text/javascript">
+					window.onload = function(){
+						let btn = document.getElementById('chatBtn');
+						btn.addEventListener('click', function(){
+							Swal.fire({
+							   title: '채팅을 사용하시려면 로그인하셔야 합니다.',
+							   text: '로그인 하러 이동하시겠습니까?',
+							   icon: 'warning',
+							   
+							   showCancelButton: true,
+							   confirmButtonColor: '#3085d6',
+							   cancelButtonColor: '#d33',
+							   confirmButtonText: '로그인',
+							   cancelButtonText: '취소',
+							   
+							   reverseButtons: false,
+							   
+							}).then(result => {
+							    if (result.isConfirmed) {
+							       	location.href="login";
+							    }else if (result.isDismissed) { // 만약 모달창에서 cancel 버튼을 눌렀다면
+							    	
+							    }
+							});
+						}, false);
+					}
+				</script>
+			</c:when>
+			<c:otherwise>
+				<button id="openChattingBtn" class="btn btn-primary" type="button">
+					채팅하기
+				</button>
+				<input type="hidden" name="email" id="userEmail" value="${authInfo.email}">
+				<input type="hidden" name="p_id" id="productId" value="${product.p_id}">
+				<%@ include file="../include/chat.jsp" %>
+			</c:otherwise>
+		</c:choose>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	

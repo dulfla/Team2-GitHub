@@ -24,6 +24,7 @@ public class AdminJsonParsing {
 	
 	@Autowired
 	private AdminDao dao;
+	
 	@Autowired
 	private JSONParser parser;
 	
@@ -155,7 +156,7 @@ public class AdminJsonParsing {
 				for(int sc=0, s=0; sc<memberAdminYears.length; sc++) {
 					json += "[";
 					if(0<count.size()) {
-						for(int m=1; m<13; m++) {System.out.println("m : "+m);
+						for(int m=1; m<13; m++) {
 							if(m!=1) { json += ", "; }
 							if(memberAdminYears[sc]==Integer.parseInt(count.get(s).getYear())) {
 								if(Integer.parseInt(count.get(s).getMonth())!=m) {

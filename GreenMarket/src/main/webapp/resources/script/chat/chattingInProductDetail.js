@@ -1,81 +1,99 @@
-let offCanvas;
-let memberType;
+let offCanvas = null;
+let memberType = null;
 
-let messageBox;
-let msg;
+let messageBox = null;
+let msg = null;
 
-let roomBox;
+let roomBox = null;
 
-let productId;
-let chatRoomId;
+let productId = null;
+let chatRoomId = null;
 
-let personalId; /* 임시 */
+let sock = null;
 
-window.onload = function(){
-	offCanvas = document.getElementById('offcanvasRight');
-	if(offCanvas){
-		memberType = document.getElementById('offcanvasRight').getAttribute('type'); // 들어온 사람이 판매자 본인인지 다른 회원(구매 희망자 이하 구매자)인지 구분
-		productId = "pid2"; /* 임시 */ // document.getElementById('').value;
-		chatRoomId = null;
-		
-		if(memberType=='buy'){ // 첫 접속에 메세지 박스가 있으려면 일단 구매자여야 함
-			roomBox = null;
-			messageBox = document.getElementById('messageBox');
-			messageBox.innerHTML = null;
-			msg = document.getElementsByName('message')[0];
-		}else if(memberType=='sell'){
-			messageBox = null;
-			roomBox = document.getElementById('chattingRooms');
-			roomBox.innerHTML = null;
-			offCanvas.classList.add('chattingRooms');
-		}
+let personalId = null;
+
+window.addEventListener('load', function() {
+  	offCanvas = document.getElementById('offcanvasRight chatOffcanvas');
 	
-		window.onbeforeunload = function(event) { // 페이지 새로 고침, 창 닫기 시 채팅 서버랑 연결되어 있다면 해당 연결 끊기
+	memberType = offCanvas.getAttribute('type');
+	productId = document.getElementById('productId').value;
+	
+	if(memberType=='buy'){
+		messageBox = document.getElementById('messageBox');
+		messageBox.innerHTML = null;
+		msg = document.getElementsByName('message')[0];
+	}else if(memberType=='sell'){
+		roomBox = document.getElementById('chattingRooms');
+		roomBox.innerHTML = null;
+	}
+
+	let startBtn = document.getElementById('openChattingBtn');
+	startBtn.addEventListener('click', function (e){
+		personalId = document.getElementById('userEmail').value;
+		if(memberType=='buy'){
+			chatting();
+		}else if(memberType=='sell'){
+			chattingRoom();
+		}
+	}, false);
+	
+	window.onbeforeunload = function(event) {
+		if(offCanvas.classList.contains('show')){
 			event.preventDefault();
 			closeServer();
-		};
-	
-		document.addEventListener('click', (e) => { // 오프캔버스를 닫을 경우 서버와 연결 끊기
-			let activeE = document.activeElement;
-			let body = document.getElementsByTagName('body')[0];
-			if(activeE==body){
-				closeServer();
-			}
-		}, false);
-	
-	
-		let startBtn = document.getElementById('openChattingBtn');
-		startBtn.addEventListener('click', function (){ // 채팅 버튼을 클릭 했을 때 오프캔버스에 띄울 기능
-			personalId = document.getElementById('userEmail').value; /* 임시 */ console.log('현재 로그인 : '+personalId)
-			if(memberType=='buy'){ // 구매자라면 바로 채팅기능으로 넘기기
-				chatting();
-			}else if(memberType=='sell'){ // 판매자라면 해당 상품에 대한 모든 채팅방을 먼저 보여주고 해당 채팅방에서 골라 들어가게 작성
-				chattingRoom();
-			}
-		}, false);
-		
-		let closeBtn = document.getElementById('closeBtn');
-		closeBtn.addEventListener('click', closeServer, false);
-	}else{
-		console.log('로그인 안함')
-	}
-}
+		}
+	};
 
-function closeServer(){ // 오프캔버스를 닫을 때 동작할 기능
-	if(memberType=='buy'){ // 구매자라면, 캔버스는 무조건 채팅창 연결이므로 캔버스를 닫을 경우 무조건 서버 연결 닫기
+	document.addEventListener('click', () => {
+		let activeE = document.activeElement;
+		let body = document.getElementsByTagName('body')[0];
+		if(activeE==body){
+			if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingOpen')){
+				backToChattRooms();
+				offCanvas.classList.toggle('show');
+			}else if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingRooms')){
+				roomBox.innerHTML = null;
+				offCanvas.classList.toggle('show');
+			}
+		}else if(activeE==startBtn){
+			if(offCanvas.classList.contains('show')){
+				closeServer();
+			}else{
+				let chatRoomOffcanvs = document.getElementById('offcanvasRight chatRoomOffcanvas');
+				if(chatRoomOffcanvs){
+					if(chatRoomOffcanvs.classList.contains('show')){
+						chatRoomOffcanvs.classList.toggle('show');
+					}
+				}
+				offCanvas.classList.add('show');
+			}
+		}
+	}, false);
+	
+	let closeBtn = document.getElementById('closeBtn chatOffcanvas');
+	closeBtn.addEventListener('click', closeServer, false);
+});
+
+function closeServer(){
+	if(memberType=='buy'){
 		if(offCanvas.classList.contains('show')){
+			offCanvas.classList.toggle('show');
 			chattingClose();
 		}
-	}else if(memberType=='sell'){ // 판매자라면, 캔버스가 열려 있어도 채팅서버 연결이 아닐 수 있으므로 해당 창이 채팅방에 접속 상태인지 확인 후 연결 끊기
+	}else if(memberType=='sell'){
 		if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingOpen')){
 			backToChattRooms();
+			chattingRoom();
 		}else if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingRooms')){
 			roomBox.innerHTML = null;
+			offCanvas.classList.toggle('show');
 		}
 	}
 }
 
 function chattingRoom(){
+	roomBox.innerHTML = null;
 	$.ajax({
 	    url: "SelectChatRoom",
 	    type: "POST",
@@ -130,7 +148,15 @@ function chattingRoom(){
 					aT.addEventListener('click', openChatting, false);
 				});
 	    	}else{
-
+				let div = document.createElement('div');
+				div.innerHTML = "현재 참여중인 채팅이 없습니다.";
+				roomBox.appendChild(div);
+			}
+			
+			if(roomBox.innerHTML==null || roomBox.innerHTML==''){
+				let div = document.createElement('div');
+				div.innerHTML = "현재 참여중인 채팅이 없습니다.";
+				roomBox.appendChild(div);
 			}
 	    }
 	});
@@ -138,26 +164,28 @@ function chattingRoom(){
 
 function backToChattRooms(){
 	chattingClose();
+	document.removeEventListener('keydown', enterSend);
+	document.getElementsByName("sendBtn")[0].removeEventListener('click', msgNullcheck);
 	
 	if(offCanvas.classList.contains('chattingOpen')){
 		offCanvas.classList.remove('chattingOpen');
 	}
 	offCanvas.classList.add('chattingRooms');
 	
-	let offcanvasHeader = document.getElementsByClassName('offcanvas-header')[0];
-	let backToChatRoomLBtn = document.getElementById('backBtn');
+	let offcanvasHeader = document.getElementsByClassName('offcanvas-header chatOffcanvas')[0];
+	let backToChatRoomLBtn = document.getElementById('backBtn chatOffcanvas');
 	offcanvasHeader.removeChild(backToChatRoomLBtn);
 
 	let backPageBtn = document.createElement('button');
 	backPageBtn.setAttribute('type', "button");
-	backPageBtn.setAttribute('id', "closeBtn");
+	backPageBtn.setAttribute('id', "closeBtn chatOffcanvas");
 	backPageBtn.setAttribute('data-bs-dismiss', "offcanvas");
 	backPageBtn.setAttribute('aria-label', "Close");
 	backPageBtn.classList.add('btn-close');
 	backPageBtn.addEventListener('click', closeServer, false);
 	offcanvasHeader.appendChild(backPageBtn);
 
-	let offcanvasBody = document.getElementsByClassName('offcanvas-body')[0];
+	let offcanvasBody = document.getElementsByClassName('offcanvas-body chatOffcanvas')[0];
 	offcanvasBody.innerHTML = null;
 	
 	let chatRL = document.createElement('div');
@@ -175,20 +203,20 @@ function backToChattRooms(){
 }
 
 function openChatting(e){
-	let offcanvasHeader = document.getElementsByClassName('offcanvas-header')[0];
-	let closeOffcavasBtn = document.getElementById('closeBtn');
+	let offcanvasHeader = document.getElementsByClassName('offcanvas-header chatOffcanvas')[0];
+	let closeOffcavasBtn = document.getElementById('closeBtn chatOffcanvas');
 	offcanvasHeader.removeChild(closeOffcavasBtn);
 
-	let backPageBtn = document.createElement('button');
-	backPageBtn.setAttribute('type', "button");
-	backPageBtn.setAttribute('id', "backBtn");
-	backPageBtn.addEventListener('click', () => {
+	let backPageA = document.createElement('a');
+	backPageA.setAttribute('id', "backBtn chatOffcanvas");
+	backPageA.addEventListener('click', (e) => {
+		e.preventDefault()
 		backToChattRooms();
 		chattingRoom();
 	}, false);
-	backPageBtn.classList.add('backSpageBtn');
-	backPageBtn.innerHTML = "←";
-	offcanvasHeader.appendChild(backPageBtn);
+	backPageA.classList.add('backSpageBtn');
+	backPageA.innerHTML = "←";
+	offcanvasHeader.appendChild(backPageA);
 
 	e.preventDefault();
 	chatRoomId = null;
@@ -198,7 +226,7 @@ function openChatting(e){
 	}
 	offCanvas.classList.add('chattingOpen');
 
-	let offcanvasBody = document.getElementsByClassName('offcanvas-body')[0];
+	let offcanvasBody = document.getElementsByClassName('offcanvas-body chatOffcanvas')[0];
 	offcanvasBody.innerHTML = null;
 
 	let msgBox = document.createElement('div');
@@ -281,26 +309,46 @@ function chatting(){ // 채팅방 연결 - 채팅방이 있으면 해당 채팅�
 }
 
 function connecteToSocket(){ // 채팅 서버 연결
-	$.ajax({
-		url : "ConnecteWithClientServer",
-		type : "POST",
-	    dataType : 'text',
-    	contentType : 'application/json; charset=UTF-8',
-		data : JSON.stringify({ 
-			c_id : chatRoomId, 
-			email : personalId /* 임시 */
-		}),
-		error:function(){  
-			console.log('서버와의 연결이 이어지지 않았습니다.'); 
-		},
-		success:function(data){
-			if(data==1){console.log('서버와의 연결이 정상적으로 이어졌습니다.');}
-			chattingStart();
-		}
-	});
+	sock = new SockJS("http://localhost:8085/GreenMarket/server?c_id="+chatRoomId+"&email="+personalId); /************/
+	sock.onmessage = onMessage;
+	
+	setTimeout(() => {
+		$.ajax({
+			url : "ConnecteWithClientServer",
+			type : "POST",
+		    dataType : 'text',
+	    	contentType : 'application/json; charset=UTF-8',
+			data : JSON.stringify({ 
+				c_id : chatRoomId, 
+				email : personalId /* 임시 */
+			}),
+			error:function(){  
+				console.log('서버와의 연결이 이어지지 않았습니다.'); 
+			},
+			success:function(data){
+				if(data==1){console.log('서버와의 연결이 정상적으로 이어졌습니다.');}
+				chattingStart();
+			}
+		});
+	}, 500);
+}
+
+function onMessage(msg) { /**************/
+    let data = msg.data; console.log(data);
+    let reciveText = document.createElement('div');
+	reciveText.classList.add('messageBox', 'reciveMessageBox');
+	
+	let sendingMessage = document.createElement('p');
+	sendingMessage.classList.add('message', 'recive');
+	
+	sendingMessage.innerHTML = m.message;
+	
+	reciveText.appendChild(sendingMessage);
+	messageBox.appendChild(reciveText);
 }
 
 function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세지들 긁어오기
+	messageBox.innerHTML = null;
 	document.addEventListener('keydown', enterSend, false);
 	document.getElementsByName("sendBtn")[0].addEventListener('click', msgNullcheck, false);
 	$.ajax({
@@ -317,31 +365,33 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 		},
 		success:function(messages){
 			let msgL = messages.messages;
-			msgL.forEach((m) => {
-				if(m.sender == personalId){ /* 임시 */
-					let myText = document.createElement('div');
-					myText.classList.add('messageBox', 'myMessageBox');
+			if(0<msgL.length){
+				msgL.forEach((m) => {
+					if(m.sender == personalId){
+						let myText = document.createElement('div');
+						myText.classList.add('messageBox', 'myMessageBox');
+						
+						let myMessage = document.createElement('p');
+						myMessage.classList.add('message', 'send');
+						
+						myMessage.innerHTML = m.message;
 					
-					let myMessage = document.createElement('p');
-					myMessage.classList.add('message', 'send');
-					
-					myMessage.innerHTML = m.message;
-				
-					myText.appendChild(myMessage);
-					messageBox.appendChild(myText);
-				}else{
-					let reciveText = document.createElement('div');
-					reciveText.classList.add('messageBox', 'reciveMessageBox');
-					
-					let sendingMessage = document.createElement('p');
-					sendingMessage.classList.add('message', 'recive');
-					
-					sendingMessage.innerHTML = m.message;
-					
-					reciveText.appendChild(sendingMessage);
-					messageBox.appendChild(reciveText);
-				}
-			});
+						myText.appendChild(myMessage);
+						messageBox.appendChild(myText);
+					}else{
+						let reciveText = document.createElement('div');
+						reciveText.classList.add('messageBox', 'reciveMessageBox');
+						
+						let sendingMessage = document.createElement('p');
+						sendingMessage.classList.add('message', 'recive');
+						
+						sendingMessage.innerHTML = m.message;
+						
+						reciveText.appendChild(sendingMessage);
+						messageBox.appendChild(reciveText);
+					}
+				});
+			}
 		},
 		complete: function(){
 			messageBox.scrollTo(0, messageBox.scrollHeight);
@@ -350,8 +400,11 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 }
 
 function chattingClose(){ // 서버 연결 끊고, messageBox 비우기
+	sock = null;
+	
 	document.removeEventListener('keydown', enterSend, false);
 	document.getElementsByName("sendBtn")[0].removeEventListener('click', msgNullcheck, false);
+	
 	$.ajax({
 		url : "BreakeOffClientServer",
 		method : "POST",
@@ -387,6 +440,7 @@ function sendMessage(){ // 메세지 보내기
 		},
 		success:function(data){
 			if(data==1){console.log('메세지 전달 완료')}
+			
 			let myText = document.createElement('div');
 			myText.classList.add('messageBox', 'myMessageBox');
 			
@@ -402,6 +456,32 @@ function sendMessage(){ // 메세지 보내기
 			scrollCheck(true);
 		}
 	});
+}
+
+function onMessage(msg) {
+	let data = msg.data.split(",");
+	let msgInfo = [];
+	for(let i=0; i<data.length; i++){
+		let str = data[i].split(":");
+		msgInfo.push(str);
+	}
+	
+	let reciveText = document.createElement('div');
+	reciveText.classList.add('messageBox', 'reciveMessageBox');
+	
+	let sendingMessage = document.createElement('p');
+	sendingMessage.classList.add('message', 'recive');
+	
+	sendingMessage.innerHTML = msgInfo[2][1];
+	
+	reciveText.appendChild(sendingMessage);
+	
+	let nowPosition = messageBox.scrollTop;
+	let result = approximateCheck(nowPosition);
+	
+	messageBox.appendChild(reciveText);
+	
+	scrollCheck(result);
 }
 
 function scrollCheck(result){ // 스크롤이 맨 아래에 있다면 새 메세지를 보내거나 받았을 때 스크롤을 아래로 고정, 맨 아래가 아니라면 위치 그대로에, 메세지 보내고, 팝업 띄우기
@@ -420,8 +500,3 @@ function approximateCheck(nowPosition){ // 위치 확인 - 맨 아래 스크롤�
 		return false; // 스크롤 위치 변경됨
 	}
 }
-
-/*				
-	let nowPosition = messageBox.scrollTop;
-	let result = approximateCheck(nowPosition);
-*/

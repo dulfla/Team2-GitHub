@@ -32,12 +32,13 @@
  		WHERE c_id IN (SELECT c_id FROM chatParticipants WHERE sender_email=#{email})
  			AND p_id=#{p_id}
  	</select>
-<!--<select id="selectChattingRoom" parameterType="chatRoomSearchInfoVo" resultType="String">
-	 	SELECT c_id
-		FROM chatParticipants
-		WHERE c_id IN (SELECT c_id FROM chatInfomation WHERE p_id=#{p_id})
-			AND sender_email=#{email}
-	</select> -->
+ 	
+	<select id="selectChattingRooms" parameterType="chatRoomSearchInfoVo" resultType="String">
+ 		SELECT c_id
+ 		FROM chatInfomation
+ 		WHERE c_id IN (SELECT c_id FROM chatParticipants WHERE sender_email=#{email})
+ 			AND p_id=#{p_id}
+ 	</select>
 	
 	<!-- 채팅방이 없던 상품에 대해 채팅을 시도하는 경우 새로운 채팅방 만들기 && 새로운 채팅방에 입장했다는 데이터 입력 :: 프로시저 사용 -->
 	<select id="insertNewChatRoomInfo" parameterType="chatRoomSearchInfoVo" statementType="CALLABLE">
