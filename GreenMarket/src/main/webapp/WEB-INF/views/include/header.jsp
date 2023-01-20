@@ -49,6 +49,7 @@
 			        <ul class="dropdown-menu text-small">
 			        	<c:if test="${authInfo.type=='U'}">
 			        		<li><a id="myChattings" class="dropdown-item" href="#">채팅방</a></li>
+			        	</c:if>
 				            <li><a class="dropdown-item" href="memberDetail?email=${authInfo.email}">정보수정</a></li>
 				            <li><hr class="dropdown-divider"></li>
 			            <li><a class="dropdown-item" href="logout">로그아웃</a></li>
