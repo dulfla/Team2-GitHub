@@ -7,13 +7,24 @@
 	</configSuffixes>
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
+<<<<<<< HEAD
 		<config>src/main/resources/mybatis/mapper/admin.xml</config>
 		<config>src/main/resources/spring-servies.xml</config>
+=======
+		<config>src/main/resources/spring-email.xml</config>
+>>>>>>> 2c03001584c4454fe463514c161aeed126924cd8
 	</configs>
 	<autoconfigs>
 		<config>src/main/resources/spring-controller.xml</config>
+		<config>src/main/resources/spring-member.xml</config>
 		<config>src/main/resources/spring-mvc.xml</config>
+		<config>src/main/resources/spring-service.xml</config>
 		<config>src/main/resources/spring-mybatis.xml</config>
+<<<<<<< HEAD
+=======
+		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
+>>>>>>> 2c03001584c4454fe463514c161aeed126924cd8
 	</autoconfigs>
 	<configSets>
 	</configSets>

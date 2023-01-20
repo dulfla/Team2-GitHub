@@ -46,10 +46,12 @@ window.addEventListener('load', () => {
 
 			function nicknameAlert() {
 				form.classList.remove('was-validated');
+
 				Swal.fire({
 					icon: 'warning',
 					title: '닉네임을 확인해주세요.!',
 				});
+				
 			}
 
 			function pwdCheckAlert() {

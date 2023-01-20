@@ -12,7 +12,7 @@
 
 		    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 			    <li><a href="productResult?command=productList" class="nav-link px-2 link-dark">중고 거래</a></li>
-		    	<c:if test="${!empty authInfo && authInfo.type=='U'}">
+		    	<c:if test="${!empty authInfo && authInfo.type=='U'}"> 
 				    <li>
 				    	<a href="#" class="nav-link px-2 link-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">내 물건</a>
 				        <ul class="dropdown-menu text-small">
@@ -42,8 +42,7 @@
 	      			<a href="login"><button type="button" class="btn btn-outline-dark me-2">로그인</button></a>
 				    <a href="register"><button type="button"class="btn btn-warning">회원가입</button></a>	
 		    	</c:if>
-		    	
-	        	<c:if test="${!empty authInfo}">
+	        	<c:if test="${!empty authInfo}"> 
 				    <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
 			            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
 			        </a>

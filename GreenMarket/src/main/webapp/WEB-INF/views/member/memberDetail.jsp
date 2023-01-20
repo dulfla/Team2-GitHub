@@ -25,11 +25,6 @@
 <jsp:include page="../include/header.jsp"/>
 </head>
 <body>
-	<%-- <div id="container">
-		<a href="changePassword">비밀번호 변경</a>
-		<a href="changeMemberInfo">회원정보 변경</a>
-		<a href="unRegister">회원탈퇴</a>
-		${member.nickname} --%>
 	<div id="container2">
 	<div class="container">
     	<div class="row">

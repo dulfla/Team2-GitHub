@@ -16,6 +16,7 @@
 				classpath:spring-service.xml
 				classpath:spring-member.xml
 				classpath:spring-websocket.xml
+				classpath:spring-email.xml
 			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
