@@ -36,25 +36,25 @@ public class ProductResultListController {
 		if(!c.equals("all")) { // 특정 카테고리를 지정했을 때
 			if(v.equals("product")) {
 				list = dao.selectByCategory(c); // 전체상품 조회  // DAO에서 return한 데이터 (productList에 담김)
-			}else if(v.equals("BrandNew")){
+			}else if(v.equals("brandNew")){
 				list = dao.selectByCategoryBrandNew(c);
-			}else if(v.equals("PriceHigh")) {
+			}else if(v.equals("priceHigh")) {
 				list = dao.selectByCategoryPriceHigh(c);
-			}else if(v.equals("PriceLow")) {
+			}else if(v.equals("priceLow")) {
 				list = dao.selectByCategoryPriceLow(c);
-			}else if(v.equals("ViewsLevel")) {
+			}else if(v.equals("viewsLevel")) {
 				list = dao.selectByCategoryViewsLevel(c);
 			}
 		}else { // 특정 카테고리 지정 없이 전체 상품을 불러 올 때
 			if(v.equals("product")) {
 				list = dao.selectAllProduct(); // 전체상품 조회  // DAO에서 return한 데이터 (productList에 담김)
-			}else if(v.equals("BrandNew")){
+			}else if(v.equals("brandNew")){
 				list = dao.selectAllBrandNew();
-			}else if(v.equals("PriceHigh")) {
+			}else if(v.equals("priceHigh")) {
 				list = dao.selectAllPriceHigh();
-			}else if(v.equals("PriceLow")) {
+			}else if(v.equals("priceLow")) {
 				list = dao.selectAllPriceLow();
-			}else if(v.equals("ViewsLevel")) {
+			}else if(v.equals("viewsLevel")) {
 				list = dao.selectAllViewsLevel();
 			}
 		}

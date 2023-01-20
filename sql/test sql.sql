@@ -70,3 +70,52 @@ SELECT cr.c_id, cr.p_id, 'sell' AS "type"
 		FROM chatInfomation cr,
 		    (SELECT c_id FROM chatParticipants WHERE sender_email='lee@naver.com') m
 		WHERE cr.c_id=m.c_id;
+        
+        
+        
+        
+        SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd, product p,
+            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f
+		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id ORDER BY regdate DESC;
+        
+        SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = '디지털 기기';
+        
+        SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = '디지털 기기' ORDER BY views DESC ;
+        
+        SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		ORDER BY price ASC;
+        
+        SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		ORDER BY price DESC;
+        
+        SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = '디지털 기기' ORDER BY price DESC  ;
+        
+        SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = '디지털 기기' ORDER BY price ASC ;
+        
+        SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade 
+FROM productDetail pd left outer join product p on pd.p_id = p.p_id left outer join (select 
+fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id WHERE category = '디지털 기기' 
+ORDER BY views DESC;
+
+SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM (select * from productDetail WHERE trade='TRADE' or trade='trade') pd  left outer join 
+			(SELECT p_id,email FROM product WHERE email='lee@naver.com') p  on pd.p_id = p.p_id
+            left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+            where email='lee@naver.com';

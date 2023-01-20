@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%-- <%@ page import="spring.controller.ProductDateTimeAgo" contentType="text/html;charset=UTF-8" %>
 <jsp:useBean id="dateTime" class="spring.controller.ProductDateTimeAgo" scope="page" /> --%>
 <html lang="ko">
@@ -86,7 +87,7 @@
 	            	<image href="${path}resources/img/그린마켓2.png" width="100%" height="100%"></svg>
 	            </c:when>
 	            <c:when test="${!empty p.imgurl}">
-	            	<image href="/GreenMarket/product/display?fileName=${p.imgurl}" width="100%" height="100%"></svg>
+	            	<image href="display?fileName=${p.imgurl}" width="100%" height="100%"></svg> <!-- /GreenMarket/product/ -->
 	            </c:when>
             </c:choose>
             
@@ -98,7 +99,7 @@
                 <div class="btn-group">
                   <button href="productDetail?p_id=${p.p_id}" type="button" class="btn btn-sm btn-outline-secondary" name="moveToDetail">보기</button>
                 </div>
-                <small class="text-muted"></small>
+                <small class="text-muted"><fmt:formatNumber value="${p.price}"  pattern="###,###,###"/>원</small>
               </div>
             </div>
           </div>

@@ -9,43 +9,43 @@
 	<select id="selectAll" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,trade,fileName,uploadPath,uuid
 			FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
 			WHERE  SUBSTR(pd.p_id, 4) between 0 and 8
 	</select><!--  where uuid like 's_%' -->
 	
 	<select id="brandNew" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd, product p,
-            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC where uuid like 's_%') f
-		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id ORDER BY regdate DESC
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		ORDER BY regdate DESC
 	</select>
 	
 	<select id="priceLow" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd, product p,
-            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC where uuid like 's_%') f
-		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id ORDER BY price ASC
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		ORDER BY price ASC
 	</select>
 	
 	<select id="priceHigh" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd, product p,
-            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC where uuid like 's_%') f
-		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id ORDER BY price DESC
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		ORDER BY price DESC
 	</select>
 	
 	<select id="viewsLevel" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd, product p,
-            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC where uuid like 's_%') f
-		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id ORDER BY views DESC
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		ORDER BY views DESC
 	</select>
 		
 	<select id="category" parameterType="String" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd, product p,
-            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f
-		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id AND category = #{category}  
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = #{category}  
 	</select>
 	
 	
@@ -53,59 +53,55 @@
 	
 	<select id="sellList" parameterType="String" resultType="pListVO">
 	SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM (select p_id,trade, p_name,category,regdate,views,price,description from productDetail WHERE trade='CLEAR' or trade='clear') pd,
-		(SELECT p_id,email FROM product WHERE email=#{email}) p,
-            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f
-       	WHERE
-            pd.p_id = p.p_id AND f.p_id=p.p_id
+		FROM (select * from productDetail WHERE trade='CLEAR' or trade='clear') pd  left outer join 
+			(SELECT p_id,email FROM product WHERE email=#{email}) p  on pd.p_id = p.p_id
+            left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+            where email=#{email}
 	</select><!--  where uuid like 's_%' -->
 	
 	<select id="unSellList"  parameterType="String" resultType="pListVO">
 	SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM (select p_id,trade, p_name,category,regdate,views,price,description from productDetail WHERE trade='TRADE' or trade='trade') pd,
-		(SELECT p_id,email FROM product WHERE email=#{email}) p,
-            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f
-       	WHERE
-            pd.p_id = p.p_id AND f.p_id=p.p_id
+		FROM (select * from productDetail WHERE trade='TRADE' or trade='trade') pd  left outer join 
+		(SELECT p_id,email FROM product WHERE email=#{email}) p  on pd.p_id = p.p_id
+            left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+            where email=#{email}
 	</select>
 	
 	<select id="myProductList" parameterType="String" resultType="pListVO">
 	SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd, (SELECT p_id,email FROM product WHERE email=#{email}) p,
-            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f
-       	WHERE
-            pd.p_id = p.p_id AND f.p_id=p.p_id
-            
+		FROM productDetail pd left outer join  (SELECT p_id,email FROM product WHERE email=#{email}) p  on pd.p_id = p.p_id
+		 left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		 where email=#{email}
 	</select>
 	
 	<!-- ==========================카테고리================================== -->
 	
 	<select id="cateBrandNew" parameterType="String" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd, product p,
-            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC where uuid like 's_%') f
-		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id AND category = #{category} ORDER BY regdate DESC 
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = #{category} ORDER BY regdate DESC 
 	</select>
 	
 	<select id="catePriceLow" parameterType="String" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd, product p,
-            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC where uuid like 's_%') f
-		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id AND category = #{category} ORDER BY price ASC 
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = #{category} ORDER BY price ASC 
 	</select>
 	
 	<select id="catePriceHigh" parameterType="String" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd, product p,
-            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC where uuid like 's_%') f
-		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id AND category = #{category} ORDER BY price DESC  
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = #{category} ORDER BY price DESC  
 	</select>
 	
 	<select id="cateViewsLevel" parameterType="String" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd, product p,
-            (select fileName,uploadPath,uuid, p_id from PRODUCTPIC where uuid like 's_%') f
-		WHERE pd.p_id = p.p_id AND f.p_id=p.p_id AND category = #{category} ORDER BY views DESC 
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = #{category} ORDER BY views DESC 
 	</select>
 	
 	

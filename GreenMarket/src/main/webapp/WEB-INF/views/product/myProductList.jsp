@@ -22,8 +22,8 @@
 	<div class="container">
 	<div class="list-group">
   <a href="myProduct" class="list-group-item list-group-item-action">내 상품</a>
-  <a href="unSell" class="list-group-item list-group-item-action">판매완료된 상품</a>
-  <a href="sell" class="list-group-item list-group-item-action">판매중인 상품</a>
+  <a href="sell" class="list-group-item list-group-item-action">판매완료된 상품</a>
+  <a href="unSell" class="list-group-item list-group-item-action">판매중인 상품</a>
 </div>
 	</div>
  <div class="album py-5 bg-light">
@@ -35,7 +35,7 @@
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" 
             role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">       
             <title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/>
-            <image href="/GreenMarket/product/display?fileName=${p.imgurl}" width="100%" height="100%"></svg>
+            <image href="display?fileName=${p.imgurl}" width="100%" height="100%"></svg> <!-- /GreenMarket/product/ -->
 
             <div class="card-body">
                <p class="card-text">${p.category}</p>
