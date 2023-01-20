@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -127,7 +128,6 @@
                 </div>
             </div>
         </div>				
-	</div>
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script type="text/javascript">
@@ -170,9 +170,9 @@
 			
 			console.log('위도 : ' + lat);
 			console.log('경도 : ' + lng);
-	
 		});	
-/* ---------------------------------------------------------------------------------------------------------- */	
+
+
 		$("input[type='file']").on("change", function(e){
 					
 			/* 등록된 이미지 존재시 삭제 */
