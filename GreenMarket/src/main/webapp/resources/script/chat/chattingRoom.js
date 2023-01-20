@@ -197,7 +197,7 @@ function backToChattRoom(){
 	chatRL.appendChild(listGroup);
 	offcanvasBody.appendChild(chatRL);
 	
-	roomsBox = document.getElementById('chattingRoom');
+	roomsBox = document.getElementById('chatRooms');
 }
 
 function openChattings(e){
@@ -210,10 +210,10 @@ function openChattings(e){
 	let closeOffcavasBtn = document.getElementById('closeB');
 	offcanvasHeader.removeChild(closeOffcavasBtn);
 
-	let backPageBtn = document.createElement('button');
-	backPageBtn.setAttribute('type', "button");
+	let backPageBtn = document.createElement('a');
 	backPageBtn.setAttribute('id', "backB");
-	backPageBtn.addEventListener('click', () => {
+	backPageBtn.addEventListener('click', (e) => {
+		e.preventDefault()
 		backToChattRoom();
 		chattingRooms();
 	}, false);

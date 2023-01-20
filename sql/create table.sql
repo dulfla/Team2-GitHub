@@ -215,14 +215,22 @@ BEGIN
             SET category = :NEW.category
             WHERE p_id=:OLD.p_id;
         END IF;
-        IF :NEW.trade<>:OLD.trade THEN
-            INSERT INTO productHistory
-            VALUES(productTracking_seq.NEXTVAL, :NEW.p_id, :NEW.category, :NEW.regdate, NEW:trade); -- sysdate 여야 함
-        END IF;
     ELSIF deleting THEN
         INSERT INTO productHistory
         VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :OLD.category, :OLD.regdate, 'OUT'); -- sysdate 여야 함
-    END if;
+    END IF;
+END;
+
+CREATE OR REPLACE TRIGGER trackingProductTrade
+BEFORE UPDATE ON productDetail
+FOR EACH ROW
+BEGIN
+    IF updating THEN
+        IF :NEW.trade<>'TRADE' OR :NEW.trade<>'trade' THEN
+            INSERT INTO productHistory
+            VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :NEW.category, :OLD.regdate, 'TRADE'); -- sysdate 여야 함
+        END IF;
+    END IF;
 END;
 
 
@@ -288,6 +296,7 @@ INSERT INTO chatInfomation
 VALUES('chat2', 'pid3');
 INSERT INTO chatInfomation
 VALUES('chat3', 'pid2');
+
 INSERT INTO chatParticipants
 VALUES(1, 'chat1', 'choi@naver.com', '2020/11/12');
 INSERT INTO chatParticipants
