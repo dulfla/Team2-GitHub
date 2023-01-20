@@ -53,7 +53,7 @@ public class FindPasswordController {
 	}
 	
 	@GetMapping("mailAuthSuccess")
-	public String mailAuthSuccess(@RequestParam String email, Model model) {
+	public String mailAuthSuccess(Model model) {
 		
 		model.getAttribute("findPwdCmd");
 		return "edit/findPasswordSuccess";
