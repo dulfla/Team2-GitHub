@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,6 +88,7 @@
 				<div id="map" style="width:350px;height:350px;"></div>
 					<p><em>지도를 클릭해주세요!</em></p> 
 				<div id="clickLatlng"></div>
+				<input type="hidden" name="getLat" value="$(#latlng.getLat())}">
 			</div>
 			<button>상품등록</button>
 			<button type="button">목록</button>
@@ -124,11 +126,16 @@
 		    // 마커 위치를 클릭한 위치로 옮깁니다
 		    marker.setPosition(latlng);
 		    
+		   /*  
 		    var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
 		    message += '경도는 ' + latlng.getLng() + ' 입니다';
+		     
 		    
 		    var resultDiv = document.getElementById('clickLatlng'); 
 		    resultDiv.innerHTML = message;
+		    */
+		    console.log('위도 : ' + latlng.getLat());
+		    console.log('경도 : ' + latlng.getLng());
 		    
 		});
 	
