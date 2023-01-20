@@ -125,7 +125,7 @@
 				</script>
 			</c:when>
 			<c:otherwise>
-				<button id="openChattingBtn" class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+				<button id="openChattingBtn" class="btn btn-primary" type="button">
 					채팅하기
 				</button>
 				<input type="hidden" name="email" id="userEmail" value="${authInfo.email}">

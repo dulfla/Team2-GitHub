@@ -21,9 +21,9 @@
 				        </ul>
 				    </li>		    	
 		    	</c:if>
-		    	<c:if test="${empty authInfo && authInfo.type=='M'}">
+		    	<c:if test="${!empty authInfo && authInfo.type=='M'}">
 				    <li>
-				    	<a href="#" class="nav-link px-2 link-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">현황 관리</a>
+				    	<a href="#" class="nav-link px-2 link-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">현황 확인</a>
 				        <ul class="dropdown-menu text-small">
 				            <li><a class="dropdown-item" href="MemberStatus">회원 현황</a></li>
 				            <li><a class="dropdown-item" href="ProductStatus">게시물 현황</a></li>
@@ -49,7 +49,7 @@
 			        </a>
 			        <ul class="dropdown-menu text-small">
 			        	<c:if test="${authInfo.type=='U'}">
-			        		<li><a id="myChattings" class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" href="#">채팅방</a></li>
+			        		<li><a id="myChattings" class="dropdown-item" href="#">채팅방</a></li>
 				            <li><a class="dropdown-item" href="#">판매목록</a></li>
 				            <li><a class="dropdown-item" href="#">구매목록</a></li>
 			            </c:if>

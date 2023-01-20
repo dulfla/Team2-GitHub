@@ -44,7 +44,7 @@ public class ChatDao {
 	}
 
 	public Collection<ChattingRoomInfoListVo> selectChattingRoomByEmail(String email) {
-		return sqlSesison.selectOne("mybatis.mapper.chat.selectAllChatRoomByEmil", email);
+		return sqlSesison.selectList("mybatis.mapper.chat.selectAllChatRoomByEmil", email);
 	}
 	
 }

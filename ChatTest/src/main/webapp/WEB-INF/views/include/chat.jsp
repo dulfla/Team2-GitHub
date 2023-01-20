@@ -6,8 +6,8 @@
 <link rel="stylesheet" href="${path}resources/style/chattingStyle.css">
 <c:choose>
 	<c:when test="${!(authInfo.email eq product.email)}">
-		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" type="buy">
-			<div class="offcanvas-header">
+		<div class="offcanvas offcanvas-end chattingOpen" tabindex="-1" id="offcanvasRight chatOffcanvas" aria-labelledby="offcanvasRightLabel" type="buy">
+			<div class="offcanvas-header chatOffcanvas">
 			  	<div class="p-0 col-3">
 					<img class="rounded-circle" src="" alt="${product.p_name} 사진"> <%-- ${path}resources/img/sample.jpg --%>
 				</div>
@@ -15,9 +15,9 @@
 					<h2>${product.p_name} 상품명</h2>
 					<p>${product.p_name} 상품 설명</p>
 				</div>
-			  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeBtn"></button>
+			  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeBtn chatOffcanvas"></button>
 			</div>
-			<div class="offcanvas-body p-0 container">
+			<div class="offcanvas-body p-0 container chatOffcanvas">
 				<div id="messageBox" class="overflow-auto"></div>
 				<div class="container fixed-bottom" id="message">
 					<div class="input-group mt-2 p-0">
@@ -30,8 +30,8 @@
 		</div>
 	</c:when>
 	<c:when test="${authInfo.email eq product.email}">
-		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" type="sell">
-			<div class="offcanvas-header">
+		<div class="offcanvas offcanvas-end chattingRooms" tabindex="-1" id="offcanvasRight chatOffcanvas" aria-labelledby="offcanvasRightLabel" type="sell">
+			<div class="offcanvas-header chatOffcanvas">
 			  	<div class="p-0 col-3">
 					<img class="rounded-circle" src="" alt="${product.p_name} 사진"> <%-- ${path}resources/img/sample.jpg --%>
 				</div>
@@ -39,9 +39,9 @@
 					<h2>${product.p_name}</h2>
 					<p>판매자 : ${product.email}</p>
 				</div>
-			  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeBtn"></button>
+			  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeBtn chatOffcanvas"></button>
 			</div>
-			<div class="offcanvas-body p-0 container">
+			<div class="offcanvas-body p-0 container chatOffcanvas">
 				<div id="chatRoomList" class="overflow-auto container">
 					<div class="list-group w-auto mt-2 h-100 mb-2" id="chattingRooms"></div>
 				</div>
