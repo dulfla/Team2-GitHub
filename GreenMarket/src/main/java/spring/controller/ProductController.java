@@ -62,7 +62,7 @@ public class ProductController {
 	private MemberDaoImpl memberDaoImpl;
 
 	// 카테고리
-	@RequestMapping(value = "/product/register", method = RequestMethod.GET)
+	@RequestMapping(value = "/productregister", method = RequestMethod.GET)
 	public String registerProduct(Model model) throws Exception {
 
 		List<CategoryVO> list = memberServiceImpl.category();
@@ -73,7 +73,7 @@ public class ProductController {
 	}
 
 	// 상품 등록
-	@RequestMapping(value = "/product/register", method = RequestMethod.POST)
+	@RequestMapping(value = "/productregister", method = RequestMethod.POST)
 	public String registerProduct(ProductVO vo, Product1VO vo1) {
 		logger.info("productRegisterPOST.........." + vo);
 		
@@ -257,7 +257,6 @@ public class ProductController {
 
 		ProductVO product = memberServiceImpl.productDetail(p_id);
 		model.addAttribute("product", product);
-		
 		return "product/productDetail";
 	}
 	@GetMapping(value="/getImageList", produces = MediaType.APPLICATION_JSON_VALUE)
