@@ -147,59 +147,14 @@
 		            </div>
 		        </div>
 		    </div>
-		</div>
-		<%-- <form action="productModify" id="modiForm" method="POST" autocomplete="off" enctype="multipart/form-data">
-			<input type="hidden" name="p_id" value="${product.p_id}" />
-			<div>
-				<span>카테고리</span>
-				<select class="category" name="category">
-					<option value="null">선택</option>
-					<c:forEach items="${category}" var="cate">
-						<option value="${cate.category}" <c:if test ="${product.category eq cate.category}">selected="selected"</c:if>>
-							${cate.category}
-						</option>
-					</c:forEach>
-				</select>
-			</div>	
-			<div>
-			<input type="text" name="p_name" placeholder="상품명을 입력해주세요" value="${product.p_name}">
-			</div>
-			<div>
-			<input type="text" name="price" placeholder="상품가격" value="${product.price}">
-			</div>
-			<div>
-				<label>사진 업로드</label>
-				<input type="file" id ="fileItem" name='uploadFile' style="height: 30px;">
-			</div>
-			<div>
-			<textarea rows="5" cols="50" name="description" placeholder="내용을 입력하세요">${product.description}</textarea>
-			</div>
-			<div>
-				<span>판매상태</span>
-				<select class="trade" name="trade">
-					<option value="trade">판매중</option>
-					<option value="clear">판매완료</option>
-				</select>
-			</div>
-			
-			<div class="inputArea">
-	            <div class="inputArea_title">
-		            <label>상품 이미지</label>
-		        </div>
-				<div id="uploadResult">
-																										
-				</div>
-            </div>
-			
-			<button>등록</button>
-			<button type="button" id="back_Btn">취소</button>
-		</form> --%>
-				
+		</div>				
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	
+	
+	
+	
 	<script type="text/javascript">
-
 	
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
     mapOption = { 

@@ -76,9 +76,7 @@
 	<insert id="productPic" parameterType="ProductImageVO">
 		insert into productPic(p_id, fileName, uploadPath, uuid)
 		values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
-	</insert>
-
-		<!-- 합치고 이메일을 닉네임으로 변경 (아마도 세션으로?) -->		
+	</insert>	
 
   	<select id="productDetail" resultType="ProductVO">
 		select p_name, description, category, regdate, views, price, p_id,

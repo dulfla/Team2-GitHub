@@ -32,9 +32,10 @@
 <body>
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
-		<form role='form' method="POST" autocomplete="off">
+		<form role='form' method="POST">
+			<input type="hidden" name="type" value="${authInfo.type}">
 			<input type="hidden" name="p_id" value="${product.p_id}" >
-			<input type="hidden" name="p_email" value="${product.email}">
+			<input type="hidden" name="email" value="${product.email}">
 			<input type="hidden" name="authEmail" value="${authInfo.email}">
 			<input type="hidden" name="nickname" value="${product.nickname}">
 
@@ -45,10 +46,10 @@
 			
 			<div class="inputArea"> 
 			 <label>등록일</label>
-			 <span class="regdate">${product.regdate}</span>        
+			 <span class="regdate">
+			 	<fmt:formatDate value="${product.regdate}" pattern="yyyy-MM-dd"/>
+			 </span>        
 			</div>
-			
-			<!-- 거래위치 -->
 			
 			
 			<div class="inputArea"> 
@@ -92,7 +93,8 @@
             	<div id="map" style="width:350px;height:350px;"></div>
             </div>
 			
-			<c:if test="${product.email == authInfo.email}">
+			<!-- 작성자,관리자 수정삭제버튼 -->
+			<c:if test="${product.email == authInfo.email || authInfo.type == 'M'}">
 				<button type="button" id="modify_Btn" class="btn btn-warning">수정</button>
 				<button type="button" id="delete_Btn" class="btn btn-danger">삭제</button>
 			</c:if>
