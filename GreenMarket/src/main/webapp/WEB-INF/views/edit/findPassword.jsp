@@ -215,7 +215,7 @@ label[for="terms"] {
             <input type="email" name="memMail" id="memMail" placeholder="이메일 입력">
             
 			<div id="form-controls">
-              <input type="button" value="메일전송" id="mailAuth" class="btn btn-danger" onclick="changeBtnName()">
+              <input type="button" value="메일전송" id="mailAuth" class="btn btn-danger">
             </div>
             
             <label for="authKey">인증번호 입력</label>
@@ -263,7 +263,11 @@ function changeBtnName()  {
 
 $("#mailAuth").on("click",function(e){
 	var email = $("#memMail").val();
+	const btnElement 
+    = document.getElementById('mailAuth');
+	
     isMailAuthed=true;
+    
     
     if(email == null || email == ''){
     	Swal.fire({
@@ -275,12 +279,22 @@ $("#mailAuth").on("click",function(e){
     	$.ajax({
             url : "mailAuth.wow" 
             ,data : {"mail" : $("input[name='memMail']").val()}
-            ,success: function(data){
-            	Swal.fire({
-            	    icon: 'success',
-            	    title: '이메일을 전송했습니다.'
+            ,success: function(result){
+            	console.log(result);
+            	if(result == 'fail'){
+            		Swal.fire({
+                	    icon: 'warning',
+                	    title: '등록된 이메일이 아닙니다.'
 
-                })
+                    })
+            	}else{
+            		btnElement.value = "재전송";
+            		Swal.fire({
+                	    icon: 'success',
+                	    title: '이메일을 전송했습니다.'
+
+                    })
+            	}
             },error : function(req,status,err){
                 console.log(req);
             }

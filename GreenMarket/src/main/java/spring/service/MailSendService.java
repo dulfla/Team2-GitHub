@@ -15,11 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
+import spring.dao.MemberDao;
+import spring.exception.MemberNotFoundException;
+import spring.vo.Member;
+
 @Service
 public class MailSendService {
 	
 	@Autowired
 	private JavaMailSenderImpl mailSender;
+	
+	@Autowired
+	private MemberDao dao;
 	
 	public static int key;
 	
@@ -31,6 +38,12 @@ public class MailSendService {
 	}
 	
 	public int sendAuthMail(String mail)  throws MessagingException{
+		
+		Member member = dao.selectByEmail(mail);
+		if(member==null) {
+			throw new MemberNotFoundException();
+		}
+		
         int authKey = getKey(6);
         key = authKey;
         System.out.println(authKey);

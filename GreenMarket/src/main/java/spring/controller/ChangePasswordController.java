@@ -39,7 +39,9 @@ public class ChangePasswordController {
 		try {
 			changePasswordSvc.changePassword(authInfo.getEmail()
 					,changePwdCommand.getCurrentPassword() , changePwdCommand.getNewPassword());
-			return 0;
+			session.invalidate();
+			return 0; // 성공
+			
 		}catch (IdPasswordNotMatchingException e) {
 			// 저장된 비밀번호가 입력된 현재 비밀번호가 일치하지 않을때
 			errors.rejectValue("currentPassword", "notMatching");

@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import spring.dao.MemberDao;
 import spring.exception.AlreadyExistingMemberException;
@@ -21,6 +22,7 @@ public class MemberWithDrawalService {
 	@Inject
 	private MailSendService mailSendService;
 	
+	@Transactional
 	public void withDrawal(MailAuthCommand mailAuth, int getKey) {
 		
 		Member member = dao.selectByEmail(mailAuth.getEmail());
@@ -35,6 +37,10 @@ public class MemberWithDrawalService {
 			throw new AlreadyExistingMemberException("인증키 맞지않음");
 		}
 		
+	}
+
+	public void deleteMember(Member member2) {
+		Member member = dao.selectByEmail(member2.getEmail());
 		dao.deleteMember(member);
 	}
 	

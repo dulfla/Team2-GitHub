@@ -24,11 +24,16 @@ function changePasswordCheck() {
 
 			    })
 			} else {
-				Swal.fire({
-				    icon: 'success',
-				    title: '수정이 완료되었습니다.'
-
-			    })
+			     Swal.fire({
+					   icon: 'success',
+				       title: '수정이 완료되었습니다.'
+				   }).then(result => {
+					   
+					   if(result.isConfirmed){
+						   	document.location.href = "login";
+					   }
+				   })
+			    
 			}
 
 

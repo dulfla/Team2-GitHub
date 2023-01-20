@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import oracle.jdbc.proxy.annotation.Post;
@@ -16,6 +17,7 @@ import spring.exception.IdPasswordNotMatchingException;
 import spring.service.MailSendService;
 import spring.service.MemberWithDrawalService;
 import spring.vo.MailAuthCommand;
+import spring.vo.Member;
 
 @Controller
 public class MemberWithDrawal {
@@ -34,10 +36,17 @@ public class MemberWithDrawal {
 		return "edit/memberWithDrawal";
 	}
 	
+	@RequestMapping("deleteMember")
+	public String deleteMember(HttpSession session) {
+		Member member = (Member)session.getAttribute("member");
+		memberWithDrawalService.deleteMember(member);
+		session.invalidate();
+		return "index";
+	}
+	
 	@PostMapping("memberWithDrawalPost")
 	@ResponseBody
 	public int memberWithDrawalPost(@RequestBody MailAuthCommand mailAuth ,HttpSession session) {
-		
 		
 		try {
 			
@@ -45,7 +54,6 @@ public class MemberWithDrawal {
 			System.out.println("테스트키 : "+mailSendService.key);
 			
 			memberWithDrawalService.withDrawal(mailAuth,getKey);
-			session.invalidate();
 			return 0;
 		
 		}catch (IdPasswordNotMatchingException e) {
