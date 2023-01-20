@@ -20,7 +20,7 @@
 <style type="text/css">
 	#result_card img{
  		max-width: 100%; 
-	    height: auto; 
+	    height: 400px; 
 	    display: block;
 	    padding: 5px;
 	    margin-top: 10px;

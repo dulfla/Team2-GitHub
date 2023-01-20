@@ -15,7 +15,7 @@
 <style type="text/css">
 	#result_card img{
 		max-width: 100%;
-	    height: auto;
+	    height: 400px;
 	    display: block;
 	    padding: 5px;
 	    margin-top: 10px;
@@ -121,17 +121,17 @@
 		                                </div>
 		                            </div>  
 		                            <div class="row">
-			                            <div class="col-md-12">
+			                            <div class="col-md-6">
 	                                        <div class="form-group">
-	                                            <label for="form_message">상품 이미지</label>
+	                                            <label for="form_message" style="margin-top : 20px">상품 이미지</label>
 	                                            <input type="file" id="fileItem" name='uploadFile' style="height: 30px;">
 	                                            <div id="uploadResult"></div>
 	                                        </div>
                                     	</div>
-		                            	<div class="col-md-12">
+		                            	<div class="col-md-6">
 			                                <div class="form-group">
-			                                    <label for="form_message">거래 위치</label>
-			                                    <div id="map" style="width:350px;height:350px;"></div>
+			                                    <label for="form_message" style="margin-top : 20px">거래 위치</label>
+			                                    <div id="map" style="width:100%;height:400px;"></div>
 			                                        <p><em>지도를 클릭해주세요!</em></p> 
 			                                    <div id="clickLatlng"></div>
 		                                    </div>
