@@ -17,10 +17,17 @@ function changePasswordCheck() {
 		contentType: 'application/json;charset=UTF-8',
 		success: function (result) {
 			console.log(result);
-			if (result == 1) {
+			if(result == 2){
 				Swal.fire({
 				    icon: 'error',
-				    title: '비밀번호가 일치하지 않습니다.'
+				    title: '새 비밀번호가 일치하지 않습니다.'
+
+			    })
+			
+			}else if (result == 1) {
+				Swal.fire({
+				    icon: 'error',
+				    title: '현재 비밀번호가 일치하지 않습니다.'
 
 			    })
 			} else {

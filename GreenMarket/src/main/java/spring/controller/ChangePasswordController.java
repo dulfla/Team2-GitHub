@@ -31,7 +31,7 @@ public class ChangePasswordController {
 		}
 		if(!changePwdCommand.getNewPassword().equals
 				(changePwdCommand.getNewPassword2())) {
-			return 1;
+			return 2;
 		}
 		
 		AuthInfo authInfo = (AuthInfo)session.getAttribute("authInfo"); // 이메일

@@ -70,7 +70,7 @@
 							id="newPassword2" name="newPassword2" oninput="checkPwd()" required>
 						<div>
 							<span id="result_checkPwd" style="font-size: 14px;"></span>
-							<input type="hidden" id="result_checkPwd2" value="">
+							<input type="hidden" id="result_checkPwd2" oninput="checkPwd()" value="">
 						</div>
 					</div>
 

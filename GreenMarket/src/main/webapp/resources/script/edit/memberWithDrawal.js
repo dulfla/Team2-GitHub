@@ -79,8 +79,6 @@ function withDrawalCheck(){
 								   }
 							   })
 						      
-						   }else{
-						   		document.location.href = "memberWithDrawal";
 						   }
 						})
 					}

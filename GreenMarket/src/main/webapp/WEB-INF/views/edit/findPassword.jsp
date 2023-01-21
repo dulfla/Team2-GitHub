@@ -280,7 +280,6 @@ $("#mailAuth").on("click",function(e){
             url : "mailAuth.wow" 
             ,data : {"mail" : $("input[name='memMail']").val()}
             ,success: function(result){
-            	console.log(result);
             	if(result == 'fail'){
             		Swal.fire({
                 	    icon: 'warning',
