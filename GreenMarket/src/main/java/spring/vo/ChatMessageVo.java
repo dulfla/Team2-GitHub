@@ -9,9 +9,16 @@ public class ChatMessageVo {
 	private String message;
 	private String messType;
 	private String sender;
+	private String nickname;
 	private char read;
 	private Date send_date;
 	
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	public long getIdx() {
 		return idx;
 	}

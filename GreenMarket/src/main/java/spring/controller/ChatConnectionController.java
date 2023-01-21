@@ -85,7 +85,7 @@ public class ChatConnectionController {
 	@PostMapping("ConnecteWithClientServer")
 	public int openClientSoket(@RequestBody Map<String, String> map, HttpSession session) throws IOException {
 		ChatClient client = chatService.checkClient(map.get("c_id"), map.get("email"));
-		chatService.connection(client, map.get("c_id"), map.get("email"));
+		chatService.connection(client, map.get("c_id"), map.get("email"), ((AuthInfo)session.getAttribute("authInfo")).getNickname());
 		return 1;
 	}
 	

@@ -34,8 +34,8 @@ CREATE SEQUENCE pid_seq START WITH 6 NOCYCLE NOCACHE; -- productDetail(p_id) - �
 CREATE SEQUENCE product_seq START WITH 6 NOCYCLE NOCACHE; -- product(idx) - 샘플데이터 5개
 CREATE SEQUENCE picture_seq START WITH 1 NOCYCLE NOCACHE; -- productPic(idx)
 CREATE SEQUENCE productTracking_seq START WITH 1 NOCYCLE NOCACHE; -- productHistory(idx)
-CREATE SEQUENCE chatInfomation_seq START WITH 3 NOCACHE NOCYCLE; -- chatInfomation(c_id) - 샘플데이터 2개
-CREATE SEQUENCE chatParticipants_seq START WITH 3 NOCACHE NOCYCLE; -- chatParticipants(idx) - 샘플데이터 2개
+CREATE SEQUENCE chatInfomation_seq START WITH 4 NOCACHE NOCYCLE; -- chatInfomation(c_id) - 샘플데이터 3개
+CREATE SEQUENCE chatParticipants_seq START WITH 4 NOCACHE NOCYCLE; -- chatParticipants(idx) - 샘플데이터 3개
 CREATE SEQUENCE sampleMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(message)
 CREATE SEQUENCE chatMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(idx)
 
@@ -201,7 +201,7 @@ BEGIN
     END IF;
 END memberAdmin;
 
-CREATE OR REPLACE TRIGGER trackingProduct -- 바인딩 입력하라고 뜸.. 찾아 보기 - 뭔지 모르겠음...
+CREATE OR REPLACE TRIGGER trackingProduct
 BEFORE INSERT OR UPDATE OR DELETE
     ON productDetail
 FOR EACH ROW

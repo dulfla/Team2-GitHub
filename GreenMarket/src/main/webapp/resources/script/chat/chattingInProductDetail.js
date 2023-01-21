@@ -49,13 +49,7 @@ window.addEventListener('load', function() {
 		let activeE = document.activeElement;
 		let body = document.getElementsByTagName('body')[0];
 		if(activeE==body){
-			if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingOpen')){
-				backToChattRooms();
-				offCanvas.classList.toggle('show');
-			}else if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingRooms')){
-				roomBox.innerHTML = null;
-				offCanvas.classList.toggle('show');
-			}
+			closeServer();
 		}else if(activeE==startBtn){
 			if(offCanvas.classList.contains('show')){
 				closeServer();
@@ -78,13 +72,13 @@ window.addEventListener('load', function() {
 function closeServer(){
 	if(memberType=='buy'){
 		if(offCanvas.classList.contains('show')){
-			offCanvas.classList.toggle('show');
 			chattingClose();
+			offCanvas.classList.toggle('show');
 		}
 	}else if(memberType=='sell'){
 		if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingOpen')){
 			backToChattRooms();
-			chattingRoom();
+			offCanvas.classList.toggle('show');
 		}else if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingRooms')){
 			roomBox.innerHTML = null;
 			offCanvas.classList.toggle('show');
@@ -367,29 +361,7 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 			let msgL = messages.messages;
 			if(0<msgL.length){
 				msgL.forEach((m) => {
-					if(m.sender == personalId){
-						let myText = document.createElement('div');
-						myText.classList.add('messageBox', 'myMessageBox');
-						
-						let myMessage = document.createElement('p');
-						myMessage.classList.add('message', 'send');
-						
-						myMessage.innerHTML = m.message;
-					
-						myText.appendChild(myMessage);
-						messageBox.appendChild(myText);
-					}else{
-						let reciveText = document.createElement('div');
-						reciveText.classList.add('messageBox', 'reciveMessageBox');
-						
-						let sendingMessage = document.createElement('p');
-						sendingMessage.classList.add('message', 'recive');
-						
-						sendingMessage.innerHTML = m.message;
-						
-						reciveText.appendChild(sendingMessage);
-						messageBox.appendChild(reciveText);
-					}
+					insertMessage(m.sender, m.nickname, m.message);
 				});
 			}
 		},
@@ -440,20 +412,7 @@ function sendMessage(){ // 메세지 보내기
 		},
 		success:function(data){
 			if(data==1){console.log('메세지 전달 완료')}
-			
-			let myText = document.createElement('div');
-			myText.classList.add('messageBox', 'myMessageBox');
-			
-			let myMessage = document.createElement('p');
-			myMessage.classList.add('message', 'send');
-			
-			myMessage.innerHTML = msg.value;
 			msg.value = null;
-		
-			myText.appendChild(myMessage);
-			messageBox.appendChild(myText);
-			
-			scrollCheck(true);
 		}
 	});
 }
@@ -465,23 +424,51 @@ function onMessage(msg) {
 		let str = data[i].split(":");
 		msgInfo.push(str);
 	}
+	insertMessage(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1]);
+}
+
+function insertMessage(sender, nick, msg){
+	if(sender==personalId){
+		let myText = document.createElement('div');
+		myText.classList.add('messageBox', 'myMessageBox');
+		myText.setAttribute('sender', sender);
+		
+		let myMessage = document.createElement('p');
+		myMessage.classList.add('message', 'send');
+		
+		myMessage.innerHTML = msg;
 	
-	let reciveText = document.createElement('div');
-	reciveText.classList.add('messageBox', 'reciveMessageBox');
-	
-	let sendingMessage = document.createElement('p');
-	sendingMessage.classList.add('message', 'recive');
-	
-	sendingMessage.innerHTML = msgInfo[2][1];
-	
-	reciveText.appendChild(sendingMessage);
-	
-	let nowPosition = messageBox.scrollTop;
-	let result = approximateCheck(nowPosition);
-	
-	messageBox.appendChild(reciveText);
-	
-	scrollCheck(result);
+		myText.appendChild(myMessage);
+		messagesBox.appendChild(myText);
+		
+		scrollChecking(true);
+	}else{
+		let reciveText = document.createElement('div');
+		reciveText.classList.add('messageBox', 'reciveMessageBox');
+		reciveText.setAttribute('sender', sender);
+		
+		let nickPlace;
+		if(messagesBox.innerHTML!='' && messagesBox.innerHTML!=null && messagesBox.lastChild.getAttribute('sender')!=sender){
+			nickPlace = document.createElement('p');
+			nickPlace.classList.add('reciveMsgSender');
+			nickPlace.innerHTML = nick;
+
+			reciveText.appendChild(nickPlace);
+		}
+		
+		let sendingMessage = document.createElement('p');
+		sendingMessage.classList.add('message', 'recive');
+		sendingMessage.innerHTML = msg;
+		
+		reciveText.appendChild(sendingMessage);
+		
+		let nowPosition = messagesBox.scrollTop;
+		let result = approximateChecking(nowPosition);
+		
+		messagesBox.appendChild(reciveText);
+		
+		scrollChecking(result);
+	}
 }
 
 function scrollCheck(result){ // 스크롤이 맨 아래에 있다면 새 메세지를 보내거나 받았을 때 스크롤을 아래로 고정, 맨 아래가 아니라면 위치 그대로에, 메세지 보내고, 팝업 띄우기

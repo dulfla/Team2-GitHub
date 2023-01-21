@@ -51,9 +51,9 @@
  	
  	<!-- 해당 채팅방의 모든 채팅 긁어오기 -->
  	<select id="selectAllMessages" parameterType="String" resultType="chatMessageVo">
- 		SELECT message, messType, sender, read, send_date
- 		FROM chatMessage
- 		WHERE c_id=#{c_id}
+ 		SELECT message, messType, sender, read, send_date, nickname
+ 		FROM chatMessage c, member m
+ 		WHERE c.sender = m.email AND c_id=#{c_id}
  		ORDER BY TO_CHAR(send_date, 'YYYYMMDDHH24MISS') ASC
  	</select>
  	
@@ -68,9 +68,9 @@
  	
  	<!-- 메세지 idx에 해당하는 메세지 가져오기 -->
  	<select id="selectSendedMessage" parameterType="long" resultType="chatMessageVo">
- 		SELECT message, messType, sender, read, send_date
- 		FROM chatMessage
- 		WHERE idx=#{idx}
+ 		SELECT message, messType, sender, read, send_date, nickname
+ 		FROM chatMessage c, member m
+ 		WHERE c.sender = m.email AND idx=#{idx}
  	</select>
 	
 </mapper>

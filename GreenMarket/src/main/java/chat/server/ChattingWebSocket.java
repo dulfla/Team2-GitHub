@@ -33,7 +33,8 @@ public class ChattingWebSocket extends TextWebSocketHandler{
     	String msgPack = "chatName:"+root.getString("chatName")+","
     					+"room:"+root.getString("room")+","
     					+"message:"+root.getString("message")+","
-    					+"messType:"+root.getString("messType");
+    					+"messType:"+root.getString("messType")+","
+    					+"nickName:"+root.getString("clientNickname");
         session.sendMessage(new TextMessage(msgPack));
     }
  

@@ -74,3 +74,14 @@ SELECT cr.c_id, cr.p_id, 'sell' AS "type"
 UPDATE PRODUCTDETAIL SET trade='CLEAR' WHERE p_id='pid5';
 delete PRODUCTDETAIL WHERE p_id='pid5';
 delete PRODUCTDETAIL WHERE p_id='pid4';
+
+
+SELECT message, messType, sender, read, send_date, nickname
+ 		FROM chatMessage c, member m
+ 		WHERE c.sender = m.email AND c_id='chat3'
+ 		ORDER BY TO_CHAR(send_date, 'YYYYMMDDHH24MISS') ASC
+        
+        SELECT message, messType, sender, read, send_date, nickname
+ 		FROM chatMessage c, member m
+ 		WHERE c.sender = m.email AND c_id='chat3'
+ 		ORDER BY TO_CHAR(send_date, 'YYYYMMDDHH24MISS') ASC

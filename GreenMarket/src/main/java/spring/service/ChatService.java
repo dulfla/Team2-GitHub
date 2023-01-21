@@ -49,15 +49,17 @@ public class ChatService {
 		return cdao.selectAllMessagesInChatRoom(c_id);
 	}
 
-	public void connection(ChatClient client, String c_id, String email) throws IOException {
+	public void connection(ChatClient client, String c_id, String email, String name) throws IOException {
 		client.setSs(ss);
 		client.setCws(cws);
 		client.setChatRoom(c_id);
 		client.setChatName(email);
+		client.setClientNickname(name);
 		client.connect();
 		
 		json = new JSONObject();
 		json.put("command", "incoming");
+		json.put("name", name);
 		json.put("who", email);
 		json.put("room", c_id);
 		String jsonStr = json.toString();

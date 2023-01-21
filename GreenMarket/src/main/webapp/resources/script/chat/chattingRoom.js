@@ -53,15 +53,7 @@ window.addEventListener('load', function() {
 		let activeE = document.activeElement;
 		let body = document.getElementsByTagName('body')[0];
 		if(activeE==body){
-			if(offCanvs.classList.contains('show')){
-				if(offCanvs.classList.contains('chattings')){
-					backToChattRoom();
-					offCanvs.classList.toggle('show');
-				}else if(offCanvs.classList.contains('chattingRoom')){
-					roomBox.innerHTML = null;
-					offCanvs.classList.toggle('show');
-				}
-			}
+			shotServer();
 		}else if(activeE==startBtn){
 			if(offCanvs.classList.contains('show')){
 				shotServer();
@@ -81,10 +73,11 @@ window.addEventListener('load', function() {
 	closeBtn.addEventListener('click', shotServer, false);
 });
 
-function shotServer(){ // 오프캔버스를 닫을 때 동작할 기능
+function shotServer(){
 	if(offCanvs.classList.contains('show')){
 		if(offCanvs.classList.contains('chattings')){
 			backToChattRoom();
+			offCanvs.classList.toggle('show');
 		}else if(offCanvs.classList.contains('chattingRoom')){
 			roomsBox.innerHTML = null;
 			offCanvs.classList.toggle('show');
@@ -162,6 +155,8 @@ function chattingRooms(){
 }
 
 function backToChattRoom(){
+	chatClose();
+	
 	document.removeEventListener('keydown', enterSending);
 	document.getElementsByName("sendBtn")[0].removeEventListener('click', msgeNullcheck);
 	
@@ -242,6 +237,7 @@ function openChattings(e){
 	let addFileBtn = document.createElement('button');
 	addFileBtn.classList.add('btn', 'btn-outline-secondary');
 	addFileBtn.setAttribute('type', "button");
+	addFileBtn.setAttribute('name', "addFileB");
 	addFileBtn.setAttribute('id', "button-addon1");
 	addFileBtn.innerHTML = "+";
 
@@ -249,13 +245,13 @@ function openChattings(e){
 	messageInput.classList.add('form-control');
 	messageInput.setAttribute('type', "text");
 	messageInput.setAttribute('placeholder', "메세지를 입력하세요");
-	messageInput.setAttribute('name', "message");
+	messageInput.setAttribute('name', "msgInput");
 	messageInput.setAttribute('aria-label', "message");
 	messageInput.setAttribute('aria-describedby', "basic-addon1");
 
 	let sendBtn = document.createElement('button');
 	sendBtn.classList.add('input-group-text');
-	sendBtn.setAttribute('name', "sendBtn");
+	sendBtn.setAttribute('name', "sendB");
 	sendBtn.setAttribute('id', "basic-addon1");
 	sendBtn.innerHTML = "전송";
 
@@ -267,7 +263,7 @@ function openChattings(e){
 	offcanvasBody.appendChild(messageBoxContainer);
 
 	messagesBox = document.getElementById('messagesBox');
-	msge = document.getElementsByName('message')[0];
+	msge = document.getElementsByName('msgInput')[0];
 
 	connecteWithSocket();
 }
@@ -313,7 +309,7 @@ function connecteWithSocket(){ // 채팅 서버 연결
 function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들 긁어오기
 	messagesBox.innerHTML = null;
 	document.addEventListener('keydown', enterSending, false);
-	document.getElementsByName("sendBtn")[0].addEventListener('click', msgeNullcheck, false);
+	document.getElementsByName("sendB")[0].addEventListener('click', msgeNullcheck, false);
 	$.ajax({
 		url : "Chat",
 		type : "POST",
@@ -330,29 +326,7 @@ function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들
 			let msgL = messages.messages;
 			if(0<msgL.length){
 				msgL.forEach((m) => {
-					if(m.sender == personId){
-						let myText = document.createElement('div');
-						myText.classList.add('messageBox', 'myMessageBox');
-						
-						let myMessage = document.createElement('p');
-						myMessage.classList.add('message', 'send');
-						
-						myMessage.innerHTML = m.message;
-					
-						myText.appendChild(myMessage);
-						messagesBox.appendChild(myText);
-					}else{
-						let reciveText = document.createElement('div');
-						reciveText.classList.add('messageBox', 'reciveMessageBox');
-						
-						let sendingMessage = document.createElement('p');
-						sendingMessage.classList.add('message', 'recive');
-						
-						sendingMessage.innerHTML = m.message;
-						
-						reciveText.appendChild(sendingMessage);
-						messagesBox.appendChild(reciveText);
-					}
+					insertMessages(m.sender, m.nickname, m.message);
 				});
 			}
 		},
@@ -366,7 +340,7 @@ function chatClose(){ // 서버 연결 끊고, messagesBox 비우기
 	socket = null;
 	
 	document.removeEventListener('keydown', enterSending, false);
-	document.getElementsByName("sendBtn")[0].removeEventListener('click', msgeNullcheck, false);
+	document.getElementsByName("sendB")[0].removeEventListener('click', msgeNullcheck, false);
 	
 	$.ajax({
 		url : "BreakeOffClientServer",
@@ -394,7 +368,7 @@ function sendMsg(){ // 메세지 보내기
 		contentType:'application/json; charset=UTF-8',
 		data : JSON.stringify({
 			c_id : chatRId,
-    		p_id : productId,
+    		p_id : null,
     		email : personId, /* 임시 */
     		message : msge.value
     	}),
@@ -403,20 +377,7 @@ function sendMsg(){ // 메세지 보내기
 		},
 		success:function(data){
 			if(data==1){console.log('메세지 전달 완료')}
-			
-			let myText = document.createElement('div');
-			myText.classList.add('messageBox', 'myMessageBox');
-			
-			let myMessage = document.createElement('p');
-			myMessage.classList.add('message', 'send');
-			
-			myMessage.innerHTML = msge.value;
 			msge.value = null;
-		
-			myText.appendChild(myMessage);
-			messagesBox.appendChild(myText);
-			
-			scrollChecking(true);
 		}
 	});
 }
@@ -428,23 +389,51 @@ function onMsge(msg) {
 		let str = data[i].split(":");
 		msgInfo.push(str);
 	}
+	insertMessages(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1]);
+}
+
+function insertMessages(sender, nick, msg){
+	if(sender==personalId){
+		let myText = document.createElement('div');
+		myText.classList.add('messageBox', 'myMessageBox');
+		myText.setAttribute('sender', sender);
+		
+		let myMessage = document.createElement('p');
+		myMessage.classList.add('message', 'send');
+		
+		myMessage.innerHTML = msg;
 	
-	let reciveText = document.createElement('div');
-	reciveText.classList.add('messageBox', 'reciveMessageBox');
-	
-	let sendingMessage = document.createElement('p');
-	sendingMessage.classList.add('message', 'recive');
-	
-	sendingMessage.innerHTML = msgInfo[2][1];
-	
-	reciveText.appendChild(sendingMessage);
-	
-	let nowPosition = messagesBox.scrollTop;
-	let result = approximateChecking(nowPosition);
-	
-	messagesBox.appendChild(reciveText);
-	
-	scrollChecking(result);
+		myText.appendChild(myMessage);
+		messagesBox.appendChild(myText);
+		
+		scrollChecking(true);
+	}else{
+		let reciveText = document.createElement('div');
+		reciveText.classList.add('messageBox', 'reciveMessageBox');
+		reciveText.setAttribute('sender', sender);
+		
+		let nickPlace;
+		if(messagesBox.innerHTML!='' && messagesBox.innerHTML!=null && messagesBox.lastChild.getAttribute('sender')!=sender){
+			nickPlace = document.createElement('p');
+			nickPlace.classList.add('reciveMsgSender');
+			nickPlace.innerHTML = nick;
+
+			reciveText.appendChild(nickPlace);
+		}
+		
+		let sendingMessage = document.createElement('p');
+		sendingMessage.classList.add('message', 'recive');
+		sendingMessage.innerHTML = msg;
+		
+		reciveText.appendChild(sendingMessage);
+		
+		let nowPosition = messagesBox.scrollTop;
+		let result = approximateChecking(nowPosition);
+		
+		messagesBox.appendChild(reciveText);
+		
+		scrollChecking(result);
+	}
 }
 
 function scrollChecking(result){ // 스크롤이 맨 아래에 있다면 새 메세지를 보내거나 받았을 때 스크롤을 아래로 고정, 맨 아래가 아니라면 위치 그대로에, 메세지 보내고, 팝업 띄우기
