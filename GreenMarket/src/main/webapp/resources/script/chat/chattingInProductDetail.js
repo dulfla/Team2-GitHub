@@ -60,7 +60,7 @@ window.addEventListener('load', function() {
 						chatRoomOffcanvs.classList.toggle('show');
 					}
 				}
-				offCanvas.classList.add('show');
+				openOffCanvas();
 			}
 		}
 	}, false);
@@ -68,6 +68,31 @@ window.addEventListener('load', function() {
 	let closeBtn = document.getElementById('closeBtn chatOffcanvas');
 	closeBtn.addEventListener('click', closeServer, false);
 });
+
+function openOffCanvas(){
+	let chatPdPic = document.getElementById('chatPdPic');
+	$.ajax({
+	    url: "GetProductImg",
+	    type: "POST",
+	    dataType : 'text',
+    	contentType : 'application/json; charset=UTF-8',
+    	data : JSON.stringify({
+    		p_id : productId,
+    		email : personalId
+    	}),
+	    error: function(){
+	    	console.log('통신실패!!');
+	    },
+	    success: function(data) {
+	    	if(data!=null && data!=""){
+	    		chatPdPic.setAttribute('src', "display?fileName="+data);
+	    	}else{
+	    		chatPdPic.setAttribute('src', "./resources/img/sample.jpg");
+	    	}
+			offCanvas.classList.add('show');
+	    }
+	});
+}
 
 function closeServer(){
 	if(memberType=='buy'){
@@ -121,11 +146,11 @@ function chattingRoom(){
 
 					let h6T = document.createElement('h6');
 					h6T.classList.add('mb-0');
-					h6T.innerHTML = '뭘 써야 할까나';
+					h6T.innerHTML = r.p_name;
 
 					let pT = document.createElement('p');
 					pT.classList.add('mb-0', 'opacity-75' ,'h6');
-					pT.innerHTML = '호로로로로로롤ㄹ로';
+					pT.innerHTML = "<small><i>with,</i></small> "+r.chatMember;
 
 					let smallT = document.createElement('small')
 					smallT.classList.add('opacity-50', 'text-nowrap');
@@ -345,6 +370,7 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 	messageBox.innerHTML = null;
 	document.addEventListener('keydown', enterSend, false);
 	document.getElementsByName("sendBtn")[0].addEventListener('click', msgNullcheck, false);
+	
 	$.ajax({
 		url : "Chat",
 		type : "POST",
@@ -357,8 +383,8 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 		error:function(){
 			console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
 		},
-		success:function(messages){
-			let msgL = messages.messages;
+		success:function(data){
+			let msgL = data.messages;
 			if(0<msgL.length){
 				msgL.forEach((m) => {
 					insertMessage(m.sender, m.nickname, m.message);

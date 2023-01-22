@@ -14,12 +14,12 @@ DROP TABLE chatParticipants CASCADE CONSTRAINTS;
 DROP TABLE memberHistory CASCADE CONSTRAINTS;
 DROP TABLE productHistory CASCADE CONSTRAINTS;
 
-DROP SEQUENCE ;
+-- DROP SEQUENCE ;
+-- DROP SEQUENCE ;
 DROP SEQUENCE memberTracking_seq;
-DROP SEQUENCE ;
 DROP SEQUENCE pid_seq;
 DROP SEQUENCE product_seq;
-DROP SEQUENCE picture_seq
+DROP SEQUENCE picture_seq;
 DROP SEQUENCE sampleMessage_seq;
 DROP SEQUENCE chatMessage_seq;
 DROP SEQUENCE productTracking_seq;
@@ -27,9 +27,9 @@ DROP SEQUENCE chatInfomation_seq;
 DROP SEQUENCE chatParticipants_seq;
 
 -- 시퀀스
-CREATE SEQUENCE ; -- member(micname) - 샘플데이터 5개
+-- CREATE SEQUENCE ; -- member(micname) - 샘플데이터 5개
+-- CREATE SEQUENCE ; -- search(idx) - 샘플데이터 3개
 CREATE SEQUENCE memberTracking_seq START WITH 1 NOCYCLE NOCACHE; -- memberHistory(idx)
-CREATE SEQUENCE ; -- search(idx) - 샘플데이터 3개
 CREATE SEQUENCE pid_seq START WITH 6 NOCYCLE NOCACHE; -- productDetail(p_id) - 샘플데이터 5개
 CREATE SEQUENCE product_seq START WITH 6 NOCYCLE NOCACHE; -- product(idx) - 샘플데이터 5개
 CREATE SEQUENCE picture_seq START WITH 1 NOCYCLE NOCACHE; -- productPic(idx)

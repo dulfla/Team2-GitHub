@@ -19,8 +19,10 @@ import chat.server.SocketServer;
 import oracle.net.aso.c;
 import spring.dao.ChatDao;
 import spring.vo.ChatMessageVo;
+import spring.vo.ChatProductInfoVo;
 import spring.vo.ChattingRoomBringingCommand;
 import spring.vo.ChattingRoomInfoListVo;
+import spring.vo.ProductImageVO;
 
 @Service
 public class ChatService {
@@ -127,6 +129,22 @@ public class ChatService {
 
 	public Collection<ChattingRoomInfoListVo> selectChatRoomInfoByEmail(String email) {
 		return cdao.selectChattingRoomByEmail(email);
+	}
+
+	public ChatProductInfoVo productInfo(String c_id) {
+		return cdao.selectProductByChatRoomId(c_id);
+	}
+
+	public String selectImgByPid(String p_id) {
+		ProductImageVO pdImgInfo = cdao.selectProductImg(p_id);
+		String imgUrl = "";
+		if(pdImgInfo!=null) {
+			imgUrl += pdImgInfo.getUploadPath().substring(0, 4)+"%5C"+pdImgInfo.getUploadPath().substring(5, 7)+"%5C"+pdImgInfo.getUploadPath().substring(8);
+			imgUrl += "%2Fs_"+pdImgInfo.getUuid()+"_"+pdImgInfo.getFileName();
+		}else {
+			imgUrl = null;
+		}
+		return imgUrl;
 	}
 	
 }

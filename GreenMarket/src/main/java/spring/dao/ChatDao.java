@@ -8,8 +8,11 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import spring.vo.ChatMessageVo;
+import spring.vo.ChatProductInfoVo;
 import spring.vo.ChattingRoomBringingCommand;
 import spring.vo.ChattingRoomInfoListVo;
+import spring.vo.ProductImageVO;
+import spring.vo.ProductListVO;
 
 public class ChatDao {
 
@@ -45,6 +48,14 @@ public class ChatDao {
 
 	public Collection<ChattingRoomInfoListVo> selectChattingRoomByEmail(String email) {
 		return sqlSesison.selectList("mybatis.mapper.chat.selectAllChatRoomByEmil", email);
+	}
+
+	public ChatProductInfoVo selectProductByChatRoomId(String c_id) {
+		return sqlSesison.selectOne("mybatis.mapper.chat.selectProductByChatRoomId", c_id);
+	}
+
+	public ProductImageVO selectProductImg(String p_id) {
+		return sqlSesison.selectOne("mybatis.mapper.chat.selectProductImg", p_id);
 	}
 	
 }

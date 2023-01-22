@@ -6,12 +6,15 @@
 <link rel="stylesheet" href="${path}resources/style/chattingStyle.css">
 <div class="offcanvas offcanvas-end chattingRoom" tabindex="-1" id="offcanvasRight chatRoomOffcanvas" aria-labelledby="offcanvasRightLabel" type="sell">
 	<div class="offcanvas-header chatRoomOffcanvas">
-		<div class="offcanvas-title w-100 mt-2" id="offcanvasScrollingLabel">
-			<div class="btn-group mb-2 mb-md-0 btn-block w-100" id="chatRoomBtnGroup">
+		<div class="offcanvas-title w-100 mt-2 row" id="offcanvasScrollingLabel">
+			<div class="btn-group mb-2 mb-md-0 btn-block w-100 col" id="chatRoomBtnGroup">
 				<button type="button" id="sellChatRoomBtn" class="btn btn-primary chatRoomBtns" chatType="sell">For Sell</button>
 				<button type="button" id="allChatRoomBtn" class="btn btn-outline-primary chatRoomBtns" chatType="all">All</button>
 				<button type="button" id="buyChatRoomBtn" class="btn btn-primary chatRoomBtns" chatType="buy">For Buy</button>
 			</div>
+			<div class="row">
+		  		<h4 id="chatPdTitle" class="text-center mt-3"></h4>
+		  	</div>
 		</div>
 	  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeB"></button>
 	</div>

@@ -7,22 +7,25 @@
 	
 	<!-- 내 특정 상품에 존재하는 채팅방 목록 보기 -->
 	<select id="selectChattingRoomByPId" parameterType="String" resultType="chattingRoomInfosVo">
-		SELECT c_id, p_id, 'sell' AS "type"
-		FROM chatInfomation
-		WHERE p_id=#{p_id}
+		SELECT c.c_id, p_id, p_name, nickname AS "chatMember", 'sell' AS "type"
+		FROM
+			(SELECT c_id, p.p_id, p_name FROM chatInfomation ci, productDetail p WHERE ci.p_id=p.p_id) c,
+			(SELECT c_id, nickname FROM chatParticipants cp, member b WHERE sender_email=email) m
+		WHERE c.c_id = m.c_id
+			AND p_id=#{p_id}
 	</select>
 	
 	<!-- 내 채팅방 목록 보기 :: 내가 (구매자/판매자로)참여하고 있는 모든 채팅방 확인 -->
 	<select id="selectAllChatRoomByEmil" parameterType="String" resultType="chattingRoomInfosVo">
-		SELECT cr.c_id, cr.p_id, 'sell' AS "type"
-		FROM chatInfomation cr,
-		    (SELECT p_id FROM product WHERE email=#{email}) p
-		WHERE cr.p_id=p.p_id
+		SELECT c.c_id, c.p_id, p_name, nickname AS "chatMember", 'sell' AS "type"
+		FROM (SELECT c_id, p.p_id, p_name FROM chatInfomation ci, product p, productDetail pd WHERE ci.p_id=p.p_id AND p.p_id=pd.p_id AND p.email=#{email}) c,
+            (SELECT c_id, nickname FROM chatParticipants cp, member b  WHERE sender_email=email) m
+		WHERE c.c_id=m.c_id
 		UNION
-		SELECT cr.c_id, cr.p_id, 'buy' AS "type"
-		FROM chatInfomation cr,
-		    (SELECT c_id FROM chatParticipants WHERE sender_email=#{email}) m
-		WHERE cr.c_id=m.c_id
+		SELECT c.c_id, c.p_id, p_name, nickname AS "chatMember", 'buy' AS "type"
+		FROM (SELECT cp.c_id, pd.p_id, p_name FROM (SELECT c_id FROM chatParticipants WHERE sender_email=#{email}) cp, chatInfomation ci, productDetail pd WHERE cp.c_id=ci.c_id AND ci.p_id=pd.p_id) c,
+            (SELECT c_id, nickname FROM chatInfomation ci, product p, member b WHERE ci.p_id=p.p_id AND p.email=b.email) m
+		WHERE c.c_id=m.c_id
 	</select>
 	
 	<!-- 채팅하기를 누른 상품에 이미 참여했던 채팅방이 있는지 확인 -->
@@ -33,12 +36,17 @@
  			AND p_id=#{p_id}
  	</select>
  	
-	<select id="selectChattingRooms" parameterType="chatRoomSearchInfoVo" resultType="String">
- 		SELECT c_id
- 		FROM chatInfomation
- 		WHERE c_id IN (SELECT c_id FROM chatParticipants WHERE sender_email=#{email})
- 			AND p_id=#{p_id}
- 	</select>
+ 	<!-- 해당 채팅방에 해당하는 상품 정보 가져오기 -->
+	<select id="selectProductByChatRoomId" parameterType="String" resultType="chatPdInfoVo">
+ 		SELECT p_id, p_name
+		FROM productDetail
+		WHERE p_id=(SELECT p_id FROM chatInfomation WHERE c_id=#{c_id})
+	</select>
+	
+	<!-- 해당 채팅방의 상품에 대한 샘플 이미지 정보 가져오기 -->
+	<select id="selectProductImg" parameterType="String" resultType="ProductImageVO">
+		SELECT * FROM ProductPic WHERE p_id = #{p_id}
+	</select>
 	
 	<!-- 채팅방이 없던 상품에 대해 채팅을 시도하는 경우 새로운 채팅방 만들기 && 새로운 채팅방에 입장했다는 데이터 입력 :: 프로시저 사용 -->
 	<select id="insertNewChatRoomInfo" parameterType="chatRoomSearchInfoVo" statementType="CALLABLE">
@@ -72,5 +80,5 @@
  		FROM chatMessage c, member m
  		WHERE c.sender = m.email AND idx=#{idx}
  	</select>
-	
+ 	
 </mapper>

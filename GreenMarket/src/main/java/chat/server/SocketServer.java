@@ -36,7 +36,7 @@ public class SocketServer {
 	
 	public void start() throws IOException {
 		serverSocket = new ServerSocket(12005);
-		
+		System.out.println("[server] 시작");
 		Thread thread = new Thread(() -> {
 			try {
 				while(true) {
@@ -139,7 +139,7 @@ public class SocketServer {
 		}
 	}
 
-	public void saveWebSession(Map<String, String> info, WebSocketSession session) {
+	public void saveWebSession(Map<String, String> info, WebSocketSession session) {// System.out.println("등록");
 		String key = info.get("email"); // +"@"+session.getId()
 		if(0<webSessions.size()) {
 			if(webSessions.containsKey(info.get("c_id"))) {
@@ -147,11 +147,13 @@ public class SocketServer {
 					if(! webSessions.get(info.get("c_id")).get(key).contains(session)) {
 						webSessions.get(info.get("c_id")).get(key).add(session);
 					}
+//					System.out.println("[등록] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());
 					return;
 				}
 				List<WebSocketSession> wscL = new ArrayList<>();
 				wscL.add(session);
 				webSessions.get(info.get("c_id")).put(key, wscL);
+//				System.out.println("[등록] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());
 				return;
 			}
 		}
@@ -160,11 +162,13 @@ public class SocketServer {
 		Map<String, Collection<WebSocketSession>> map = new HashMap<>();
 		map.put(key, wscL);
 		webSessions.put(info.get("c_id"), map);
+//		System.out.println("[등록] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());
 	}
 
-	public void removeWebSesseion(Map<String, String> info, WebSocketSession session) {
+	public void removeWebSesseion(Map<String, String> info, WebSocketSession session) {// System.out.println("제거");
 		String key = info.get("email"); // +"@"+session.getId()
 		webSessions.get(info.get("c_id")).get(key).remove(session);
+//		System.out.println("[제거] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());
 		if(webSessions.get(info.get("c_id")).get(key).size()==0) {
 			webSessions.get(info.get("c_id")).remove(key);
 		}

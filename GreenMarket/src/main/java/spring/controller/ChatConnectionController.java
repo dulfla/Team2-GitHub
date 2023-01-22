@@ -13,52 +13,46 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import chat.server.ChatClient;
 import chat.server.SocketServer;
 import spring.service.ChatService;
+import spring.service.MemberServiceImpl;
 import spring.vo.AuthInfo;
 import spring.vo.ChattingRoomBringingCommand;
 import spring.vo.ChattingRoomInfoListVo;
+import spring.vo.ProductImageVO;
 
 @Controller
 public class ChatConnectionController {
-	
-	@Autowired
-	private SocketServer ss;
-	
-	@RequestMapping("Server")
-	public String server() {
-		return "chat/serverOnOff";
-	}
-	
-	@ResponseBody
-	@PostMapping("ServerOpen")
-	public void serverOpen(HttpServletRequest req) throws IOException {
-		ss.start();
-		ServletContext app = req.getServletContext();
-		app.setAttribute("serverOption", "On");
-	}
-	
-	@ResponseBody
-	@PostMapping("ServerClose")
-	public void serverClose(HttpServletRequest req) throws IOException {
-		ss.stop();
-		ServletContext app = req.getServletContext();
-		app.setAttribute("serverOption", "Off");
-	}
-	
+
 	@Autowired
 	private ChatService chatService;
+	
+	@GetMapping(value = {"SelectChatRoom", "SelectChatRooms", "ChatRoomCheck", "ConnecteWithClientServer", "Chat", "SendMessage", "BreakeOffClientServer", "GetProductImg"})
+	public String locationErr(HttpServletRequest request, RedirectAttributes reda) {
+		String referer = request.getHeader("Referer");
+		String errorMsg = "접속할 수 없는 주소 입니다.";
+		reda.addFlashAttribute("errMsg", errorMsg);
+	    return "redirect:"+(referer!=null?referer:"index");
+	}
 	
 	@ResponseBody
 	@PostMapping("SelectChatRoom")
 	public Collection<ChattingRoomInfoListVo> bringingChatRoomByPId(@RequestBody Map<String, String> map) {
 		return chatService.selectChatRoomInfoByPId(map.get("p_id"));
+	}
+	
+	@ResponseBody
+	@PostMapping("GetProductImg")
+	public String selectMainImgForChatting(@RequestBody Map<String, String> map) {
+		return chatService.selectImgByPid(map.get("p_id"));
 	}
 	
 	@ResponseBody
@@ -93,7 +87,7 @@ public class ChatConnectionController {
 	@PostMapping("Chat")
 	public Map<String, Object> chattings(@RequestBody Map<String, String> map, HttpSession session) {
 		Map<String, Object> msgList = new HashMap<>();
-		msgList.put("productInfo", null); // chatService.getProductInfo(map.get("c_id"))
+		msgList.put("productInfo", chatService.productInfo(map.get("c_id"))); // chatService.getProductInfo(map.get("c_id"))
 		msgList.put("messages", chatService.getPreviousMessages(map.get("c_id")));
 		msgList.put("me", map.get("email"));
 		return msgList;

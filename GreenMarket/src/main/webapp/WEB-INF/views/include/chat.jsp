@@ -8,12 +8,12 @@
 	<c:when test="${!(authInfo.email eq product.email)}">
 		<div class="offcanvas offcanvas-end chattingOpen" tabindex="-1" id="offcanvasRight chatOffcanvas" aria-labelledby="offcanvasRightLabel" type="buy">
 			<div class="offcanvas-header chatOffcanvas">
-			  	<div class="p-0 col-3">
-					<img class="rounded-circle" src="" alt="${product.p_name} 사진"> <%-- ${path}resources/img/sample.jpg --%>
+			  	<div class="p-0 col-5">
+			  		<img id="chatPdPic" class="rounded-circle" src="" alt="${product.p_name} 사진">
 				</div>
-				<div class="col-8 mt-2" class="offcanvas-title" id="offcanvasScrollingLabel">
-					<h2>${product.p_name} 상품명</h2>
-					<p>${product.p_name} 상품 설명</p>
+				<div class="col-6 mt-2" class="offcanvas-title" id="offcanvasScrollingLabel">
+					<h2>${product.p_name}</h2>
+					<p>가격 : <fmt:formatNumber value="${product.price}"  pattern="###,###,###"/>원</p>
 				</div>
 			  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeBtn chatOffcanvas"></button>
 			</div>
@@ -32,12 +32,12 @@
 	<c:when test="${authInfo.email eq product.email}">
 		<div class="offcanvas offcanvas-end chattingRooms" tabindex="-1" id="offcanvasRight chatOffcanvas" aria-labelledby="offcanvasRightLabel" type="sell">
 			<div class="offcanvas-header chatOffcanvas">
-			  	<div class="p-0 col-3">
-					<img class="rounded-circle" src="" alt="${product.p_name} 사진"> <%-- ${path}resources/img/sample.jpg --%>
+			  	<div class="p-0 col-5">
+			  		<img id="chatPdPic" class="rounded-circle" src="" alt="${product.p_name} 사진">
 				</div>
-				<div class="col-8 mt-2" class="offcanvas-title" id="offcanvasScrollingLabel">
+				<div class="col-6 mt-2" class="offcanvas-title" id="offcanvasScrollingLabel">
 					<h2>${product.p_name}</h2>
-					<p>판매자 : ${product.email}</p>
+					<p>가격 : <fmt:formatNumber value="${product.price}"  pattern="###,###,###"/>원</p>
 				</div>
 			  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeBtn chatOffcanvas"></button>
 			</div>

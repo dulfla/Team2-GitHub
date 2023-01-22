@@ -118,11 +118,11 @@ function chattingRooms(){
 	
 						let h6T = document.createElement('h6');
 						h6T.classList.add('mb-0');
-						h6T.innerHTML = '뭘 써야 할까나';
+						h6T.innerHTML = r.p_name;
 	
 						let pT = document.createElement('p');
 						pT.classList.add('mb-0', 'opacity-75' ,'h6');
-						pT.innerHTML = '호로로로로로롤ㄹ로';
+						pT.innerHTML = "<small><i>with,</i></small> "+r.chatMember;
 	
 						let smallT = document.createElement('small')
 						smallT.classList.add('opacity-50', 'text-nowrap');
@@ -158,7 +158,7 @@ function backToChattRoom(){
 	chatClose();
 	
 	document.removeEventListener('keydown', enterSending);
-	document.getElementsByName("sendBtn")[0].removeEventListener('click', msgeNullcheck);
+	document.getElementsByName("sendB")[0].removeEventListener('click', msgeNullcheck);
 	
 	if(offCanvs.classList.contains('chattings')){
 		offCanvs.classList.remove('chattings');
@@ -322,8 +322,14 @@ function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들
 		error:function(){
 			console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
 		},
-		success:function(messages){
-			let msgL = messages.messages;
+		success:function(data){
+			let chatTitle = document.getElementById("chatPdTitle");
+			chatTitle.innerHTML = data.productInfo.p_name;
+			chatTitle.addEventListener('click', function(){
+				location.href = "productDetail?p_id="+data.productInfo.p_id;
+			}, false);
+		
+			let msgL = data.messages;
 			if(0<msgL.length){
 				msgL.forEach((m) => {
 					insertMessages(m.sender, m.nickname, m.message);

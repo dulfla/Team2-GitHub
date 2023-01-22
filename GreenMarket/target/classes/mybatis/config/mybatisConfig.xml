@@ -8,7 +8,7 @@
 		<typeAlias type="spring.vo.ChattingRoomBringingCommand" alias="chatRoomSearchInfoVo"/>
 		<typeAlias type="spring.vo.ChatInfoVo" alias="chatInfoVo"/>
 		<typeAlias type="spring.vo.ChatMessageVo" alias="chatMessageVo"/>
-	
+		<typeAlias type="spring.vo.ChatProductInfoVo" alias="chatPdInfoVo"/>
 		<typeAlias type="spring.vo.ChatParticipantsVo" alias="chatMemberVo"/>
 		
 		<typeAlias type="spring.vo.CountByYearVo" alias="cYearVo"/>
