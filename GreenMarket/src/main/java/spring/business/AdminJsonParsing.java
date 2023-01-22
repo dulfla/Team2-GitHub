@@ -212,14 +212,14 @@ public class AdminJsonParsing {
 	private Map<String, Object> getProductAdminData() {
 		Map<String, Object> admin = new HashMap();
 		
-		long totalP = dao.countAllTypeProduct("IN   ");
+		long totalP = dao.countAllTypeProduct("IN");
 		long totalTradeP = dao.countAllTypeProduct("TRADE");
 		long totalNoTrdRemoveP = dao.countBfTradeRemovedProduct();
 		long[] productAdminType = {(totalP-totalTradeP-totalNoTrdRemoveP), totalTradeP, totalNoTrdRemoveP};
 		
 		List<String> categorys = dao.selectAllCategorys();
 		
-		List<CountByCategory> inProd = dao.countAllTypeProductByCategory("IN   ");
+		List<CountByCategory> inProd = dao.countAllTypeProductByCategory("IN");
 		List<CountByCategory> tradeProd = dao.countAllTypeProductByCategory("TRADE");
 		List<CountByCategory> outProd = dao.countBfTradeRemovedProductByCategory();
 		

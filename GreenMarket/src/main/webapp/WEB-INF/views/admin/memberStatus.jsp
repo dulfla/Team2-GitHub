@@ -51,22 +51,29 @@
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
- 	<div id="container" class="container">
-	    <div class="position-relative chart-container">
-	        <canvas id="memberAdminByYear"></canvas>
-	    </div>
-	    <div class="position-relative chart-container">
-	        <canvas id="withdrawByYear"></canvas>
-	    </div>
-	    <div class="position-relative chart-container">
-	    	<select class="form-select text-center position-absolute top-0 end-0 m-3" id="selectYear_memberAdminByMonth" style="width:15%">
-	    		<option value="default">==선택==</option>
-	    		<c:forEach items="${memberAdmin['memberAdmin'][0]['countByYear'][0]['years']}" var="year" varStatus="c">
-		    		<option value="${c.index}">${year}</option>
-	    		</c:forEach>
-	    	</select>
-	        <canvas id="memberAdminByMonth"></canvas>
-		</div>
+ 	<div id="container" class="container position-relative">
+ 		<div class="position-relative row align-items-center">
+ 			<div class="chart-container col-lg-8">
+		        <canvas id="realTimeMemberAdmin"></canvas>
+		    </div>
+		    <div class="chart-container col-lg-4">
+		        <canvas id="memberAdminByYear"></canvas>
+		    </div>
+ 		</div>
+ 		<div class="position-relative row  align-items-center">
+		    <div class="chart-container col-lg-4">
+		        <canvas id="withdrawByYear"></canvas>
+		    </div>
+		    <div class="chart-container col-lg-8 position-relative">
+		    	<select class="form-select text-center position-absolute top-0 end-0 m-3" id="selectYear_memberAdminByMonth" style="width:15%">
+		    		<option value="default">==선택==</option>
+		    		<c:forEach items="${memberAdmin['memberAdmin'][0]['countByYear'][0]['years']}" var="year" varStatus="c">
+			    		<option value="${c.index}">${year}</option>
+		    		</c:forEach>
+		    	</select>
+		        <canvas id="memberAdminByMonth"></canvas>
+			</div>
+ 		</div>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	<script>
@@ -75,12 +82,14 @@
 				
 		let memberAdminByYearCet = document.getElementById('memberAdminByYear').getContext('2d');
 		let memberAdminByYear = new Chart(memberAdminByYearCet, {
-	        type: 'line',
-	        data: {
+			type: 'bar',
+			data:{
 	            labels: json["memberAdmin"][0]["countByYear"][0]["years"],
 	            datasets: [
 	                {
 	                    label: '누적 회원수',
+	                    yAxisID: 'total',
+	                    type: 'line',
 	                    fill: false,
 	                    data: json["memberAdmin"][0]["countByYear"][2]["data"][0],
 	                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
@@ -89,7 +98,8 @@
 	                },
 	                {
 	                    label: '년도별 신규 가입자',
-	                    fill: false,
+	                    yAxisID: 'year',
+	                    type: 'bar',
 	                    data: json["memberAdmin"][0]["countByYear"][2]["data"][1],
 	                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
 	                    borderColor: 'rgba(54, 162, 235, 1)',
@@ -97,23 +107,38 @@
 	                },
 	                {
 	                    label: '년도별 탈퇴자',
-	                    fill: false,
+	                    yAxisID: 'year',
+	                    type: 'bar',
 	                    data: json["memberAdmin"][0]["countByYear"][2]["data"][2],
 	                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
 	                    borderColor: 'rgba(255, 159, 64, 1)',
 	                    borderWidth: 1
 	                }
 	            ]
-	        },
+			},
 	        options: {
 	        	scales: {
-	                yAxes: [
-	                    {
-	                        ticks: {
-	                            beginAtZero: true
-	                        }
+	                yAxes: [{
+	                	id: 'total',
+	                    title: {
+   							display: true,
+   							text: '누적 회원수'
+   	                    },
+	                    type: 'linear',
+	                    position: 'left',
+	                    ticks: {
+	                      fontColor: '#000000'
+	                    }},{
+   	                	id: 'year',
+   	                    title: {
+   							display: true,
+   							text: '년도별 가입/탈퇴 수'
+   	                    },
+   	                    position: 'right',
+   	                 	ticks: {
+		                    fontColor: '#ffbaa2'
 	                    }
-	                ]
+                   }]
 	            },
 	        	responsive: true,
 	        	legend: {

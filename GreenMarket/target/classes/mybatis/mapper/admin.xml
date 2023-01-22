@@ -60,13 +60,13 @@
 		SELECT COUNT(*)
 		FROM productHistory
 		WHERE type=#{type}
-	</select> <!-- type::'IN   ','OUT  ','TRADE' -->
+	</select> <!-- type::'IN','OUT','TRADE' -->
 
 	<!-- 미거래 상품 삭제 건수 -->
 	<select id="countBfTradeRemovedProduct" resultType="long">
 		SELECT COUNT(*)
 		FROM productHistory
-		WHERE type='OUT  ' AND
+		WHERE type='OUT' AND
 			p_id NOT IN (SELECT p_id FROM productHistory WHERE type='TRADE')
 	</select>
  	
@@ -87,7 +87,7 @@
 			(SELECT category, p_id FROM productHistory WHERE type=#{type}) p
 		ON c.category = p.category
 		GROUP BY c.category
-	</select> <!-- type::'IN   ','OUT  ','TRADE' -->
+	</select> <!-- type::'IN','OUT','TRADE' -->
 
 	<!-- 카테고리별 미 거래 삭제 상품 수 -->
 	<select id="countBfTradeRemovedProductByCategory" resultType="cCategoryVo">
@@ -95,7 +95,7 @@
 			c.category,
 			COUNT(p_id) AS "cnt"
 		FROM category c LEFT OUTER JOIN
-			<![CDATA[(SELECT category, p_id FROM productHistory WHERE type='OUT  ' AND type<>'TRADE') p]]>
+			<![CDATA[(SELECT category, p_id FROM productHistory WHERE type='OUT' AND type<>'TRADE') p]]>
 		ON c.category = p.category
 		GROUP BY c.category
 		ORDER BY category ASC
@@ -107,7 +107,7 @@
 			c.category,
 			COUNT(p_id) AS "cnt"
 		FROM category c LEFT OUTER JOIN
-			(SELECT category, p_id FROM productHistory WHERE type='OUT  ' AND type='TRADE') p
+			(SELECT category, p_id FROM productHistory WHERE type='OUT' AND type='TRADE') p
 		ON c.category = p.category
 		GROUP BY c.category
 		ORDER BY category ASC
