@@ -86,7 +86,7 @@ main button {
 	transition: transform 80ms ease-in;
 }
 
-form {
+.form {
 	background-color: #FFFFFF;
 	display: flex;
 	align-items: center;
@@ -97,7 +97,7 @@ form {
 	text-align: center;
 }
 
-input {
+.input {
 	background-color: #eee;
 	border: none;
 	padding: 12px 15px;
@@ -189,7 +189,7 @@ input {
 	<main>
 		<div class="container2" id="container2">
 		<div class="form-container log-in-container">
-			<form action="postLogin" method="post" name="frm">
+			<form class="form" action="postLogin" method="post" name="frm">
 			<form:errors />
 				<h1>로그인</h1>
 				<div class="social-container">
@@ -197,8 +197,8 @@ input {
 					<a href="#" class="social"><i class="fab fa fa-twitter fa-2x"></i></a>
 				</div>
 				<span>or use your account</span>
-				<input type="email"	name="email" id="email"  placeholder="이메일" /> 
-				<input type="password" name="password" id="password" placeholder="비밀번호" /> 
+				<input class="input" type="email"	name="email" id="email"  placeholder="이메일" /> 
+				<input class="input" type="password" name="password" id="password" placeholder="비밀번호" /> 
 				<a href="findPassword">비밀번호 찾기</a>
 				<button type="button" onclick="return loginCheck()">Log In</button>
 			</form>	

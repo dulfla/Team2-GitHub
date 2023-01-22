@@ -66,7 +66,6 @@ public class FindPasswordController {
 	@ResponseBody
 	public int changePassword(@RequestBody FindPasswordCommand findPwdCmd, HttpSession session) {
 		
-		System.out.println("패스워드 : "+findPwdCmd.getEmail());
 		try {
 			findPasswordService.changePassword(findPwdCmd);
 			session.invalidate();

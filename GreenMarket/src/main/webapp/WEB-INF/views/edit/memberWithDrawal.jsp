@@ -93,7 +93,6 @@
 		</form>
 	</div>
 	
-	
 </body>
 
 <script type="text/javascript" defer="defer" src="${path}resources/script/edit/memberWithDrawal.js"></script>

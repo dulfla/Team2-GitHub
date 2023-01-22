@@ -1,6 +1,48 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />	
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+	header .search {
+	  position: relative;
+	  height: 34px;
+	}
+	header .search input {
+	  width: 36px;
+	  height: inherit;
+	  padding: 4px 10px;
+	  border: 1px solid #ccc;
+	  box-sizing: border-box;
+	  border-radius: 5px;
+	  outline: none;
+	  background-color: #fff;
+	  color: #777;
+	  font-size: 12px;
+	  transition: width .4s;
+	}
+	header .search input:focus {
+	  width: 190px;
+	  border-color: #669900;
+	}
+	
+	header  .search .material-symbols-outlined {
+	  height: 24px;
+	  position: absolute;
+	  top: 0;
+	  bottom: 0;
+	  right: 5px;
+	  margin: auto;
+	  transition: .4s;
+	}
+	header .search.focused .material-symbols-outlined {
+	  opacity: 0;
+	}
+</style>
     
 <header class="p-3 mb-3 border-bottom">
 	<div class="container">
@@ -33,9 +75,15 @@
 		    	</c:if>
 		    </ul>
 	
-	      	<form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="#" method="get">
+	      	<!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="#" method="get">
 	      		<input type="search" class="form-control" placeholder="검색어 입력..." aria-label="Search" name="search">
-	      	</form>
+	      	</form> -->
+	      	 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="#" method="get">
+		      	<div class="search">
+	          		<input type="search" name="search"  aria-label="Search"> 
+	          		<div class="material-symbols-outlined">search</div>
+	        	</div>
+        	</form>
 	
 	      	<div class="dropdown text-end">
 	      		<c:if test="${empty authInfo}">
@@ -62,3 +110,22 @@
 <c:if test="${!empty authInfo && authInfo.type=='U'}">
 	<%@ include file="chatRoom.jsp" %>
 </c:if>
+
+<script type="text/javascript">
+	const searchEl = document.querySelector('.search');
+	const searchInputEl = searchEl.querySelector('input');
+	
+	searchEl.addEventListener('click',function(){
+	  searchInputEl.focus();
+	});
+	
+	searchInputEl.addEventListener('focus',function(){
+	  searchEl.classList.add('focused');
+	  searchInputEl.setAttribute('placeholder','통합검색');
+	});
+	
+	searchInputEl.addEventListener('blur',function(){
+	  searchEl.classList.remove('focused');
+	  searchInputEl.setAttribute('placeholder','');
+	});
+</script>

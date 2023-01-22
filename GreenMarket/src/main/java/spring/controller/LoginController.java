@@ -51,7 +51,6 @@ public class LoginController {
 		if (errors.hasErrors()) {
 			return null;
 		}
-		
 		try {
 			AuthInfo authInfo = authService.authenticate(loginCommand);
 			
@@ -60,7 +59,6 @@ public class LoginController {
 		} catch (IdPasswordNotMatchingException e) {
 			
 			return null;
-			
 		}
 		return result;
 	}
