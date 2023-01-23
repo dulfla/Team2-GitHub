@@ -1,5 +1,7 @@
 package spring.service;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
@@ -7,15 +9,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
 import org.apache.ibatis.session.SqlSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import chat.server.ChatClient;
 import chat.server.ChattingWebSocket;
 import chat.server.SocketServer;
+import net.coobird.thumbnailator.Thumbnails;
 import oracle.net.aso.c;
 import spring.dao.ChatDao;
 import spring.vo.ChatMessageVo;
@@ -72,7 +78,7 @@ public class ChatService {
 		ChatMessageVo msgVo = new ChatMessageVo();
 		msgVo.setSender(map.get("email"));
 		msgVo.setMessage(map.get("message"));
-		msgVo.setMessType("TEXT");
+		msgVo.setMessType(map.get("type"));
 		msgVo.setC_id(map.get("c_id"));
 		cdao.insertMessage(msgVo);
 		
@@ -145,6 +151,41 @@ public class ChatService {
 			imgUrl = null;
 		}
 		return imgUrl;
+	}
+
+	public boolean saveFile(MultipartFile file, String c_id, String name) {
+		String uploadFolder = "C:\\upload";
+		File fileLocation = new File(uploadFolder, c_id);
+		
+		if(fileLocation.exists() == false) {
+			fileLocation.mkdirs();
+		}
+		
+		String fileName = name;
+		File saveFile = new File(fileLocation, fileName);
+		
+		try {
+			file.transferTo(saveFile);
+			
+			File thumbnailFile = new File(fileLocation, fileName);
+			
+			BufferedImage bo_image = ImageIO.read(saveFile);
+
+			double ratio = 3;
+			int width = (int) (bo_image.getWidth() / ratio);
+			int height = (int) (bo_image.getHeight() / ratio);					
+		
+			Thumbnails.of(saveFile).size(width, height).toFile(thumbnailFile);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	public String getNickName(String email) {
+		return cdao.selectNickNameByEmail(email);
 	}
 	
 }

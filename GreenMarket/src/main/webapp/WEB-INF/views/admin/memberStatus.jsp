@@ -53,18 +53,18 @@
 	<%@ include file="../include/header.jsp" %>
  	<div id="container" class="container position-relative">
  		<div class="position-relative row align-items-center">
- 			<div class="chart-container col-lg-8">
+ 			<div class="chart-container col-xl-8">
 		        <canvas id="realTimeMemberAdmin"></canvas>
 		    </div>
-		    <div class="chart-container col-lg-4">
+		    <div class="chart-container col-xl-4">
 		        <canvas id="memberAdminByYear"></canvas>
 		    </div>
  		</div>
  		<div class="position-relative row  align-items-center">
-		    <div class="chart-container col-lg-4">
+		    <div class="chart-container col-xl-4">
 		        <canvas id="withdrawByYear"></canvas>
 		    </div>
-		    <div class="chart-container col-lg-8 position-relative">
+		    <div class="chart-container col-xl-8 position-relative">
 		    	<select class="form-select text-center position-absolute top-0 end-0 m-3" id="selectYear_memberAdminByMonth" style="width:15%">
 		    		<option value="default">==선택==</option>
 		    		<c:forEach items="${memberAdmin['memberAdmin'][0]['countByYear'][0]['years']}" var="year" varStatus="c">
@@ -78,7 +78,6 @@
 	<%@ include file="../include/footer.jsp" %>
 	<script>
 		const json = ${memberAdmin};
-		console.log(json)
 				
 		let memberAdminByYearCet = document.getElementById('memberAdminByYear').getContext('2d');
 		let memberAdminByYear = new Chart(memberAdminByYearCet, {
@@ -91,6 +90,7 @@
 	                    yAxisID: 'total',
 	                    type: 'line',
 	                    fill: false,
+	                    tension: 1,
 	                    data: json["memberAdmin"][0]["countByYear"][2]["data"][0],
 	                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
 	                    borderColor: 'rgba(255, 99, 132, 1)',
@@ -110,8 +110,8 @@
 	                    yAxisID: 'year',
 	                    type: 'bar',
 	                    data: json["memberAdmin"][0]["countByYear"][2]["data"][2],
-	                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
-	                    borderColor: 'rgba(255, 159, 64, 1)',
+	                    backgroundColor: 'rgba(122, 245, 212, 0.2)',
+	                    borderColor: 'rgba(122, 245, 212, 1)',
 	                    borderWidth: 1
 	                }
 	            ]
@@ -127,7 +127,10 @@
 	                    type: 'linear',
 	                    position: 'left',
 	                    ticks: {
-	                      fontColor: '#000000'
+	                      fontColor: '#ffbaa2'
+	                    },
+	                    afterDataLimits: (scale) => {
+	                        scale.max = scale.max * 1.05;
 	                    }},{
    	                	id: 'year',
    	                    title: {
@@ -136,7 +139,10 @@
    	                    },
    	                    position: 'right',
    	                 	ticks: {
-		                    fontColor: '#ffbaa2'
+		                    fontColor: '#7aabf5'
+	                    },
+	                    afterDataLimits: (scale) => {
+	                        scale.max = scale.max * 1.05;
 	                    }
                    }]
 	            },
@@ -223,13 +229,14 @@
 	        },
 	        options: {
 	        	scales: {
-	                yAxes: [
-	                    {
-	                        ticks: {
-	                            beginAtZero: true
-	                        }
+	                yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        afterDataLimits: (scale) => {
+	                        scale.max = scale.max * 1.05;
 	                    }
-	                ]
+                    }]
 	            },
 	        	responsive: true,
 	        	legend: {

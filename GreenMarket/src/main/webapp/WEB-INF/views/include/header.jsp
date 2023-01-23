@@ -60,5 +60,5 @@
    	</div>
 </header>
 <c:if test="${!empty authInfo && authInfo.type=='U'}">
-	<%@ include file="chatRoom.jsp" %>
+	<%@ include file="chat/chatRoom.jsp" %>
 </c:if>

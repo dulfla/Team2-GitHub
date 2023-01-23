@@ -134,7 +134,7 @@
 				</button>
 				<input type="hidden" name="email" id="userEmail" value="${authInfo.email}">
 				<input type="hidden" name="p_id" id="productId" value="${product.p_id}">
-				<%@ include file="../include/chat.jsp" %>
+				<%@ include file="../include/chat/chat.jsp" %>
 			</c:otherwise>
 		</c:choose>
 	</div>

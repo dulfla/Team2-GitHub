@@ -81,4 +81,9 @@
  		WHERE c.sender = m.email AND idx=#{idx}
  	</select>
  	
+ 	<!-- 해당 회원의 이메일 알아오기 -->
+ 	<select id="selectNicknameByEmil" parameterType="String" resultType="String">
+ 		SELECT nickname FROM member WHERE email=#{email}
+ 	</select>
+ 	
 </mapper>

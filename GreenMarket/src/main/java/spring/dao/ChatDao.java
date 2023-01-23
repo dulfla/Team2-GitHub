@@ -57,5 +57,9 @@ public class ChatDao {
 	public ProductImageVO selectProductImg(String p_id) {
 		return sqlSesison.selectOne("mybatis.mapper.chat.selectProductImg", p_id);
 	}
+
+	public String selectNickNameByEmail(String email) {
+		return sqlSesison.selectOne("mybatis.mapper.chat.selectNicknameByEmil", email);
+	}
 	
 }

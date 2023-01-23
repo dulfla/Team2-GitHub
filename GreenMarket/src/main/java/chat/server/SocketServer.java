@@ -83,11 +83,6 @@ public class SocketServer {
 	}
 	
 	public void removeSocketClient(SocketClient socketClient) {
-//		String key = socketClient.getChatName()+"@"+socketClient.getClientIp();
-//		chatRoom.get(socketClient.getChatRoom()).get(key).remove(socketClient);
-//		if(chatRoom.get(socketClient.getChatRoom()).get(key).size()==0) {
-//			chatRoom.get(socketClient.getChatRoom()).remove(key);
-//		}
 		String key = socketClient.getChatName()+"@"+socketClient.getClientIp();
 		chatRoom.get(socketClient.getChatRoom()).remove(key, socketClient);
 	}
@@ -101,13 +96,6 @@ public class SocketServer {
 		root.put("messType", message.getMessType());
 		String jsonStr = root.toString();
 		
-//		Map<String, Collection<SocketClient>> roomClient = chatRoom.get(root.getString("room"));
-//		Collection<Collection<SocketClient>> socketClientList = roomClient.values();
-//		for(Collection<SocketClient> scL : socketClientList) {
-//			for(SocketClient sc : scL) {
-//				sc.send(jsonStr);
-//			}
-//		}
 		Map<String, SocketClient> roomClient = chatRoom.get(root.getString("room"));
 		Collection<SocketClient> socketClientList = roomClient.values();
 		for(SocketClient sc : socketClientList) {
@@ -125,7 +113,6 @@ public class SocketServer {
 		try {
 			serverSocket.close();
 			threadPool.shutdownNow();
-//			chatRoom.values().stream().forEach(crm -> crm.values().stream().forEach(sc -> sc.forEach(c -> c.close())));
 			chatRoom.values().stream().forEach(crm -> crm.values().stream().forEach(sc -> sc.close()));
 			webSessions.values().stream().forEach(ws -> ws.values().stream().forEach(w -> w.forEach(s -> {
 				try {
@@ -143,8 +130,8 @@ public class SocketServer {
 		String key = info.get("email"); // +"@"+session.getId()
 		if(0<webSessions.size()) {
 			if(webSessions.containsKey(info.get("c_id"))) {
-				if(webSessions.get(info.get("c_id")).containsKey(key)) {
-					if(! webSessions.get(info.get("c_id")).get(key).contains(session)) {
+				if(webSessions.get(info.get("c_id")).containsKey(key)) { System.out.println(session.getId());
+					if(! webSessions.get(info.get("c_id")).get(key).contains(session)) {System.out.println("저장된 session과 다름");
 						webSessions.get(info.get("c_id")).get(key).add(session);
 					}
 //					System.out.println("[등록] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());

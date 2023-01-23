@@ -21,6 +21,7 @@
 				<div id="messageBox" class="overflow-auto"></div>
 				<div class="container fixed-bottom" id="message">
 					<div class="input-group mt-2 p-0">
+						<input type="file" id="fileInput" multiple style="display:none;">
 						<button name="addFileBtn" class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
 					    <input type="text" class="form-control" placeholder="메세지를 입력하세요" name="message" aria-label="message" aria-describedby="basic-addon1">
 					    <button name="sendBtn" class="input-group-text" id="basic-addon1">전송</button>

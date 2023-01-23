@@ -16,13 +16,18 @@
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
-	<div id="container">
-		<div class="chart-container" style="position: relative; height:40vh; width:80vw">
-	        <canvas id="productTrade"></canvas>
+	<div id="container" class="container position-relative">
+		<div class="chart-container">
+	        <canvas id="realTimeProductAdmin"></canvas>
 	    </div>
-	    <div class="chart-container" style="position: relative; height:40vh; width:80vw">
-	        <canvas id="productCategory"></canvas>
-	    </div>
+		<div class="position-relative row align-items-center">
+ 			<div class="chart-container col-xl-4">
+		        <canvas id="productTrade"></canvas>
+		    </div>
+		    <div class="chart-container col-xl-8">
+		        <canvas id="productCategory"></canvas>
+		    </div>
+ 		</div>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	<script>
@@ -90,8 +95,25 @@
 	            ]
 	        },
 	        options: {
+	        	scales: {
+	                yAxes: [{
+	                	id: 'total',
+	                    title: {
+   							display: true,
+   							text: '누적 회원수'
+   	                    },
+	                    type: 'linear',
+	                    position: 'left',
+	                    ticks: {
+	                      fontColor: '#ffbaa2'
+	                    },
+	                    afterDataLimits: (scale) => {
+	                        scale.max = scale.max * 1.05;
+	                    },
+   	                }]
+	            },
 	        	legend: {
-					position:'right'
+					position:'top'
 				},
 				title: {
 					display: true,
