@@ -73,6 +73,9 @@ public class ChangeMemberInfoController {
 			return 2;
 		}
 		
+		for(int i = 0; i < 3; i++) {
+			System.out.println("테스트 중 : "+loginMember);
+		}
 		
 		try {
 			changeMemberInfoService.changeMember(changeCommand);
@@ -113,6 +116,7 @@ public class ChangeMemberInfoController {
 			
 			return 0;
 		}
+		
 		
 	}
 	

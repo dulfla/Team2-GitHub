@@ -28,13 +28,13 @@
 	  border-color: #669900;
 	}
 	
-	header  .search .material-symbols-outlined {
-	  height: 24px;
+	header .search .material-symbols-outlined {
+	 height: 24px;
 	  position: absolute;
 	  top: 0;
 	  bottom: 0;
 	  right: 5px;
-	  margin: auto;
+	  margin: auto; 
 	  transition: .4s;
 	}
 	header .search.focused .material-symbols-outlined {
@@ -73,17 +73,20 @@
 		    	</c:if>
 		    </ul>
 	
-	      	<!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="#" method="get">
-	      		<input type="search" class="form-control" placeholder="검색어 입력..."  aria-label="Search" name="search">
+	   <!--    	<form class="col-6 col-lg-auto mb-2 mb-lg-0 me-lg-4" role="search" action="#" method="get">
+	      		<div class="search">
+		      		<input type="search"  placeholder="검색어 입력..."  aria-label="Search" name="search">
+		      		<div class="material-symbols-outlined col-12 col-lg-auto">search</div>
+		      	</div>
 	      	</form> -->
-	      	
-	      	 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="#" method="get">
-		      	<div class="search">
-	          		<input type="search" name="search" aria-label="Search"> 
-	          		<div class="material-symbols-outlined">search</div>
-	        	</div>
-        	</form>
-	
+			
+		      	 <form class="col-6 col-lg-auto mb-2 mb-lg-0 me-lg-4" role="search" action="productList" method="get">
+			      	<div class="search col-5 col-lg-auto mb-2 mb-lg-0 me-lg-0" >
+		          		<input type="search"  name="search" aria-label="Search">
+		        		<div class="material-symbols-outlined col-11 col-lg-auto ">search</div>
+		        	</div>
+	        	</form> 
+			
 	      	<div class="dropdown text-end">
 	      		<c:if test="${empty authInfo}">
 	      			<a href="login"><button type="button" class="btn btn-outline-dark me-2">로그인</button></a>
