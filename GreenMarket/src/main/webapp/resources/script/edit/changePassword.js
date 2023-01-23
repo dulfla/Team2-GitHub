@@ -1,3 +1,21 @@
+window.addEventListener('load', () => {
+	  const forms = document.getElementsByClassName('validation-form');
+	  const button = document.getElementById('button');
+
+	  Array.prototype.filter.call(forms, (form) => {
+		  button.addEventListener('click', function (event) {
+	      if (form.checkValidity() == false) {
+	        event.preventDefault();
+	        event.stopPropagation();
+	      }else{
+	    	  changePasswordCheck();
+	      }
+	      	form.classList.add('was-validated');
+
+	    }, false);
+	  });
+	}, false);
+
 function changePasswordCheck() {
 	var currentPassword = $('#currentPassword').val();
 	var newPassword = $('#newPassword').val();
@@ -17,7 +35,14 @@ function changePasswordCheck() {
 		contentType: 'application/json;charset=UTF-8',
 		success: function (result) {
 			console.log(result);
-			if(result == 2){
+			if(result == 3){
+				Swal.fire({
+				    icon: 'warning',
+				    title: '기존의 비밀번호와 일치합니다.',
+				    text: '다른 비밀번호를 입력해주세요.'
+
+			    })
+			}else if(result == 2){
 				Swal.fire({
 				    icon: 'error',
 				    title: '새 비밀번호가 일치하지 않습니다.'

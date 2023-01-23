@@ -28,7 +28,7 @@ public class ChangePasswordController {
 		new ChangePwdCommandValidator().validate(changePwdCommand, errors);
 		
 		if(errors.hasErrors()) { 
-			return 1;
+			return 3;
 		}
 		
 		AuthInfo authInfo = (AuthInfo)session.getAttribute("authInfo"); // 이메일

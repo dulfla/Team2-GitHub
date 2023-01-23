@@ -218,7 +218,7 @@ label[for="terms"] {
               <input type="button" value="메일전송" id="mailAuth" class="btn btn-danger">
             </div>
             
-            <label for="authKey">인증번호 입력</label>
+            <label for="authKey">인증번호</label>
             <input type="text" name="authKey" id="authKey" placeholder="인증번호 입력">
 
 

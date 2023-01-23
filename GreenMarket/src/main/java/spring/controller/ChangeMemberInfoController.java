@@ -128,8 +128,6 @@ public class ChangeMemberInfoController {
 		}
 		
 		Member loginMember = (Member) session.getAttribute("member");
-		System.out.println(loginMember.getAddress());
-		System.out.println(changeCommand.getAddress());
 		if(loginMember.getAddress().equals(changeCommand.getAddress())) {
 			return 2;
 		}
@@ -155,7 +153,6 @@ public class ChangeMemberInfoController {
 		int result = changeMemberInfoService.getEmailMember(changeCommand.getEmail());
 		
 		if(errors.hasErrors()) {
-			// 에러 객체에 에러가 하나라도 검출이 되었다면
 			return 2;
 		}
 		

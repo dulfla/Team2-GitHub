@@ -2,8 +2,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />	
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
 
@@ -22,7 +20,7 @@
 	  outline: none;
 	  background-color: #fff;
 	  color: #777;
-	  font-size: 12px;
+	  font-size: 16px;
 	  transition: width .4s;
 	}
 	header .search input:focus {
@@ -76,11 +74,12 @@
 		    </ul>
 	
 	      	<!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="#" method="get">
-	      		<input type="search" class="form-control" placeholder="검색어 입력..." aria-label="Search" name="search">
+	      		<input type="search" class="form-control" placeholder="검색어 입력..."  aria-label="Search" name="search">
 	      	</form> -->
+	      	
 	      	 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="#" method="get">
 		      	<div class="search">
-	          		<input type="search" name="search"  aria-label="Search"> 
+	          		<input type="search" name="search" aria-label="Search"> 
 	          		<div class="material-symbols-outlined">search</div>
 	        	</div>
         	</form>
@@ -121,11 +120,11 @@
 	
 	searchInputEl.addEventListener('focus',function(){
 	  searchEl.classList.add('focused');
-	  searchInputEl.setAttribute('placeholder','통합검색');
+	  searchInputEl.setAttribute('placeholder','물품검색');
 	});
 	
 	searchInputEl.addEventListener('blur',function(){
 	  searchEl.classList.remove('focused');
 	  searchInputEl.setAttribute('placeholder','');
-	});
+	});  
 </script>
