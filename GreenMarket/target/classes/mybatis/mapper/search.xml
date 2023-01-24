@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="mybatis.mapper.search">
+	
+	<select id="searchAll" parameterType="String" resultType="pListVO"> 
+		
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+			FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+		        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+			WHERE p_name like '%'||#{search}||'%'
+	</select>
+	
+	<select id="brandNew" parameterType="String"  resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE p_name like '%'||#{search}||'%'ORDER BY regdate DESC
+	</select>
+	
+	<select id="viewsLevel" parameterType="String"  resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE p_name like '%'||#{search}||'%' ORDER BY views DESC
+	</select>
+	
+		<select id="priceHigh" parameterType="String"  resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE p_name like '%'||#{search}||'%' ORDER BY price DESC
+	</select>
+	
+	<select id="priceLow" parameterType="String"  resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE p_name like '%'||#{search}||'%' ORDER BY price ASC
+	</select>
+	
+	<!-- 카테고리 -->
+	
+	<select id="categorySearch" parameterType="hashmap" resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = #{category}  and  p_name like '%'||#{search}||'%'
+	</select>
+	
+	<select id="cateBrandNew" parameterType="hashmap" resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = #{category} and  p_name like '%'||#{search}||'%' ORDER BY regdate DESC 
+	</select>
+	
+	<select id="catePriceLow" parameterType="hashmap" resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = #{category} and  p_name like '%'||#{search}||'%' ORDER BY price ASC 
+	</select>
+	
+	<select id="catePriceHigh" parameterType="hashmap" resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = #{category} and  p_name like '%'||#{search}||'%' ORDER BY price DESC  
+	</select>
+	
+	<select id="cateViewsLevel" parameterType="hashmap" resultType="pListVO">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = #{category} and  p_name like '%'||#{search}||'%' ORDER BY views DESC 
+	</select>
+	
+	<select id="numberOfSearches" parameterType="String" resultType="int">
+	 	select count(*)
+	    from productDetail
+	    WHERE p_name like '%'||#{search}||'%'
+	</select>
+	
+</mapper>

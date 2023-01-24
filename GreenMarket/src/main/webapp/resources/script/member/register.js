@@ -157,8 +157,7 @@ function checkNick() {
 	const check2 = document.getElementsByClassName('form-control')[1];
 
 	/* const check2 = document.querySelector(".form-control"); */
-	console.log(check2);
-	console.log(nickname);
+	
 	var jsonData = {
 		"nickname": nickname
 	};
@@ -175,7 +174,6 @@ function checkNick() {
 				if (nickname == '' || nickname == null) {
 					$("#result_checkNickname").html('');
 				} else {
-					console.log(check2);
 					check.setAttribute('value', 'success');
 					check2.setAttribute('class', 'form-control is-valid');
 					$("#result_checkNickname").html('사용가능한 닉네임입니다.').css("color", "green");

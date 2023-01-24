@@ -10,7 +10,7 @@
 	  position: relative;
 	  height: 34px;
 	}
-	header .search input {
+	header .search input[type=search] {
 	  width: 36px;
 	  height: inherit;
 	  padding: 4px 10px;
@@ -23,7 +23,7 @@
 	  font-size: 16px;
 	  transition: width .4s;
 	}
-	header .search input:focus {
+	header .search input[type=search]:focus {
 	  width: 190px;
 	  border-color: #669900;
 	}
@@ -39,7 +39,7 @@
 	}
 	header .search.focused .material-symbols-outlined {
 	  opacity: 0;
-	}
+	} 
 </style>
     
 <header class="p-3 mb-3 border-bottom">
@@ -73,16 +73,17 @@
 		    	</c:if>
 		    </ul>
 	
-	   <!--    	<form class="col-6 col-lg-auto mb-2 mb-lg-0 me-lg-4" role="search" action="#" method="get">
-	      		<div class="search">
-		      		<input type="search"  placeholder="검색어 입력..."  aria-label="Search" name="search">
-		      		<div class="material-symbols-outlined col-12 col-lg-auto">search</div>
-		      	</div>
-	      	</form> -->
-			
-		      	 <form class="col-6 col-lg-auto mb-2 mb-lg-0 me-lg-4" role="search" action="productList" method="get">
-			      	<div class="search col-5 col-lg-auto mb-2 mb-lg-0 me-lg-0" >
-		          		<input type="search"  name="search" aria-label="Search">
+	   		<%-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="search" method="get">
+	   			<input type="hidden" name="c" value="all">
+		        <input type="hidden" name="v" value="product">
+	      		<input type="search" class="form-control" value="${search}" placeholder="검색어 입력..."  aria-label="Search" name="search">
+	      	</form>
+			 --%>
+		      	 <form class="col-8 col-lg-auto mb-2 mb-lg-0 me-lg-4" role="search" action="search" method="get">
+			      	<div class="search col-4 col-lg-auto mb-2 mb-lg-0 me-lg-0" >
+		          		<input type="hidden" name="c" value="all">
+		          		<input type="hidden" name="v" value="product">
+		          		<input type="search"  id="search" name="search" aria-label="Search">
 		        		<div class="material-symbols-outlined col-11 col-lg-auto ">search</div>
 		        	</div>
 	        	</form> 
@@ -115,11 +116,14 @@
 
 <script type="text/javascript">
 	const searchEl = document.querySelector('.search');
-	const searchInputEl = searchEl.querySelector('input');
+	const searchInputEl = searchEl.querySelector('input[type=search]');
+	let search =  $('#search').val();
 	
 	searchEl.addEventListener('click',function(){
 	  searchInputEl.focus();
 	});
+	
+	
 	
 	searchInputEl.addEventListener('focus',function(){
 	  searchEl.classList.add('focused');
