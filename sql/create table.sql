@@ -103,22 +103,23 @@ CREATE TABLE productPic(
 );
 
 CREATE TABLE category(
-    category NVARCHAR2(20) CONSTRAINT category_pk_category PRIMARY KEY
+    category NVARCHAR2(20) CONSTRAINT category_pk_category PRIMARY KEY,
+    icon NVARCHAR2(150) NOT NULL
 );
 
-INSERT INTO category VALUES('디지털 기기');
-INSERT INTO category VALUES('생활가전');
-INSERT INTO category VALUES('생활주방');
-INSERT INTO category VALUES('유아동');
-INSERT INTO category VALUES('의류');
-INSERT INTO category VALUES('잡화');
-INSERT INTO category VALUES('뷰티•미용');
-INSERT INTO category VALUES('취미•게임•음반');
-INSERT INTO category VALUES('도서');
-INSERT INTO category VALUES('중고차');
-INSERT INTO category VALUES('가공식품');
-INSERT INTO category VALUES('반려동물 물품');
-INSERT INTO category VALUES('기타 중고물품');
+INSERT INTO category VALUES('디지털 기기', '디지털 기기.png');
+INSERT INTO category VALUES('생활가전', '생활가전.png');
+INSERT INTO category VALUES('생활주방', '생활주방.png');
+INSERT INTO category VALUES('유아동', '유아동.png');
+INSERT INTO category VALUES('의류', '의류.png');
+INSERT INTO category VALUES('잡화', '잡화.png');
+INSERT INTO category VALUES('뷰티•미용', '뷰티•미용.png');
+INSERT INTO category VALUES('취미•게임•음반', '취미•게임•음반.png');
+INSERT INTO category VALUES('도서', '도서.png');
+INSERT INTO category VALUES('중고차', '중고차.png');
+INSERT INTO category VALUES('가공식품', '가공식품.png');
+INSERT INTO category VALUES('반려동물 물품', '반려동물 물품.png');
+INSERT INTO category VALUES('기타 중고물품', '기타 중고물품.png');
 
 CREATE TABLE productHistory(
     idx number CONSTRAINT productHistory_pk_idx PRIMARY key,

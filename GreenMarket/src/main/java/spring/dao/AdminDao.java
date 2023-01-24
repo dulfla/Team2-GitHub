@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
+import spring.vo.CategoryVO;
 import spring.vo.CountByCategory;
 import spring.vo.CountByMonthVo;
 import spring.vo.CountByYearVo;
@@ -49,6 +50,10 @@ public class AdminDao {
 
 	public List<String> selectAllCategorys() {
 		return sqlSession.selectList("mybatis.mapper.admin.selectAllCategory");
+	}
+
+	public List<CategoryVO> getAllCategory() {
+		return sqlSession.selectList("mybatis.mapper.admin.selectAllCategorys");
 	}
 	
 }

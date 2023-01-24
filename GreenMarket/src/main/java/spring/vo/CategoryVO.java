@@ -11,7 +11,7 @@ public class CategoryVO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "CategoryVO [category=" + category + "]";

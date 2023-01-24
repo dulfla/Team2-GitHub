@@ -112,5 +112,49 @@
 		GROUP BY c.category
 		ORDER BY category ASC
 	</select>
+	
+	
+	<!-- category admin -->
+	
+	<!-- 카테고리 가져오기 -->
+	<select id="selectAllCategorys" resultType="cCategory">
+		SELECT c.category, c.icon , NVL("count",0) AS "cnt"
+		FROM category c LEFT OUTER JOIN (SELECT category, COUNT(*) AS "count" FROM productDetail GROUP BY category) pd
+        ON c.category=pd.category
+		ORDER BY category ASC
+	</select>
+	
+	<!-- 카테고리 등록하기 -->
+	<insert id="insertNewCategory" parameterType="cCategory">
+		INSERT INTO category
+		VALUES(#{category}, #{icon})
+	</insert>
+	
+	<!-- 카테고리 이미지 수정하기 -->
+	<update id="updateCategoryIcon" parameterType="cCategory">
+		UPDATE category
+		SET	icon=#{icon}
+		WHERE category=#{category}
+	</update>
+	
+	<!-- 카테고리 수정하기 -->
+	<update id="updateCategory" parameterType="map">
+		UPDATE category
+		SET	category=#{newCategory}
+		WHERE category=#{oldCategory}
+	</update>
+	
+	<!-- 카테고리 삭제하기 -->
+	<delete id="deleteCategory" parameterType="map">
+		DELETE category
+		WHERE category=#{oldCategory}
+	</delete>
+	
+	<!-- 상품 상세정보에 있는 카테고리들 업데이트 -->
+		<update id="updateCategoryInProduct" parameterType="map">
+		UPDATE productDetail
+		SET	category=#{newCategory}
+		WHERE category=#{oldCategory}
+	</update>
 
 </mapper>

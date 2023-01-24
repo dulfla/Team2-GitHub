@@ -30,6 +30,7 @@
 				        </ul>
 				    </li>
 				    <li><a href="Server" class="nav-link px-2 link-dark">서버 설정</a></li>
+				    <li><a href="CategoryAdmin" class="nav-link px-2 link-dark">카테고리 관리</a></li>
 		    	</c:if>
 		    </ul>
 	
