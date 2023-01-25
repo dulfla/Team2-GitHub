@@ -9,8 +9,8 @@ import java.util.Collection;
 
 import org.json.JSONObject;
 
-import spring.service.ChatService;
-import spring.vo.ChatMessageVo;
+import spring.service.chat.ChatService;
+import spring.vo.chat.ChatMessageVo;
 
 public class SocketClient {
 

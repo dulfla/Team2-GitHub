@@ -346,6 +346,7 @@ function chatting(){ // 채팅방 연결 - 채팅방이 있으면 해당 채팅�
 	    success: function(data) { // 채팅방으로 연결
 	    	if(data!=null){
 	    		chatRoomId = data;
+	    		console.log(chatRoomId); /*****/
 	    		connecteToSocket();
 	    	}
 	    }
@@ -549,7 +550,7 @@ function insertMessage(sender, nick, msg, msgType){
 		}else if(msgType=='IMG'){
 			myMessage = document.createElement('img');
 			myMessage.classList.add('chattingImage');
-			myMessage.setAttribute('src', "ChattingImage?c_id="+chatRId+"&fileName="+msg);
+			myMessage.setAttribute('src', "ChattingImage?c_id="+chatRoomId+"&fileName="+msg);
 		}
 	
 		myText.appendChild(myMessage);
@@ -578,7 +579,7 @@ function insertMessage(sender, nick, msg, msgType){
 		}else if(msgType=='IMG'){
 			sendingMessage = document.createElement('img');
 			sendingMessage.classList.add('chattingImage');
-			sendingMessage.setAttribute('src', "ChattingImage?c_id="+chatRId+"&fileName="+msg);
+			sendingMessage.setAttribute('src', "ChattingImage?c_id="+chatRoomId+"&fileName="+msg);
 		}
 		
 		reciveText.appendChild(sendingMessage);

@@ -16,8 +16,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.WebSocketSession;
 
-import spring.service.ChatService;
-import spring.vo.ChatMessageVo;
+import spring.service.chat.ChatService;
+import spring.vo.chat.ChatMessageVo;
 
 public class SocketServer {
 	

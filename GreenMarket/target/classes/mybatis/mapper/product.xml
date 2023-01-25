@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="mybatis.mapper.product">
+
+	<select id="category" resultType="CategoryVO">
+		select category from category
+	</select>
+	
+	<insert id="productReg" parameterType="ProductVO">
+		<selectKey keyProperty="productId" resultType="String" order="BEFORE">
+    		SELECT 'pid'||pid_seq.nextval from dual
+    	</selectKey>
+		insert into productdetail (p_id,p_name,description,category,regdate,price,lat,lng)
+    	values (#{productId},#{p_name},#{description},#{category},sysdate,#{price},#{lat},#{lng})
+	</insert>
+ 		
+	<insert id="product" parameterType="Product1VO">
+		insert into product(idx,email,p_id)
+		values (product_seq.nextval,#{email},#{productId})	
+	</insert>
+	
+	<insert id="productPic" parameterType="ProductImageVO">
+		insert into productPic(p_id, fileName, uploadPath, uuid)
+		values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
+	</insert>	
+
+	<!-- 리스트에서 상품 보기 클릭시 조회수 증가 -->
+	<update id="modifyProductViews" parameterType="String">
+		update productDetail 
+		set views = views + TO_NUMBER(1)
+		where p_id = #{p_id} 
+	</update>
+
+  	<select id="productDetail" resultType="ProductVO">
+		select pd.p_name
+		   , pd.description
+		   , pd.category
+		   , pd.regdate
+		   , pd.views
+		   , pd.price
+		   , pd.p_id
+		   , p.email
+		   , m.nickname
+		   , pd.lat
+		   , pd.lng
+		from productDetail pd
+		    join product p on p.p_id = pd.p_id
+		    join member m on p.email = m.email
+		where 1=1 
+			AND pd.p_id = #{p_id}
+	</select>
+
+	<select id="productImage" resultType="ProductImageVO">
+		select * from ProductPic where p_id = #{p_id}
+	</select>
+		
+	<update id="productModify" parameterType="ProductVO">
+		 update productDetail set p_name=#{p_name}
+		 , description=#{description}
+		 , category=#{category}
+		 , price=#{price}
+		 , trade=#{trade}
+		 , lat=#{lat}
+		 , lng=#{lng}
+     	 where p_id = #{p_id}
+	</update>		
+	<insert id="modifyPic" parameterType="ProductImageVO">
+		insert into productPic(p_id, fileName, uploadPath, uuid)
+		values (#{p_id},#{fileName},#{uploadPath},#{uuid})
+	</insert>
+	
+	 
+	 <!-- 상품 삭제할때 상품상세정보를 마지막에 지워야함 -->
+	 <!-- 상품 삭제 -->
+	 <delete id="productDelete1">
+		delete product where p_id=#{p_id}
+	</delete>
+	<!-- 상품상세보기 삭제 -->
+	<delete id="productDelete">
+		delete productDetail where p_id=#{p_id}
+	</delete> 
+	<!-- 이미지 삭제 -->
+	<delete id="deleteImage">	
+		delete from productPic where p_id=#{p_id}
+	</delete>
+	
+	<select id="getImageInfo" resultType="ProductImageVO">
+		select * from productPic where p_id=#{p_id}
+	</select>
+
+</mapper>

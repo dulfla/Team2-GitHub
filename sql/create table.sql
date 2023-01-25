@@ -15,7 +15,6 @@ DROP TABLE memberHistory CASCADE CONSTRAINTS;
 DROP TABLE productHistory CASCADE CONSTRAINTS;
 
 -- DROP SEQUENCE ;
--- DROP SEQUENCE ;
 DROP SEQUENCE memberTracking_seq;
 DROP SEQUENCE pid_seq;
 DROP SEQUENCE product_seq;
@@ -27,8 +26,7 @@ DROP SEQUENCE chatInfomation_seq;
 DROP SEQUENCE chatParticipants_seq;
 
 -- 시퀀스
--- CREATE SEQUENCE ; -- member(micname) - 샘플데이터 5개
--- CREATE SEQUENCE ; -- search(idx) - 샘플데이터 3개
+CREATE SEQUENCE search_seq START WITH 4 NOCYCLE NOCACHE; -- search(idx) - 샘플데이터 3개
 CREATE SEQUENCE memberTracking_seq START WITH 1 NOCYCLE NOCACHE; -- memberHistory(idx)
 CREATE SEQUENCE pid_seq START WITH 6 NOCYCLE NOCACHE; -- productDetail(p_id) - 샘플데이터 5개
 CREATE SEQUENCE product_seq START WITH 6 NOCYCLE NOCACHE; -- product(idx) - 샘플데이터 5개
@@ -66,8 +64,8 @@ CREATE TABLE memberHistory(
 -- 검색어 테이블 -------------------------------------------------------------------------------------------------
 CREATE TABLE search(
     idx number,
-    search NVARCHAR2(20) NOT NULL,
-    email VARCHAR2(50) NOT NULL, 
+    keyword NVARCHAR2(20) NOT NULL,
+    email VARCHAR2(50), -- 회원이 아닌 사람도 검색 가능
     regdate date DEFAULT sysdate NOT NULL,
     
     CONSTRAINT PK_search_idx PRIMARY KEY(idx)
@@ -91,6 +89,8 @@ CREATE TABLE productDetail(
     views number DEFAULT 0 NOT NULL,
     price number NOT NULL,
     trade varchar2(5) DEFAULT 'TRADE' NOT NULL, -- 거래 중 : TRADE, 거래 완료 : CLEAR
+    lat varchar2(100),  --위도
+    lng varchar2(100),  --경도
     CONSTRAINT  productDetail_pk_p_id PRIMARY KEY(p_id)
 );
 
@@ -154,10 +154,6 @@ CREATE TABLE chatParticipants(
 );
 
 -- FORING KEY 작성-----------------------------------------------------------------------------------------------
-
--- 검색어 fk 추가
-ALTER TABLE search
-ADD CONSTRAINT fk_search_email FOREIGN KEY(email) REFERENCES member(email) ON DELETE CASCADE;
 
 -- 상품 fk 추가
 ALTER TABLE product
@@ -248,6 +244,8 @@ INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, p
 VALUES('pid4','츄르','츄르 2박스 입니다','반려동물 물품','2022/11/03',0,15000);
 INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
 VALUES('pid5','에어팟 맥스','에어팟 맥스 미개봉 상품입니다','디지털 기기','2022/12/25',115,600000);
+INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
+VALUES('pid7','에어팟','에어팟 맥스 미개봉 상품입니다','디지털 기기','2022/01/25',115,500000);
 
 -- 회원 상세
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
@@ -289,6 +287,8 @@ insert into product
 values(4, 'jeong@naver.com', 'pid4');
 insert into product
 values(5, 'choi@naver.com', 'pid5');
+insert into product
+values(6, 'pack@naver.com', 'pid7');
 
 -- 채팅
 INSERT INTO chatInfomation
@@ -397,6 +397,7 @@ EXECUTE withdraw_sampleDate;
 -- 테이블 확인 ---------------------------------------------------------------------------------------------------
 ROLLBACK;
 COMMIT;
+
 
 SELECT * FROM SEARCH;
 SELECT * FROM MEMBER;

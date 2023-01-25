@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import spring.vo.RegisterRequest;
+import spring.vo.member.RegisterRequest;
 
 public class EmailValidator implements Validator{
 	

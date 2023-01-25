@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import spring.dao.AdminDao;
-import spring.vo.CountByCategory;
-import spring.vo.CountByMonthVo;
-import spring.vo.CountByYearVo;
+import spring.dao.admin.AdminDao;
+import spring.vo.admin.CountByCategory;
+import spring.vo.admin.CountByMonthVo;
+import spring.vo.admin.CountByYearVo;
 
 @Component
 @Service
