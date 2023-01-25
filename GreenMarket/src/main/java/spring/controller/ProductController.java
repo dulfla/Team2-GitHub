@@ -81,7 +81,7 @@ public class ProductController {
 		memberServiceImpl.productRegister(vo, vo1);
 
 		
-		return "redirect:/index";
+		return "redirect:/productList?c=all&v=brandNew";
 	}
 	// 이미지
 	@RequestMapping(value = "uploadAjaxAction",
@@ -264,7 +264,7 @@ public class ProductController {
 		logger.info("상품 수정 controller.................." + vo);
 		memberServiceImpl.productModify(vo);
 	
-		return "redirect:/index";
+		return "redirect:/productList?c=all&v=brandNew";
 	}
 	
 
@@ -295,7 +295,7 @@ public class ProductController {
 		
 		memberServiceImpl.productDelete(p_id);
 
-		return "redirect:/index";
+		return "redirect:/productList?c=all&v=brandNew";
 	}
 
 

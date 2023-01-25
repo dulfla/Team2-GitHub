@@ -57,7 +57,8 @@ public class MemberServiceImpl implements MemberService {
 		// 상품 조회
 		@Override
 		public ProductVO productDetail(String p_id) {
-			int a = dao.modifyProductViews(p_id);
+			// 조회수
+			dao.modifyProductViews(p_id);
 			
 			return dao.productDetail(p_id);
 		}

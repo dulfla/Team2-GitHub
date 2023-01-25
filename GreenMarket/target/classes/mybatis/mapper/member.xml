@@ -84,6 +84,7 @@
 		values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
 	</insert>	
 
+	<!-- 리스트에서 상품 보기 클릭시 조회수 증가 -->
 	<update id="modifyProductViews" parameterType="String">
 		update productDetail 
 		set views = views + TO_NUMBER(1)
@@ -109,13 +110,6 @@
 			AND pd.p_id = #{p_id}
 	</select>
 
-<!-- 	 
-	<select id="productDetail" resultType="ProductVO">
-		select p_name, description, category, regdate, views, price, p_id,
-		(select nickname from member where email=#{email}) as nickname
-		from productDetail where p_id = #{p_id}
-	</select>
- -->
 	<select id="productImage" resultType="ProductImageVO">
 		select * from ProductPic where p_id = #{p_id}
 	</select>
@@ -126,6 +120,8 @@
 		 , category=#{category}
 		 , price=#{price}
 		 , trade=#{trade}
+		 , lat=#{lat}
+		 , lng=#{lng}
      	 where p_id = #{p_id}
 	</update>		
 	<insert id="modifyPic" parameterType="ProductImageVO">
