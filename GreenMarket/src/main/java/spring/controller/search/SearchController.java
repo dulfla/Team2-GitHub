@@ -35,8 +35,6 @@ public class SearchController {
 		
 		List<ProductListVO> list = null;
 		
-		System.out.println("테스트 키워드 : "+search);
-		
 		if(!c.equals("all")) { // 특정 카테고리를 지정했을 때
 			int count = searchDao. cateNumberOfSearches(c,search);
 			
