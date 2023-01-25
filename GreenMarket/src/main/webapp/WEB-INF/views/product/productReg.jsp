@@ -11,12 +11,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.js" crossorigin="anonymous"></script> -->
 <script
-  src="https://code.jquery.com/jquery-3.6.3.js"
-  integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
-  crossorigin="anonymous"></script>
-  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
+src="https://code.jquery.com/jquery-3.6.3.js"
+integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+crossorigin="anonymous"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
  <%--  <link href="${path}resources/style/productreg.css" rel="stylesheet" type="text/css"> --%>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
   
 <style type="text/css">
 	#result_card img{
@@ -54,17 +56,19 @@
 
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">	
-	    <div class=" text-center mt-5 ">
-	        <h1 >상품 등록</h1>                   
+		<div class=" text-center mt-5 ">
+	    <h1 >상품 등록</h1>                   
 	    </div>
 	    <div class="row ">
-	        <div class="col-lg-7 mx-auto">
+	    <div class="col-lg-7 mx-auto">
 	            <div class="card mt-2 mx-auto p-4 bg-light">
 	                <div class="card-body bg-light">
 	                    <div class = "container">
 	                        <form id="contact-form" role="form" method="POST" autocomplete="off" enctype="multipart/form-data">
 	                        	<input type="hidden" name="email" value="${authInfo.email}">
 	                        	<input type="hidden" name="p_id" value="${product.p_id}">
+	                        	<input type="hidden" id="lat" name="lat" value="${product.lat}">
+	                        	<input type="hidden" id="lng" name="lng" value="${product.lng}">
 	                            <div class="controls">
 	                                <div class="row">
 	                                    <div class="col-md-12">
@@ -78,7 +82,7 @@
 	                                    <div class="col-md-6">
 	                                        <div class="form-group">
 	                                            <label for="form_lastname">상품 가격</label>
-	                                            <input id="form_lastname" type="text" id="price" name="price" class="form-control" placeholder="가격을 입력해주세요  *" required data-error="가격은 필수입력입니다.">
+	                                            <input id="form_lastname" type="text" id="price" name="price" class="form-control" placeholder="가격을 입력해주세요  *" oninput="checkPwd()" required>
 	                                        </div>
 	                                    </div>
 	                                    <div class="col-md-6">
@@ -103,7 +107,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="form_message" style="margin-top : 20px">사진 업로드</label>
-                                            <input type="file" id="fileItem" name='uploadFile'>
+                                            <input type="file" id="fileItem" name='uploadFile' multiple>
                                             <div id="uploadResult"></div> 
                                             
                                         </div>                          
@@ -127,7 +131,8 @@
                     </div>
                 </div>
             </div>
-        </div>				
+        </div>
+    </div>				
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script type="text/javascript">
@@ -156,20 +161,15 @@
 			
 			// 마커 위치를 클릭한 위치로 옮깁니다
 			marker.setPosition(latlng);
-			
-			/* 		   
-			var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-			message += '경도는 ' + latlng.getLng() + ' 입니다';
-			
-			var resultDiv = document.getElementById('clickLatlng'); 
-			resultDiv.innerHTML = message; 
-			*/
-			
+					
 			var lat = latlng.getLat();
 			var lng = latlng.getLng();
 			
 			console.log('위도 : ' + lat);
 			console.log('경도 : ' + lng);
+			
+			$("#lat").val(lat);
+			$("#lng").val(lng);
 		});	
 
 
@@ -184,12 +184,7 @@
 			let fileInput = $('input[name="uploadFile"]');
 			let fileList = fileInput[0].files;
 			let fileObj = fileList[0];
-				
-			/*
-			if(!fileCheck(fileObj.name, fileObj.size)){
-				return false;
-			} 
-			*/
+		
 			// 사용자가 선택한 파일을 FormData에 "uploadFile"이란 이름(key)으로 추가해주는 코드
 			for(let i = 0; i < fileList.length; i++){
 				formData.append("uploadFile", fileList[i]);
@@ -212,7 +207,7 @@
 		});
 			
 		let regex = new RegExp("(.*?)\.(jpg|png)$");
-		let maxSize = 1048576; //1MB	
+		let maxSize = 10485760; //10MB	
 			
 		function fileCheck(fileName, fileSize){
 		
@@ -252,8 +247,7 @@
 		$("#uploadResult").on("click", ".imgDeleteBtn", function(e){	
 		
 			deleteFile();		
-		});
-			
+		});	
 			
 		/* 파일 삭제 메서드 */
 		function deleteFile(){
@@ -279,7 +273,23 @@
 				}
 			 });
 		}
-/* ----------------------------------------------------------------------------------------------------------------- */
+		
+		function checkPwd() {
+			var objEv = event.srcElement;
+			var numPattern = /([^0-9])/;
+			var numPattern = objEv.value.match(numPattern);
+			if (numPattern != null) {
+				/* alert('숫자만 입력해주세요'),  */
+				Swal.fire({
+				      icon: 'error',
+				      title: '상품 가격은 숫자만 입력해주세요',
+				      text: '',
+				});
+				objEv.value = "";
+				objEv.focus();
+				return false;
+			}
+		}
 	</script>
 </body>
 </html>
