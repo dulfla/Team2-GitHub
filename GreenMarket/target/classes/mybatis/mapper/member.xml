@@ -70,8 +70,8 @@
 		<selectKey keyProperty="productId" resultType="String" order="BEFORE">
     		SELECT 'pid'||pid_seq.nextval from dual
     	</selectKey>
-		insert into productdetail (p_id,p_name,description,category,regdate,price)
-    	values (#{productId},#{p_name},#{description},#{category},sysdate,#{price})
+		insert into productdetail (p_id,p_name,description,category,regdate,price,lat,lng)
+    	values (#{productId},#{p_name},#{description},#{category},sysdate,#{price},#{lat},#{lng})
 	</insert>
  		
 	<insert id="product" parameterType="Product1VO">
@@ -84,11 +84,29 @@
 		values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
 	</insert>	
 
+	<update id="modifyProductViews" parameterType="String">
+		update productDetail 
+		set views = views + TO_NUMBER(1)
+		where p_id = #{p_id} 
+	</update>
+
   	<select id="productDetail" resultType="ProductVO">
-		select p_name, description, category, regdate, views, price, p_id,
-		(select email from product where p_id=#{p_id}) as email,
-		(select nickname from member where email=#{email}) as nickname
-		from productDetail where p_id = #{p_id}
+		select pd.p_name
+		   , pd.description
+		   , pd.category
+		   , pd.regdate
+		   , pd.views
+		   , pd.price
+		   , pd.p_id
+		   , p.email
+		   , m.nickname
+		   , pd.lat
+		   , pd.lng
+		from productDetail pd
+		    join product p on p.p_id = pd.p_id
+		    join member m on p.email = m.email
+		where 1=1 
+			AND pd.p_id = #{p_id}
 	</select>
 
 <!-- 	 
@@ -103,8 +121,11 @@
 	</select>
 		
 	<update id="productModify" parameterType="ProductVO">
-		 update productDetail set
-		 p_name=#{p_name}, description=#{description}, category=#{category}, price=#{price}, trade=#{trade}
+		 update productDetail set p_name=#{p_name}
+		 , description=#{description}
+		 , category=#{category}
+		 , price=#{price}
+		 , trade=#{trade}
      	 where p_id = #{p_id}
 	</update>		
 	<insert id="modifyPic" parameterType="ProductImageVO">

@@ -6,7 +6,6 @@ import java.util.List;
 
 public class ProductVO {
 
-	// productDetail tbl
 	private String p_id;
 	private String p_name;
 	private String description;
@@ -16,6 +15,8 @@ public class ProductVO {
 	private int price;
 	private String trade;
 	private String nickname;
+	private String lat;
+	private String lng;
 	
 	private String productId;
 	private String email;	
@@ -27,7 +28,7 @@ public class ProductVO {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	//이미지 정보
+
 	private List<ProductImageVO> imageList;
 	
 	public List<ProductImageVO> getImageList() {
@@ -96,12 +97,24 @@ public class ProductVO {
 	public void setPrice(int price) {
 		this.price = price;
 	}
+	public String getLat() {
+		return lat;
+	}
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+	public String getLng() {
+		return lng;
+	}
+	public void setLng(String lng) {
+		this.lng = lng;
+	}
 	@Override
 	public String toString() {
 		return "ProductVO [p_id=" + p_id + ", p_name=" + p_name + ", description=" + description + ", category="
 				+ category + ", regdate=" + regdate + ", views=" + views + ", price=" + price + ", trade=" + trade
-				+ ", nickname=" + nickname + ", productId=" + productId + ", email=" + email + ", imageList="
-				+ imageList + "]";
+				+ ", nickname=" + nickname + ", lat=" + lat + ", lng=" + lng + ", productId=" + productId + ", email="
+				+ email + ", imageList=" + imageList + "]";
 	}
 	
 	

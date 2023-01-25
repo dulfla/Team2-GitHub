@@ -35,6 +35,8 @@
 			<input type="hidden" name="email" value="${product.email}">
 			<input type="hidden" name="authEmail" value="${authInfo.email}">
 			<input type="hidden" name="nickname" value="${product.nickname}">
+			<input type="hidden" id="lat" name="lat" value="${product.lat}">
+			<input type="hidden" id="lng" name="lng" value="${product.lng}">
 
 			<div class="inputArea"> 
 			 <label>카테고리</label>
@@ -147,27 +149,32 @@
 	
 
 	/* =======-=-=-=-=-==============================================--========= */
+		var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
+		
+		//좌표 
+		var lat = $("#lat").val();
+		var lng = $("#lng").val();
+		console.log(lat);
+		console.log(lng);
+		
+	    mapOption = { 
+	        center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
+	        level: 3 // 지도의 확대 레벨
+	    };
 	
-	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-	
-	
-    mapOption = { 
-        center: new kakao.maps.LatLng(37.267868108956456, 127.00053552238002), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
-
-	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-	
-	// 마커가 표시될 위치입니다 
-	var markerPosition  = new kakao.maps.LatLng(37.267868108956456, 127.00053552238002); 
-	
-	// 마커를 생성합니다
-	var marker = new kakao.maps.Marker({
-	    position: markerPosition
-	});
-	
-	// 마커가 지도 위에 표시되도록 설정합니다
-	marker.setMap(map);
+		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+		
+		
+		// 마커가 표시될 위치입니다 
+		var markerPosition  = new kakao.maps.LatLng(lat, lng); 
+		
+		// 마커를 생성합니다
+		var marker = new kakao.maps.Marker({
+		    position: markerPosition
+		});
+		
+		// 마커가 지도 위에 표시되도록 설정합니다
+		marker.setMap(map);
 	
 	
 	  var formObj = $("form[role='form']");

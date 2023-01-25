@@ -41,5 +41,8 @@ public interface MemberDaoInterface {
 	
 	// 상품 이미지 정보 얻기
 	public List<ProductImageVO> getImageInfo(String p_id);
+	
+	// 상품 조회수 업데이트
+	public int modifyProductViews(String p_id);
 
 }

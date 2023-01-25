@@ -54,17 +54,19 @@
 
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">	
-	    <div class=" text-center mt-5 ">
-	        <h1 >상품 등록</h1>                   
+		<div class=" text-center mt-5 ">
+	    <h1 >상품 등록</h1>                   
 	    </div>
 	    <div class="row ">
-	        <div class="col-lg-7 mx-auto">
+	    <div class="col-lg-7 mx-auto">
 	            <div class="card mt-2 mx-auto p-4 bg-light">
 	                <div class="card-body bg-light">
 	                    <div class = "container">
 	                        <form id="contact-form" role="form" method="POST" autocomplete="off" enctype="multipart/form-data">
 	                        	<input type="hidden" name="email" value="${authInfo.email}">
 	                        	<input type="hidden" name="p_id" value="${product.p_id}">
+	                        	<input type="hidden" id="lat" name="lat" value="${product.lat}">
+	                        	<input type="hidden" id="lng" name="lng" value="${product.lng}">
 	                            <div class="controls">
 	                                <div class="row">
 	                                    <div class="col-md-12">
@@ -170,6 +172,9 @@
 			
 			console.log('위도 : ' + lat);
 			console.log('경도 : ' + lng);
+			
+			$("#lat").val(lat);
+			$("#lng").val(lng);
 		});	
 
 
