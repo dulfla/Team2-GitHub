@@ -3,6 +3,8 @@ let memberType = null;
 
 let messageBox = null;
 let msg = null;
+let fileInput = null;
+let addFileBtn = null;
 
 let roomBox = null;
 
@@ -23,6 +25,11 @@ window.addEventListener('load', function() {
 		messageBox = document.getElementById('messageBox');
 		messageBox.innerHTML = null;
 		msg = document.getElementsByName('message')[0];
+
+		addFileBtn = document.getElementsByName('addFileBtn')[0];
+		addFileBtn.addEventListener('click', actionInputFile, false);
+		fileInput = document.getElementById('fileInput');
+		fileInput.addEventListener('change', sendFile, false);
 	}else if(memberType=='sell'){
 		roomBox = document.getElementById('chattingRooms');
 		roomBox.innerHTML = null;
@@ -49,13 +56,7 @@ window.addEventListener('load', function() {
 		let activeE = document.activeElement;
 		let body = document.getElementsByTagName('body')[0];
 		if(activeE==body){
-			if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingOpen')){
-				backToChattRooms();
-				offCanvas.classList.toggle('show');
-			}else if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingRooms')){
-				roomBox.innerHTML = null;
-				offCanvas.classList.toggle('show');
-			}
+			closeServer();
 		}else if(activeE==startBtn){
 			if(offCanvas.classList.contains('show')){
 				closeServer();
@@ -66,7 +67,7 @@ window.addEventListener('load', function() {
 						chatRoomOffcanvs.classList.toggle('show');
 					}
 				}
-				offCanvas.classList.add('show');
+				openOffCanvas();
 			}
 		}
 	}, false);
@@ -75,16 +76,45 @@ window.addEventListener('load', function() {
 	closeBtn.addEventListener('click', closeServer, false);
 });
 
+function actionInputFile(){
+	document.getElementById('fileInput').click();
+}
+
+function openOffCanvas(){
+	let chatPdPic = document.getElementById('chatPdPic');
+	$.ajax({
+	    url: "GetProductImg",
+	    type: "POST",
+	    dataType : 'text',
+    	contentType : 'application/json; charset=UTF-8',
+    	data : JSON.stringify({
+    		p_id : productId,
+    		email : personalId
+    	}),
+	    error: function(){
+	    	console.log('통신실패!!');
+	    },
+	    success: function(data) {
+	    	if(data!=null && data!=""){
+	    		chatPdPic.setAttribute('src', "display?fileName="+data);
+	    	}else{
+	    		chatPdPic.setAttribute('src', "./resources/img/sample.jpg");
+	    	}
+			offCanvas.classList.add('show');
+	    }
+	});
+}
+
 function closeServer(){
 	if(memberType=='buy'){
 		if(offCanvas.classList.contains('show')){
-			offCanvas.classList.toggle('show');
 			chattingClose();
+			offCanvas.classList.toggle('show');
 		}
 	}else if(memberType=='sell'){
 		if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingOpen')){
 			backToChattRooms();
-			chattingRoom();
+			offCanvas.classList.toggle('show');
 		}else if(offCanvas.classList.contains('show') && offCanvas.classList.contains('chattingRooms')){
 			roomBox.innerHTML = null;
 			offCanvas.classList.toggle('show');
@@ -127,11 +157,11 @@ function chattingRoom(){
 
 					let h6T = document.createElement('h6');
 					h6T.classList.add('mb-0');
-					h6T.innerHTML = '뭘 써야 할까나';
+					h6T.innerHTML = r.p_name;
 
 					let pT = document.createElement('p');
 					pT.classList.add('mb-0', 'opacity-75' ,'h6');
-					pT.innerHTML = '호로로로로로롤ㄹ로';
+					pT.innerHTML = "<small><i>with,</i></small> "+r.chatMember;
 
 					let smallT = document.createElement('small')
 					smallT.classList.add('opacity-50', 'text-nowrap');
@@ -166,6 +196,8 @@ function backToChattRooms(){
 	chattingClose();
 	document.removeEventListener('keydown', enterSend);
 	document.getElementsByName("sendBtn")[0].removeEventListener('click', msgNullcheck);
+	addFileBtn.removeEventListener('click', actionInputFile);
+	fileInput.removeEventListener('change', sendFile);
 	
 	if(offCanvas.classList.contains('chattingOpen')){
 		offCanvas.classList.remove('chattingOpen');
@@ -240,11 +272,20 @@ function openChatting(e){
 	let inputGroup = document.createElement('div');
 	inputGroup.classList.add('input-group', 'mt-2', 'p-0');
 
-	let addFileBtn = document.createElement('button');
-	addFileBtn.classList.add('btn', 'btn-outline-secondary');
-	addFileBtn.setAttribute('type', "button");
-	addFileBtn.setAttribute('id', "button-addon1");
-	addFileBtn.innerHTML = "+";
+	let filesInput = document.createElement('input');
+	filesInput.setAttribute('type', "file");
+	filesInput.setAttribute('multiple', "multiple");
+	filesInput.setAttribute('id', "fileInput");
+	filesInput.setAttribute('style', "display:none;");
+	filesInput.addEventListener('change', sendFile, false);
+
+	let addFileBton = document.createElement('button');
+	addFileBton.classList.add('btn', 'btn-outline-secondary');
+	addFileBton.setAttribute('type', "button");
+	addFileBton.setAttribute('name', "addFileBtn");
+	addFileBton.setAttribute('id', "button-addon1");
+	addFileBton.innerHTML = "+";
+	addFileBton.addEventListener('click', actionInputFile, false);
 
 	let messageInput = document.createElement('input');
 	messageInput.classList.add('form-control');
@@ -260,7 +301,8 @@ function openChatting(e){
 	sendBtn.setAttribute('id', "basic-addon1");
 	sendBtn.innerHTML = "전송";
 
-	inputGroup.appendChild(addFileBtn);
+	inputGroup.appendChild(filesInput);
+	inputGroup.appendChild(addFileBton);
 	inputGroup.appendChild(messageInput);
 	inputGroup.appendChild(sendBtn);
 	messageBoxContainer.appendChild(inputGroup);
@@ -269,7 +311,9 @@ function openChatting(e){
 
 	messageBox = document.getElementById('messageBox');
 	msg = document.getElementsByName('message')[0];
-
+	fileInput = document.getElementById('fileInput');
+	addFileBtn = document.getElementsByName('addFileBtn')[0];
+	
 	connecteToSocket();
 	chattingStart();
 }
@@ -302,6 +346,7 @@ function chatting(){ // 채팅방 연결 - 채팅방이 있으면 해당 채팅�
 	    success: function(data) { // 채팅방으로 연결
 	    	if(data!=null){
 	    		chatRoomId = data;
+	    		console.log(chatRoomId); /*****/
 	    		connecteToSocket();
 	    	}
 	    }
@@ -309,7 +354,7 @@ function chatting(){ // 채팅방 연결 - 채팅방이 있으면 해당 채팅�
 }
 
 function connecteToSocket(){ // 채팅 서버 연결
-	sock = new SockJS("http://localhost:8085/GreenMarket/server?c_id="+chatRoomId+"&email="+personalId); /************/
+	sock = new SockJS("http://localhost:8085/GreenMarket/server?c_id="+chatRoomId+"&email="+personalId);
 	sock.onmessage = onMessage;
 	
 	setTimeout(() => {
@@ -320,7 +365,7 @@ function connecteToSocket(){ // 채팅 서버 연결
 	    	contentType : 'application/json; charset=UTF-8',
 			data : JSON.stringify({ 
 				c_id : chatRoomId, 
-				email : personalId /* 임시 */
+				email : personalId
 			}),
 			error:function(){  
 				console.log('서버와의 연결이 이어지지 않았습니다.'); 
@@ -351,6 +396,7 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 	messageBox.innerHTML = null;
 	document.addEventListener('keydown', enterSend, false);
 	document.getElementsByName("sendBtn")[0].addEventListener('click', msgNullcheck, false);
+	
 	$.ajax({
 		url : "Chat",
 		type : "POST",
@@ -363,33 +409,11 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 		error:function(){
 			console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
 		},
-		success:function(messages){
-			let msgL = messages.messages;
+		success:function(data){
+			let msgL = data.messages;
 			if(0<msgL.length){
 				msgL.forEach((m) => {
-					if(m.sender == personalId){
-						let myText = document.createElement('div');
-						myText.classList.add('messageBox', 'myMessageBox');
-						
-						let myMessage = document.createElement('p');
-						myMessage.classList.add('message', 'send');
-						
-						myMessage.innerHTML = m.message;
-					
-						myText.appendChild(myMessage);
-						messageBox.appendChild(myText);
-					}else{
-						let reciveText = document.createElement('div');
-						reciveText.classList.add('messageBox', 'reciveMessageBox');
-						
-						let sendingMessage = document.createElement('p');
-						sendingMessage.classList.add('message', 'recive');
-						
-						sendingMessage.innerHTML = m.message;
-						
-						reciveText.appendChild(sendingMessage);
-						messageBox.appendChild(reciveText);
-					}
+					insertMessage(m.sender, m.nickname, m.message, m.messType);
 				});
 			}
 		},
@@ -424,6 +448,57 @@ function chattingClose(){ // 서버 연결 끊고, messageBox 비우기
 	});
 }
 
+function sendFile(e){
+	let files = e.currentTarget.files;
+	if(0<files.length){
+		for(let i=0; i<files.length; i++){
+			let fileType = files[i].name.split(".");
+			fileType = fileType[fileType.length-1];
+			
+			if(imgFileCheck(fileType, files[i].size)){
+				let formData = new FormData();
+				formData.append("file", files[i]);
+				
+				const date = new Date(files[i].lastModifiedDate);
+				let day = ""+date.getFullYear()+((date.getMonth()+1)<=9?"0"+(date.getMonth()+1):(date.getMonth()+1))+(date.getDate()<=9?"0"+date.getDate():date.getDate());
+				let time = date.getTime();
+				let newFileName = day+"_"+time+"."+fileType;
+				
+				$.ajax({
+				 	url: 'SendFile?c_id='+chatRoomId+'&email='+personalId+'&name='+newFileName,
+				 	processData : false,
+				 	contentType : false,
+				 	data : formData,
+				 	type : 'POST',
+				 	dataType : 'json',
+				 	success : function(data){
+				 		if(data==1){
+				 			console.log('파일 전송 완료');
+				 		}else if(data==2){
+				 			console.log('파일 전송 오류');
+				 		}
+				 	},
+				 	error : function(data){
+				 		console.log(JSON.stringify(data))
+				 	}
+				});
+			}
+		}		
+	}
+}
+
+function imgFileCheck(type, size){
+	let maxFileSize = 1048576; // 1MB
+	
+	if(type!='jpg' && type!='png'){
+		return false;
+	}
+	if(maxFileSize<size){
+		return false;
+	}
+	return true;
+}
+
 function sendMessage(){ // 메세지 보내기
 	$.ajax({
 		url:"SendMessage",
@@ -440,20 +515,7 @@ function sendMessage(){ // 메세지 보내기
 		},
 		success:function(data){
 			if(data==1){console.log('메세지 전달 완료')}
-			
-			let myText = document.createElement('div');
-			myText.classList.add('messageBox', 'myMessageBox');
-			
-			let myMessage = document.createElement('p');
-			myMessage.classList.add('message', 'send');
-			
-			myMessage.innerHTML = msg.value;
 			msg.value = null;
-		
-			myText.appendChild(myMessage);
-			messageBox.appendChild(myText);
-			
-			scrollCheck(true);
 		}
 	});
 }
@@ -465,23 +527,64 @@ function onMessage(msg) {
 		let str = data[i].split(":");
 		msgInfo.push(str);
 	}
-	
-	let reciveText = document.createElement('div');
-	reciveText.classList.add('messageBox', 'reciveMessageBox');
-	
-	let sendingMessage = document.createElement('p');
-	sendingMessage.classList.add('message', 'recive');
-	
-	sendingMessage.innerHTML = msgInfo[2][1];
-	
-	reciveText.appendChild(sendingMessage);
-	
+			
 	let nowPosition = messageBox.scrollTop;
 	let result = approximateCheck(nowPosition);
 	
-	messageBox.appendChild(reciveText);
+	insertMessage(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
 	
 	scrollCheck(result);
+}
+
+function insertMessage(sender, nick, msg, msgType){
+	if(sender==personalId){
+		let myText = document.createElement('div');
+		myText.classList.add('messageBox', 'myMessageBox');
+		myText.setAttribute('sender', sender);
+		
+		let myMessage;
+		if(msgType=='TEXT'){
+			myMessage = document.createElement('p');
+			myMessage.classList.add('message', 'send');
+			myMessage.innerHTML = msg;
+		}else if(msgType=='IMG'){
+			myMessage = document.createElement('img');
+			myMessage.classList.add('chattingImage');
+			myMessage.setAttribute('src', "ChattingImage?c_id="+chatRoomId+"&fileName="+msg);
+		}
+	
+		myText.appendChild(myMessage);
+		messageBox.appendChild(myText);
+		
+		scrollCheck(true);
+	}else{
+		let reciveText = document.createElement('div');
+		reciveText.classList.add('messageBox', 'reciveMessageBox');
+		reciveText.setAttribute('sender', sender);
+		
+		let nickPlace;
+		if(messageBox.innerHTML=='' || messageBox.innerHTML==null || (messageBox.innerHTML!='' && messageBox.innerHTML!=null && messageBox.lastChild.getAttribute('sender')!=sender)){
+			nickPlace = document.createElement('p');
+			nickPlace.classList.add('reciveMsgSender');
+			nickPlace.innerHTML = nick;
+
+			reciveText.appendChild(nickPlace);
+		}
+		
+		let sendingMessage;
+		if(msgType=='TEXT'){
+			sendingMessage = document.createElement('p');
+			sendingMessage.classList.add('message', 'recive');
+			sendingMessage.innerHTML = msg;
+		}else if(msgType=='IMG'){
+			sendingMessage = document.createElement('img');
+			sendingMessage.classList.add('chattingImage');
+			sendingMessage.setAttribute('src', "ChattingImage?c_id="+chatRoomId+"&fileName="+msg);
+		}
+		
+		reciveText.appendChild(sendingMessage);
+		messageBox.appendChild(reciveText);
+	}
 }
 
 function scrollCheck(result){ // 스크롤이 맨 아래에 있다면 새 메세지를 보내거나 받았을 때 스크롤을 아래로 고정, 맨 아래가 아니라면 위치 그대로에, 메세지 보내고, 팝업 띄우기

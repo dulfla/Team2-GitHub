@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>상품 수정 페이지</title>
+<title>그린 마켓</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" crossorigin="anonymous"></script> 
@@ -66,7 +66,7 @@
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
 		<div class=" text-center mt-5 ">
-	    <h1 >상품 수정</h1>                   
+		    <h1 >상품 수정</h1>                
 		</div>
 		<div class="row ">
 		    <div class="col-lg-7 mx-auto">
@@ -75,6 +75,8 @@
 		                <div class = "container">
 		                    <form action="productModify" id="contact-form" role="form" method="POST" autocomplete="off" enctype="multipart/form-data">
 		                        <input type="hidden" name="p_id" value="${product.p_id}">
+		                        <input type="hidden" id="lat" name="lat" value="${product.lat}">
+								<input type="hidden" id="lng" name="lng" value="${product.lng}">  
 		                        <div>
 		                            <span>판매상태</span>
 		                            <select class="trade" name="trade">
@@ -95,7 +97,7 @@
 		                                <div class="col-md-6">
 		                                    <div class="form-group">
 		                                        <label for="form_lastname">상품 가격</label>
-		                                        <input id="form_lastname" type="text" name="price" class="form-control" placeholder="가격을 입력해주세요 *" required data-error="가격은 필수입력입니다." value="${product.price}">
+		                                        <input id="form_lastname" type="text" name="price" class="form-control" placeholder="가격을 입력해주세요 *" oninput="checkPwd()" required value="${product.price}">
 		                                    </div>
 		                                </div>
 		                                <div class="col-md-6">
@@ -155,27 +157,44 @@
 	
 	
 	<script type="text/javascript">
+		var lat = $("#lat").val();
+		var lng = $("#lng").val();
+		
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		mapOption = { 
+			center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
+			level: 5 // 지도의 확대 레벨
+		};
 	
-	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    mapOption = { 
-        center: new kakao.maps.LatLng(37.267868108956456, 127.00053552238002), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
+		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+	
+		// 지도를 클릭한 위치에 표출할 마커입니다
+		var marker = new kakao.maps.Marker({ 
+			// 지도 중심좌표에 마커를 생성합니다 
+			position: map.getCenter() 
+		}); 
+		// 지도에 마커를 표시합니다
+		marker.setMap(map);
+	
+		// 지도에 클릭 이벤트를 등록합니다
+		// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+		kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
+			
+			// 클릭한 위도, 경도 정보를 가져옵니다 
+			var latlng = mouseEvent.latLng; 
+			
+			// 마커 위치를 클릭한 위치로 옮깁니다
+			marker.setPosition(latlng);
 
-	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-	
-	// 마커가 표시될 위치입니다 
-	var markerPosition  = new kakao.maps.LatLng(37.267868108956456, 127.00053552238002); 
-	
-	// 마커를 생성합니다
-	var marker = new kakao.maps.Marker({
-	    position: markerPosition
-	});
-	
-	// 마커가 지도 위에 표시되도록 설정합니다
-	marker.setMap(map);
-	
-	
+			var lat = latlng.getLat();
+			var lng = latlng.getLng();
+			
+			console.log('위도 : ' + lat);
+			console.log('경도 : ' + lng);
+			
+			$("#lat").val(lat);
+			$("#lng").val(lng);
+		});
 	/* ============================================================= */
 	
 	
@@ -193,11 +212,6 @@
 		let fileList = fileInput[0].files;
 		let fileObj = fileList[0];
 		
-		/*
-		if(!fileCheck(fileObj.name, fileObj.size)){
-			return false;
-		} 
-		*/
 		// 사용자가 선택한 파일을 FormData에 "uploadFile"이란 이름(key)으로 추가해주는 코드
 		for(let i = 0; i < fileList.length; i++){
 			formData.append("uploadFile", fileList[i]);
@@ -220,7 +234,7 @@
 	});
 	
 	let regex = new RegExp("(.*?)\.(jpg|png)$");
-	let maxSize = 1048576; //1MB	
+	let maxSize = 10485760; //10MB	
 	
 	function fileCheck(fileName, fileSize){
 
@@ -283,16 +297,12 @@
 				  
 				 	if(arr.length === 0){	
 					  
-				 		
-				 		
 						let str = "";
 						
 						str += "<div id='result_card'>";
 						str += "<img src='./resources/img/noImage.png'>";
 						str += "</div>";
-							
-						//uploadResult.html(str);
-						//$("#uploadResult").append(str);
+
 						$("#uploadResult").html(str);
 						return;
 					} 
@@ -310,7 +320,7 @@
 					str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
 					str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";
 					str += "</div>";		
-					//uploadResult.html(str);
+
 					$("#uploadResult").html(str);
 			  });		
 		  });
@@ -319,6 +329,23 @@
 		$("#back_Btn").click(function(){
 			history.back();	// 뒤로가기
 		});
+		
+		function checkPwd() {
+			var objEv = event.srcElement;
+			var numPattern = /([^0-9])/;
+			var numPattern = objEv.value.match(numPattern);
+			if (numPattern != null) {
+				/* alert('숫자만 입력해주세요'),  */
+				Swal.fire({
+				      icon: 'error',
+				      title: '상품 가격은 숫자만 입력해주세요',
+				      text: '',
+				});
+				objEv.value = "";
+				objEv.focus();
+				return false;
+			}
+		}
 	</script>
 </body>
 </html>

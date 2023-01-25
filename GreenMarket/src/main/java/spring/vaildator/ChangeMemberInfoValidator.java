@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import spring.vo.ChangeMemberInfoCommand;
+import spring.vo.member.ChangeMemberInfoCommand;
 
 public class ChangeMemberInfoValidator implements Validator{
 	

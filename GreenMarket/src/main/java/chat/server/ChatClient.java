@@ -16,6 +16,7 @@ public class ChatClient {
 	private Socket socket;
 	private DataInputStream dis;
 	private DataOutputStream dos;
+	private String clientNickname;
 	private String chatName;
 	private String chatRoom;
 	private SocketServer ss;
@@ -42,6 +43,12 @@ public class ChatClient {
 	}
 	public void setCws(ChattingWebSocket cws) {
 		this.cws = cws;
+	}
+	public String getClientNickname() {
+		return clientNickname;
+	}
+	public void setClientNickname(String clientNickname) {
+		this.clientNickname = clientNickname;
 	}
 	public String getChatName() {
 		return chatName;

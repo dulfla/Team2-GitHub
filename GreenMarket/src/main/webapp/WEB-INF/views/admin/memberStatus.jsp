@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원 현황</title>
+<title>그린 마켓</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
@@ -51,37 +51,46 @@
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
- 	<div id="container" class="container">
-	    <div class="position-relative chart-container">
-	        <canvas id="memberAdminByYear"></canvas>
-	    </div>
-	    <div class="position-relative chart-container">
-	        <canvas id="withdrawByYear"></canvas>
-	    </div>
-	    <div class="position-relative chart-container">
-	    	<select class="form-select text-center position-absolute top-0 end-0 m-3" id="selectYear_memberAdminByMonth" style="width:15%">
-	    		<option value="default">==선택==</option>
-	    		<c:forEach items="${memberAdmin['memberAdmin'][0]['countByYear'][0]['years']}" var="year" varStatus="c">
-		    		<option value="${c.index}">${year}</option>
-	    		</c:forEach>
-	    	</select>
-	        <canvas id="memberAdminByMonth"></canvas>
-		</div>
+ 	<div id="container" class="container position-relative">
+ 		<div class="position-relative row align-items-center">
+ 			<div class="chart-container col-xl-8">
+		        <canvas id="realTimeMemberAdmin"></canvas>
+		    </div>
+		    <div class="chart-container col-xl-4">
+		        <canvas id="memberAdminByYear"></canvas>
+		    </div>
+ 		</div>
+ 		<div class="position-relative row  align-items-center">
+		    <div class="chart-container col-xl-4">
+		        <canvas id="withdrawByYear"></canvas>
+		    </div>
+		    <div class="chart-container col-xl-8 position-relative">
+		    	<select class="form-select text-center position-absolute top-0 end-0 m-3" id="selectYear_memberAdminByMonth" style="width:15%">
+		    		<option value="default">==선택==</option>
+		    		<c:forEach items="${memberAdmin['memberAdmin'][0]['countByYear'][0]['years']}" var="year" varStatus="c">
+			    		<option value="${c.index}">${year}</option>
+		    		</c:forEach>
+		    	</select>
+		        <canvas id="memberAdminByMonth"></canvas>
+			</div>
+ 		</div>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	<script>
 		const json = ${memberAdmin};
-		console.log(json)
 				
 		let memberAdminByYearCet = document.getElementById('memberAdminByYear').getContext('2d');
 		let memberAdminByYear = new Chart(memberAdminByYearCet, {
-	        type: 'line',
-	        data: {
+			type: 'bar',
+			data:{
 	            labels: json["memberAdmin"][0]["countByYear"][0]["years"],
 	            datasets: [
 	                {
 	                    label: '누적 회원수',
+	                    yAxisID: 'total',
+	                    type: 'line',
 	                    fill: false,
+	                    tension: 1,
 	                    data: json["memberAdmin"][0]["countByYear"][2]["data"][0],
 	                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
 	                    borderColor: 'rgba(255, 99, 132, 1)',
@@ -89,7 +98,8 @@
 	                },
 	                {
 	                    label: '년도별 신규 가입자',
-	                    fill: false,
+	                    yAxisID: 'year',
+	                    type: 'bar',
 	                    data: json["memberAdmin"][0]["countByYear"][2]["data"][1],
 	                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
 	                    borderColor: 'rgba(54, 162, 235, 1)',
@@ -97,23 +107,44 @@
 	                },
 	                {
 	                    label: '년도별 탈퇴자',
-	                    fill: false,
+	                    yAxisID: 'year',
+	                    type: 'bar',
 	                    data: json["memberAdmin"][0]["countByYear"][2]["data"][2],
-	                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
-	                    borderColor: 'rgba(255, 159, 64, 1)',
+	                    backgroundColor: 'rgba(122, 245, 212, 0.2)',
+	                    borderColor: 'rgba(122, 245, 212, 1)',
 	                    borderWidth: 1
 	                }
 	            ]
-	        },
+			},
 	        options: {
 	        	scales: {
-	                yAxes: [
-	                    {
-	                        ticks: {
-	                            beginAtZero: true
-	                        }
+	                yAxes: [{
+	                	id: 'total',
+	                    title: {
+   							display: true,
+   							text: '누적 회원수'
+   	                    },
+	                    type: 'linear',
+	                    position: 'left',
+	                    ticks: {
+	                      fontColor: '#ffbaa2'
+	                    },
+	                    afterDataLimits: (scale) => {
+	                        scale.max = scale.max * 1.05;
+	                    }},{
+   	                	id: 'year',
+   	                    title: {
+   							display: true,
+   							text: '년도별 가입/탈퇴 수'
+   	                    },
+   	                    position: 'right',
+   	                 	ticks: {
+		                    fontColor: '#7aabf5'
+	                    },
+	                    afterDataLimits: (scale) => {
+	                        scale.max = scale.max * 1.05;
 	                    }
-	                ]
+                   }]
 	            },
 	        	responsive: true,
 	        	legend: {
@@ -198,13 +229,14 @@
 	        },
 	        options: {
 	        	scales: {
-	                yAxes: [
-	                    {
-	                        ticks: {
-	                            beginAtZero: true
-	                        }
+	                yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        afterDataLimits: (scale) => {
+	                        scale.max = scale.max * 1.05;
 	                    }
-	                ]
+                    }]
 	            },
 	        	responsive: true,
 	        	legend: {

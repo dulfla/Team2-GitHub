@@ -5,11 +5,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Collection;
 
 import org.json.JSONObject;
 
-import spring.service.ChatService;
-import spring.vo.ChatMessageVo;
+import spring.service.chat.ChatService;
+import spring.vo.chat.ChatMessageVo;
 
 public class SocketClient {
 
@@ -20,6 +21,7 @@ public class SocketClient {
 	private String clientIp;
 	private String chatName;
 	private String chatRoom;
+	private String clientNickname;
 	
 	private ChatService cs;
 
@@ -51,18 +53,19 @@ public class SocketClient {
 					
 					switch(command) {
 					case "incoming":
+						this.clientNickname = jsonObject.getString("name");
 						this.chatName = jsonObject.getString("who");
 						this.chatRoom = jsonObject.getString("room");
 						
-						ChatMessageVo message = new ChatMessageVo();
-						message.setMessage("들어오셨습니다.");
-						message.setMessType("TEXT");
+//						ChatMessageVo message = new ChatMessageVo();
+//						message.setMessage("들어오셨습니다.");
+//						message.setMessType("TEXT");
 						chatServer.addSocketClient(this);
-						try {
-							chatServer.sendToAll(this, message);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+//						try {
+//							chatServer.sendToAll(this, message);
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
 						break;
 					case "message":
 						long idx = jsonObject.getLong("msgIdx");
@@ -76,13 +79,13 @@ public class SocketClient {
 				}
 			}catch (IOException e) {
 				ChatMessageVo message = new ChatMessageVo();
-				message.setMessage("나가셨습니다.");
-				message.setMessType("TEXT");
-				try {
-					chatServer.sendToAll(this, message);
-				} catch (Exception ee) {
-					ee.printStackTrace();
-				}
+//				message.setMessage("나가셨습니다.");
+//				message.setMessType("TEXT");
+//				try {
+//					chatServer.sendToAll(this, message);
+//				} catch (Exception ee) {
+//					ee.printStackTrace();
+//				}
 				chatServer.removeSocketClient(this);
 			}
 		});
@@ -105,7 +108,6 @@ public class SocketClient {
 		}
 	}
 
-
 	public String getClientIp() {
 		return clientIp;
 	}
@@ -120,6 +122,12 @@ public class SocketClient {
 	}
 	public void setChatRoom(String chatRoom) {
 		this.chatRoom = chatRoom;
+	}
+	public String getClientNickname() {
+		return clientNickname;
+	}
+	public void setClientNickname(String clientNickname) {
+		this.clientNickname = clientNickname;
 	}
 	public void setCs(ChatService cs) {
 		this.cs = cs;

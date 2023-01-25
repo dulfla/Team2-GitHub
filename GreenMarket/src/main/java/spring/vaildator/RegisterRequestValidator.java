@@ -7,7 +7,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import spring.vo.RegisterRequest;
+import spring.vo.member.RegisterRequest;
 
 public class RegisterRequestValidator implements Validator{
 	

@@ -31,6 +31,15 @@ a{
 	position: absolute;
 	top:130px;
 }
+#messagesBox{ /* 주고받은 메세지들이 담길 공간 */
+	height:calc(100% - 180px);
+	width:100%;
+	position: absolute;
+	top:130px;
+}
+#message{ /* input-group을 묶는 상위 container */
+	height:50px;
+}
 #message{ /* input-group을 묶는 상위 container */
 	height:50px;
 }
@@ -77,3 +86,10 @@ a{
 	height:32px;
 }
 
+#chatPdPic{
+	width:130px;
+	height:130px;
+}
+.chattingImage{
+	width:100%;
+}

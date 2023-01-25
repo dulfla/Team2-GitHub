@@ -13,10 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import spring.dao.AdminDao;
-import spring.vo.CountByCategory;
-import spring.vo.CountByMonthVo;
-import spring.vo.CountByYearVo;
+import spring.dao.admin.AdminDao;
+import spring.vo.admin.CountByCategory;
+import spring.vo.admin.CountByMonthVo;
+import spring.vo.admin.CountByYearVo;
 
 @Component
 @Service
@@ -212,14 +212,14 @@ public class AdminJsonParsing {
 	private Map<String, Object> getProductAdminData() {
 		Map<String, Object> admin = new HashMap();
 		
-		long totalP = dao.countAllTypeProduct("IN   ");
+		long totalP = dao.countAllTypeProduct("IN");
 		long totalTradeP = dao.countAllTypeProduct("TRADE");
 		long totalNoTrdRemoveP = dao.countBfTradeRemovedProduct();
 		long[] productAdminType = {(totalP-totalTradeP-totalNoTrdRemoveP), totalTradeP, totalNoTrdRemoveP};
 		
 		List<String> categorys = dao.selectAllCategorys();
 		
-		List<CountByCategory> inProd = dao.countAllTypeProductByCategory("IN   ");
+		List<CountByCategory> inProd = dao.countAllTypeProductByCategory("IN");
 		List<CountByCategory> tradeProd = dao.countAllTypeProductByCategory("TRADE");
 		List<CountByCategory> outProd = dao.countBfTradeRemovedProductByCategory();
 		

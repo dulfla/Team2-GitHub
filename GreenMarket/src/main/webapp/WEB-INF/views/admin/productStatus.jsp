@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>중고 상품 현황</title>
+<title>그린 마켓</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
@@ -16,13 +16,18 @@
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
-	<div id="container">
-		<div class="chart-container" style="position: relative; height:40vh; width:80vw">
-	        <canvas id="productTrade"></canvas>
+	<div id="container" class="container position-relative">
+		<div class="chart-container">
+	        <canvas id="realTimeProductAdmin"></canvas>
 	    </div>
-	    <div class="chart-container" style="position: relative; height:40vh; width:80vw">
-	        <canvas id="productCategory"></canvas>
-	    </div>
+		<div class="position-relative row align-items-center">
+ 			<div class="chart-container col-xl-4">
+		        <canvas id="productTrade"></canvas>
+		    </div>
+		    <div class="chart-container col-xl-8">
+		        <canvas id="productCategory"></canvas>
+		    </div>
+ 		</div>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	<script>
@@ -90,8 +95,25 @@
 	            ]
 	        },
 	        options: {
+	        	scales: {
+	                yAxes: [{
+	                	id: 'total',
+	                    title: {
+   							display: true,
+   							text: '누적 회원수'
+   	                    },
+	                    type: 'linear',
+	                    position: 'left',
+	                    ticks: {
+	                      fontColor: '#ffbaa2'
+	                    },
+	                    afterDataLimits: (scale) => {
+	                        scale.max = scale.max * 1.05;
+	                    },
+   	                }]
+	            },
 	        	legend: {
-					position:'right'
+					position:'top'
 				},
 				title: {
 					display: true,

@@ -14,12 +14,11 @@ DROP TABLE chatParticipants CASCADE CONSTRAINTS;
 DROP TABLE memberHistory CASCADE CONSTRAINTS;
 DROP TABLE productHistory CASCADE CONSTRAINTS;
 
-DROP SEQUENCE ;
+-- DROP SEQUENCE ;
 DROP SEQUENCE memberTracking_seq;
-DROP SEQUENCE ;
 DROP SEQUENCE pid_seq;
 DROP SEQUENCE product_seq;
-DROP SEQUENCE picture_seq
+DROP SEQUENCE picture_seq;
 DROP SEQUENCE sampleMessage_seq;
 DROP SEQUENCE chatMessage_seq;
 DROP SEQUENCE productTracking_seq;
@@ -27,15 +26,14 @@ DROP SEQUENCE chatInfomation_seq;
 DROP SEQUENCE chatParticipants_seq;
 
 -- 시퀀스
-CREATE SEQUENCE ; -- member(micname) - 샘플데이터 5개
+CREATE SEQUENCE search_seq START WITH 4 NOCYCLE NOCACHE; -- search(idx) - 샘플데이터 3개
 CREATE SEQUENCE memberTracking_seq START WITH 1 NOCYCLE NOCACHE; -- memberHistory(idx)
-CREATE SEQUENCE ; -- search(idx) - 샘플데이터 3개
 CREATE SEQUENCE pid_seq START WITH 6 NOCYCLE NOCACHE; -- productDetail(p_id) - 샘플데이터 5개
 CREATE SEQUENCE product_seq START WITH 6 NOCYCLE NOCACHE; -- product(idx) - 샘플데이터 5개
 CREATE SEQUENCE picture_seq START WITH 1 NOCYCLE NOCACHE; -- productPic(idx)
 CREATE SEQUENCE productTracking_seq START WITH 1 NOCYCLE NOCACHE; -- productHistory(idx)
-CREATE SEQUENCE chatInfomation_seq START WITH 3 NOCACHE NOCYCLE; -- chatInfomation(c_id) - 샘플데이터 2개
-CREATE SEQUENCE chatParticipants_seq START WITH 3 NOCACHE NOCYCLE; -- chatParticipants(idx) - 샘플데이터 2개
+CREATE SEQUENCE chatInfomation_seq START WITH 4 NOCACHE NOCYCLE; -- chatInfomation(c_id) - 샘플데이터 3개
+CREATE SEQUENCE chatParticipants_seq START WITH 4 NOCACHE NOCYCLE; -- chatParticipants(idx) - 샘플데이터 3개
 CREATE SEQUENCE sampleMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(message)
 CREATE SEQUENCE chatMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(idx)
 
@@ -66,8 +64,8 @@ CREATE TABLE memberHistory(
 -- 검색어 테이블 -------------------------------------------------------------------------------------------------
 CREATE TABLE search(
     idx number,
-    search NVARCHAR2(20) NOT NULL,
-    email VARCHAR2(50) NOT NULL, 
+    keyword NVARCHAR2(20) NOT NULL,
+    email VARCHAR2(50), -- 회원이 아닌 사람도 검색 가능
     regdate date DEFAULT sysdate NOT NULL,
     
     CONSTRAINT PK_search_idx PRIMARY KEY(idx)
@@ -91,6 +89,8 @@ CREATE TABLE productDetail(
     views number DEFAULT 0 NOT NULL,
     price number NOT NULL,
     trade varchar2(5) DEFAULT 'TRADE' NOT NULL, -- 거래 중 : TRADE, 거래 완료 : CLEAR
+    lat varchar2(100),  --위도
+    lng varchar2(100),  --경도
     CONSTRAINT  productDetail_pk_p_id PRIMARY KEY(p_id)
 );
 
@@ -103,23 +103,23 @@ CREATE TABLE productPic(
 );
 
 CREATE TABLE category(
-    category NVARCHAR2(20) CONSTRAINT category_pk_category PRIMARY KEY
+    category NVARCHAR2(20) CONSTRAINT category_pk_category PRIMARY KEY,
+    icon NVARCHAR2(150) NOT NULL
 );
 
-INSERT INTO category VALUES('인기매물');
-INSERT INTO category VALUES('디지털 기기');
-INSERT INTO category VALUES('생활가전');
-INSERT INTO category VALUES('생활주방');
-INSERT INTO category VALUES('유아동');
-INSERT INTO category VALUES('의류');
-INSERT INTO category VALUES('잡화');
-INSERT INTO category VALUES('뷰티•미용');
-INSERT INTO category VALUES('취미•게임•음반');
-INSERT INTO category VALUES('도서');
-INSERT INTO category VALUES('중고차');
-INSERT INTO category VALUES('가공식품');
-INSERT INTO category VALUES('반려동물 물품');
-INSERT INTO category VALUES('기타 중고물품');
+INSERT INTO category VALUES('디지털 기기', '디지털 기기.png');
+INSERT INTO category VALUES('생활가전', '생활가전.png');
+INSERT INTO category VALUES('생활주방', '생활주방.png');
+INSERT INTO category VALUES('유아동', '유아동.png');
+INSERT INTO category VALUES('의류', '의류.png');
+INSERT INTO category VALUES('잡화', '잡화.png');
+INSERT INTO category VALUES('뷰티•미용', '뷰티•미용.png');
+INSERT INTO category VALUES('취미•게임•음반', '취미•게임•음반.png');
+INSERT INTO category VALUES('도서', '도서.png');
+INSERT INTO category VALUES('중고차', '중고차.png');
+INSERT INTO category VALUES('가공식품', '가공식품.png');
+INSERT INTO category VALUES('반려동물 물품', '반려동물 물품.png');
+INSERT INTO category VALUES('기타 중고물품', '기타 중고물품.png');
 
 CREATE TABLE productHistory(
     idx number CONSTRAINT productHistory_pk_idx PRIMARY key,
@@ -154,10 +154,6 @@ CREATE TABLE chatParticipants(
 );
 
 -- FORING KEY 작성-----------------------------------------------------------------------------------------------
-
--- 검색어 fk 추가
-ALTER TABLE search
-ADD CONSTRAINT fk_search_email FOREIGN KEY(email) REFERENCES member(email) ON DELETE CASCADE;
 
 -- 상품 fk 추가
 ALTER TABLE product
@@ -202,7 +198,7 @@ BEGIN
     END IF;
 END memberAdmin;
 
-CREATE OR REPLACE TRIGGER trackingProduct -- 바인딩 입력하라고 뜸.. 찾아 보기 - 뭔지 모르겠음...
+CREATE OR REPLACE TRIGGER trackingProduct
 BEFORE INSERT OR UPDATE OR DELETE
     ON productDetail
 FOR EACH ROW
@@ -216,14 +212,22 @@ BEGIN
             SET category = :NEW.category
             WHERE p_id=:OLD.p_id;
         END IF;
-        IF :NEW.trade<>:OLD.trade THEN
-            INSERT INTO productHistory
-            VALUES(productTracking_seq.NEXTVAL, :NEW.p_id, :NEW.category, :NEW.regdate, NEW:trade); -- sysdate 여야 함
-        END IF;
     ELSIF deleting THEN
         INSERT INTO productHistory
         VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :OLD.category, :OLD.regdate, 'OUT'); -- sysdate 여야 함
-    END if;
+    END IF;
+END;
+
+CREATE OR REPLACE TRIGGER trackingProductTrade
+BEFORE UPDATE ON productDetail
+FOR EACH ROW
+BEGIN
+    IF updating THEN
+        IF :NEW.trade<>'TRADE' OR :NEW.trade<>'trade' THEN
+            INSERT INTO productHistory
+            VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :NEW.category, :OLD.regdate, 'TRADE'); -- sysdate 여야 함
+        END IF;
+    END IF;
 END;
 
 
@@ -240,6 +244,8 @@ INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, p
 VALUES('pid4','츄르','츄르 2박스 입니다','반려동물 물품','2022/11/03',0,15000);
 INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
 VALUES('pid5','에어팟 맥스','에어팟 맥스 미개봉 상품입니다','디지털 기기','2022/12/25',115,600000);
+INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
+VALUES('pid7','에어팟','에어팟 맥스 미개봉 상품입니다','디지털 기기','2022/01/25',115,500000);
 
 -- 회원 상세
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
@@ -281,6 +287,8 @@ insert into product
 values(4, 'jeong@naver.com', 'pid4');
 insert into product
 values(5, 'choi@naver.com', 'pid5');
+insert into product
+values(6, 'pack@naver.com', 'pid7');
 
 -- 채팅
 INSERT INTO chatInfomation
@@ -289,6 +297,7 @@ INSERT INTO chatInfomation
 VALUES('chat2', 'pid3');
 INSERT INTO chatInfomation
 VALUES('chat3', 'pid2');
+
 INSERT INTO chatParticipants
 VALUES(1, 'chat1', 'choi@naver.com', '2020/11/12');
 INSERT INTO chatParticipants
@@ -388,6 +397,7 @@ EXECUTE withdraw_sampleDate;
 -- 테이블 확인 ---------------------------------------------------------------------------------------------------
 ROLLBACK;
 COMMIT;
+
 
 SELECT * FROM SEARCH;
 SELECT * FROM MEMBER;

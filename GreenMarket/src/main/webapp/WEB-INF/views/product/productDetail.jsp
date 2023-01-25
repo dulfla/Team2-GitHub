@@ -5,14 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>상품 페이지</title>
+<title>그린 마켓</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 
 <link rel="stylesheet" href="${path}resources/style/basicStryle.css">
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
 <style type="text/css">
@@ -35,6 +35,8 @@
 			<input type="hidden" name="email" value="${product.email}">
 			<input type="hidden" name="authEmail" value="${authInfo.email}">
 			<input type="hidden" name="nickname" value="${product.nickname}">
+			<input type="hidden" id="lat" name="lat" value="${product.lat}">
+			<input type="hidden" id="lng" name="lng" value="${product.lng}">
 
 			<div class="inputArea"> 
 			 <label>카테고리</label>
@@ -134,7 +136,7 @@
 				</button>
 				<input type="hidden" name="email" id="userEmail" value="${authInfo.email}">
 				<input type="hidden" name="p_id" id="productId" value="${product.p_id}">
-				<%@ include file="../include/chat.jsp" %>
+				<%@ include file="../include/chat/chat.jsp" %>
 			</c:otherwise>
 		</c:choose>
 	</div>
@@ -147,27 +149,32 @@
 	
 
 	/* =======-=-=-=-=-==============================================--========= */
+		var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
+		
+		//좌표 
+		var lat = $("#lat").val();
+		var lng = $("#lng").val();
+		console.log(lat);
+		console.log(lng);
+		
+	    mapOption = { 
+	        center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
+	        level: 3 // 지도의 확대 레벨
+	    };
 	
-	var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-	
-	
-    mapOption = { 
-        center: new kakao.maps.LatLng(37.267868108956456, 127.00053552238002), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };
-
-	var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-	
-	// 마커가 표시될 위치입니다 
-	var markerPosition  = new kakao.maps.LatLng(37.267868108956456, 127.00053552238002); 
-	
-	// 마커를 생성합니다
-	var marker = new kakao.maps.Marker({
-	    position: markerPosition
-	});
-	
-	// 마커가 지도 위에 표시되도록 설정합니다
-	marker.setMap(map);
+		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+		
+		
+		// 마커가 표시될 위치입니다 
+		var markerPosition  = new kakao.maps.LatLng(lat, lng); 
+		
+		// 마커를 생성합니다
+		var marker = new kakao.maps.Marker({
+		    position: markerPosition
+		});
+		
+		// 마커가 지도 위에 표시되도록 설정합니다
+		marker.setMap(map);
 	
 	
 	  var formObj = $("form[role='form']");

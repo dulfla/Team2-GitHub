@@ -8,7 +8,7 @@
 	<context:property-placeholder location="classpath:message/db.properties"/>
 
 	<!-- 첫번째 빈 : 데이터소스(풀) -->
-	<bean id="dataSources" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+	<bean id="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
 		<property name="driver" value="${db.driver}"/>
 		<property name="url"  value="${db.jdbcUrl}"/>
 		<property name="username"  value="${db.user}"/>
@@ -17,7 +17,7 @@
         <property name="poolMaximumCheckoutTime" value="20000"/>
         <property name="poolTimeToWait" value="15000"/>
 	</bean>
-<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource"> 
+<!-- <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource"> 
     <constructor-arg ref="dataSources" /> 
     <property name="logFormatter"> 
         <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter"> 
@@ -25,7 +25,7 @@
             <property name="sqlPrefix" value="SQL : "/> 
         </bean> 
     </property> 
-</bean>
+</bean> -->
 	
 	<!-- 두번째 빈 : sqlSessionFactory -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -40,31 +40,31 @@
 		<constructor-arg index="0" ref="sqlSessionFactory"/>
 	</bean>	
 	
-	<bean id="adminDao" class="spring.dao.AdminDao">
+	<bean id="adminDao" class="spring.dao.admin.AdminDao">
 		<constructor-arg ref="sqlSession"/>
 	</bean>
 	
-	<bean id="chatDao" class="spring.dao.ChatDao">
+	<bean id="chatDao" class="spring.dao.chat.ChatDao">
 		<constructor-arg ref="sqlSession"/>
 	</bean>
 		
-	<bean id="memberDaoImpl" class="spring.dao.MemberDaoImpl">
+	<bean id="memberDaoImpl" class="spring.dao.product.ProductDaoImp">
 		<property name="sqlSession" ref="sqlSession" />
 	</bean>
 
-	<bean id="memberDao" class="spring.dao.MemberDao">
+	<bean id="memberDao" class="spring.dao.member.MemberDao">
 		<property name="sqlSession" ref="sqlSession"/>
 	</bean>
 	
-	<bean id="productListDAO" class="spring.dao.ProductListDAO">
+	<bean id="productListDAO" class="spring.dao.product.ProductListDAO">
 		<constructor-arg name="sqlSession" ref="sqlSession" /> <!-- 생성자 일때 콘스트럭터 앍 -->
 	</bean>
 	
-	<bean id="memberProductListDAO" class="spring.dao.MemberProductListDAO">
+	<bean id="memberProductListDAO" class="spring.dao.product.MemberProductListDAO">
 		<constructor-arg name="sqlSession" ref="sqlSession" /> <!-- 생성자 일때 콘스트럭터 앍 -->
 	</bean>
 	
-	<bean id="searchDao" class="spring.dao.SearchDao">
+	<bean id="searchDao" class="spring.dao.search.SearchDao">
 		<property name="sqlSession" ref="sqlSession"/>
 	</bean>
 	
