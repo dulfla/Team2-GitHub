@@ -60,12 +60,7 @@
 			<input type="hidden" name="nickname" value="${product.nickname}">
 			<input type="hidden" id="lat" name="lat" value="${product.lat}">
 			<input type="hidden" id="lng" name="lng" value="${product.lng}">
-			<%-- 
-			<div class="inputArea"> 
-			 <label>카테고리</label>
-			 <span class="category">${product.category}</span>  	      
-			</div>
-			 --%>
+			
 			 <div class="breadcrumb" role="navigation" aria-label="Breadcrumbs">
 				 <div class="_cont">
 					<ol>
@@ -74,19 +69,28 @@
 					</ol>
 				</div>
 			</div>
-			<div class="inputArea">
-				<div id="uploadResult">	
+			<div class="row">
+				<div class="form-group">
+					<div id="uploadResult">	
+					</div>
 				</div>
 			</div>
-			
-			<div class="inputArea"> 
-			 <label>등록일</label>
-			 <span class="regdate">
-			 	<fmt:formatDate value="${product.regdate}" pattern="yyyy-MM-dd"/>
-			 </span>        
+			<div class="row">
+				<div class="col-md-6">	
+					<div class="form-group">
+						<div class="inputArea">
+							<span>${product.nickname}</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">	
+					<div class="form-group"> 
+						<span class="regdate">
+							<fmt:formatDate value="${product.regdate}" pattern="yyyy-MM-dd"/>
+						</span>        
+					</div>
+				</div>
 			</div>
-			
-			
 			<div class="inputArea"> 
 			 <label>조회수</label>
 			 <span class="views">${product.views}</span>        
@@ -96,21 +100,15 @@
 			 <label for="p_name">상품명</label>
 			 <span>${product.p_name}</span>
 			</div>
-		
- 			 <div class="inputArea">
-			 <label for="email">판매자</label>
-			 <span>${product.nickname}</span>
-			</div>  
-			 
 			<div class="inputArea">
 			 <label for="price">상품가격</label>
 			 <span><fmt:formatNumber value="${product.price}"  pattern="###,###,###"/>원</span>
 			</div>			
-			
 			<div class="inputArea">
 			 <label for="description">상품소개</label>
-			 <span>${product.description}</span>
+			 <span><pre>${product.description}</pre></span>
 			</div>
+   
         
             <div class="inputArea">
             	 <div class="inputArea_title">
