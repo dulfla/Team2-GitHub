@@ -140,12 +140,12 @@
 	<!-- 카테고리 수정하기 -->
 	<update id="updateCategory" parameterType="map">
 		UPDATE category
-		SET	category=#{newCategory}
-		WHERE category=#{oldCategory}
+		SET	category=#{data}
+		WHERE category=#{category}
 	</update>
 	
 	<!-- 카테고리 삭제하기 -->
-	<delete id="deleteCategory" parameterType="map">
+	<delete id="deleteCategory" parameterType="String">
 		DELETE category
 		WHERE category=#{oldCategory}
 	</delete>
@@ -153,8 +153,22 @@
 	<!-- 상품 상세정보에 있는 카테고리들 업데이트 -->
 		<update id="updateCategoryInProduct" parameterType="map">
 		UPDATE productDetail
-		SET	category=#{newCategory}
-		WHERE category=#{oldCategory}
+		SET	category=#{move}
+		WHERE category=#{category}
 	</update>
+
+	<!-- 카테고리 확인 -->
+	<select id="checkNewCategoryTitle" parameterType="String" resultType="int">
+		SELECT COUNT(category)
+		FROM category
+		WHERE category=#{c}
+	</select>
+
+	<!-- 기존 파일명 가져오기 -->
+	<select id="selectCategoryFileName" parameterType="String" resultType="String">
+		SELECT icon
+		FROM category
+		WHERE category=#{c}
+	</select>
 
 </mapper>

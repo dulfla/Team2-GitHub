@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import net.coobird.thumbnailator.Thumbnails;
 import spring.business.AdminJsonParsing;
 import spring.dao.AdminDao;
+import spring.vo.CategoryAdminVo;
 import spring.vo.CategoryVO;
 
 @Controller
@@ -123,8 +125,8 @@ public class AdminController {
 	@PostMapping("CategoryTitleModify")
 	public int categoryTitleModify(@RequestBody Map<String, String> map) {
 		System.out.println("카테고리 명칭 수정");
-		System.out.println("변경하려는 카테고리명 : "+map.get("category"));
-		System.out.println("새로운 카테고리명 : "+map.get("data"));
+		dao.updateCategory(map);
+		dao.updateProduct(map);
 		return 1;
 	}
 	
@@ -132,6 +134,81 @@ public class AdminController {
 	@PostMapping("CategoryIconModify{c}{fileType}")
 	public int categoryIconModify(MultipartFile file, String c, String fileType) {
 		System.out.println("카테고리 아이콘 수정");
+		
+		String uploadFolder = "C:\\upload";
+		File fileLocation = new File(uploadFolder, "category");
+		
+		if(fileLocation.exists() == false) {
+			fileLocation.mkdirs();
+		}
+		
+		String originFileName = dao.originFileName(c);
+		System.out.println("originFileName : "+originFileName);
+		String originFile = "C:\\upload\\category";
+		File fileObj = new File(originFile, originFileName);
+		if(fileObj.exists()) {
+		    fileObj.delete();
+		}
+		
+		String fileName = c+"."+fileType;
+		File saveFile = new File(fileLocation, fileName);
+		
+		try {
+			file.transferTo(saveFile);
+			
+			File thumbnailFile = new File(fileLocation, fileName);
+			
+			BufferedImage bo_image = ImageIO.read(saveFile);
+
+			double ratio = 3;
+			int width = (int) (bo_image.getWidth() / ratio);
+			int height = (int) (bo_image.getHeight() / ratio);					
+		
+			Thumbnails.of(saveFile).size(width, height).toFile(thumbnailFile);
+			
+			CategoryAdminVo cvo = new CategoryAdminVo();
+			cvo.setCategory(c);
+			cvo.setIcon(fileName);
+			dao.updateIcon(cvo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 2;
+		}
+		return 1;
+	}
+	
+	@ResponseBody
+	@PostMapping("CheckCategoryTitle")
+	public boolean newCategoryTitleChecking(@RequestBody Map<String, String> map) {
+		System.out.println("새 카테고리 명칭 확인");
+		int result = dao.checkNewCategoryTitle(map.get("newC"));
+		System.out.println(result);
+		if(0<result) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping("CategoryImage{fileName}")
+	public ResponseEntity<byte[]> getFile(String fileName){
+		ResponseEntity<byte[]> img = null;
+		File file = new File("c:\\upload\\category\\"+fileName);
+		try {
+			HttpHeaders header = new HttpHeaders();
+			header.add("Content-type", Files.probeContentType(file.toPath()));
+			img = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		return img;
+	}
+	
+	@ResponseBody
+	@PostMapping("CategoryRegister{c}{fileType}")
+	public int categoryRegister(MultipartFile file, String c, String fileType) {
+		System.out.println("카테고리 등록");
 		
 		String uploadFolder = "C:\\upload";
 		File fileLocation = new File(uploadFolder, "category");
@@ -156,35 +233,15 @@ public class AdminController {
 		
 			Thumbnails.of(saveFile).size(width, height).toFile(thumbnailFile);
 			
+			CategoryAdminVo cvo = new CategoryAdminVo();
+			cvo.setCategory(c);
+			cvo.setIcon(fileName);
+			dao.addNewCategory(cvo);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 2;
 		}
 		return 1;
-	}
-	
-	@ResponseBody
-	@PostMapping("CheckCategoryTitle")
-	public boolean newCategoryTitleChecking(@RequestBody Map<String, String> map) {
-		System.out.println("새 카테고리 명칭 확인");
-		System.out.println("기존 카테고리명 : "+map.get("oldC"));
-		System.out.println("확인하려는 카테고리명 : "+map.get("newC"));
-		return true;
-	}
-	
-	@ResponseBody
-	@RequestMapping("CategoryImage{fileName}")
-	public ResponseEntity<byte[]> getFile(String fileName){
-		ResponseEntity<byte[]> img = null;
-		File file = new File("c:\\upload\\category\\"+fileName);
-		try {
-			HttpHeaders header = new HttpHeaders();
-			header.add("Content-type", Files.probeContentType(file.toPath()));
-			img = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-		}catch (IOException e) {
-			e.printStackTrace();
-		}
-		return img;
 	}
 	
 	@ResponseBody

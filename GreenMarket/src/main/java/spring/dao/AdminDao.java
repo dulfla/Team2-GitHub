@@ -1,9 +1,11 @@
 package spring.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 
+import spring.vo.CategoryAdminVo;
 import spring.vo.CategoryVO;
 import spring.vo.CountByCategory;
 import spring.vo.CountByMonthVo;
@@ -55,5 +57,28 @@ public class AdminDao {
 	public List<CategoryVO> getAllCategory() {
 		return sqlSession.selectList("mybatis.mapper.admin.selectAllCategorys");
 	}
-	
+
+	public String originFileName(String c) {
+		return sqlSession.selectOne("mybatis.mapper.admin.selectCategoryFileName", c);
+	}
+
+	public void updateIcon(CategoryAdminVo cvo) {
+		sqlSession.selectOne("mybatis.mapper.admin.updateCategoryIcon", cvo);
+	}
+
+	public int checkNewCategoryTitle(String c) {
+		return sqlSession.selectOne("mybatis.mapper.admin.checkNewCategoryTitle", c);
+	}
+
+	public void updateCategory(Map<String, String> map) {
+		sqlSession.selectOne("mybatis.mapper.admin.updateCategory", map);
+	}
+
+	public void updateProduct(Map<String, String> map) {
+		sqlSession.selectOne("mybatis.mapper.admin.updateCategoryInProduct", map);
+	}
+
+	public void addNewCategory(CategoryAdminVo cvo) {
+		sqlSession.selectOne("mybatis.mapper.admin.insertNewCategory", cvo);
+	}
 }
