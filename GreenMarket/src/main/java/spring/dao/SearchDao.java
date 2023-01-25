@@ -98,6 +98,7 @@ public class SearchDao {
 
 	public List<ProductListVO> searchAllViewsLevel(String search) {
 		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.viewsLevel", search);
+		
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i).getFileName() == null);
 			if (list.get(i).getFileName() == null) {
@@ -143,6 +144,7 @@ public class SearchDao {
 		map.put("category", c);
 		
 		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.cateBrandNew",map);
+		
 		for(int i=0;i<list.size();i++) {
 			if(list.get(i).getFileName()==null) {
 				list.get(i).setImgurl(null);
@@ -183,6 +185,7 @@ public class SearchDao {
 		map.put("category", c);
 		
 		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.catePriceLow",map);
+		
 		for(int i=0;i<list.size();i++) {
 			if(list.get(i).getFileName()==null) {
 				list.get(i).setImgurl(null);
@@ -203,6 +206,7 @@ public class SearchDao {
 		map.put("category", c);
 		
 		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.cateViewsLevel",map);
+		
 		for(int i=0;i<list.size();i++) {
 			if(list.get(i).getFileName()==null) {
 				list.get(i).setImgurl(null);
@@ -216,10 +220,19 @@ public class SearchDao {
 		return list;
 	}
 
-
+	// 전체 검색건수
 	public int numberOfSearches(String search) {
 		return sqlSession.selectOne("mybatis.mapper.search.numberOfSearches",search);
 		
+	}
+
+	// 카테고리 별 검색건수
+	public int cateNumberOfSearches(String c, String search) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("search", search);
+		map.put("category", c);
+		
+		return sqlSession.selectOne("mybatis.mapper.search.cateNumberOfSearches",map);
 	}
 	
 	

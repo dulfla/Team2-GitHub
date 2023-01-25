@@ -189,7 +189,7 @@ main button {
 	<main>
 		<div class="container2" id="container2">
 		<div class="form-container log-in-container">
-			<form class="form" action="postLogin" method="post" name="frm">
+			<form class="form" action="postLogin" method="post" id="login_form" name="frm">
 			<form:errors />
 				<h1>로그인</h1>
 				<div class="social-container">
@@ -200,7 +200,7 @@ main button {
 				<input class="input" type="email"	name="email" id="email"  placeholder="이메일" /> 
 				<input class="input" type="password" name="password" id="password" placeholder="비밀번호" /> 
 				<a href="findPassword">비밀번호 찾기</a>
-				<button type="button" onclick="return loginCheck()">Log In</button>
+				<button type="button" id="loginBtn" onclick="return loginCheck()">Log In</button>
 			</form>	
 		</div>
 		<div class="overlay-container">
@@ -215,6 +215,13 @@ main button {
 	</div>
 	</main>
 </body>
+<script type="text/javascript">
+	$('#login_form').on('keypress', function(e){ 
+	    if(e.keyCode == '13'){ 
+	        $('#loginBtn').click(); 
+	    }
+	}); 
+</script>
 <script type="text/javascript" defer="defer" src="${path}resources/script/member/login.js"></script>
 <jsp:include page="../include/footer.jsp"/>
 </html>

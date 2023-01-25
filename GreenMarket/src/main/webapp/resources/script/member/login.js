@@ -1,3 +1,12 @@
+function enterkey() {
+	if (window.event.keyCode == 13) {
+    	// 엔터키가 눌렸을 때
+    	console.log('테스트중');
+    	alert('테스트');
+    }
+}
+
+
 function loginCheck(){
 	if(document.frm.email.value.length == 0){
 		 Swal.fire({

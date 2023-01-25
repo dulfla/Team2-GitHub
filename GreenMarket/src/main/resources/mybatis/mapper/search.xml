@@ -84,4 +84,11 @@
 	    WHERE p_name like '%'||#{search}||'%'
 	</select>
 	
+	<select id="cateNumberOfSearches" parameterType="hashmap" resultType="int">
+		SELECT  count (*)
+		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+		WHERE category = #{category} and p_name like '%'||#{search}||'%'  
+		
+	</select>
+	
 </mapper>

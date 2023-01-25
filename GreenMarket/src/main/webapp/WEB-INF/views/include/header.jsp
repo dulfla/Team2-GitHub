@@ -117,13 +117,10 @@
 <script type="text/javascript">
 	const searchEl = document.querySelector('.search');
 	const searchInputEl = searchEl.querySelector('input[type=search]');
-	let search =  $('#search').val();
 	
 	searchEl.addEventListener('click',function(){
 	  searchInputEl.focus();
 	});
-	
-	
 	
 	searchInputEl.addEventListener('focus',function(){
 	  searchEl.classList.add('focused');

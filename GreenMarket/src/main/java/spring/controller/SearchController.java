@@ -37,7 +37,7 @@ public class SearchController {
 		
 		
 		if(!c.equals("all")) { // 특정 카테고리를 지정했을 때
-			int count = searchDao.numberOfSearches(search);
+			int count = searchDao. cateNumberOfSearches(c,search);
 			
 			if(v.equals("product")) {
 				list = searchDao.selectByCategorySearch(c,search); // 전체상품 조회  // DAO에서 return한 데이터 (productList에 담김)
