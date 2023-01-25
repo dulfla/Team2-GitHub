@@ -10,35 +10,35 @@
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
 			FROM productDetail pd left outer join product p on pd.p_id = p.p_id
 		        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-			WHERE p_name like '%'||#{search}||'%'
+			WHERE UPPER(p_name) like UPPER('%'||#{search}||'%')
 	</select>
 	
 	<select id="brandNew" parameterType="String"  resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
 		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
 	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE p_name like '%'||#{search}||'%'ORDER BY regdate DESC
+		WHERE UPPER(p_name) like UPPER('%'||#{search}||'%') ORDER BY regdate DESC
 	</select>
 	
 	<select id="viewsLevel" parameterType="String"  resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
 		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
 	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE p_name like '%'||#{search}||'%' ORDER BY views DESC
+		WHERE UPPER(p_name) like UPPER('%'||#{search}||'%') ORDER BY views DESC
 	</select>
 	
 		<select id="priceHigh" parameterType="String"  resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
 		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
 	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE p_name like '%'||#{search}||'%' ORDER BY price DESC
+		WHERE UPPER(p_name) like UPPER('%'||#{search}||'%') ORDER BY price DESC
 	</select>
 	
 	<select id="priceLow" parameterType="String"  resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
 		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
 	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE p_name like '%'||#{search}||'%' ORDER BY price ASC
+		WHERE UPPER(p_name) like UPPER('%'||#{search}||'%') ORDER BY price ASC
 	</select>
 	
 	<!-- 카테고리 -->
@@ -47,47 +47,52 @@
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
 		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
 	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE category = #{category}  and  p_name like '%'||#{search}||'%'
+		WHERE category = #{category}  and  UPPER(p_name) like UPPER('%'||#{search}||'%')
 	</select>
 	
 	<select id="cateBrandNew" parameterType="hashmap" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
 		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
 	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE category = #{category} and  p_name like '%'||#{search}||'%' ORDER BY regdate DESC 
+		WHERE category = #{category} and  UPPER(p_name) like UPPER('%'||#{search}||'%') ORDER BY regdate DESC 
 	</select>
 	
 	<select id="catePriceLow" parameterType="hashmap" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
 		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
 	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE category = #{category} and  p_name like '%'||#{search}||'%' ORDER BY price ASC 
+		WHERE category = #{category} and  UPPER(p_name) like UPPER('%'||#{search}||'%') ORDER BY price ASC 
 	</select>
 	
 	<select id="catePriceHigh" parameterType="hashmap" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
 		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
 	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE category = #{category} and  p_name like '%'||#{search}||'%' ORDER BY price DESC  
+		WHERE category = #{category} and  UPPER(p_name) like UPPER('%'||#{search}||'%') ORDER BY price DESC  
 	</select>
+	
 	
 	<select id="cateViewsLevel" parameterType="hashmap" resultType="pListVO">
 		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
 		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
 	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE category = #{category} and  p_name like '%'||#{search}||'%' ORDER BY views DESC 
+		WHERE category = #{category} and UPPER(p_name) like UPPER('%'||#{search}||'%') ORDER BY views DESC 
 	</select>
 	
+	<!-- 검색건수 -->
 	<select id="numberOfSearches" parameterType="String" resultType="int">
 	 	select count(*)
 	    from productDetail
-	    WHERE p_name like '%'||#{search}||'%'
+	    WHERE UPPER(p_name) like UPPER('%'||#{search}||'%')
+		<!-- WHERE p_name like INITCAP ('%'||#{search}||'%') -->
 	</select>
 	
+	
+	<!-- 카테고리 검색건수 -->
 	<select id="cateNumberOfSearches" parameterType="hashmap" resultType="int">
 		SELECT  count (*)
 		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-		WHERE category = #{category} and p_name like '%'||#{search}||'%'  
+		WHERE category = #{category} and UPPER(p_name) like UPPER('%'||#{search}||'%')
 		
 	</select>
 	

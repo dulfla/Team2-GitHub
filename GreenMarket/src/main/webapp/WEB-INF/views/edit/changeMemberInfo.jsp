@@ -51,14 +51,6 @@
 							</tr>
 
 							<tr>
-								<td>이메일</td>
-								<td><input type="email" value="${member.email}"
-									name="email" id="email" class="form-control"></td>
-								<td><button onclick="updateEmail()" class="btn btn-primary">수정</button>
-								</td>
-							</tr>
-
-							<tr>
 								<td>닉네임</td>
 								<td><input type="text" value="${member.nickname}"
 									name="nickname" id="nickname" class="form-control"></td>

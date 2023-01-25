@@ -35,6 +35,7 @@ public class SearchController {
 		
 		List<ProductListVO> list = null;
 		
+		System.out.println("테스트 키워드 : "+search);
 		
 		if(!c.equals("all")) { // 특정 카테고리를 지정했을 때
 			int count = searchDao. cateNumberOfSearches(c,search);
@@ -54,7 +55,6 @@ public class SearchController {
 			
 		}else { // 특정 카테고리 지정 없이 전체 상품을 불러 올 때
 			int count = searchDao.numberOfSearches(search);
-			
 			if(v.equals("product")) {
 				list = searchDao.searchAll(search); // 전체상품 조회  // DAO에서 return한 데이터 (productList에 담김)
 			}else if(v.equals("brandNew")){
