@@ -517,7 +517,39 @@
 		}
 		
 		function categoryDelete() {
-			alert('카테고리 삭제'); /*****/
+			/********/ /* 모달창으로 진짜 삭제할 건지 확인 받고나서 넘기기 */
+			let deleteCheck = false;
+			if(deleteCheck){
+				
+				/* 모달 창으로 삭제하면 어떤 카테고리에 넣을 건지 물어보기 */
+				
+				let choosedCategory = document.activeElement.parentElement.parentElement.parentElement.getElementsByClassName('categoryName')[0].innerHTML;
+				
+				$.ajax({
+				 	url: 'CategoryDelete',
+				 	processData : false,
+				 	contentType : false,
+				 	data : JSON.stringify({
+						category: choosedCategory,
+			    	}),
+				 	type : 'POST',
+				 	dataType : 'json',
+				 	success : function(data){
+				 		if(data==1){
+				 			console.log('삭제 완료');
+				 			categoryReload();
+				 			document.getElementById('modalClose').click();
+				 		}else if(data==2){
+				 			console.log('삭제 요류');
+				 		}
+				 	},
+				 	error : function(data){
+				 		console.log(JSON.stringify(data));
+				 	}
+				});
+			}else{
+				
+			}
 		}
 		
 		function categoryReload(){

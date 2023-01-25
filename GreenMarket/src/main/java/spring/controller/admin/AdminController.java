@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,8 +127,26 @@ public class AdminController {
 	@PostMapping("CategoryTitleModify")
 	public int categoryTitleModify(@RequestBody Map<String, String> map) {
 		System.out.println("카테고리 명칭 수정");
+		
+		
+		String originFileName = dao.originFileName(map.get("category"));
+		String originFileType = originFileName.substring(originFileName.lastIndexOf(".")+1);
+		String newFileName = map.get("data")+"."+originFileType;
+		
+		Path file = Paths.get("C:\\upload\\category\\"+originFileName);
+        Path newFile = Paths.get("C:\\upload\\category\\"+newFileName);
+ 
+        try {
+            Path newFilePath = Files.move(file, newFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        map.put("icon", newFileName);
+        
 		dao.updateCategory(map);
 		dao.updateProduct(map);
+		
 		return 1;
 	}
 	
@@ -183,7 +203,7 @@ public class AdminController {
 		System.out.println("새 카테고리 명칭 확인");
 		int result = dao.checkNewCategoryTitle(map.get("newC"));
 		System.out.println(result);
-		if(0<result) {
+		if(0!=result) {
 			return false;
 		}else {
 			return true;

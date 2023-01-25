@@ -140,7 +140,7 @@
 	<!-- 카테고리 수정하기 -->
 	<update id="updateCategory" parameterType="map">
 		UPDATE category
-		SET	category=#{data}
+		SET	category=#{data}, icon=#{icon}
 		WHERE category=#{category}
 	</update>
 	
