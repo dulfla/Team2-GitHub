@@ -12,6 +12,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" crossorigin="anonymous"></script> 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <style type="text/css">
 	#result_card img{
 		max-width: 100%;
@@ -97,7 +99,7 @@
 		                                <div class="col-md-6">
 		                                    <div class="form-group">
 		                                        <label for="form_lastname">상품 가격</label>
-		                                        <input id="form_lastname" type="text" name="price" class="form-control" placeholder="가격을 입력해주세요 *" oninput="checkPwd()" required value="${product.price}">
+		                                        <input id="form_lastname" type="text" name="price" class="form-control" placeholder="가격을 입력해주세요 *" oninput="checkPwd()" required="required" value="${product.price}">
 		                                    </div>
 		                                </div>
 		                                <div class="col-md-6">
@@ -335,7 +337,6 @@
 			var numPattern = /([^0-9])/;
 			var numPattern = objEv.value.match(numPattern);
 			if (numPattern != null) {
-				/* alert('숫자만 입력해주세요'),  */
 				Swal.fire({
 				      icon: 'error',
 				      title: '상품 가격은 숫자만 입력해주세요',

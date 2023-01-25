@@ -2,6 +2,9 @@ package spring.controller.product;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Controller;
+
+@Controller
 public class ProductDateTimeAgo {
 	private static class TIME_MAXIMUM {
 		public static final int SEC = 60;

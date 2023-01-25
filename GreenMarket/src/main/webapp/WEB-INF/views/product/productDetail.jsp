@@ -18,17 +18,40 @@
 <style type="text/css">
 	#result_card img{
 		max-width: 100%;
-	    height: auto;
+	    height: 500px;
 	    display: block;
 	    padding: 5px;
 	    margin-top: 10px;
-	    margin: auto;	
+	    margin: auto;
+	}
+	.breadcrumb {
+    	margin-top: 15px
+	}
+	.breadcrumb li {
+	    display: inline-block
+	}
+	.breadcrumb a {
+	    color: #b5b6bd;
+	    display: inline-block;
+	    margin-right: 5px;
+	    padding-right: 14px;
+	    position: relative
+	}
+	.breadcrumb a:hover {
+	    color: #086fcf
+	}
+	.breadcrumb a:after {
+	    color: #b5b6bd;
+	    content: ">";
+	    position: absolute;
+	    right: 0
 	}
 </style>
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
+		<div class = "container">
 		<form role='form' method="POST">
 			<input type="hidden" name="type" value="${authInfo.type}">
 			<input type="hidden" name="p_id" value="${product.p_id}" >
@@ -37,10 +60,23 @@
 			<input type="hidden" name="nickname" value="${product.nickname}">
 			<input type="hidden" id="lat" name="lat" value="${product.lat}">
 			<input type="hidden" id="lng" name="lng" value="${product.lng}">
-
+			<%-- 
 			<div class="inputArea"> 
 			 <label>카테고리</label>
 			 <span class="category">${product.category}</span>  	      
+			</div>
+			 --%>
+			 <div class="breadcrumb" role="navigation" aria-label="Breadcrumbs">
+				 <div class="_cont">
+					<ol>
+						<li><a href="productList?c=${product.category}&v=product">${product.category}</a></li>
+						<li>${product.p_name}</li>
+					</ol>
+				</div>
+			</div>
+			<div class="inputArea">
+				<div id="uploadResult">	
+				</div>
 			</div>
 			
 			<div class="inputArea"> 
@@ -75,21 +111,12 @@
 			 <label for="description">상품소개</label>
 			 <span>${product.description}</span>
 			</div>
-			
-			<div class="inputArea">
-	            <div class="inputArea_title">
-		            <label>상품 이미지</label>
-		        </div>
-				<div id="uploadResult">
-					
-				</div>
-            </div>
-            
+        
             <div class="inputArea">
             	 <div class="inputArea_title">
 		            <label>직거래 위치</label>
 		        </div>
-            	<div id="map" style="width:350px;height:350px;"></div>
+            	<div id="map" style="max-width: 100%; height:500px;"></div>
             </div>
 			
 			<!-- 작성자,관리자 수정삭제버튼 -->
@@ -101,7 +128,7 @@
 			</form>
 		<c:choose>
 			<c:when test="${empty authInfo}">
-				<button id="chatBtn" class="btn btn-primary" type="button">채팅하기</button>
+				<button id="chatBtn" class="btn btn-primary" type="button">채팅하기</button>	
 				<script type="text/javascript">
 					window.onload = function(){
 						let btn = document.getElementById('chatBtn');
@@ -139,74 +166,66 @@
 				<%@ include file="../include/chat/chat.jsp" %>
 			</c:otherwise>
 		</c:choose>
+		</div>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script>
-	
-	
-	
-	
-
-	/* =======-=-=-=-=-==============================================--========= */
 		var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
-		
 		//좌표 
 		var lat = $("#lat").val();
 		var lng = $("#lng").val();
 		console.log(lat);
 		console.log(lng);
-		
-	    mapOption = { 
-	        center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
-	        level: 3 // 지도의 확대 레벨
-	    };
+	
+		mapOption = { 
+			center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
+			level: 3 // 지도의 확대 레벨
+		};
 	
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-		
-		
+	
+	
 		// 마커가 표시될 위치입니다 
 		var markerPosition  = new kakao.maps.LatLng(lat, lng); 
-		
+	
 		// 마커를 생성합니다
 		var marker = new kakao.maps.Marker({
-		    position: markerPosition
+			position: markerPosition
 		});
-		
+	
 		// 마커가 지도 위에 표시되도록 설정합니다
 		marker.setMap(map);
 	
 	
-	  var formObj = $("form[role='form']");
-	  
-	  $(document).ready(function(){
-		  /* 이미지 정보 호출 */
-		  let p_id = '<c:out value="${product.p_id}"/>';
-		  let uploadResult = $("uploadResult");
-		 
-		  
-		  $.getJSON("getImageList", {p_id : p_id}, function(arr){
-			  
-			 	console.log(arr);
-			 	if(arr.length === 0){	
-				  
-			 		
-			 		
+		var formObj = $("form[role='form']");
+	
+		$(document).ready(function(){
+			/* 이미지 정보 호출 */
+			let p_id = '<c:out value="${product.p_id}"/>';
+			let uploadResult = $("uploadResult");
+	
+	
+			$.getJSON("getImageList", {p_id : p_id}, function(arr){
+	
+				console.log(arr);
+				if(arr.length === 0){	
+	
 					let str = "";
-					
+	
 					str += "<div id='result_card'>";
-					str += "<img src='./resources/img/noImage.png'>";
+					str += "<img src='./resources/img/noImage.png' class='img-fluid'>";
 					str += "</div>";
-						
+	
 					//uploadResult.html(str);
 					//$("#uploadResult").append(str);
 					$("#uploadResult").html(str);
 					return;
 				} 
-			  
+	
 				let str = "";
 				let obj = arr[0];
-				
+	
 				let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
 				str += "<div id='result_card'";
 				str += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "'";
@@ -215,22 +234,44 @@
 				str += "</div>";		
 				//uploadResult.html(str);
 				$("#uploadResult").html(str);
-		  });		
-	  }); 
-	  $("#modify_Btn").click(function(){ 
-	   formObj.attr("action", "productModify");
-	   formObj.attr("method", "get")
-	   formObj.submit();
-	  });
-	  
-	  $("#delete_Btn").click(function(){   
-		var con = confirm("정말로 삭제하시겠습니까?");  
-		 
-		if(con){
-			formObj.attr("action", "productDelete");
-		   	formObj.submit();
-		}
-	  });
- 	</script>
+			});		
+		}); 
+		$("#modify_Btn").click(function(){ 
+			formObj.attr("action", "productModify");
+			formObj.attr("method", "get")
+			formObj.submit();
+		});
+	
+		$("#delete_Btn").click(function(){
+			Swal.fire({
+				title: '게시글을 삭제 하시겠습니까?',
+				text: '다시 되돌릴 수 없습니다. 신중하세요.',
+				icon: 'warning',
+	
+				showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+				confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+				cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+				confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+				cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+	
+				reverseButtons: true, // 버튼 순서 거꾸로
+	
+			}).then(result => {
+				// 만약 Promise리턴을 받으면,
+				if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
+	
+					Swal.fire({
+						title: '삭제가 완료되었습니다.',
+						icon: 'success',
+					}).then(result => {
+						if(result.isConfirmed){
+						formObj.attr("action", "productDelete");
+						formObj.submit();
+						}
+					})					
+				}
+			})		 
+		});
+	</script>
 </body>
 </html>

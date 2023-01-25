@@ -279,7 +279,6 @@ crossorigin="anonymous"></script>
 			var numPattern = /([^0-9])/;
 			var numPattern = objEv.value.match(numPattern);
 			if (numPattern != null) {
-				/* alert('숫자만 입력해주세요'),  */
 				Swal.fire({
 				      icon: 'error',
 				      title: '상품 가격은 숫자만 입력해주세요',

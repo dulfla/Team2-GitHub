@@ -27,7 +27,7 @@
 		values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
 	</insert>	
 
-	<!-- 리스트에서 상품 보기 클릭시 조회수 증가 -->
+	<!-- 조회수 증가 -->
 	<update id="modifyProductViews" parameterType="String">
 		update productDetail 
 		set views = views + TO_NUMBER(1)
@@ -59,12 +59,12 @@
 		
 	<update id="productModify" parameterType="ProductVO">
 		 update productDetail set p_name=#{p_name}
-		 , description=#{description}
-		 , category=#{category}
-		 , price=#{price}
-		 , trade=#{trade}
-		 , lat=#{lat}
-		 , lng=#{lng}
+			 , description=#{description}
+			 , category=#{category}
+			 , price=#{price}
+			 , trade=#{trade}
+			 , lat=#{lat}
+			 , lng=#{lng}
      	 where p_id = #{p_id}
 	</update>		
 	<insert id="modifyPic" parameterType="ProductImageVO">
@@ -72,8 +72,6 @@
 		values (#{p_id},#{fileName},#{uploadPath},#{uuid})
 	</insert>
 	
-	 
-	 <!-- 상품 삭제할때 상품상세정보를 마지막에 지워야함 -->
 	 <!-- 상품 삭제 -->
 	 <delete id="productDelete1">
 		delete product where p_id=#{p_id}
