@@ -41,7 +41,6 @@ public class RegisterController {
 		String result;
 		
 		if(errors.hasErrors()) {
-			// 에러 객체에 에러가 하나라도 검출이 되었다면
 			result = "0"; 
 		}
 		
@@ -64,11 +63,7 @@ public class RegisterController {
 	@ResponseBody
     @PostMapping(value="checkNickName",consumes="application/json")
     public int nickNameCheck(@RequestBody RegisterRequest regReq ) {
-		
-		
         int result = registerService.getNickNameMember(regReq.getNickname());
-        
-        
         return result;
     }
 	

@@ -56,7 +56,7 @@
 					
 					<div class="mb-3">
 						<label for="email">이메일</label> <input type="email" class="form-control" id="email"
-							name="email" readonly="readonly" value="${findPwdCmd.email}" required>
+							name="email" readonly="readonly" value="${findPwdCmd}" required>
 					</div>
 					
 					<div class="mb-3">
@@ -68,7 +68,7 @@
 							id="newPassword2" name="newPassword2" oninput="checkPwd()" required>
 						<div>
 							<span id="result_checkPwd" style="font-size: 14px;"></span>
-							<input type="hidden" id="result_checkPwd2" value="">
+							<input type="hidden" id="result_checkPwd2" oninput="checkPwd()" value="">
 						</div>
 					</div>
 
@@ -79,5 +79,100 @@
 		</div>
 	</div>
 </body>
+
+<script type="text/javascript">
+
+function changePasswordCheck(){
+	var email = $('#email').val();
+	var newPassword = $('#newPassword').val();
+	var newPassword2 = $('#newPassword2').val();
+
+	var jsonData = {
+		"email": email,	
+		"newPassword": newPassword,
+		"newPassword2": newPassword2
+	};
+	
+	function noValue(){
+		Swal.fire({
+		    icon: 'warning',
+		    title: '비밀번호를 입력해주세요.'
+
+	    })
+	}
+	
+	if(newPassword == null || newPassword == ''){
+		noValue();
+	}else if(newPassword2 == null || newPassword2 == ''){
+		noValue();
+		
+	}else{
+	
+		$.ajax({
+			type: "POST",
+			url: "changePassword",
+			data: JSON.stringify(jsonData),
+			dataType: 'json',
+			contentType: 'application/json;charset=UTF-8',
+			success: function (result) {
+				console.log(result);
+				if(result == 0){
+					 Swal.fire({
+						   icon: 'success',
+					       title: '수정이 완료되었습니다.'
+					   }).then(result => {
+						   
+						   if(result.isConfirmed){
+							   	document.location.href = "login";
+						   }
+					   })
+				}else{
+					Swal.fire({
+					    icon: 'error',
+					    title: '비밀번호가 일치하지 않습니다.'
+	
+				    })
+				}	
+				
+			}
+		});
+	}
+}
+
+function checkPwd() {
+	var newPassword = $('#newPassword').val();
+	var newPassword2 = $('#newPassword2').val();
+
+	var jsonData = {
+		"newPassword": newPassword,
+		"newPassword2": newPassword2
+	};
+
+	$.ajax({
+		type: "POST",
+		url: "updateConfirmPassword",
+		data: JSON.stringify(jsonData),
+		dataType: 'json',
+		contentType: 'application/json;charset=UTF-8',
+		success: function (result) {
+			if (result == 1) {
+				
+				if (newPassword2 == '') {
+					$("#result_checkPwd").html('');
+				} else {
+
+					$("#result_checkPwd").html('비밀번호가 일치합니다.').css("color", "green");
+				}
+			} else {
+ 
+				$("#result_checkPwd").html('비밀번호가 일치하지 않습니다.').css("color", "red");
+			}
+
+
+		}
+	});
+
+}
+</script>
 <jsp:include page="../include/footer.jsp"/>
 </html>

@@ -54,6 +54,7 @@
 <body>
 
 	<div class="container">
+	<form class="validation-form" novalidate="novalidate">	
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
 				<h4 class="mb-3">비밀번호 변경</h4>
@@ -71,15 +72,16 @@
 							id="newPassword2" name="newPassword2" oninput="checkPwd()" required>
 						<div>
 							<span id="result_checkPwd" style="font-size: 14px;"></span>
-							<input type="hidden" id="result_checkPwd2" value="">
+							<input type="hidden" id="result_checkPwd2" oninput="checkPwd()" value="">
 						</div>
 					</div>
 
 					<div class="mb-3">
-						<button class="btn btn-primary btn-lg btn-block button" type="button" onclick="changePasswordCheck()">변경하기</button>
+						<button class="btn btn-primary btn-lg btn-block button" id="button" type="button">변경하기</button>
 					</div>
+				</div>
 			</div>
-		</div>
+		</form>
 	</div>
 </body>
 <script type="text/javascript" defer="defer" src="${path}resources/script/edit/changePassword.js"></script>

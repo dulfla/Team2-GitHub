@@ -154,11 +154,10 @@ function registerAjax() {
 function checkNick() {
 	var nickname = $("#nickname").val();
 	const check = document.getElementById("result_checkNickname2");
-	const check2 = document.getElementsByClassName('form-control')[2];
+	const check2 = document.getElementsByClassName('form-control')[1];
 
 	/* const check2 = document.querySelector(".form-control"); */
-	console.log(check2);
-	console.log(nickname);
+	
 	var jsonData = {
 		"nickname": nickname
 	};
@@ -175,7 +174,6 @@ function checkNick() {
 				if (nickname == '' || nickname == null) {
 					$("#result_checkNickname").html('');
 				} else {
-					console.log(check2);
 					check.setAttribute('value', 'success');
 					check2.setAttribute('class', 'form-control is-valid');
 					$("#result_checkNickname").html('사용가능한 닉네임입니다.').css("color", "green");
@@ -195,12 +193,11 @@ function checkNick() {
 function checkEmail() {
 	var email = $("#email").val();
 	const check = document.getElementById("result_email2");
-	const check2 = document.getElementsByClassName('form-control')[3];
+	const check2 = document.getElementsByClassName('form-control')[2];
 
 	var jsonData = {
 		"email": email
 	};
-	console.log(jsonData);
 	
 	$.ajax({
 		type: "POST",
@@ -242,8 +239,8 @@ function checkPwd() {
 	var confirmPassword = $('#confirmPassword').val();
 	const check = document.getElementById("result_checkPwd2");
 
-	const pwdCheck = document.getElementsByClassName('form-control')[4];
-	const pwdCheck2 = document.getElementsByClassName('form-control')[5];
+	const pwdCheck = document.getElementsByClassName('form-control')[3];
+	const pwdCheck2 = document.getElementsByClassName('form-control')[4];
 
 	var jsonData = {
 		"password": password,

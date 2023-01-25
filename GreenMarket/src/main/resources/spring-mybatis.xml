@@ -39,6 +39,7 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory"/>
 	</bean>	
+	
 	<bean id="adminDao" class="spring.dao.AdminDao">
 		<constructor-arg ref="sqlSession"/>
 	</bean>
@@ -62,5 +63,9 @@
 	<bean id="memberProductListDAO" class="spring.dao.MemberProductListDAO">
 		<constructor-arg name="sqlSession" ref="sqlSession" /> <!-- 생성자 일때 콘스트럭터 앍 -->
 	</bean>
-
+	
+	<bean id="searchDao" class="spring.dao.SearchDao">
+		<property name="sqlSession" ref="sqlSession"/>
+	</bean>
+	
 </beans>

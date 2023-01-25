@@ -30,7 +30,6 @@ public class ProductResultListController {
 											//  model(가져온 데이터를 웹페이지에 보여줄때)  
 		//3)									// model(가져온 데이터를 담아서 보내주는 도구 ex : servlet -> request.setAttribute)
 		List<CategoryVO> categoryList = daoip.category();
-		
 		List<ProductListVO> list = null;
 		
 		if(!c.equals("all")) { // 특정 카테고리를 지정했을 때

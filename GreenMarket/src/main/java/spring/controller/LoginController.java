@@ -30,8 +30,13 @@ public class LoginController {
 	
 
 	@GetMapping("login")
-	public String memberLoginGet() {
-		return "member/login";
+	public String memberLoginGet(HttpSession session) {
+		Object result = (Object)session.getAttribute("authInfo");
+		if(result != null ) {
+			return "redirect:/index";
+		}else {
+			return "member/login";
+		}
 	}
 	
 	@PostMapping(value = "postLogin",consumes="application/json")
@@ -46,7 +51,6 @@ public class LoginController {
 		if (errors.hasErrors()) {
 			return null;
 		}
-		
 		try {
 			AuthInfo authInfo = authService.authenticate(loginCommand);
 			
@@ -55,7 +59,6 @@ public class LoginController {
 		} catch (IdPasswordNotMatchingException e) {
 			
 			return null;
-			
 		}
 		return result;
 	}

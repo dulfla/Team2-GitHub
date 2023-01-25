@@ -36,6 +36,20 @@ public class FindPasswordService {
 		}
 			
 	}
+
+	public void changePassword(FindPasswordCommand findPwdCmd) {
+		Member member = dao.selectByEmail(findPwdCmd.getEmail());
+		
+		System.out.println(findPwdCmd.getNewPassword());
+		System.out.println(findPwdCmd.getNewPassword2());
+		
+		if(!findPwdCmd.getNewPassword().equals(findPwdCmd.getNewPassword2())) {
+			throw new AlreadyExistingMemberException("비밀번호가 일치하지 않음");
+		}
+		member.changePassword(member.getPassword(), findPwdCmd.getNewPassword());
+		
+		dao.updatePassword(member);
+	}
 	
 	
 }

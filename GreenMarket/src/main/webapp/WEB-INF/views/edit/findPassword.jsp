@@ -216,10 +216,10 @@ label[for="terms"] {
             <input type="email" name="memMail" id="memMail" placeholder="이메일 입력">
             
 			<div id="form-controls">
-              <input type="button" value="메일전송" id="mailAuth" class="btn btn-danger" onclick="changeBtnName()">
+              <input type="button" value="메일전송" id="mailAuth" class="btn btn-danger">
             </div>
             
-            <label for="authKey">인증번호 입력</label>
+            <label for="authKey">인증번호</label>
             <input type="text" name="authKey" id="authKey" placeholder="인증번호 입력">
 
 
@@ -241,96 +241,12 @@ label[for="terms"] {
       </div>
   </div>
 
-  
 
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <script type="text/JavaScript" src="./my-script.js"></script>
 
 
 </body>
-<script type="text/javascript">
 
-function changeBtnName()  {
-	var email = $("#memMail").val();
-	const btnElement 
-	    = document.getElementById('mailAuth');
-	 
-	console.log(email == '');
-	if(email !=''){
-	  btnElement.value = "재전송";
-	}
-	
-}
-
-$("#mailAuth").on("click",function(e){
-	var email = $("#memMail").val();
-    isMailAuthed=true;
-    
-    if(email == null || email == ''){
-    	Swal.fire({
-    	    icon: 'warning',
-    	    title: '이메일을 입력해주세요.'
-
-        })
-    }else{
-    	$.ajax({
-            url : "mailAuth.wow" 
-            ,data : {"mail" : $("input[name='memMail']").val()}
-            ,success: function(data){
-            	Swal.fire({
-            	    icon: 'success',
-            	    title: '이메일을 전송했습니다.'
-
-                })
-            },error : function(req,status,err){
-                console.log(req);
-            }
-        });//ajax
-    }
-   });//mailCheck
-
-function findPasswordCheck() {
-	var email = $("#memMail").val();
-	var authKey = $("#authKey").val();
-	
-	var jsonData ={
-			"email": email,
-			"authKey": authKey,
-		};
-	$.ajax({
-		type:"POST",
-		url:"findPasswordAuth",
-		data : JSON.stringify(jsonData),  
-		dataType : 'json', 
-		contentType : 'application/json;charset=UTF-8', 
-		success: function(result){
-			 if(result == 0){
-				 Swal.fire({
-					    icon: 'success',
-					    title: '인증 완료!'
-
-				    }).then(result => {
-				      // 만약 Promise리턴을 받으면,
-				      if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
-
-						 document.location.href = "mailAuthSuccess";  
-				      }
-				    });
-			 }else{
-				 Swal.fire({
-					    icon: 'error',
-					    title: '인증번호가 일치하지 않습니다.'
-
-				    });
-			 }
-		}
-		
-	})// ajax
-	
-}
-
-</script>
-
-
+<script type="text/javascript" defer="defer" src="${path}resources/script/edit/findPassword.js"></script>
 <jsp:include page="../include/footer.jsp"/>
 </html>

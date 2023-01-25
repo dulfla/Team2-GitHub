@@ -1,5 +1,7 @@
 package spring.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import oracle.jdbc.proxy.annotation.Post;
 import spring.exception.AlreadyExistingMemberException;
 import spring.exception.MemberNotFoundException;
 import spring.service.FindPasswordService;
@@ -34,13 +37,14 @@ public class FindPasswordController {
 	
 	@PostMapping("findPasswordAuth")
 	@ResponseBody
-	public int findPasswordAuth(@RequestBody FindPasswordCommand findPwdCmd, Model model) {
+	public int findPasswordAuth(@RequestBody FindPasswordCommand findPwdCmd, Model model, HttpSession session) {
 		
 		try {
 			int getKey = mailSendService.key;
 			System.out.println("테스트키 : "+mailSendService.key);
 			findPasswordService.MailAuth(findPwdCmd, getKey);
-			model.addAttribute("findPwdCmd",findPwdCmd.getEmail());
+			model.addAttribute("findPwdCmd",findPwdCmd);
+			session.setAttribute("findPwdCmd", findPwdCmd.getEmail());
 			return 0 ;
 			
 		}catch (AlreadyExistingMemberException e) {
@@ -53,10 +57,23 @@ public class FindPasswordController {
 	}
 	
 	@GetMapping("mailAuthSuccess")
-	public String mailAuthSuccess(@RequestParam String email, Model model) {
+	public String mailAuthSuccess() {
 		
-		model.getAttribute("findPwdCmd");
 		return "edit/findPasswordSuccess";
+	}
+	
+	@PostMapping("changePassword")
+	@ResponseBody
+	public int changePassword(@RequestBody FindPasswordCommand findPwdCmd, HttpSession session) {
+		
+		try {
+			findPasswordService.changePassword(findPwdCmd);
+			session.invalidate();
+			return 0;
+		}catch (AlreadyExistingMemberException e) {
+			return 1;
+		}
+		
 	}
 	
 }
