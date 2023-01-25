@@ -16,27 +16,162 @@ public class ProductListDAO { //DAO 쿼리문으로 데이터 소환(담은걸 �
 	}
 	
 	public List<ProductListVO> selectAllProduct(){
-		return sqlSession.selectList("mybatis.mapper.productList.selectAll");
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.productList.selectAll");
+		for(int i=0;i<list.size();i++) {
+			System.out.println(list.get(i).getFileName()==null);
+			if(list.get(i).getFileName()==null) {
+				list.get(i).setImgurl(null);
+			}else {
+				String url = "";
+				url += list.get(i).getUploadPath().substring(0, 4)+"%5C"+list.get(i).getUploadPath().substring(5, 7)+"%5C"+list.get(i).getUploadPath().substring(8);
+				url += "%2Fs_"+list.get(i).getUuid()+"_"+list.get(i).getFileName();
+				list.get(i).setImgurl(url);
+			}
+		}
+//			String url = "";
+//			url += list.get(i).getUploadPath().substring(0, 4)+"%5C"+list.get(i).getUploadPath().substring(5, 7)+"%5C"+list.get(i).getUploadPath().substring(8);
+//			url += "%2Fs_"+list.get(i).getUuid()+"_"+list.get(i).getFileName();
+//			list.get(i).setImgurl(url);
+		return list;
 	}
 	
 	public List<ProductListVO> selectAllBrandNew(){
-		return sqlSession.selectList("mybatis.mapper.productList.brandNew");
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.productList.brandNew");
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i).getFileName()==null) {
+				list.get(i).setImgurl(null);
+			}else {
+				String url = "";
+				url += list.get(i).getUploadPath().substring(0, 4)+"%5C"+list.get(i).getUploadPath().substring(5, 7)+"%5C"+list.get(i).getUploadPath().substring(8);
+				url += "%2Fs_"+list.get(i).getUuid()+"_"+list.get(i).getFileName();
+				list.get(i).setImgurl(url);
+			}	
+		}
+		return list;
 	}
 	
 	public List<ProductListVO> selectAllViewsLevel(){
-		return sqlSession.selectList("mybatis.mapper.productList.viewsLevel");
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.productList.viewsLevel");
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i).getFileName()==null) {
+				list.get(i).setImgurl(null);
+			}else {
+				String url = "";
+				url += list.get(i).getUploadPath().substring(0, 4)+"%5C"+list.get(i).getUploadPath().substring(5, 7)+"%5C"+list.get(i).getUploadPath().substring(8);
+				url += "%2Fs_"+list.get(i).getUuid()+"_"+list.get(i).getFileName();
+				list.get(i).setImgurl(url);
+			}
+		}
+		return list;		
 	}
 
 	public List<ProductListVO> selectAllPriceHigh(){
-		return sqlSession.selectList("mybatis.mapper.productList.priceHigh");
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.productList.priceHigh");
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i).getFileName()==null) {
+				list.get(i).setImgurl(null);
+			}else {
+				String url = "";
+				url += list.get(i).getUploadPath().substring(0, 4)+"%5C"+list.get(i).getUploadPath().substring(5, 7)+"%5C"+list.get(i).getUploadPath().substring(8);
+				url += "%2Fs_"+list.get(i).getUuid()+"_"+list.get(i).getFileName();
+				list.get(i).setImgurl(url);
+			}
+		}
+		return list;
+				
 	}
 
 	public List<ProductListVO> selectAllPriceLow(){
-		return sqlSession.selectList("mybatis.mapper.productList.priceLow");
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.productList.priceLow");
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i).getFileName()==null) {
+				list.get(i).setImgurl(null);
+			}else {
+				String url = "";
+				url += list.get(i).getUploadPath().substring(0, 4)+"%5C"+list.get(i).getUploadPath().substring(5, 7)+"%5C"+list.get(i).getUploadPath().substring(8);
+				url += "%2Fs_"+list.get(i).getUuid()+"_"+list.get(i).getFileName();
+				list.get(i).setImgurl(url);
+			}
+		}
+		return list;
 	}
 	
-	public List<ProductListVO> selectAllCategory(String category){
-		return sqlSession.selectList("mybatis.mapper.productList.category", category);
+	public List<ProductListVO> selectByCategory(String category){
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.productList.category", category);
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i).getFileName()==null) {
+				list.get(i).setImgurl(null);
+			}else {
+				String url = "";
+				url += list.get(i).getUploadPath().substring(0, 4)+"%5C"+list.get(i).getUploadPath().substring(5, 7)+"%5C"+list.get(i).getUploadPath().substring(8);
+				url += "%2Fs_"+list.get(i).getUuid()+"_"+list.get(i).getFileName();
+				list.get(i).setImgurl(url);
+			}
+		}
+		return list;
+	}
+
+	public List<ProductListVO> selectByCategoryBrandNew(String c) {
+		
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.productList.cateBrandNew", c);
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i).getFileName()==null) {
+				list.get(i).setImgurl(null);
+			}else {
+				String url = "";
+				url += list.get(i).getUploadPath().substring(0, 4)+"%5C"+list.get(i).getUploadPath().substring(5, 7)+"%5C"+list.get(i).getUploadPath().substring(8);
+				url += "%2Fs_"+list.get(i).getUuid()+"_"+list.get(i).getFileName();
+				list.get(i).setImgurl(url);
+			}
+		}
+		return list;
+	}
+
+	public List<ProductListVO> selectByCategoryPriceLow(String c) {
+		
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.productList.catePriceLow", c);
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i).getFileName()==null) {
+				list.get(i).setImgurl(null);
+			}else {
+				String url = "";
+				url += list.get(i).getUploadPath().substring(0, 4)+"%5C"+list.get(i).getUploadPath().substring(5, 7)+"%5C"+list.get(i).getUploadPath().substring(8);
+				url += "%2Fs_"+list.get(i).getUuid()+"_"+list.get(i).getFileName();
+				list.get(i).setImgurl(url);
+			}
+		}
+		return list;
+	}
+
+	public List<ProductListVO> selectByCategoryViewsLevel(String c) {
+		
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.productList.cateViewsLevel", c);
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i).getFileName()==null) {
+				list.get(i).setImgurl(null);
+			}else {
+				String url = "";
+				url += list.get(i).getUploadPath().substring(0, 4)+"%5C"+list.get(i).getUploadPath().substring(5, 7)+"%5C"+list.get(i).getUploadPath().substring(8);
+				url += "%2Fs_"+list.get(i).getUuid()+"_"+list.get(i).getFileName();
+				list.get(i).setImgurl(url);
+			}
+		}
+		return list;
+	}
+
+	public List<ProductListVO> selectByCategoryPriceHigh(String c) {
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.productList.catePriceHigh", c);
+		for(int i=0;i<list.size();i++) {
+			if(list.get(i).getFileName()==null) {
+				list.get(i).setImgurl(null);
+			}else {
+				String url = "";
+				url += list.get(i).getUploadPath().substring(0, 4)+"%5C"+list.get(i).getUploadPath().substring(5, 7)+"%5C"+list.get(i).getUploadPath().substring(8);
+				url += "%2Fs_"+list.get(i).getUuid()+"_"+list.get(i).getFileName();
+				list.get(i).setImgurl(url);
+			}
+		}
+		return list;
 	}
 
 }

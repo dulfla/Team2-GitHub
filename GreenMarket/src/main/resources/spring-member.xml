@@ -8,30 +8,15 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
 	<context:annotation-config/>
-		
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>	
 	<!-- @Transactional 자동으로 검색해서(빈) 트랜젝션 적용을 해준다. -->
 	<bean id="transactionManager"
 	  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
-	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
 	
 	
-	<!-- 회원 가입 -->
-	<!-- <bean id="memberRegSvc" class="spring.service.RegisterService">
-		<constructor-arg ref="memberDao"/>
-	</bean> -->
-	
-	<!-- 비밀번호 수정 -->
-	<!-- <bean id="changePwdSvc" class="spring.service.ChangePasswordService">
-		<constructor-arg ref="memberDao"/>	
-	</bean> -->
-	
-	<!-- 로그인 -->
-	
-	<!-- <bean id="authService" class="spring.service.AuthService">
-		<property name="memberDao" ref="memberDao"/>
-	</bean> -->
 
 </beans>

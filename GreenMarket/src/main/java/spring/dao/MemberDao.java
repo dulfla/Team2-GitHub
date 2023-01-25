@@ -54,4 +54,9 @@ public class MemberDao {
 		System.out.println();
 		sqlSession.update(nameSpace+"updatePassword",member);
 	}
+
+
+	public void deleteMember(Member member) {
+		sqlSession.delete(nameSpace+"deleteMember",member);
+	}
 }

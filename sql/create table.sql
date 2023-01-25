@@ -202,7 +202,7 @@ BEGIN
     END IF;
 END memberAdmin;
 
-CREATE OR REPLACE TRIGGER trackingProduct -- 바인딩 입력하라고 뜸.. 찾아 보기
+CREATE OR REPLACE TRIGGER trackingProduct -- 바인딩 입력하라고 뜸.. 찾아 보기 - 뭔지 모르겠음...
 BEFORE INSERT OR UPDATE OR DELETE
     ON productDetail
 FOR EACH ROW
@@ -218,7 +218,7 @@ BEGIN
         END IF;
         IF :NEW.trade<>:OLD.trade THEN
             INSERT INTO productHistory
-            VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :OLD.category, :OLD.regdate, NEW:trade); -- sysdate 여야 함
+            VALUES(productTracking_seq.NEXTVAL, :NEW.p_id, :NEW.category, :NEW.regdate, NEW:trade); -- sysdate 여야 함
         END IF;
     ELSIF deleting THEN
         INSERT INTO productHistory
@@ -252,6 +252,15 @@ INSERT INTO member(email, password,birth, address, phone,name,nickname)
 VALUES('jeong@naver.com','1234',19890506,'경기도안산시','0103455558','정길동','길동이4');
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
 VALUES('choi@naver.com','1234',19900312,'경기도안산시','0103455559','최길동','길동이5');
+
+INSERT INTO member(email, password,birth, address, phone,name,nickname,type)
+VALUES('dulfla@naver.com','1234',19970205,'경기도오산시','0103455556','김예림','여ㅣ림','M');
+INSERT INTO member(email, password,birth, address, phone,name,nickname,type)
+VALUES('gudrhks@naver.com','1234',19990105,'경기도안산시','0103455557','김형관','형관','M');
+INSERT INTO member(email, password,birth, address, phone,name,nickname,type)
+VALUES('tjdgur@naver.com','1234',19890506,'경기도안산시','0103455558','윤성혁','성혁','M');
+INSERT INTO member(email, password,birth, address, phone,name,nickname,type)
+VALUES('dlsrb@naver.com','1234',19900312,'경기도안산시','0103455559','한인규','인규','M');
 
 -- 검색어
 insert into search(idx, search, email)
@@ -331,7 +340,7 @@ END;
 -- 회원 샘플 데이터를 넣어주는 프로시저
 CREATE OR REPLACE PROCEDURE member_sampleDate
 IS
-    maxinput NUMBER:=2000;
+    maxinput NUMBER:=5000;
     yearNum NUMBER(2);
     monthNum NUMBER(2);
     dayNum NUMBER(2);
@@ -354,7 +363,7 @@ END;
 -- 샘플로 가입한 일부 회원의 탈퇴를 진행하는 프로시저
 CREATE OR REPLACE PROCEDURE withdraw_sampleDate
 IS
-    maxinput NUMBER:=300;
+    maxinput NUMBER:=500;
     nums NUMBER(4);
     deleteCheck NUMBER(1);
 BEGIN

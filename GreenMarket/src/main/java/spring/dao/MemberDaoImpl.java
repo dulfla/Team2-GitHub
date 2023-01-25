@@ -46,6 +46,7 @@ public class MemberDaoImpl implements MemberDaoInterface{
 		return sqlSession.selectList("mybatis.mapper.member.category");
 	}
 	
+	
 
 	// 상품조회
 	@Override

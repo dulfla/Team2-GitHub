@@ -23,7 +23,6 @@
 		<typeAlias type="spring.vo.CategoryVO" alias="CategoryVO"/>
 		<typeAlias type="spring.vo.ProductImageVO" alias="ProductImageVO"/>
 		
-		<typeAlias type="spring.vo.ProductListVO" alias="pListVO"/>		
-		<typeAlias type="spring.vo.ProductSellListVO" alias="psListVO"/>
+		<typeAlias type="spring.vo.ProductListVO" alias="pListVO"/>
 	</typeAliases>
 </configuration>

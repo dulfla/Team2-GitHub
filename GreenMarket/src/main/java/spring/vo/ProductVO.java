@@ -15,9 +15,18 @@ public class ProductVO {
 	private int views;
 	private int price;
 	private String trade;
+	private String nickname;
 	
 	private String productId;
 	private String email;	
+	
+	
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	//이미지 정보
 	private List<ProductImageVO> imageList;
 	
@@ -91,8 +100,10 @@ public class ProductVO {
 	public String toString() {
 		return "ProductVO [p_id=" + p_id + ", p_name=" + p_name + ", description=" + description + ", category="
 				+ category + ", regdate=" + regdate + ", views=" + views + ", price=" + price + ", trade=" + trade
-				+ ", productId=" + productId + ", email=" + email + ", imageList=" + imageList + "]";
+				+ ", nickname=" + nickname + ", productId=" + productId + ", email=" + email + ", imageList="
+				+ imageList + "]";
 	}
+	
 	
 			
 }

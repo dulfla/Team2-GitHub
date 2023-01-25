@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<context:property-placeholder location="classpath:message/db.properties"/>
+
+	<!-- 첫번째 빈 : 데이터소스(풀) -->
+	<bean id="dataSources" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+		<property name="driver" value="${db.driver}"/>
+		<property name="url"  value="${db.jdbcUrl}"/>
+		<property name="username"  value="${db.user}"/>
+		<property name="password"  value="${db.password}"/>
+		<property name="poolMaximumActiveConnections" value="100"/>
+        <property name="poolMaximumCheckoutTime" value="20000"/>
+        <property name="poolTimeToWait" value="15000"/>
+	</bean>
+<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource"> 
+    <constructor-arg ref="dataSources" /> 
+    <property name="logFormatter"> 
+        <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter"> 
+            <property name="loggingType" value="MULTI_LINE" /> 
+            <property name="sqlPrefix" value="SQL : "/> 
+        </bean> 
+    </property> 
+</bean>
+	
+	<!-- 두번째 빈 : sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>  
+		<property name="configLocation" value="classpath:mybatis/config/mybatisConfig.xml"/>
+		<property name="mapperLocations" value="classpath*:mybatis/mapper/*.xml"/>	<!-- * = 모두쓸때 -->
+		<!-- 세터 일때 프로퍼티 -->
+	</bean>
+	
+	<!-- 세번째 빈 : SqlSession -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory"/>
+	</bean>	
+	<bean id="adminDao" class="spring.dao.AdminDao">
+		<constructor-arg ref="sqlSession"/>
+	</bean>
+	
+	<bean id="chatDao" class="spring.dao.ChatDao">
+		<constructor-arg ref="sqlSession"/>
+	</bean>
+		
+	<bean id="memberDaoImpl" class="spring.dao.MemberDaoImpl">
+		<property name="sqlSession" ref="sqlSession" />
+	</bean>
+
+	<bean id="memberDao" class="spring.dao.MemberDao">
+		<property name="sqlSession" ref="sqlSession"/>
+	</bean>
+	
+	<bean id="productListDAO" class="spring.dao.ProductListDAO">
+		<constructor-arg name="sqlSession" ref="sqlSession" /> <!-- 생성자 일때 콘스트럭터 앍 -->
+	</bean>
+	
+	<bean id="memberProductListDAO" class="spring.dao.MemberProductListDAO">
+		<constructor-arg name="sqlSession" ref="sqlSession" /> <!-- 생성자 일때 콘스트럭터 앍 -->
+	</bean>
+
+</beans>

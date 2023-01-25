@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,11 +15,13 @@
   integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
   crossorigin="anonymous"></script>
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
+ <%--  <link href="${path}resources/style/productreg.css" rel="stylesheet" type="text/css"> --%>
   
 <style type="text/css">
 	#result_card img{
-		max-width: 100%;
-	    height: auto;
+ 		max-width: 100%; 
+	    height: 400px; 
 	    display: block;
 	    padding: 5px;
 	    margin-top: 10px;
@@ -26,6 +29,7 @@
 	}
 	#result_card {
 		position: relative;
+		width:100%
 	}
 	.imgDeleteBtn{
 	    position: absolute;
@@ -49,104 +53,138 @@
 <body>
 
 	<%@ include file="../include/header.jsp" %>
-	<div id="container">
-		<form action="" id="regForm" method="POST" autocomplete="off" enctype="multipart/form-data">
-			<span class="contact100-form-title">
-				상품 등록
-			</span>
-			<div>
-				<span>카테고리</span>
-				<select class="category" name="category">
-					<option value="null">선택</option>
-					<c:forEach items="${category}" var="cate"><option value="${cate.category}">${cate.category}</option></c:forEach>
-				</select>
-			</div>
-			<label class="label-input100" for="email">상품명</label>
-			<div class="wrap-input100 validate-input">
-				<input type="text" class="input100" name="p_name" placeholder="상품명을 입력해주세요">
-			<span class="focus-input100"></span>	
-			</div>
-			<div>
-			<input type="text" name="price" placeholder="상품가격">
-			</div>
-			<div>
-				<label>사진 업로드</label>
-				<input type="file" id="fileItem" name='uploadFile' style="height: 30px;">
-					<div id="uploadResult">
-					</div>
-			</div>
-			<label class="label-input100" for="message">상품 정보</label>
-			<div class="wrap-input100 validate-input">
-				<textarea id="message" class="input100" name="description" placeholder="상품 정보를 입력해주세요"></textarea>
-				<span class="focus-input100"></span>
-			</div>
-			<div class="inputArea">
-	            <div class="inputArea_title">
-		            <label>거래 희망 위치</label>
-		        </div>
-				<div id="map" style="width:350px;height:350px;"></div>
-					<p><em>지도를 클릭해주세요!</em></p> 
-				<div id="clickLatlng"></div>
-			</div>
-			<button>상품등록</button>
-			<button type="button">목록</button>
-		</form>
-				
-	</div>
+	<div id="container">	
+	    <div class=" text-center mt-5 ">
+	        <h1 >상품 등록</h1>                   
+	    </div>
+	    <div class="row ">
+	        <div class="col-lg-7 mx-auto">
+	            <div class="card mt-2 mx-auto p-4 bg-light">
+	                <div class="card-body bg-light">
+	                    <div class = "container">
+	                        <form id="contact-form" role="form" method="POST" autocomplete="off" enctype="multipart/form-data">
+	                        	<input type="hidden" name="email" value="${authInfo.email}">
+	                        	<input type="hidden" name="p_id" value="${product.p_id}">
+	                            <div class="controls">
+	                                <div class="row">
+	                                    <div class="col-md-12">
+	                                        <div class="form-group">
+	                                            <label for="form_name">상품명</label>
+	                                            <input id="form_name" type="text" name="p_name" class="form-control" placeholder="상품명을 입력해주세요 *" required data-error="상품명은 필수입력입니다.">                        
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="row">
+	                                    <div class="col-md-6">
+	                                        <div class="form-group">
+	                                            <label for="form_lastname">상품 가격</label>
+	                                            <input id="form_lastname" type="text" id="price" name="price" class="form-control" placeholder="가격을 입력해주세요  *" required data-error="가격은 필수입력입니다.">
+	                                        </div>
+	                                    </div>
+	                                    <div class="col-md-6">
+	                                        <div class="form-group">
+	                                            <label for="form_need">카테고리</label>
+	                                            <select id="form_need" name="category" class="form-control" required="required" data-error="카테고리는 필수 입력입니다.">
+	                                                <option value="" selected disabled>-카테고리를 골라주세요-</option>
+	                                                <c:forEach items="${category}" var="cate"><option value="${cate.category}">${cate.category}</option></c:forEach>
+	                                            </select>          
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="row">
+	                                    <div class="col-md-12">
+	                                        <div class="form-group">
+	                                            <label for="form_message">상품 정보</label>
+	                                            <textarea id="form_message" name="description" class="form-control" placeholder="상품 정보를 입력해주세요 *" rows="4" required data-error="상품 정보는 필수입력입니다."></textarea>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="form_message" style="margin-top : 20px">사진 업로드</label>
+                                            <input type="file" id="fileItem" name='uploadFile'>
+                                            <div id="uploadResult"></div> 
+                                            
+                                        </div>                          
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="form_message" style="margin-top : 20px">거래 위치</label>
+                                            <div id="map" style="width:100%;height:400px;"></div>
+                                                <p><em>지도를 클릭해주세요!</em></p>    
+                                            <div id="clickLatlng"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-success btn-send  pt-2 btn-block">상품 등록</button> 
+                                        <button type="button" class="btn btn-danger btn-send  pt-2 btn-block">목록</button>
+                                    </div>
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>				
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script type="text/javascript">
-	
-	
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-	    mapOption = { 
-	        center: new kakao.maps.LatLng(37.267868108956456, 127.00053552238002), // 지도의 중심좌표
-	        level: 5 // 지도의 확대 레벨
-	    };
+		mapOption = { 
+			center: new kakao.maps.LatLng(37.267868108956456, 127.00053552238002), // 지도의 중심좌표
+			level: 5 // 지도의 확대 레벨
+		};
 	
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-		
+	
 		// 지도를 클릭한 위치에 표출할 마커입니다
 		var marker = new kakao.maps.Marker({ 
-		    // 지도 중심좌표에 마커를 생성합니다 
-		    position: map.getCenter() 
+			// 지도 중심좌표에 마커를 생성합니다 
+			position: map.getCenter() 
 		}); 
 		// 지도에 마커를 표시합니다
 		marker.setMap(map);
-		
+	
 		// 지도에 클릭 이벤트를 등록합니다
 		// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
 		kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
-		    
-		    // 클릭한 위도, 경도 정보를 가져옵니다 
-		    var latlng = mouseEvent.latLng; 
-		    
-		    // 마커 위치를 클릭한 위치로 옮깁니다
-		    marker.setPosition(latlng);
-		    
-		    var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-		    message += '경도는 ' + latlng.getLng() + ' 입니다';
-		    
-		    var resultDiv = document.getElementById('clickLatlng'); 
-		    resultDiv.innerHTML = message;
-		    
-		});
-	
-	
-/* =============================================================================================== */
-	
-		$("input[type='file']").on("change", function(e){
 			
+			// 클릭한 위도, 경도 정보를 가져옵니다 
+			var latlng = mouseEvent.latLng; 
+			
+			// 마커 위치를 클릭한 위치로 옮깁니다
+			marker.setPosition(latlng);
+			
+			/* 		   
+			var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+			message += '경도는 ' + latlng.getLng() + ' 입니다';
+			
+			var resultDiv = document.getElementById('clickLatlng'); 
+			resultDiv.innerHTML = message; 
+			*/
+			
+			var lat = latlng.getLat();
+			var lng = latlng.getLng();
+			
+			console.log('위도 : ' + lat);
+			console.log('경도 : ' + lng);
+		});	
+
+
+		$("input[type='file']").on("change", function(e){
+					
 			/* 등록된 이미지 존재시 삭제 */
 			if($(".imgDeleteBtn").length > 0){
-				deleteFile();
+					deleteFile();
 			}
-			
+				
 			let formData = new FormData();
 			let fileInput = $('input[name="uploadFile"]');
 			let fileList = fileInput[0].files;
 			let fileObj = fileList[0];
-			
+				
 			/*
 			if(!fileCheck(fileObj.name, fileObj.size)){
 				return false;
@@ -157,94 +195,91 @@
 				formData.append("uploadFile", fileList[i]);
 			}
 			$.ajax({
-				url: '/GreenMarket/product/uploadAjaxAction',
-		    	processData : false,
-		    	contentType : false,
-		    	data : formData,
-		    	type : 'POST',
-		    	dataType : 'json',
-		    	success : function(result){
-		    		console.log(result);
-		    		showUploadImage(result);
-		    	},
-		    	error : function(result){
-		    		alert("이미지 파일이 아닙니다.");
-		    	}
+				url: 'uploadAjaxAction',
+				processData : false,
+				contentType : false,
+				data : formData,
+				type : 'POST',
+				dataType : 'json',
+				success : function(result){
+					console.log(result);
+					showUploadImage(result);
+				},
+				error : function(result){
+					alert("이미지 파일이 아닙니다.");
+				}
 			});	
 		});
-		
+			
 		let regex = new RegExp("(.*?)\.(jpg|png)$");
 		let maxSize = 1048576; //1MB	
-		
+			
 		function fileCheck(fileName, fileSize){
-
+		
 			if(fileSize >= maxSize){
 				alert("파일 사이즈 초과");
 				return false;
 			}
-				  
+					  
 			if(!regex.test(fileName)){
 				alert("해당 종류의 파일은 업로드할 수 없습니다.");
 				return false;
 			}			
-			return true;					
+				return true;					
 		}
 		/* 이미지 출력 */
 		function showUploadImage(uploadResultArr){
-			
+				
 			/* 전달받은 데이터 검증 */
 			if(!uploadResultArr || uploadResultArr.length == 0){return}
-			
+				
 			let uploadResult = $("#uploadResult");
-			
 			let obj = uploadResultArr[0];
-			
 			let str = "";
-			
 			let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
-			
+				
 			str += "<div id='result_card'>";
-			str += "<img src='/GreenMarket/product/display?fileName=" + fileCallPath +"'>";
+			str += "<img src='display?fileName=" + fileCallPath +"'>";
 			str += "<div class='imgDeleteBtn' data-file='"+ fileCallPath +"'>x</div>";
 			str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
 			str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
 			str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";
 			str += "</div>";		
-			
-	   		uploadResult.append(str); 
+				
+			uploadResult.append(str); 
 		}
 		/* 이미지 삭제 버튼  동작 */
-		$("#uploadResult").on("click", ".imgDeleteBtn", function(e){
-			
-			deleteFile();
-			
+		$("#uploadResult").on("click", ".imgDeleteBtn", function(e){	
+		
+			deleteFile();		
 		});
-		
-		
+			
+			
 		/* 파일 삭제 메서드 */
 		function deleteFile(){
 			let targetFile = $(".imgDeleteBtn").data("file");
-			
+				
 			let targetDiv = $("#result_card");
-			
+				
 			$.ajax({
-				url: '/GreenMarket/product/deleteFile',
+				url: 'deleteFile',
 				data : {fileName : targetFile},
 				dataType : 'text',
 				type : 'POST',
 				success : function(result){
 					console.log(result);
-					
+						
 					targetDiv.remove();
 					$("input[type='file']").val("");
 				},
 				error : function(result){
 					console.log(result);
-					
+						
 					alert("파일 삭제 실패")
 				}
-	       });
+			 });
 		}
+/* ----------------------------------------------------------------------------------------------------------------- */
 	</script>
 </body>
 </html>

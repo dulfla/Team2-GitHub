@@ -25,11 +25,6 @@
 <jsp:include page="../include/header.jsp"/>
 </head>
 <body>
-	<%-- <div id="container">
-		<a href="changePassword">비밀번호 변경</a>
-		<a href="changeMemberInfo">회원정보 변경</a>
-		<a href="unRegister">회원탈퇴</a>
-		${member.nickname} --%>
 	<div id="container2">
 	<div class="container">
     	<div class="row">
@@ -72,7 +67,6 @@
 						<button onclick="location.href='changeMemberInfo?email=${member.email}'" class="btn btn-primary">회원수정</button>
 						<button onclick="location.href='memberWithDrawal'" class="btn btn-danger">회원탈퇴</button>
 						<button onclick="location.href='changePassword'" class="btn btn-warning">비밀번호 변경</button>
-						<button onclick="location.href='register'" class="btn btn-success">회원가입</button>
 	                  
 	                 </td>    
 	           		</tr> 

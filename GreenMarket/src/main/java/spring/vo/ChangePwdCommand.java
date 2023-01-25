@@ -6,8 +6,6 @@ public class ChangePwdCommand {
 	private String newPassword;
 	private String newPassword2;
 	
-	
-	
 	public String getNewPassword2() {
 		return newPassword2;
 	}
@@ -27,8 +25,5 @@ public class ChangePwdCommand {
 	public void setNewPassword(String newPassword) {
 		this.newPassword = newPassword;
 	}
-	
-	
-	
 	
 }

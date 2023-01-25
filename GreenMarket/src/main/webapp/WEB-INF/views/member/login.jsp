@@ -86,7 +86,7 @@ main button {
 	transition: transform 80ms ease-in;
 }
 
-form {
+.form {
 	background-color: #FFFFFF;
 	display: flex;
 	align-items: center;
@@ -97,7 +97,7 @@ form {
 	text-align: center;
 }
 
-input {
+.input {
 	background-color: #eee;
 	border: none;
 	padding: 12px 15px;
@@ -189,7 +189,7 @@ input {
 	<main>
 		<div class="container2" id="container2">
 		<div class="form-container log-in-container">
-			<form action="postLogin" method="post" name="frm">
+			<form class="form" action="postLogin" method="post" id="login_form" name="frm">
 			<form:errors />
 				<h1>로그인</h1>
 				<div class="social-container">
@@ -197,10 +197,10 @@ input {
 					<a href="#" class="social"><i class="fab fa fa-twitter fa-2x"></i></a>
 				</div>
 				<span>or use your account</span>
-				<input type="email"	name="email" id="email"  placeholder="이메일" /> 
-				<input type="password" name="password" id="password" placeholder="비밀번호" /> 
-				<a href="#">Forgot your password?</a>
-				<button type="button" onclick="return loginCheck()">Log In</button>
+				<input class="input" type="email"	name="email" id="email"  placeholder="이메일" /> 
+				<input class="input" type="password" name="password" id="password" placeholder="비밀번호" /> 
+				<a href="findPassword">비밀번호 찾기</a>
+				<button type="button" id="loginBtn" onclick="return loginCheck()">Log In</button>
 			</form>	
 		</div>
 		<div class="overlay-container">
@@ -214,74 +214,15 @@ input {
 		</div>
 	</div>
 	</main>
-<script type="text/javascript">
-
-function loginCheck(){
-	if(document.frm.email.value.length == 0){
-		 Swal.fire({
-			    icon: 'error',
-			    title: '아이디를 입력해주세요.',
-			  });
-		document.frm.email.focus();
-		return false;
-	}
-	
-	if(document.frm.password.value == ''){
-		Swal.fire({
-		    icon: 'error',
-		    title: '비밀번호를 입력해주세요.',
-		  });
-		document.frm.password.focus();
-		return false;
-	}
-	return loginAjax();
-}
-
-function loginAjax(){
-	var email = $("#email").val();
-	var password = $("#password").val();
-	
-	var jsonData ={
-		"email" : email,
-		"password" : password
-	};
-	console.log(jsonData);
-	
-		$.ajax({
-			type:"POST",
-			url:"postLogin",
-			data : JSON.stringify(jsonData),  
-			dataType : 'json', 
-			contentType : 'application/json;charset=UTF-8', 
-			 success: function(result){
-				 console.log(result);
-				 if(result != null){
-					 Swal.fire({
-						    icon: 'success',
-						    title: '로그인성공!',
-						    text: result.nickname +'님 환영합니다.'
-
-					    }).then(result => {
-					      // 만약 Promise리턴을 받으면,
-					      if (result.isConfirmed) { // 만약 모달창에서 confirm 버튼을 눌렀다면
-
-							 document.location.href = "index";  
-					      }
-					    });
-				}
-			 		
-		  	},error : function(error) {
-		  		Swal.fire({
-				    icon: 'error',
-				    title: '로그인실패',
-				    text: '아이디와 비밀번호를 확인해주세요!'
-				  });
-			}
-		})
-	}
-	
-</script>
 </body>
+<script type="text/javascript">
+	$('#login_form').on('keypress', function(e){ 
+	    if(e.keyCode == '13'){ 
+	        $('#loginBtn').click(); 
+	    }
+	}); 
+</script>
+<script type="text/javascript" defer="defer" src="${path}resources/script/member/login.js"></script>
 <jsp:include page="../include/footer.jsp"/>
 </html>
 
