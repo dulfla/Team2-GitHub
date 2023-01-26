@@ -230,12 +230,12 @@ function openChattings(e){
 	offcanvasBody.innerHTML = null;
 
 	let msgBox = document.createElement('div');
-	msgBox.classList.add("overflow-auto");
+	msgBox.classList.add("overflow-auto", "position-relative"); /*position-relative*/
 	msgBox.setAttribute('id', "messagesBox");
 
 	let messageBoxContainer = document.createElement('div');
-	messageBoxContainer.classList.add('container', 'fixed-bottom');
-	messageBoxContainer.setAttribute('id', "message");
+	messageBoxContainer.classList.add('container', 'position-relative'); /*position-relative*/
+	messageBoxContainer.setAttribute('id', "messages");
 
 	let inputGroup = document.createElement('div');
 	inputGroup.classList.add('input-group', 'mt-2', 'p-0');
@@ -334,6 +334,7 @@ function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들
 	$.ajax({
 		url : "Chat",
 		type : "POST",
+		async: false,
 	    dataType : 'json',
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
@@ -353,15 +354,19 @@ function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들
 			let msgL = data.messages;
 			if(0<msgL.length){
 				msgL.forEach((m) => {
-					insertMessages(m.sender, m.nickname, m.message, m.messType);
+					let newElem = insertMessages(m.sender, m.nickname, m.message, m.messType);
+					if(m.messType=='IMG'){
+						newElem.addEventListener('load', function(){
+							scrollChecking(true);
+						}, false);
+					}
 				});
-				scrollChecking(true);
 			}
 		},
 		complete: function(){
-			messagesBox.scrollTo(0, messagesBox.scrollHeight);
+			scrollChecking(true);
 		}
-	});	
+	});
 }
 
 function chatClose(){ // 서버 연결 끊고, messagesBox 비우기
@@ -391,40 +396,100 @@ function chatClose(){ // 서버 연결 끊고, messagesBox 비우기
 
 function sendingFile(e){
 	let files = e.currentTarget.files;
+	let currectFiles = [];
+	let errorFiles = [];
+	
 	if(0<files.length){
 		for(let i=0; i<files.length; i++){
 			let fileType = files[i].name.split(".");
 			fileType = fileType[fileType.length-1];
 			
 			if(imgFileChecking(fileType, files[i].size)){
-				let formData = new FormData();
-				formData.append("file", files[i]);
-				
-				const date = new Date(files[i].lastModifiedDate);
-				let day = ""+date.getFullYear()+((date.getMonth()+1)<=9?"0"+(date.getMonth()+1):(date.getMonth()+1))+(date.getDate()<=9?"0"+date.getDate():date.getDate());
-				let time = date.getTime();
-				let newFileName = day+"_"+time+"."+fileType;
-				
-				$.ajax({
-				 	url: 'SendFile?c_id='+chatRId+'&email='+personId+'&name='+newFileName,
-				 	processData : false,
-				 	contentType : false,
-				 	data : formData,
-				 	type : 'POST',
-				 	dataType : 'json',
-				 	success : function(data){
-				 		if(data==1){
-				 			console.log('파일 전송 완료');
-				 		}else if(data==2){
-				 			console.log('파일 전송 오류');
-				 		}
-				 	},
-				 	error : function(data){
-				 		console.log(JSON.stringify(data))
-				 	}
-				});
+				currectFiles.push(files[i]);
+			}else{
+				errorFiles.push(files[i]);
 			}
-		}		
+			
+			if(i==files.length-1){
+				confrimFiles(errorFiles, currectFiles);
+			}
+		}
+	}
+}
+
+function confrimFiles(errorFiles, currectFiles){
+	let header;
+	let errFiles;
+	let imgList;
+	if(currectFiles.length==0){
+		header = "파일을 전송할 수 없습니다.";
+		errFiles = "모든";
+		imgList = null;
+	}else{
+		header = "파일을 전송하시겠습니까?";
+		errFiles = errorFiles.length+" 개의";
+		imgList = "<br>= 전송 가능한 파일 =<br><br>";
+		for(let i=currectFiles.length-1; 0<=i; i--){
+			let tempUrl = window.URL.createObjectURL(currectFiles[i]);
+			imgList += "<img src='"+tempUrl+"' style='width:400px'>";
+		}
+	}
+	
+	Swal.fire({
+	   title: header,
+	   html: '- '+errFiles+' 파일이 누락되었습니다. -<br><small>.jpg, .png 형식의 1MB 이하의 파일만 전송 가능합니다.</small><br><br>'+imgList,
+	   
+	   showCancelButton: true,
+	   confirmButtonColor: '#3085d6',
+	   cancelButtonColor: '#d33',
+	   confirmButtonText: '확인',
+	   cancelButtonText: '취소',
+	   
+	   reverseButtons: false,
+	   
+	}).then(result => {
+	    if (result.isConfirmed) {
+	    	fileSending(currectFiles);
+	    }else if (result.isDismissed) {
+	    	resolve(); /*여기 에러남*/
+	    }
+	});
+}
+
+function fileSending(files){
+	console.log(files);
+	if(0<files.length){
+		for(let i=files.length-1; 0<=i; i--){
+			let formData = new FormData();
+			formData.append("file", files[i]);
+			
+			let fileType = files[i].name.split(".");
+			fileType = fileType[fileType.length-1];
+			
+			const date = new Date(); /*lastModifiedDate => new Date() 로 변경*/
+			let day = ""+date.getFullYear()+((date.getMonth()+1)<=9?"0"+(date.getMonth()+1):(date.getMonth()+1))+(date.getDate()<=9?"0"+date.getDate():date.getDate());
+			let time = date.getTime();
+			let newFileName = day+"_"+time+"."+fileType;
+			
+			$.ajax({
+			 	url: 'SendFile?c_id='+chatRId+'&email='+personId+'&name='+newFileName,
+			 	processData : false,
+			 	contentType : false,
+			 	data : formData,
+			 	type : 'POST',
+			 	dataType : 'json',
+			 	success : function(data){
+			 		if(data==1){
+			 			console.log('파일 전송 완료');
+			 		}else if(data==2){
+			 			console.log('파일 전송 오류');
+			 		}
+			 	},
+			 	error : function(data){
+			 		console.log(JSON.stringify(data))
+			 	}
+			});
+		}
 	}
 }
 
@@ -473,9 +538,19 @@ function onMsge(msg) {
 	let nowPosition = messagesBox.scrollTop;
 	let result = approximateChecking(nowPosition);
 	
-	insertMessages(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
+	let check = insertMessages(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
 	
-	scrollChecking(result);
+	if(msgInfo[0][1]==personId){
+		scrollChecking(true);
+	}else{
+		if(result && msgInfo[3][1]=='IMG'){
+			check.addEventListener('load', function(){
+				scrollChecking(result);
+			}, false);
+		}else{
+			scrollChecking(result);
+		}
+	}
 }
 
 function insertMessages(sender, nick, msg, msgType){
@@ -493,12 +568,15 @@ function insertMessages(sender, nick, msg, msgType){
 			myMessage = document.createElement('img');
 			myMessage.classList.add('chattingImage');
 			myMessage.setAttribute('src', "ChattingImage?c_id="+chatRId+"&fileName="+msg);
+			myMessage.addEventListener('load', function(){
+				scrollChecking(true);
+			}, false);
 		}
 	
 		myText.appendChild(myMessage);
 		messagesBox.appendChild(myText);
 		
-		scrollChecking(true);
+		return myMessage;
 	}else{
 		let reciveText = document.createElement('div');
 		reciveText.classList.add('messageBox', 'reciveMessageBox');
@@ -526,6 +604,8 @@ function insertMessages(sender, nick, msg, msgType){
 		
 		reciveText.appendChild(sendingMessage);
 		messagesBox.appendChild(reciveText);
+		
+		return sendingMessage;
 	}
 }
 
@@ -544,4 +624,23 @@ function approximateChecking(nowPosition){ // 위치 확인 - 맨 아래 스크�
 	}else{
 		return false; // 스크롤 위치 변경됨
 	}
+}
+
+function mesgPopup(){
+	/* 
+		부트스트랩 토스트 사용.
+		
+		위치가 메세지 input-group 위, messageBox/messagesBox 안에 있어야 함
+		
+		해당 메세지 클릭하면 맨 아래로 스크롤
+		해당 메세지가 사진일 경우 (사진) 으로 표시
+		해당 메세지 팝업이 사라지기 전에 새 메세지가 오는 경우, 해당 메세지로 바꿔치기
+		팝업 지우기 버튼
+		
+		팝업에 뜨는 내용은 사진과 메세지
+		만약에 메세지가 너무 길 경우
+		split이나 subStr 의 역할을 할 수 있는 걸 찾아다가
+		해당 기능으로 일부만 짜른다음 ...으로 처리
+		
+	*/
 }

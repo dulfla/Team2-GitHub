@@ -18,31 +18,6 @@
 .offcanvas-header{
 	height:130px;
 }
-a{
-	text-decoration:none;
-}
-
-/* ---------------------------------------------------------------------------------------------------------- */
-
-/* messageBox */
-#messageBox{ /* 주고받은 메세지들이 담길 공간 */
-	height:calc(100% - 180px);
-	width:100%;
-	position: absolute;
-	top:130px;
-}
-#messagesBox{ /* 주고받은 메세지들이 담길 공간 */
-	height:calc(100% - 180px);
-	width:100%;
-	position: absolute;
-	top:130px;
-}
-#message{ /* input-group을 묶는 상위 container */
-	height:50px;
-}
-#message{ /* input-group을 묶는 상위 container */
-	height:50px;
-}
 .messageBox{ /* 실제 메세지 text가 담길 div 공간 */
 	display:block;
 	width:60%;
@@ -69,8 +44,10 @@ a{
 	float:left;
 	background-color:rgb(232, 255, 198);
 }
-
-.backSpageBtn{
+a{
+	text-decoration:none;
+}
+.backSpageBtn{ /* 뒤로가기 버튼 */
 	border:none;
 	background:none;
 	font-size:1.7em;
@@ -80,12 +57,31 @@ a{
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
+/*productDetail*/
+
+/* messageBox */
+#messageBox{ /* 주고받은 메세지들이 담길 공간 */
+	height:calc(100% - 50px);
+	width:100%;
+}
+#message{ /* input-group을 묶는 상위 container */
+	height:40px;
+}
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
 /* chatRoomList */
+#messagesBox{ /* 주고받은 메세지들이 담길 공간 */
+	height:calc(100% - 50px);
+	width:100%;
+}
+#messages{ /* input-group을 묶는 상위 container */
+	height:40px;
+}
 .chatRoomImg{ /* 채팅방 앞의 작은 이미지 */
 	width:32px;
 	height:32px;
 }
-
 #chatPdPic{
 	width:130px;
 	height:130px;

@@ -214,7 +214,7 @@ BEGIN
         INSERT INTO productHistory
         VALUES(productTracking_seq.NEXTVAL, :NEW.p_id, :NEW.category, :NEW.regdate, 'IN');
     ELSIF updating THEN
-        IF :NEW.trade<>'TRADE' AND :NEW.trade<>'trade' THEN
+        IF :NEW.trade<>'TRADE' OR :NEW.trade<>'trade' THEN
             INSERT INTO productHistory
             VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :NEW.category, :OLD.regdate, 'TRADE'); -- sysdate 여야 함
         END IF;
@@ -256,7 +256,7 @@ VALUES('pid4','츄르','츄르 2박스 입니다','반려동물 물품','2022/11
 INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
 VALUES('pid5','에어팟 맥스','에어팟 맥스 미개봉 상품입니다','디지털 기기','2022/12/25',115,600000);
 INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid6','에어팟','에어팟 맥스 미개봉 상품입니다','디지털 기기','2022/01/25',115,500000);
+VALUES('pid7','에어팟','에어팟 맥스 미개봉 상품입니다','디지털 기기','2022/01/25',115,500000);
 
 -- 회원 상세
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
@@ -271,14 +271,20 @@ INSERT INTO member(email, password,birth, address, phone,name,nickname)
 VALUES('choi@naver.com','1234',19900312,'경기도안산시','0103455559','최길동','길동이5');
 
 INSERT INTO member(email, password,birth, address, phone,name,nickname,type)
-VALUES('manager@naver.com','1234',19970205,'경기도오산시','0103455556','관리자','관리자','M');
+VALUES('dulfla@naver.com','1234',19970205,'경기도오산시','0103455556','김예림','여ㅣ림','M');
+INSERT INTO member(email, password,birth, address, phone,name,nickname,type)
+VALUES('gudrhks@naver.com','1234',19990105,'경기도안산시','0103455557','김형관','형관','M');
+INSERT INTO member(email, password,birth, address, phone,name,nickname,type)
+VALUES('tjdgur@naver.com','1234',19890506,'경기도안산시','0103455558','윤성혁','성혁','M');
+INSERT INTO member(email, password,birth, address, phone,name,nickname,type)
+VALUES('dlsrb@naver.com','1234',19900312,'경기도안산시','0103455559','한인규','인규','M');
 
 -- 검색어
-insert into search(idx, keyword, email)
+insert into search(idx, search, email)
 VALUES(1,'ddd','hong@naver.com');
-insert into search(idx, keyword, email)
+insert into search(idx, search, email)
 VALUES(2,'dddd','lee@naver.com');
-insert into search(idx, keyword, email)
+insert into search(idx, search, email)
 VALUES(3,'ddddd','jeong@naver.com');
 
 -- 상품
@@ -293,7 +299,7 @@ values(4, 'jeong@naver.com', 'pid4');
 insert into product
 values(5, 'choi@naver.com', 'pid5');
 insert into product
-values(6, 'pack@naver.com', 'pid6');
+values(6, 'pack@naver.com', 'pid7');
 
 -- 채팅
 INSERT INTO chatInfomation
@@ -329,7 +335,7 @@ BEGIN
     LOOP
         FETCH chattingRoomMember INTO csor_c_id, csor_sender_email;
         EXIT WHEN chattingRoomMember%NOTFOUND;
-        FOR  idx IN 1..25 LOOP
+        FOR  idx IN 1..15 LOOP
             timeset := TO_DATE('2022121017'||TO_CHAR(idx, '00')||TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0, 59)), '00'), 'YYYYMMDDHH24MISS');
             INSERT INTO chatMessage
             VALUES(chatMessage_seq.NEXTVAL, csor_c_id, 'messageSample'||sampleMessage_seq.NEXTVAL, 'TEXT', csor_sender_email, 0, timeset);

@@ -51,7 +51,47 @@
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
- 	<div id="container" class="container position-relative">
+ 	<div id="container">
+ 		<div id="carouselExampleControlsNoTouching" class="position-relative carousel carousel-dark slide mt-5" data-bs-touch="false" data-bs-interval="false">
+			<div class="carousel-inner">
+<%--
+ 				<div class="carousel-item active">
+					<div class="container w-75 chart-container">
+						<canvas id="realTimeMemberAdmin"></canvas>
+					</div>
+				</div>
+--%>
+				<div class="carousel-item">
+					<div class="container w-75 chart-container">
+						<canvas id="memberAdminByYear"></canvas>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="container w-75 chart-container">
+						<canvas id="withdrawByYear"></canvas>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="container w-75 chart-container position-relative">
+						<select class="form-select text-center position-absolute top-0 end-0 m-3" id="selectYear_memberAdminByMonth" style="width:15%">
+				    		<option value="default">==선택==</option>
+				    		<c:forEach items="${memberAdmin['memberAdmin'][0]['countByYear'][0]['years']}" var="year" varStatus="c">
+					    		<option value="${c.index}">${year}</option>
+				    		</c:forEach>
+				    	</select>
+				        <canvas id="memberAdminByMonth"></canvas>
+					</div>
+				</div>
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>
+		</div>
  		<div class="position-relative row align-items-center">
  			<div class="chart-container col-xl-8">
 		        <canvas id="realTimeMemberAdmin"></canvas>
@@ -59,20 +99,6 @@
 		    <div class="chart-container col-xl-4">
 		        <canvas id="memberAdminByYear"></canvas>
 		    </div>
- 		</div>
- 		<div class="position-relative row  align-items-center">
-		    <div class="chart-container col-xl-4">
-		        <canvas id="withdrawByYear"></canvas>
-		    </div>
-		    <div class="chart-container col-xl-8 position-relative">
-		    	<select class="form-select text-center position-absolute top-0 end-0 m-3" id="selectYear_memberAdminByMonth" style="width:15%">
-		    		<option value="default">==선택==</option>
-		    		<c:forEach items="${memberAdmin['memberAdmin'][0]['countByYear'][0]['years']}" var="year" varStatus="c">
-			    		<option value="${c.index}">${year}</option>
-		    		</c:forEach>
-		    	</select>
-		        <canvas id="memberAdminByMonth"></canvas>
-			</div>
  		</div>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
@@ -90,7 +116,7 @@
 	                    yAxisID: 'total',
 	                    type: 'line',
 	                    fill: false,
-	                    tension: 1,
+	                    tension: 0,
 	                    data: json["memberAdmin"][0]["countByYear"][2]["data"][0],
 	                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
 	                    borderColor: 'rgba(255, 99, 132, 1)',
@@ -247,7 +273,7 @@
 				},
 	        	title: {
 					display: true,
-					text: years[datas[0].length-1]+'년 월별 회원수 추이',
+					text: years[datas[0].length-1]+'년 월별 회원 가입/탈퇴',
 					fontSize: 30
 				}
 	        }

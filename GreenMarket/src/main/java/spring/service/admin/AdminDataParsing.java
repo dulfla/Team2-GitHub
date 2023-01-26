@@ -1,4 +1,4 @@
-package spring.business;
+package spring.service.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package spring.business;
+package spring.service.admin;
 
 import java.util.ArrayList;
 import java.util.HashMap;

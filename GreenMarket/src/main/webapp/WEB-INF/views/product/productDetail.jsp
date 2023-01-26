@@ -122,8 +122,8 @@
 							}).then(result => {
 							    if (result.isConfirmed) {
 							       	location.href="login";
-							    }else if (result.isDismissed) { // 만약 모달창에서 cancel 버튼을 눌렀다면
-							    	
+							    }else if (result.isDismissed) {
+							    	// 만약 모달창에서 cancel 버튼을 눌렀다면
 							    }
 							});
 						}, false);

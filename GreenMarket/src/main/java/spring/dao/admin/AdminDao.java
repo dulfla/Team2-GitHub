@@ -81,4 +81,8 @@ public class AdminDao {
 	public void addNewCategory(CategoryAdminVo cvo) {
 		sqlSession.selectOne("mybatis.mapper.admin.insertNewCategory", cvo);
 	}
+
+	public void deleteCategory(String c) {
+		sqlSession.selectOne("mybatis.mapper.admin.deleteCategory", c);
+	}
 }

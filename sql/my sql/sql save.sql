@@ -325,3 +325,19 @@ GROUP BY regs
 ORDER BY "year" ASC;
 
 ------------------------------------------------------------------------------------------------------------------
+
+SELECT cr.c_id, cr.p_id, 'sell' AS "type"
+FROM chatInfomation cr,
+    (SELECT p_id FROM product WHERE email='lee@naver.com') p
+WHERE cr.p_id=p.p_id
+UNION
+SELECT cr.c_id, cr.p_id, 'buy' AS "type"
+FROM chatInfomation cr,
+    (SELECT c_id FROM chatParticipants WHERE sender_email='lee@naver.com') m
+WHERE cr.c_id=m.c_id;
+
+SELECT c.category, c.icon , NVL("count",0) AS "cnt"
+FROM category c LEFT OUTER JOIN (SELECT category, COUNT(*) AS "count" FROM productDetail GROUP BY category) pd
+ON c.category=pd.category
+ORDER BY category ASC;
+        

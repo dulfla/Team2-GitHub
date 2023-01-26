@@ -9,7 +9,8 @@
 <title>그린 마켓</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <style type="text/css">
 	.categoryName{
 		font-size:12px;
@@ -371,30 +372,40 @@
 		}
 		
 		function imgCheckAndView(e){
-			let file = e.currentTarget.files[0];
-			let fileType = file.name.split(".");
-			fileType = fileType[fileType.length-1];
+			let iconImgDiv = document.getElementsByClassName('showSelectedIcon');
+			for(let i=0; i<iconImgDiv.length; i++){
+				iconImgDiv[i].innerHTML = null;
+			}
 			
-			let num = (sortation=='iconMf')?(0):(1);
-			
-			if(iconFileChecking(fileType, file.size)){
-				fileCheck = true;
+			let target = e.currentTarget;
+			if(0<target.files.length){
+				let file = target.files[0];
+				let fileType = file.name.split(".");
+				fileType = fileType[fileType.length-1];
 				
-				let tempUrl = window.URL.createObjectURL(file);
+				let num = (sortation=='iconMf')?(0):(1);
 				
-				let iconImg = document.createElement('img');
-				iconImg.setAttribute('src', tempUrl);
-				iconImg.setAttribute('alt', "수정을 위해 등록한 이미지");
-				iconImg.classList.add('mt-2')
-				document.getElementsByClassName('showSelectedIcon')[num].appendChild(iconImg);
-				
-				newIconFile = file;
+				if(iconFileChecking(fileType, file.size)){
+					fileCheck = true;
+					
+					let tempUrl = window.URL.createObjectURL(file);
+					
+					let iconImg = document.createElement('img');
+					iconImg.setAttribute('src', tempUrl);
+					iconImg.setAttribute('alt', "수정을 위해 등록한 이미지");
+					iconImg.classList.add('mt-2')
+					document.getElementsByClassName('showSelectedIcon')[num].appendChild(iconImg);
+					
+					newIconFile = file;
+				}else{
+					fileCheck = false;
+					let notice = document.createElement('h6');
+					notice.classList.add('mt-4');
+					notice.innerHTML = "해당 파일은<br>카테고리 아이콘으로<br>등록 할수 없습니다.";
+					document.getElementsByClassName('showSelectedIcon')[num].appendChild(notice);
+				}
 			}else{
 				fileCheck = false;
-				let notice = document.createElement('h6');
-				notice.classList.add('mt-4');
-				notice.innerHTML = "해당 파일은<br>카테고리 아이콘으로<br>등록 할수 없습니다.";
-				document.getElementsByClassName('showSelectedIcon')[num].appendChild(notice);
 			}
 		}
 
@@ -516,40 +527,104 @@
 			});
 		}
 		
-		function categoryDelete() {
-			/********/ /* 모달창으로 진짜 삭제할 건지 확인 받고나서 넘기기 */
-			let deleteCheck = false;
-			if(deleteCheck){
-				
-				/* 모달 창으로 삭제하면 어떤 카테고리에 넣을 건지 물어보기 */
-				
-				let choosedCategory = document.activeElement.parentElement.parentElement.parentElement.getElementsByClassName('categoryName')[0].innerHTML;
-				
-				$.ajax({
-				 	url: 'CategoryDelete',
-				 	processData : false,
-				 	contentType : false,
-				 	data : JSON.stringify({
-						category: choosedCategory,
-			    	}),
-				 	type : 'POST',
-				 	dataType : 'json',
-				 	success : function(data){
-				 		if(data==1){
-				 			console.log('삭제 완료');
-				 			categoryReload();
-				 			document.getElementById('modalClose').click();
-				 		}else if(data==2){
-				 			console.log('삭제 요류');
-				 		}
-				 	},
-				 	error : function(data){
-				 		console.log(JSON.stringify(data));
-				 	}
-				});
-			}else{
-				
-			}
+		function categoryDelete(e) {
+			let target = e.currentTarget;
+			Swal.fire({
+			   title: '삭제하면 되돌릴 수 없습니다.',
+			   text: '정말로 삭제하시겠습니까?',
+			   icon: 'warning',
+			   
+			   showCancelButton: true,
+			   confirmButtonColor: '#3085d6',
+			   cancelButtonColor: '#d33',
+			   confirmButtonText: '삭제',
+			   cancelButtonText: '취소',
+			   
+			   reverseButtons: false,
+			   
+			}).then(result => {
+			    if (result.isConfirmed) {
+			    	let choosedCategory = target.parentElement.parentElement.parentElement.getElementsByClassName('categoryName')[0].innerHTML;
+
+			    	$.ajax({
+					 	url: 'CategoryList',
+					 	type : 'POST',
+					 	dataType : 'json',
+					 	success : function(data){
+					 		if(data!=null && 1<data.length){
+					 			let selectBox = new Map;
+						 		for(let i=0; i<data.length; i++){
+						 			if(data[i].category!=choosedCategory){
+						 				selectBox.set(data[i].category, data[i].category);
+						 			}
+						 		}
+					 			Swal.fire({
+									title: '기존 카테고리의 상품들을<br>이동시킬 카테고리 지정',
+								  	input: 'select',
+								  	inputOptions: selectBox,
+								  	inputPlaceholder: '카테고리',
+								  	showCancelButton: true,
+								  	inputValidator: function (value) {
+								  		return new Promise(function (resolve, reject) {
+								      		if (value!='' && value!=null) {
+								        		resolve();
+								      		} else {
+								    	  		resolve('상품을 이동시킬 카테고리를 선택하셔야 합니다.');
+								      		}
+								    	});
+									},
+									confirmButtonColor: '#3085d6',
+									cancelButtonColor: '#d33',
+									confirmButtonText: '확인',
+									cancelButtonText: '취소',
+									
+									reverseButtons: false,
+								}).then(function (result) {
+									if (result.isConfirmed) {
+										let value = result.value;
+									 	$.ajax({
+										 	url: 'CategoryDelete',
+										 	contentType : 'application/json; charset=UTF-8',
+										 	data : JSON.stringify({
+												category: choosedCategory,
+												move: value
+									    	}),
+										 	type : 'POST',
+										 	dataType : 'json',
+										 	success : function(data){
+										 		if(data==1){
+										 			console.log('삭제 완료');
+										 			categoryReload();
+										 			document.getElementById('modalClose').click();
+										 		}else if(data==2){
+										 			console.log('삭제 요류');
+										 		}
+										 	},
+										 	error : function(data){
+										 		console.log(JSON.stringify(data));
+										 	}
+										});
+									}
+				 				});
+					 		}else{
+					 			Swal.fire({
+					 				title: "ERROR!",
+									html: "이동할 카테고리가 존재하지 않아서<br>해당 작업을 수행 할 수 없습니다.<br>카테고리삭제 작업이 취소됩니다.",
+									icon: "warning",
+									confirmButtonColor: '#3085d6',
+									confirmButtonText: '닫기',
+								});
+					 			return;
+					 		}
+					 	},
+					 	error : function(data){
+					 		console.log(JSON.stringify(data));
+					 	}
+					});
+			    }else if (result.isDismissed) {
+			    	// 만약 모달창에서 cancel 버튼을 눌렀다면
+			    }
+			});
 		}
 		
 		function categoryReload(){
@@ -561,28 +636,32 @@
 			 	type : 'POST',
 			 	dataType : 'json',
 			 	success : function(data){
-			 		if(data!=null){ categoryList.innerHTML = null; }
-			 		for(let i=0; i<=data.length; i++){
-			 			if(0<i){
-			 				template = document.getElementsByClassName('categoryBox')[0].cloneNode(true);
-			 				
-			 				template.setAttribute('idx', i);
-							
-							let cIcon = template.getElementsByTagName('img')[0];
-							cIcon.setAttribute('src', "CategoryImage?fileName="+data[i-1].icon);
-							cIcon.setAttribute('alt', data[i-1].category+" 아이콘");
-							
-							let cH4 = template.getElementsByTagName('h4')[0];
-							cH4.innerHTML = data[i-1].category;
-							
-							let cP = template.getElementsByTagName('p')[0];
-							let counts = data[i-1].cnt;
-							cP.innerHTML = counts.toLocaleString()+" 개";
-							
-							categoryList.appendChild(template);
-			 			}else{
-			 				categoryList.appendChild(template);
-			 			}
+			 		if(data!=null){ 
+			 			categoryList.innerHTML = null;
+			 			for(let i=0; i<=data.length; i++){
+				 			if(0<i){
+				 				template = document.getElementsByClassName('categoryBox')[0].cloneNode(true);
+				 				
+				 				template.setAttribute('idx', i);
+								
+								let cIcon = template.getElementsByTagName('img')[0];
+								cIcon.setAttribute('src', "CategoryImage?fileName="+data[i-1].icon);
+								cIcon.setAttribute('alt', data[i-1].category+" 아이콘");
+								
+								let cH4 = template.getElementsByTagName('h4')[0];
+								cH4.innerHTML = data[i-1].category;
+								
+								let cP = template.getElementsByTagName('p')[0];
+								let counts = data[i-1].cnt;
+								cP.innerHTML = counts.toLocaleString()+" 개";
+								
+								categoryList.appendChild(template);
+				 			}else{
+				 				categoryList.appendChild(template);
+				 			}
+				 		}
+			 		}else{
+			 			categoryList.appendChild(template);
 			 		}
 			 		newCategoryAdd = document.getElementsByClassName('categoryBox')[0];
 	 				newCategoryAdd.addEventListener('click', openModal, false);

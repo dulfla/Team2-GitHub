@@ -262,11 +262,11 @@ function openChatting(e){
 	offcanvasBody.innerHTML = null;
 
 	let msgBox = document.createElement('div');
-	msgBox.classList.add("overflow-auto");
+	msgBox.classList.add("overflow-auto", "position-relative");
 	msgBox.setAttribute('id', "messageBox");
 
 	let messageBoxContainer = document.createElement('div');
-	messageBoxContainer.classList.add('container', 'fixed-bottom');
+	messageBoxContainer.classList.add('container', 'position-relative');
 	messageBoxContainer.setAttribute('id', "message");
 
 	let inputGroup = document.createElement('div');
@@ -413,12 +413,17 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 			let msgL = data.messages;
 			if(0<msgL.length){
 				msgL.forEach((m) => {
-					insertMessage(m.sender, m.nickname, m.message, m.messType);
+					let newElem = insertMessage(m.sender, m.nickname, m.message, m.messType);
+					if(m.messType=='IMG'){
+						newElem.addEventListener('load', function(){
+							scrollCheck(true);
+						}, false);
+					}
 				});
 			}
 		},
 		complete: function(){
-			messageBox.scrollTo(0, messageBox.scrollHeight);
+			scrollCheck(true);
 		}
 	});	
 }
@@ -448,7 +453,7 @@ function chattingClose(){ // 서버 연결 끊고, messageBox 비우기
 	});
 }
 
-function sendFile(e){
+function sendFile(e){ /* chattingRoom.js 에서 바꾼 것 처럼 sendFile(sendingFile) -> filesConfrim(confrimFiles) -> fileSend(fileSending) 형식으로 바꾸기 */
 	let files = e.currentTarget.files;
 	if(0<files.length){
 		for(let i=0; i<files.length; i++){
@@ -507,8 +512,9 @@ function sendMessage(){ // 메세지 보내기
 		data : JSON.stringify({
 			c_id : chatRoomId,
     		p_id : productId,
-    		email : personalId, /* 임시 */
-    		message : msg.value
+    		email : personalId,
+    		message : msg.value,
+    		type : "TEXT"
     	}),
     	error:function(){
 			alert('서버 연결에 문제가 생겨 메세지가 전송되지 않았습니다.');
@@ -531,9 +537,19 @@ function onMessage(msg) {
 	let nowPosition = messageBox.scrollTop;
 	let result = approximateCheck(nowPosition);
 	
-	insertMessage(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
+	let check = insertMessage(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
 	
-	scrollCheck(result);
+	if(msgInfo[0][1]==personalId){
+		scrollCheck(true);
+	}else{
+		if(result && msgInfo[3][1]=='IMG'){
+			check.addEventListener('load', function(){
+				scrollChecking(result);
+			}, false);
+		}else{
+			scrollCheck(result);
+		}
+	}
 }
 
 function insertMessage(sender, nick, msg, msgType){
@@ -551,12 +567,15 @@ function insertMessage(sender, nick, msg, msgType){
 			myMessage = document.createElement('img');
 			myMessage.classList.add('chattingImage');
 			myMessage.setAttribute('src', "ChattingImage?c_id="+chatRoomId+"&fileName="+msg);
+			myMessage.addEventListener('load', function(){
+				scrollChecking(true);
+			}, false);
 		}
 	
 		myText.appendChild(myMessage);
 		messageBox.appendChild(myText);
 		
-		scrollCheck(true);
+		return myMessage;
 	}else{
 		let reciveText = document.createElement('div');
 		reciveText.classList.add('messageBox', 'reciveMessageBox');
@@ -584,6 +603,8 @@ function insertMessage(sender, nick, msg, msgType){
 		
 		reciveText.appendChild(sendingMessage);
 		messageBox.appendChild(reciveText);
+		
+		return sendingMessage;
 	}
 }
 
@@ -602,4 +623,23 @@ function approximateCheck(nowPosition){ // 위치 확인 - 맨 아래 스크롤�
 	}else{
 		return false; // 스크롤 위치 변경됨
 	}
+}
+
+function messagePopup(){
+	/* 
+		부트스트랩 토스트 사용.
+		
+		위치가 메세지 input-group 위, messageBox/messagesBox 안에 있어야 함
+		
+		해당 메세지 클릭하면 맨 아래로 스크롤
+		해당 메세지가 사진일 경우 (사진) 으로 표시
+		해당 메세지 팝업이 사라지기 전에 새 메세지가 오는 경우, 해당 메세지로 바꿔치기
+		팝업 지우기 버튼
+		
+		팝업에 뜨는 내용은 사진과 메세지
+		만약에 메세지가 너무 길 경우
+		split이나 subStr 의 역할을 할 수 있는 걸 찾아다가
+		해당 기능으로 일부만 짜른다음 ...으로 처리
+		
+	*/
 }

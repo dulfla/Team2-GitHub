@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
 <script src="${path}resources/script/chat/chattingInProductDetail.js"></script>
 
 <link rel="stylesheet" href="${path}resources/style/chattingStyle.css">
@@ -17,9 +20,9 @@
 				</div>
 			  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeBtn chatOffcanvas"></button>
 			</div>
-			<div class="offcanvas-body p-0 container chatOffcanvas">
-				<div id="messageBox" class="overflow-auto"></div>
-				<div class="container fixed-bottom" id="message">
+			<div class="offcanvas-body p-0 container chatOffcanvas position-relative">
+				<div id="messageBox" class="overflow-auto  position-relative"></div>
+				<div class="container position-relative" id="message">
 					<div class="input-group mt-2 p-0">
 						<input type="file" id="fileInput" multiple style="display:none;">
 						<button name="addFileBtn" class="btn btn-outline-secondary" type="button" id="button-addon1">+</button>
@@ -42,7 +45,7 @@
 				</div>
 			  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeBtn chatOffcanvas"></button>
 			</div>
-			<div class="offcanvas-body p-0 container chatOffcanvas">
+			<div class="offcanvas-body p-0 container chatOffcanvas position-relative">
 				<div id="chatRoomList" class="overflow-auto container">
 					<div class="list-group w-auto mt-2 h-100 mb-2" id="chattingRooms"></div>
 				</div>

@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
 <script src="${path}resources/script/chat/chattingRoom.js"></script>
 
 <link rel="stylesheet" href="${path}resources/style/chattingStyle.css">
@@ -18,7 +22,7 @@
 		</div>
 	  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeB"></button>
 	</div>
-	<div class="offcanvas-body p-0 container chatRoomOffcanvas">
+	<div class="offcanvas-body p-0 container chatRoomOffcanvas position-relative">
 		<div id="chatRoomList" class="overflow-auto container">
 			<div class="list-group w-auto mt-2 h-100 mb-2" id="chatRooms"></div>
 		</div>

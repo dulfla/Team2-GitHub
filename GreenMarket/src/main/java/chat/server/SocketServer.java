@@ -113,14 +113,42 @@ public class SocketServer {
 		try {
 			serverSocket.close();
 			threadPool.shutdownNow();
-			chatRoom.values().stream().forEach(crm -> crm.values().stream().forEach(sc -> sc.close()));
-			webSessions.values().stream().forEach(ws -> ws.values().stream().forEach(w -> w.forEach(s -> {
-				try {
-					s.close();
-				} catch (IOException e) {
-					e.printStackTrace();
+			
+			Collection<Map<String, SocketClient>> roomClient = chatRoom.values();
+			if(0<roomClient.size()) {
+				for(Map<String, SocketClient> rc : roomClient) {
+					Collection<SocketClient> socketClientList = rc.values();
+					if(0<socketClientList.size()) {
+						for(SocketClient sc : socketClientList) {
+							if(sc!=null) {
+								sc.close();
+							}
+						}
+					}
 				}
-			})));
+			}
+			
+			Collection<Map<String, Collection<WebSocketSession>>> sessionLists = webSessions.values();
+			if(0<sessionLists.size()) {
+				for(Map<String, Collection<WebSocketSession>> sLs : sessionLists) {
+					Collection<Collection<WebSocketSession>> sL = sLs.values();
+					if(0<sL.size()) {
+						for(Collection<WebSocketSession> sl : sL) {
+							if(0<sl.size()) {
+								for(WebSocketSession s : sl) {
+									try {
+										if(s!=null) {
+											s.close();
+										}
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}catch (IOException e) {
 			e.printStackTrace();
 		}

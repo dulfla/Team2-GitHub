@@ -87,6 +87,7 @@
 			(SELECT category, p_id FROM productHistory WHERE type=#{type}) p
 		ON c.category = p.category
 		GROUP BY c.category
+		ORDER BY c.category ASC
 	</select> <!-- type::'IN','OUT','TRADE' -->
 
 	<!-- 카테고리별 미 거래 삭제 상품 수 -->
@@ -98,7 +99,7 @@
 			<![CDATA[(SELECT category, p_id FROM productHistory WHERE type='OUT' AND type<>'TRADE') p]]>
 		ON c.category = p.category
 		GROUP BY c.category
-		ORDER BY category ASC
+		ORDER BY c.category ASC
 	</select>
 
 	<!-- 카테고리별 거래 후 삭제 상품 수 -->
@@ -110,7 +111,7 @@
 			(SELECT category, p_id FROM productHistory WHERE type='OUT' AND type='TRADE') p
 		ON c.category = p.category
 		GROUP BY c.category
-		ORDER BY category ASC
+		ORDER BY c.category ASC
 	</select>
 	
 	
@@ -151,7 +152,7 @@
 	</delete>
 	
 	<!-- 상품 상세정보에 있는 카테고리들 업데이트 -->
-		<update id="updateCategoryInProduct" parameterType="map">
+	<update id="updateCategoryInProduct" parameterType="map">
 		UPDATE productDetail
 		SET	category=#{move}
 		WHERE category=#{category}
