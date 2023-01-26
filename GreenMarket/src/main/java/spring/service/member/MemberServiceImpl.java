@@ -40,11 +40,17 @@ public class MemberServiceImpl implements MemberService {
 				return;
 			}	
 			//향상된 for문
-			for(ProductImageVO attach : vo.getImageList()) {
-				attach.setProductId(vo.getProductId());
+//			for(ProductImageVO attach : vo.getImageList()) {
+//				attach.setProductId(vo.getProductId());
+//				
+//				dao.imageRegister(attach);
+//			}
+			vo.getImageList().forEach(attach ->{
 				
+				attach.setProductId(vo.getProductId());
 				dao.imageRegister(attach);
-			}				
+				
+			});
 		}
 		
 		// 카테고리

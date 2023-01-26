@@ -48,7 +48,21 @@ crossorigin="anonymous"></script>
 	    border: none;
 	    display: block;
 	    cursor: pointer;	
+	}
+/* 	
+	.file-label {
+		background-color: #5b975b;
+		color: #fff;
+		text-align: center;
+		padding: 10px 0;
+		width: 65%;
+		border-radius: 6px;
+		cursor: pointer;
+	}
+	.file {
+	  display: none;
 	}	
+	 */
 </style>
 
 </head>
@@ -82,7 +96,8 @@ crossorigin="anonymous"></script>
 	                                    <div class="col-md-6">
 	                                        <div class="form-group">
 	                                            <label for="form_lastname">상품 가격</label>
-	                                            <input id="form_lastname" type="text" id="price" name="price" class="form-control" placeholder="가격을 입력해주세요  *" oninput="checkPwd()" required>
+	                                            <input id="form_lastname" type="text" id="price" name="price" class="form-control" placeholder="가격을 입력해주세요  *" 
+	                                            	 oninput="checkPrice()" required>
 	                                        </div>
 	                                    </div>
 	                                    <div class="col-md-6">
@@ -99,15 +114,16 @@ crossorigin="anonymous"></script>
 	                                    <div class="col-md-12">
 	                                        <div class="form-group">
 	                                            <label for="form_message">상품 정보</label>
-	                                            <textarea id="form_message" name="description" class="form-control" placeholder="상품 정보를 입력해주세요 *" rows="4" required data-error="상품 정보는 필수입력입니다."></textarea>
+	                                            <textarea id="form_message" name="description" class="form-control" placeholder="상품 정보를 입력해주세요 *" 
+	                                            	rows="4" required data-error="상품 정보는 필수입력입니다."></textarea>
 	                                        </div>
 	                                    </div>
 	                                </div>
 	                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="form_message" style="margin-top : 20px">사진 업로드</label>
-                                            <input type="file" id="fileItem" name='uploadFile' multiple>
+                                            <label for="chooseFile" class="file-label" style="margin-top : 20px" >사진 업로드</label>
+                                            <input type="file" class="file" id="chooseFile" name='uploadFile'accept=".jpg, .png" multiple>
                                             <div id="uploadResult"></div> 
                                             
                                         </div>                          
@@ -122,8 +138,8 @@ crossorigin="anonymous"></script>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn btn-success btn-send  pt-2 btn-block">상품 등록</button> 
-                                        <button type="button" class="btn btn-danger btn-send  pt-2 btn-block">목록</button>
+                                        <button type="submit" id="register_Btn" class="btn btn-success btn-send  pt-2 btn-block">상품 등록</button> 
+                                        <button type="button" id="list_Btn" class="btn btn-outline-dark">목록</button>
                                     </div>
                                 </div>
                             </form> 
@@ -136,6 +152,8 @@ crossorigin="anonymous"></script>
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script type="text/javascript">
+		var formObj = $("form[role='form']");
+	
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = { 
 			center: new kakao.maps.LatLng(37.267868108956456, 127.00053552238002), // 지도의 중심좌표
@@ -172,13 +190,13 @@ crossorigin="anonymous"></script>
 			$("#lng").val(lng);
 		});	
 
-
+		
 		$("input[type='file']").on("change", function(e){
 					
 			/* 등록된 이미지 존재시 삭제 */
-			if($(".imgDeleteBtn").length > 0){
+ 			if($(".imgDeleteBtn").length > 0){
 					deleteFile();
-			}
+			} 
 				
 			let formData = new FormData();
 			let fileInput = $('input[name="uploadFile"]');
@@ -201,7 +219,12 @@ crossorigin="anonymous"></script>
 					showUploadImage(result);
 				},
 				error : function(result){
-					alert("이미지 파일이 아닙니다.");
+					Swal.fire({
+					      icon: 'error',
+					      title: '이미지 파일이 아닙니다.',
+					      text: '',
+					});
+					return false;
 				}
 			});	
 		});
@@ -273,22 +296,34 @@ crossorigin="anonymous"></script>
 				}
 			 });
 		}
-		
-		function checkPwd() {
+ 		function checkPrice() {
 			var objEv = event.srcElement;
 			var numPattern = /([^0-9])/;
 			var numPattern = objEv.value.match(numPattern);
 			if (numPattern != null) {
 				Swal.fire({
 				      icon: 'error',
-				      title: '상품 가격은 숫자만 입력해주세요',
+				      title: '상품 가격은 숫자만 입력해주세요!',
 				      text: '',
 				});
+				if(objEv < 1 || objEv > 1000000000) {
+					Swal.fire({
+					      icon: 'error',
+					      title: '10억원 이상으로 등록할 수 없습니다!',
+					      text: '',
+					});
+			        $(this).val('');
+			    }
 				objEv.value = "";
 				objEv.focus();
 				return false;
 			}
 		}
+ 		
+ 		$("#list_Btn").click(function(){ 
+			location.href='productList?c=all&v=brandNew'
+		});
+
 	</script>
 </body>
 </html>

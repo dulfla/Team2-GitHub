@@ -25,7 +25,8 @@
 	    margin: auto;
 	}
 	.breadcrumb {
-    	margin-top: 15px
+    	margin-top: 0px;
+    	font-size: 13px;
 	}
 	.breadcrumb li {
 	    display: inline-block
@@ -35,7 +36,8 @@
 	    display: inline-block;
 	    margin-right: 5px;
 	    padding-right: 14px;
-	    position: relative
+	    position: relative;
+	    text-decoration-line: none;
 	}
 	.breadcrumb a:hover {
 	    color: #086fcf
@@ -46,126 +48,202 @@
 	    position: absolute;
 	    right: 0
 	}
+	#profile, .description, .map {
+		margin-top: 25px;
+		padding-bottom: 23px;
+		border-bottom: 2px solid #e9ecef;
+	}
+	#kakaoMap {
+		padding-bottom: 23px;
+		border-bottom: 2px solid #e9ecef;
+	}
+	.title {
+		font-size: 20px;
+	    font-weight: 600;
+	    line-height: 1.5;
+	    letter-spacing: -0.6px;
+	}
+	#title {
+		margin-top: 20px;
+	}
+	.regdate {
+		float: right;
+	}
+	.views {
+		float: left;
+	}
+	.regdate, .views {
+	    letter-spacing: -0.6px;
+	    color: #868e96;
+	}
+	.category {
+		margin-top: 4px;
+	    font-size: 13px;
+	    line-height: 1.46;
+	    letter-spacing: -0.6px;
+	    color: #868e96;
+	}
+	.price {
+		margin-top: 4px;
+		font-size:18px; 
+		font-weight:bold;
+		line-height: 1.76;
+    	letter-spacing: -0.6px;
+	}
+	.description {
+		font-size: 17px;
+	    line-height: 1.6;
+	    letter-spacing: -0.6px;
+	    margin: 16px 0;
+	    word-break: break-all;
+	}
+	#profileImg {
+		width: 40px;
+	    height: 40px;
+	    object-fit: cover;
+	    border-radius: 50%;
+	}
 </style>
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">
-		<div class = "container">
-		<form role='form' method="POST">
-			<input type="hidden" name="type" value="${authInfo.type}">
-			<input type="hidden" name="p_id" value="${product.p_id}" >
-			<input type="hidden" name="email" value="${product.email}">
-			<input type="hidden" name="authEmail" value="${authInfo.email}">
-			<input type="hidden" name="nickname" value="${product.nickname}">
-			<input type="hidden" id="lat" name="lat" value="${product.lat}">
-			<input type="hidden" id="lng" name="lng" value="${product.lng}">
-			<%-- 
-			<div class="inputArea"> 
-			 <label>카테고리</label>
-			 <span class="category">${product.category}</span>  	      
+		<div class="row ">
+			<div class="col-lg-5 mx-auto">
+				<div class="card mt-2 mx-auto p-4 bg-light">
+					<div class="breadcrumb" role="navigation" aria-label="Breadcrumbs">
+						<div class="_cont">
+							<ol style="padding-left: 0;">
+								<li><a href="productList?c=all&v=brandNew">중고거래</a></li>
+								<li><a href="productList?c=${product.category}&v=product">${product.category}</a></li>
+								<li>${product.p_name}</li>
+							</ol>
+						</div>
+					</div>
+					<div class="card-body bg-light">
+						<div class = "container">
+							<form id="contact-form" role="form" method="POST" autocomplete="off" enctype="multipart/form-data">
+								<input type="hidden" name="type" value="${authInfo.type}">
+								<input type="hidden" name="p_id" value="${product.p_id}" >
+								<input type="hidden" name="email" value="${product.email}">
+								<input type="hidden" name="authEmail" value="${authInfo.email}">
+								<input type="hidden" name="nickname" value="${product.nickname}">
+								<input type="hidden" id="lat" name="lat" value="${product.lat}">
+								<input type="hidden" id="lng" name="lng" value="${product.lng}">
+								<div class="controls">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<div id="uploadResult"></div>                       
+											</div>
+										</div>
+									</div>
+									<div class="row" id="profile">
+										<div class="col-md-9">
+											<div class="form-group">
+												<img src="./resources/img/default.png" alt="${product.nickname}" id="profileImg">
+												<span>${product.nickname}</span>
+											</div>
+										</div>
+										<div class="col-md-3">
+											<div class="form-group">
+													<span class="regdate">
+														<fmt:formatDate value="${product.regdate}" pattern="yyyy-MM-dd"/><br>
+													</span>
+													<span class="views">조회 ${product.views}</span> 
+											</div>
+										</div>
+									</div>    
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group" id="title">
+												<span class="title">${product.p_name}</span>              
+											</div>                          
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<span class="category">${product.category}</span>             
+											</div>                          
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<span class="price"><fmt:formatNumber value="${product.price}"  pattern="###,###,###"/>원</span>            
+											</div>                          
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<span><pre class="description">${product.description}</pre></span>              
+											</div>                          
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<div class="form-group" id="kakaoMap">
+												<label style= "width:100%; text-align: center;">직거래 위치</label>
+												<div id="map" style="max-width: 100%; height:500px;"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form> 
+						</div>
+					</div>
+					<div class="col-md-12">
+						<!-- 작성자,관리자 수정삭제버튼 -->
+						<c:if test="${product.email == authInfo.email || authInfo.type == 'M'}">
+						<button type="button" id="modify_Btn" class="btn btn-warning">수정</button>
+						<button type="button" id="delete_Btn" class="btn btn-danger">삭제</button>
+							</c:if>
+							<c:choose>
+								<c:when test="${empty authInfo}">
+									<button id="chatBtn" class="btn btn-primary" type="button">채팅하기</button>	
+									<script type="text/javascript">
+										window.onload = function(){
+											let btn = document.getElementById('chatBtn');
+											btn.addEventListener('click', function(){
+												Swal.fire({
+												   title: '채팅을 사용하시려면 로그인하셔야 합니다.',
+												   text: '로그인 하러 이동하시겠습니까?',
+												   icon: 'warning',
+												   
+												   showCancelButton: true,
+												   confirmButtonColor: '#3085d6',
+												   cancelButtonColor: '#d33',
+												   confirmButtonText: '로그인',
+												   cancelButtonText: '취소',
+												   
+												   reverseButtons: false,
+												   
+												}).then(result => {
+												    if (result.isConfirmed) {
+												       	location.href="login";
+												    }else if (result.isDismissed) { // 만약 모달창에서 cancel 버튼을 눌렀다면
+												    	
+												    }
+												});
+											}, false);
+										}
+									</script>
+								</c:when>
+								<c:otherwise>
+									<button id="openChattingBtn" class="btn btn-primary" type="button">
+										채팅하기
+									</button>
+									<input type="hidden" name="email" id="userEmail" value="${authInfo.email}">
+									<input type="hidden" name="p_id" id="productId" value="${product.p_id}">
+									<%@ include file="../include/chat/chat.jsp" %>
+								</c:otherwise>
+							</c:choose>
+							<button type="button" id="list_Btn" class="btn btn-outline-dark">목록</button>
+					</div>
+				</div> 
 			</div>
-			 --%>
-			 <div class="breadcrumb" role="navigation" aria-label="Breadcrumbs">
-				 <div class="_cont">
-					<ol>
-						<li><a href="productList?c=${product.category}&v=product">${product.category}</a></li>
-						<li>${product.p_name}</li>
-					</ol>
-				</div>
-			</div>
-			<div class="inputArea">
-				<div id="uploadResult">	
-				</div>
-			</div>
-			
-			<div class="inputArea"> 
-			 <label>등록일</label>
-			 <span class="regdate">
-			 	<fmt:formatDate value="${product.regdate}" pattern="yyyy-MM-dd"/>
-			 </span>        
-			</div>
-			
-			
-			<div class="inputArea"> 
-			 <label>조회수</label>
-			 <span class="views">${product.views}</span>        
-			</div>
-			
-			<div class="inputArea">
-			 <label for="p_name">상품명</label>
-			 <span>${product.p_name}</span>
-			</div>
-		
- 			 <div class="inputArea">
-			 <label for="email">판매자</label>
-			 <span>${product.nickname}</span>
-			</div>  
-			 
-			<div class="inputArea">
-			 <label for="price">상품가격</label>
-			 <span><fmt:formatNumber value="${product.price}"  pattern="###,###,###"/>원</span>
-			</div>			
-			
-			<div class="inputArea">
-			 <label for="description">상품소개</label>
-			 <span>${product.description}</span>
-			</div>
-        
-            <div class="inputArea">
-            	 <div class="inputArea_title">
-		            <label>직거래 위치</label>
-		        </div>
-            	<div id="map" style="max-width: 100%; height:500px;"></div>
-            </div>
-			
-			<!-- 작성자,관리자 수정삭제버튼 -->
-			<c:if test="${product.email == authInfo.email || authInfo.type == 'M'}">
-				<button type="button" id="modify_Btn" class="btn btn-warning">수정</button>
-				<button type="button" id="delete_Btn" class="btn btn-danger">삭제</button>
-			</c:if>
-			
-			</form>
-		<c:choose>
-			<c:when test="${empty authInfo}">
-				<button id="chatBtn" class="btn btn-primary" type="button">채팅하기</button>	
-				<script type="text/javascript">
-					window.onload = function(){
-						let btn = document.getElementById('chatBtn');
-						btn.addEventListener('click', function(){
-							Swal.fire({
-							   title: '채팅을 사용하시려면 로그인하셔야 합니다.',
-							   text: '로그인 하러 이동하시겠습니까?',
-							   icon: 'warning',
-							   
-							   showCancelButton: true,
-							   confirmButtonColor: '#3085d6',
-							   cancelButtonColor: '#d33',
-							   confirmButtonText: '로그인',
-							   cancelButtonText: '취소',
-							   
-							   reverseButtons: false,
-							   
-							}).then(result => {
-							    if (result.isConfirmed) {
-							       	location.href="login";
-							    }else if (result.isDismissed) { // 만약 모달창에서 cancel 버튼을 눌렀다면
-							    	
-							    }
-							});
-						}, false);
-					}
-				</script>
-			</c:when>
-			<c:otherwise>
-				<button id="openChattingBtn" class="btn btn-primary" type="button">
-					채팅하기
-				</button>
-				<input type="hidden" name="email" id="userEmail" value="${authInfo.email}">
-				<input type="hidden" name="p_id" id="productId" value="${product.p_id}">
-				<%@ include file="../include/chat/chat.jsp" %>
-			</c:otherwise>
-		</c:choose>
 		</div>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
@@ -272,6 +350,10 @@
 				}
 			})		 
 		});
+		$("#list_Btn").click(function(){ 
+			location.href='productList?c=all&v=brandNew'
+		});
+		
 	</script>
 </body>
 </html>
