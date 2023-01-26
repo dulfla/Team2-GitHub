@@ -6,14 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import oracle.jdbc.proxy.annotation.GetCreator;
 import spring.dao.product.ProductDaoImp;
-import spring.dao.product.ProductListDAO;
 import spring.dao.search.SearchDao;
-import spring.service.search.SearchService;
 import spring.vo.product.CategoryVO;
 import spring.vo.product.ProductListVO;
 import spring.vo.search.Search;
@@ -25,21 +20,24 @@ public class SearchController {
 	@Autowired
 	private ProductDaoImp daoip;
 	
-	
 	@Autowired 
 	private SearchDao searchDao;
 	
-	@Autowired
-	private SearchService searchService;
-	
 	@GetMapping("search")
 	public String search(Search searches, String c, String v, Model model) {
+		
+		// 검색어 빈칸으로 입력했을때
+		if(searches.getKeyword() == null ||
+			searches.getKeyword().equals("")) {
+			
+			return "redirect:/index";
+		}
 		
 		List<CategoryVO> categoryList = daoip.category();
 		//검색어 저장
 		Search search = new Search(searches.getIdx(),
 				searches.getKeyword(),searches.getEmail());
-		searchService.PopularSearch(searches);
+		searchDao.searchInsert(search);	
 		
 		List<ProductListVO> list = null;
 		
@@ -82,4 +80,13 @@ public class SearchController {
 		return "search/products";
 	}
 	
+	// 인기검색어
+	@GetMapping("popularSearch")
+	public String popularSearch(Model model) {
+		
+		List<Search> popularSearchList = searchDao.popSearchList(); 
+		
+		model.addAttribute("list",popularSearchList);
+		return "search/popularSearch";
+	}
 }
