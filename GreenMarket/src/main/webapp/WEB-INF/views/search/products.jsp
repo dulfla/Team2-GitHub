@@ -115,18 +115,18 @@
       </c:forEach>
       </div>
     </div>
-  </div>  
-  <%@ include file="../include/footer.jsp" %>
-  <script type="text/javascript">
-  	window.onload = function(){
-  		let moveToDetail = document.getElementsByName('moveToDetail');
-  		for(let i=0; i<moveToDetail.length; i++){
-  			moveToDetail[i].addEventListener('click', function(){
-  	  			let href = moveToDetail[i].getAttribute('href');
-  	  			location.href = href;
-  	  		}, false);
-  		}
-  	}
-  </script>
+  </div> 
 </body>
+<script type="text/javascript">
+	window.onload = function(){
+		let moveToDetail = document.getElementsByName('moveToDetail');
+		for(let i=0; i<moveToDetail.length; i++){
+			moveToDetail[i].addEventListener('click', function(){
+	  			let href = moveToDetail[i].getAttribute('href');
+	  			location.href = href;
+	  		}, false);
+		}
+	}
+</script>
+<jsp:include page="../include/footer.jsp"/>
 </html>

@@ -16,6 +16,7 @@
 	<div id="container">
 		<!-- 메인 공간 -->
 	</div>
+	<a href="popularSearch">중고거래 인기검색어</a>
 	<%@ include file="include/footer.jsp" %>
 </body>
 </html>

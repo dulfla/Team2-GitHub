@@ -84,7 +84,8 @@
 			      	<div class="search col-4 col-lg-auto mb-2 mb-lg-0 me-lg-0" >
 		          		<input type="hidden" name="c" value="all">
 		          		<input type="hidden" name="v" value="product">
-		          		<input type="search"  id="search" name="search" aria-label="Search">
+		          		<input type="hidden" name="email" value="${authInfo.email}">
+		          		<input type="search"  id="keyword" name="keyword" aria-label="Search">
 		        		<div class="material-symbols-outlined col-11 col-lg-auto ">search</div>
 		        	</div>
 	        	</form> 
@@ -116,6 +117,7 @@
 </c:if>
 
 <script type="text/javascript">
+	
 	const searchEl = document.querySelector('.search');
 	const searchInputEl = searchEl.querySelector('input[type=search]');
 	

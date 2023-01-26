@@ -25,5 +25,6 @@
 		<typeAlias type="spring.vo.product.ProductImageVO" alias="ProductImageVO"/>
 		
 		<typeAlias type="spring.vo.product.ProductListVO" alias="pListVO"/>
+		<typeAlias type="spring.vo.search.Search" alias="search"/>
 	</typeAliases>
 </configuration>

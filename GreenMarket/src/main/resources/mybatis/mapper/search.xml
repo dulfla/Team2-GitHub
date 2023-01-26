@@ -96,4 +96,23 @@
 		
 	</select>
 	
+	<!-- 검색어 저장 -->
+	<insert id="searchInsert" parameterType="search" >
+		<if test="email == null">
+			insert into search(idx,keyword)
+			VALUES(search_seq.nextval,#{keyword})
+		</if>
+		<if test="email != null">
+			insert into search(idx, keyword, email)
+			VALUES(search_seq.nextval,#{keyword},#{email})
+		</if>
+	</insert>
+	
+	<select id="popSearchList" resultType="search">
+		select keyword ,count(keyword)
+		from search
+		group by keyword 
+		order by count(keyword) desc
+	</select>
+	
 </mapper>
