@@ -51,11 +51,12 @@ h2{
 	background-color: #9acd32;
 	/*  background: #428bca; */
 	color: white;
+	font-size: 23px;
 }
 
 .rwd-table tr {
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
+	border-top: 1px solid #f9f9f9; 
+	border-bottom: 1px solid #f9f9f9; 
 	background-color:;
 }
 
@@ -243,7 +244,7 @@ a {
 
 .tbody {
 	font-family: "hana"; 
-	font-size: 20px;
+	font-size: 18px;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
@@ -257,7 +258,7 @@ a {
 </head>
 <body>
 	<div class="container">
-		<h2 class="mb-5 mt-5">오늘의 중고 인기 검색어</h2>
+		<h2 class="mb-4 mt-4">오늘의 중고 인기 검색어</h2>
 		  <table class="rwd-table col-4 tbody">
 		    <tbody>
 		      <tr>
