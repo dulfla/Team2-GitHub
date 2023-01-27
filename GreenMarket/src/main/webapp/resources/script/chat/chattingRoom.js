@@ -2,6 +2,7 @@ let offCanvs = null;
 
 let bton = null;
 let activeBtn = null;
+let startBtn = null;
 
 let messagesBox = null;
 let msge = null;
@@ -37,7 +38,7 @@ window.addEventListener('load', function() {
 	roomsBox = document.getElementById('chatRooms');
 	roomsBox.innerHTML = null;
 	
-	let startBtn = document.getElementById('myChattings');
+	startBtn = document.getElementById('myChattings');
 	startBtn.addEventListener('click', function (){
 		personId = document.getElementById('authInfo_email').value;
 		activeBtn = "all";
@@ -51,29 +52,31 @@ window.addEventListener('load', function() {
 		}
 	};
 	
-	document.addEventListener('click', () => {
-		let activeE = document.activeElement;
-		let body = document.getElementsByTagName('body')[0];
-		if(activeE==body){
-			shotServer();
-		}else if(activeE==startBtn){
-			if(offCanvs.classList.contains('show')){
-				shotServer();
-			}else{
-				let chattingOffcanvs = document.getElementById('offcanvasRight chatOffcanvas');
-				if(chattingOffcanvs){
-					if(chattingOffcanvs.classList.contains('show')){
-						chattingOffcanvs.classList.toggle('show');
-					}
-				}
-				offCanvs.classList.add('show');
-			}
-		}
-	}, false);
+	document.addEventListener('click', offCanvasCloseCheck, false);
 	
 	let closeBtn = document.getElementById('closeB');
 	closeBtn.addEventListener('click', shotServer, false);
 });
+
+function offCanvasCloseCheck(){
+	let activeE = document.activeElement;
+	let body = document.getElementsByTagName('body')[0];
+	if(activeE==body){
+		shotServer();
+	}else if(activeE==startBtn){
+		if(offCanvs.classList.contains('show')){
+			shotServer();
+		}else{
+			let chattingOffcanvs = document.getElementById('offcanvasRight chatOffcanvas');
+			if(chattingOffcanvs){
+				if(chattingOffcanvs.classList.contains('show')){
+					chattingOffcanvs.classList.toggle('show');
+				}
+			}
+			offCanvs.classList.add('show');
+		}
+	}
+}
 
 function shotServer(){
 	if(offCanvs.classList.contains('show')){
@@ -230,11 +233,11 @@ function openChattings(e){
 	offcanvasBody.innerHTML = null;
 
 	let msgBox = document.createElement('div');
-	msgBox.classList.add("overflow-auto", "position-relative"); /*position-relative*/
+	msgBox.classList.add("overflow-auto", "position-relative");
 	msgBox.setAttribute('id', "messagesBox");
 
 	let messageBoxContainer = document.createElement('div');
-	messageBoxContainer.classList.add('container', 'position-relative'); /*position-relative*/
+	messageBoxContainer.classList.add('container', 'position-relative');
 	messageBoxContainer.setAttribute('id', "messages");
 
 	let inputGroup = document.createElement('div');
@@ -370,7 +373,7 @@ function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들
 }
 
 function chatClose(){ // 서버 연결 끊고, messagesBox 비우기
-	socket = null;
+	socket.close();
 	
 	document.removeEventListener('keydown', enterSending, false);
 	document.getElementsByName("sendB")[0].removeEventListener('click', msgeNullcheck, false);
@@ -382,7 +385,7 @@ function chatClose(){ // 서버 연결 끊고, messagesBox 비우기
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
 			c_id : chatRId, 
-			email : personId /* 임시 */
+			email : personId
 		}),
 		success:function(){   
 			console.log('서버와의 연결이 정상적으로 해제되었습니다.');
@@ -418,26 +421,31 @@ function sendingFile(e){
 }
 
 function confrimFiles(errorFiles, currectFiles){
-	let header;
-	let errFiles;
-	let imgList;
+	let header = "";
+	let msg = "";
+	let imgList = "";
 	if(currectFiles.length==0){
 		header = "파일을 전송할 수 없습니다.";
-		errFiles = "모든";
-		imgList = null;
+		msg = "모든 파일이 누락되었습니다.";
 	}else{
 		header = "파일을 전송하시겠습니까?";
-		errFiles = errorFiles.length+" 개의";
+		if(errorFiles.length==0){
+			msg = "누락된 파일이 없습니다."
+		}else{
+			msg = errorFiles.length+" 개의 파일이 누락되었습니다."
+		}
 		imgList = "<br>= 전송 가능한 파일 =<br><br>";
 		for(let i=currectFiles.length-1; 0<=i; i--){
 			let tempUrl = window.URL.createObjectURL(currectFiles[i]);
-			imgList += "<img src='"+tempUrl+"' style='width:400px'>";
+			imgList += "<img src='"+tempUrl+"' style='width:400px; margin-bottom:10px;'>";
 		}
 	}
 	
+	document.removeEventListener('click', offCanvasCloseCheck);
+	
 	Swal.fire({
 	   title: header,
-	   html: '- '+errFiles+' 파일이 누락되었습니다. -<br><small>.jpg, .png 형식의 1MB 이하의 파일만 전송 가능합니다.</small><br><br>'+imgList,
+	   html: '- '+msg+' -<br><small>.jpg, .png 형식의 1MB 이하의 파일만 전송 가능합니다.</small><br><br>'+imgList,
 	   
 	   showCancelButton: true,
 	   confirmButtonColor: '#3085d6',
@@ -451,13 +459,14 @@ function confrimFiles(errorFiles, currectFiles){
 	    if (result.isConfirmed) {
 	    	fileSending(currectFiles);
 	    }else if (result.isDismissed) {
-	    	resolve(); /*여기 에러남*/
+	    	setTimeout(() => {
+				document.addEventListener('click', offCanvasCloseCheck, false);
+			}, 100);
 	    }
 	});
 }
 
 function fileSending(files){
-	console.log(files);
 	if(0<files.length){
 		for(let i=files.length-1; 0<=i; i--){
 			let formData = new FormData();
@@ -487,6 +496,9 @@ function fileSending(files){
 			 	},
 			 	error : function(data){
 			 		console.log(JSON.stringify(data))
+			 	},
+			 	complete : function(){
+				 	document.addEventListener('click', offCanvasCloseCheck, false);
 			 	}
 			});
 		}
@@ -513,7 +525,7 @@ function sendMsg(){ // 메세지 보내기
 		data : JSON.stringify({
 			c_id : chatRId,
     		p_id : null,
-    		email : personId, /* 임시 */
+    		email : personId,
     		message : msge.value,
     		type : "TEXT"
     	}),
@@ -545,10 +557,14 @@ function onMsge(msg) {
 	}else{
 		if(result && msgInfo[3][1]=='IMG'){
 			check.addEventListener('load', function(){
-				scrollChecking(result);
+				if(!scrollChecking(result)){
+					mesgPopup(msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
+				}
 			}, false);
 		}else{
-			scrollChecking(result);
+			if(!scrollChecking(result)){
+				mesgPopup(msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
+			}
 		}
 	}
 }
@@ -612,8 +628,9 @@ function insertMessages(sender, nick, msg, msgType){
 function scrollChecking(result){ // 스크롤이 맨 아래에 있다면 새 메세지를 보내거나 받았을 때 스크롤을 아래로 고정, 맨 아래가 아니라면 위치 그대로에, 메세지 보내고, 팝업 띄우기
 	if(result){
 		messagesBox.scrollTo(0, messagesBox.scrollHeight);
+		return true;
 	}else{
-		mesgPopup();
+		return false;
 	}
 }
 
@@ -626,21 +643,30 @@ function approximateChecking(nowPosition){ // 위치 확인 - 맨 아래 스크�
 	}
 }
 
-function mesgPopup(){
-	/* 
-		부트스트랩 토스트 사용.
-		
-		위치가 메세지 input-group 위, messageBox/messagesBox 안에 있어야 함
-		
-		해당 메세지 클릭하면 맨 아래로 스크롤
-		해당 메세지가 사진일 경우 (사진) 으로 표시
-		해당 메세지 팝업이 사라지기 전에 새 메세지가 오는 경우, 해당 메세지로 바꿔치기
-		팝업 지우기 버튼
-		
-		팝업에 뜨는 내용은 사진과 메세지
-		만약에 메세지가 너무 길 경우
-		split이나 subStr 의 역할을 할 수 있는 걸 찾아다가
-		해당 기능으로 일부만 짜른다음 ...으로 처리
-		
-	*/
+function mesgPopup(nick, msg, msgType){
+	let toast = document.createElement('div');
+	toast.classList.add("messagePopUp");
+	
+	let header = document.createElement('div');
+	let name = document.createElement('h6');
+	name.innerHTML = nick;
+	
+	let body = document.createElement('div');
+	let msge = document.createElement('small');
+	msge.innerHTML = (msgType=='IMG')?("(사진)"):((msg.length<=20)?(msg):(msg.substr(0, 20)+"..."));
+	
+	body.appendChild(msge);
+	header.appendChild(name);
+	toast.appendChild(header);
+	toast.appendChild(body);
+	toast.addEventListener('click', function(){
+		messagesBox.removeChild(toast);
+		scrollChecking(true);
+	}, false);
+	
+	messagesBox.appendChild(toast);
+
+	setTimeout(()=>{
+		messagesBox.removeChild(toast);
+	}, 1300);
 }

@@ -19,14 +19,14 @@ public class ChattingWebSocket extends TextWebSocketHandler{
     
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-//    	System.out.println(session.getId()+", WebSocket 연결");
+    	System.out.println(session.getId()+", WebSocket 연결");
         Map<String, String> info = getURIInfos(session);
     	ss.saveWebSession(info, session);	
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-//		System.out.println(session.getId()+", WebSocket 분리"); /* * 서버 종료, 새로고침시에만 작동 * */
+		System.out.println(session.getId()+", WebSocket 분리");
     	Map<String, String> info = getURIInfos(session);
         ss.removeWebSesseion(info, session);
     }

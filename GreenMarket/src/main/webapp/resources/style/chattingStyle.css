@@ -8,10 +8,12 @@
 /* ---------------------------------------------------------------------------------------------------------- */
 
 /* 공통 */
+/*
 #container{
 	height:100vh;
 	width:100vw;
 }
+*/
 .offcanvas{
 	height:100%;
 }
@@ -53,6 +55,17 @@ a{
 	font-size:1.7em;
 	font-weight:bold;
 	color:gray;
+}
+.messagePopUp{
+	position:fixed;
+	bottom:50px;
+	right: 0;
+	margin:0 30px;
+	padding:10px;
+	border:1px solid #eee;
+	border-radius:5px;
+	background-color:ghostwhite;
+	width:350px;
 }
 
 /* ---------------------------------------------------------------------------------------------------------- */

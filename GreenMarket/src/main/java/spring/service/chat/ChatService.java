@@ -17,6 +17,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.WebSession;
+import org.springframework.web.socket.WebSocketSession;
 
 import chat.server.ChatClient;
 import chat.server.ChattingWebSocket;
@@ -38,6 +40,7 @@ public class ChatService {
 	
 	@Autowired
 	private SocketServer ss;
+	private Map<String, Map<String, Collection<WebSocketSession>>> webSessions = null;
 	
 	@Autowired
 	private ChattingWebSocket cws;
@@ -93,8 +96,20 @@ public class ChatService {
 
 	public void close(ChatClient client, String c_id, String email) throws IOException {
 		if(client!=null) {
-			client.unconnect();
+			webSessions = ss.getWebSessions();
+			if(0<webSessions.size()) {
+				for(int i=0; i<webSessions.size(); i++) {
+					if(webSessions.containsKey(c_id)) {
+						if(webSessions.get(c_id).containsKey(email)) {
+							if(0!=webSessions.get(c_id).get(email).size()) {
+								return;
+							}
+						}
+					}
+				}
+			}
 			chatRoom.get(c_id).remove(email, client);
+			client.unconnect();
 		}
 	}
 
@@ -103,30 +118,28 @@ public class ChatService {
 	}
 
 	public ChatClient checkClient(String c_id, String email) {
-		Collection<String> cr = chatRoom.keySet();
-		if(0<cr.size()) {
-			for(String id : cr) {
-				if(id.equals(c_id)) {
-					Collection<Map<String, ChatClient>> clients = chatRoom.values();
-					for(Map<String, ChatClient> cl : clients) {
-						Collection<String> emails = cl.keySet();
-						for(String e : emails) {
-							if(e.equals(email)) {
-								return cl.get(email);
-							}
-						}
-						ChatClient client = new ChatClient();
-						cl.put(email, client);
-						return client;
-					}
-				}
+		if(chatRoom.containsKey(c_id)) {
+			Map<String, ChatClient> mem = chatRoom.get(c_id);
+			if(mem.containsKey(email)) {
+				System.out.println("채팅방("+c_id+") 있음, 클라이언트("+email+")도 있음");
+				System.out.println(mem.get(email));
+				return mem.get(email);
+			}else {
+				ChatClient client = new ChatClient();
+				mem.put(email, client);
+				System.out.println("채팅방("+c_id+") 있음, 클라이언트("+email+") 없음");
+				System.out.println(client);
+				return client;
 			}
+		}else {
+			Map<String, ChatClient> list = Collections.synchronizedMap(new HashMap<>());
+			ChatClient client = new ChatClient();
+			list.put(email, client);
+			chatRoom.put(c_id, list);
+			System.out.println("채팅방("+c_id+") 있음, 클라이언트("+email+") 없음");
+			System.out.println(client);
+			return client;
 		}
-		Map<String, ChatClient> list = Collections.synchronizedMap(new HashMap<>());
-		ChatClient client = new ChatClient();
-		list.put(email, client);
-		chatRoom.put(c_id, list);
-		return client;
 	}
 
 	public ChatMessageVo selectSendedMessage(long idx) {
