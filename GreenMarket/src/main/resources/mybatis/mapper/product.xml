@@ -21,11 +21,20 @@
 		insert into product(idx,email,p_id)
 		values (product_seq.nextval,#{email},#{productId})	
 	</insert>
-	
+
 	<insert id="productPic" parameterType="ProductImageVO">
 		insert into productPic(p_id, fileName, uploadPath, uuid)
 		values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
 	</insert>	
+
+<!-- 	<insert id="productPic" parameterType="ProductVO">
+		insert all
+		<foreach collection="imageList" item="file" separator="">
+			into productPic(p_id, fileName, uploadPath, uuid)
+			values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
+		</foreach>
+		select * from dual
+	</insert>	 -->
 
 	<!-- 조회수 증가 -->
 	<update id="modifyProductViews" parameterType="String">
@@ -82,7 +91,7 @@
 	</delete> 
 	<!-- 이미지 삭제 -->
 	<delete id="deleteImage">	
-		delete from productPic where p_id=#{p_id}
+		delete productPic where p_id=#{p_id}
 	</delete>
 	
 	<select id="getImageInfo" resultType="ProductImageVO">

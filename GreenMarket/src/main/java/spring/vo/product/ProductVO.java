@@ -18,6 +18,8 @@ public class ProductVO {
 	private String lat;
 	private String lng;
 	
+	private List<ProductImageVO> imageList;
+	
 	private String productId;
 	private String email;	
 	
@@ -29,7 +31,7 @@ public class ProductVO {
 		this.nickname = nickname;
 	}
 
-	private List<ProductImageVO> imageList;
+	
 	
 	public List<ProductImageVO> getImageList() {
 		return imageList;

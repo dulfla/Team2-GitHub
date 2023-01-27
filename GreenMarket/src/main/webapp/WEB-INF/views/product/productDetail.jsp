@@ -9,7 +9,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 
-<link rel="stylesheet" href="${path}resources/style/basicStryle.css">
+<%-- <link rel="stylesheet" href="${path}resources/style/basicStryle.css"> --%>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
@@ -23,6 +23,7 @@
 	    padding: 5px;
 	    margin-top: 10px;
 	    margin: auto;
+	    border-radius: 2%;
 	}
 	.breadcrumb {
     	margin-top: 0px;
@@ -49,8 +50,8 @@
 	    right: 0
 	}
 	#profile, .description, .map {
-		margin-top: 25px;
-		padding-bottom: 23px;
+		margin-top: 15px;
+		padding-bottom: 10px;
 		border-bottom: 2px solid #e9ecef;
 	}
 	#kakaoMap {
@@ -75,6 +76,7 @@
 	.regdate, .views {
 	    letter-spacing: -0.6px;
 	    color: #868e96;
+	    margin-top: 15px;
 	}
 	.category {
 		margin-top: 4px;
@@ -107,7 +109,7 @@
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
-	<div id="container">
+	<!-- <div id="container"> -->
 		<div class="row ">
 			<div class="col-lg-5 mx-auto">
 				<div class="card mt-2 mx-auto p-4 bg-light">
@@ -141,7 +143,7 @@
 									<div class="row" id="profile">
 										<div class="col-md-9">
 											<div class="form-group">
-												<img src="./resources/img/default.png" alt="${product.nickname}" id="profileImg">
+												<img src="https://github.com/mdo.png" alt="${product.nickname}" id="profileImg">
 												<span>${product.nickname}</span>
 											</div>
 										</div>
@@ -245,7 +247,7 @@
 				</div> 
 			</div>
 		</div>
-	</div>
+<!-- 	</div> -->
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script>

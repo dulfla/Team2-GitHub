@@ -21,17 +21,23 @@ crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
   
 <style type="text/css">
+	#uploud-group{
+		border-bottom: 1px solid #e9ecef;
+	}
+
+	.uploadResultBox{
+		display: inline-flex;
+	}
 	#result_card img{
- 		max-width: 100%; 
-	    height: 400px; 
-	    display: block;
-	    padding: 5px;
-	    margin-top: 10px;
-	    margin: auto;	
+	    width: 100%;
+    	height: 100%;
 	}
 	#result_card {
 		position: relative;
-		width:100%
+		width: 202px;
+    	height: 202px;
+    	border: 1px solid rgb(230, 229, 239);
+    	position: relative;
 	}
 	.imgDeleteBtn{
 	    position: absolute;
@@ -49,20 +55,8 @@ crossorigin="anonymous"></script>
 	    display: block;
 	    cursor: pointer;	
 	}
-/* 	
-	.file-label {
-		background-color: #5b975b;
-		color: #fff;
-		text-align: center;
-		padding: 10px 0;
-		width: 65%;
-		border-radius: 6px;
-		cursor: pointer;
-	}
-	.file {
-	  display: none;
-	}	
-	 */
+
+
 </style>
 
 </head>
@@ -95,9 +89,9 @@ crossorigin="anonymous"></script>
 	                                <div class="row">
 	                                    <div class="col-md-6">
 	                                        <div class="form-group">
-	                                            <label for="form_lastname">상품 가격</label>
+	                                            <label for="form_lastname">상품가격 (원)</label>
 	                                            <input id="form_lastname" type="text" id="price" name="price" class="form-control" placeholder="가격을 입력해주세요  *" 
-	                                            	 oninput="checkPrice()" required>
+	                                            	 numberOnlyMinComma="true" required>
 	                                        </div>
 	                                    </div>
 	                                    <div class="col-md-6">
@@ -120,15 +114,15 @@ crossorigin="anonymous"></script>
 	                                    </div>
 	                                </div>
 	                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="chooseFile" class="file-label" style="margin-top : 20px" >사진 업로드</label>
-                                            <input type="file" class="file" id="chooseFile" name='uploadFile'accept=".jpg, .png" multiple>
-                                            <div id="uploadResult"></div> 
+                                    <div class="col-md-12">
+                                        <div class="form-group" id="uploud-group" style="height: 200px;">
+                                            <label for="chooseFile" class="file-label" style="margin-top : 20px" >업로드</label>
+                                            <input type="file" class="file" id="chooseFile" name='uploadFile'accept=".jpg, .png">
+                                            <div id="uploadResult" class="uploadResultBox"></div> 
                                             
                                         </div>                          
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="form_message" style="margin-top : 20px">거래 위치</label>
                                             <div id="map" style="width:100%;height:400px;"></div>
@@ -152,6 +146,7 @@ crossorigin="anonymous"></script>
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script type="text/javascript">
+
 		var formObj = $("form[role='form']");
 	
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -194,14 +189,15 @@ crossorigin="anonymous"></script>
 		$("input[type='file']").on("change", function(e){
 					
 			/* 등록된 이미지 존재시 삭제 */
- 			if($(".imgDeleteBtn").length > 0){
+ 			/* if($(".imgDeleteBtn").length > 0){
 					deleteFile();
-			} 
+			}  */
 				
 			let formData = new FormData();
 			let fileInput = $('input[name="uploadFile"]');
 			let fileList = fileInput[0].files;
-			let fileObj = fileList[0];
+			/* let fileObj = fileList[0];  */
+			
 		
 			// 사용자가 선택한 파일을 FormData에 "uploadFile"이란 이름(key)으로 추가해주는 코드
 			for(let i = 0; i < fileList.length; i++){
@@ -235,12 +231,16 @@ crossorigin="anonymous"></script>
 		function fileCheck(fileName, fileSize){
 		
 			if(fileSize >= maxSize){
-				alert("파일 사이즈 초과");
+				Swal.fire({
+				      icon: 'error',
+				      title: '10MB 이상의 파일입니다',
+				      text: '',
+				});
 				return false;
 			}
 					  
 			if(!regex.test(fileName)){
-				alert("해당 종류의 파일은 업로드할 수 없습니다.");
+				
 				return false;
 			}			
 				return true;					
@@ -296,34 +296,51 @@ crossorigin="anonymous"></script>
 				}
 			 });
 		}
- 		function checkPrice() {
-			var objEv = event.srcElement;
-			var numPattern = /([^0-9])/;
-			var numPattern = objEv.value.match(numPattern);
-			if (numPattern != null) {
-				Swal.fire({
-				      icon: 'error',
-				      title: '상품 가격은 숫자만 입력해주세요!',
-				      text: '',
-				});
-				if(objEv < 1 || objEv > 1000000000) {
-					Swal.fire({
-					      icon: 'error',
-					      title: '10억원 이상으로 등록할 수 없습니다!',
-					      text: '',
-					});
-			        $(this).val('');
-			    }
-				objEv.value = "";
-				objEv.focus();
-				return false;
-			}
-		}
- 		
+
+		
+		/* 가격 숫자만 입력, 쉼표 */
+ 		$(document).on("keyup", "input:text[numberOnlyMinComma]", function()	{
+ 			var strVal = $(this).val();
+
+ 			event = event || window.event;
+ 			var keyID = (event.which) ? event.which : event.keyCode;
+
+ 			if( ( keyID >=48 && keyID <= 57 ) || ( keyID >=96 && keyID <= 105 )
+ 						|| keyID == 46 || keyID == 8 || keyID == 109
+ 						|| keyID == 189 || keyID == 9
+ 						|| keyID == 37 || keyID == 39){
+
+ 				if(strVal.length > 1 && (keyID == 109 || keyID == 189)){
+ 					return false;
+ 				}else{
+ 					return;
+ 				}
+ 			}else{
+ 				return false;
+ 			}
+ 		});
+ 		$(document).on("keyup", "input:text[numberOnlyMinComma]", function()	{
+ 			$(this).val( $(this).val().replace(/[^-\.0-9]/gi,"") );
+ 			$(this).val( $(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );
+ 		});  		
+ 		$(document).on("focusout", "input:text[numberOnlyMinComma]", function()	{
+ 			$(this).val( $(this).val().replace(",","") );
+ 			$(this).val( $(this).val().replace(/[^-\.0-9]/gi,"") );
+ 			$(this).val( $(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );		
+ 		});
+ 		$(document).on("focusout", "input:text[numberOnlyMinComma]", function(){
+ 		    var value = $(this).val();
+ 		    value = value.replace(/,/g,'');
+ 		    $(this).val(value);
+ 		});
+
+ 		/* 목록 버튼 */
  		$("#list_Btn").click(function(){ 
 			location.href='productList?c=all&v=brandNew'
 		});
-
+ 		
+ 		
+ 		
 	</script>
 </body>
 </html>

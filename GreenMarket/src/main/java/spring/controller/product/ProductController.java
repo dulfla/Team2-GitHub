@@ -75,20 +75,28 @@ public class ProductController {
 
 	// 상품 등록
 	@RequestMapping(value = "productRegister", method = RequestMethod.POST)
-	public String registerProduct(ProductVO vo, Product1VO vo1) {
-		logger.info("productRegisterPOST.........." + vo);
+	public String registerProduct(ProductVO vo, Product1VO vo1) {		
 		
-		memberServiceImpl.productRegister(vo, vo1);
+		String[] uuids = vo.getImageList().get(0).getUuid().split(",");
+		String[] fileNames = vo.getImageList().get(0).getFileName().split(",");
+		String[] uploadPaths = vo.getImageList().get(0).getUploadPath().split(",");
+		List<ProductImageVO> imgVoList = new ArrayList<>();
+		for(int i=0; i<uuids.length; i++) {
+			ProductImageVO img = new ProductImageVO();
+			img.setFileName(fileNames[i]);
+			img.setUploadPath(uploadPaths[i]);
+			img.setUuid(uuids[i]);
+			imgVoList.add(img);
+		}
+		
+		memberServiceImpl.productRegister(vo, vo1, imgVoList);
 
-		
 		return "redirect:/productList?c=all&v=brandNew";
 	}
 	// 이미지
 	@RequestMapping(value = "uploadAjaxAction",
 			produces = MediaType.APPLICATION_JSON_VALUE ,method = RequestMethod.POST)
-	public ResponseEntity<List<ProductImageVO>> uploadAjaxActionPOST(@RequestParam MultipartFile[] uploadFile) {
-		
-		logger.info("uploadAjaxActionPOST..........");
+	public ResponseEntity<List<ProductImageVO>> uploadAjaxActionPOST(@RequestParam MultipartFile[] uploadFile) {		
 		
 		/* 이미지 파일 체크 */
 		for(MultipartFile multipartFile: uploadFile) {
@@ -240,7 +248,7 @@ public class ProductController {
 		return "product/productDetail";
 	}
 	@GetMapping(value="getImageList", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<ProductImageVO>> getImageList(String p_id){
+	public ResponseEntity<List<ProductImageVO>> getImageList(String p_id){ 
 		
 		return new ResponseEntity(memberDaoImpl.getImageList(p_id),HttpStatus.OK);	
 	}
