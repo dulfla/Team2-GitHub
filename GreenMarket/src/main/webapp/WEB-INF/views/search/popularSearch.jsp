@@ -26,184 +26,256 @@
 	integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous">
 </script>
 
-
-
 <style type="text/css">
-	thead{
-		background-color: #BFCF5B
 
+@font-face {
+  font-family: "hana";
+  src: url("${path}resources/fonts/BMJUA_ttf.ttf");
+}
 
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
+
+h2{
+	font-family: hana;
+}
+
+.rwd-table {
+	margin: auto;
+	min-width: 300px;
+	max-width: 100%;
+	border-collapse: collapse;
+}
+
+.rwd-table tr:first-child {
+	border-top: none;
+	background-color: #9acd32;
+	/*  background: #428bca; */
+	color: white;
+}
+
+.rwd-table tr {
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background-color:;
+}
+
+.rwd-table tr:nth-child(odd):not(:first-child) {
+	background-color:;
+}
+
+.rwd-table th {
+	display: none;
+}
+
+.rwd-table td {
+	display: block;
+}
+
+.rwd-table td:first-child {
+	margin-top: .5em;
+}
+
+.rwd-table td:last-child {
+	margin-bottom: .5em;
+}
+
+.rwd-table td:before {
+	content: attr(data-th) ": ";
+	font-weight: bold;
+	width: 120px;
+	display: inline-block;
+	color: #000;
+}
+
+.rwd-table th, .rwd-table td {
+	text-align: left;
+}
+
+.rwd-table {
+	color: #333;
+	border-radius: .4em;
+	overflow: hidden;
+}
+
+.rwd-table tr {
+	border-color: #bfbfbf;
+}
+
+.rwd-table th, .rwd-table td {
+	padding: .5em 1em;
+}
+
+@media screen and (max-width: 601px) {
+	.rwd-table tr:nth-child(2) {
+		border-top: none;
 	}
+}
+
+@media screen and (min-width: 600px) {
+	.rwd-table tr:hover:not(:first-child) {
+		background-color: #d8e7f3;
+	}
+	.rwd-table td:before {
+		display: none;
+	}
+	.rwd-table th, .rwd-table td {
+		display: table-cell;
+		padding: .25em .5em;
+	}
+	.rwd-table th:first-child, .rwd-table td:first-child {
+		padding-left: 0;
+	}
+	.rwd-table th:last-child, .rwd-table td:last-child {
+		padding-right: 0;
+	}
+	.rwd-table th, .rwd-table td {
+		padding: 1em !important;
+	}
+}
+
+/* THE END OF THE IMPORTANT STUFF */
+
+/* Basic Styling */
+h1 {
+	text-align: center;
+	font-size: 2.4em;
+}
+
+.container {
+	display: block;
+	text-align: center;
+}
+
+h3 {
+	display: inline-block;
+	position: relative;
+	text-align: center;
+	font-size: 1.5em;
+	color: #cecece;
+}
+
+h3:before {
+	content: "\25C0";
+	position: absolute;
+	left: -50px;
+	-webkit-animation: leftRight 2s linear infinite;
+	animation: leftRight 2s linear infinite;
+}
+
+h3:after {
+	content: "\25b6";
+	position: absolute;
+	right: -50px;
+	-webkit-animation: leftRight 2s linear infinite reverse;
+	animation: leftRight 2s linear infinite reverse;
+}
+
+@
+-webkit-keyframes leftRight { 0% {
+	-webkit-transform: translateX(0)
+}
+
+25
+%
+{
+-webkit-transform
+:
+translateX(
+-10px
+)
+}
+75
+%
+{
+-webkit-transform
+:
+translateX(
+10px
+)
+}
+100
+%
+{
+-webkit-transform
+:
+translateX(
+0
+)
+}
+}
+@
+keyframes leftRight { 0% {
+	transform: translateX(0)
+}
+
+25
+%
+{
+transform
+:
+translateX(
+-10px
+)
+}
+75
+%
+{
+transform
+:
+translateX(
+10px
+)
+}
+100
+%
+{
+transform
+:
+translateX(
+0
+)
+}
+}
+a {
+	text-decoration: none;
+	color: black;
+}
+
+.tbody {
+	font-family: "hana"; 
+	font-size: 20px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
+	box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
+}
 </style>
+
 <jsp:include page="../include/header.jsp"/>
 </head>
 <body>
-	<%-- <section class="ftco-section">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-md-6 text-center mb-5">
-					<h2 class="heading-section">오늘의 인기 검색어</h2>
-				</div>
-			</div>
-			<div class="row justify-content-center">
-				<div class="col-md-6">
-					<div class="table-wrap">
-						<table class="table p-6">
-							<thead class="thead thead-primary">
-								<tr>
-									<th>#</th>
-									<th>검색어</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach begin="0" end="9" items="${list}" var="list" varStatus="status">
-									<tr>
-										<th scope="row">${status.count}</th>
-										<td><a href="search?c=all&v=product&keyword=${list.keyword}">${list.keyword}</a></td> 
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section> --%>
-	<div class="limiter">
-<div class="container-table100">
-<div class="wrap-table100">
-<div class="table">
-<div class="row header">
-<div class="cell">
-Full Name
-</div>
-<div class="cell">
-Age
-</div>
-<div class="cell">
-Job Title
-</div>
-<div class="cell">
-Location
-</div>
-</div>
-<div class="row">
-<div class="cell" data-title="Full Name">
-Vincent Williamson
-</div>
-<div class="cell" data-title="Age">
-31
-</div>
-<div class="cell" data-title="Job Title">
-iOS Developer
-</div>
-<div class="cell" data-title="Location">
-Washington
-</div>
-</div>
-<div class="row">
-<div class="cell" data-title="Full Name">
-Joseph Smith
-</div>
-<div class="cell" data-title="Age">
-27
-</div>
-<div class="cell" data-title="Job Title">
-Project Manager
-</div>
-<div class="cell" data-title="Location">
-Somerville, MA
-</div>
-</div>
-<div class="row">
-<div class="cell" data-title="Full Name">
-Justin Black
-</div>
-<div class="cell" data-title="Age">
-26
-</div>
-<div class="cell" data-title="Job Title">
-Front-End Developer
-</div>
-<div class="cell" data-title="Location">
-Los Angeles
-</div>
-</div>
-<div class="row">
-<div class="cell" data-title="Full Name">
-Sean Guzman
-</div>
-<div class="cell" data-title="Age">
-25
-</div>
-<div class="cell" data-title="Job Title">
-Web Designer
-</div>
-<div class="cell" data-title="Location">
-San Francisco
-</div>
-</div>
-<div class="row">
-<div class="cell" data-title="Full Name">
-Keith Carter
-</div>
-<div class="cell" data-title="Age">
-20
-</div>
-<div class="cell" data-title="Job Title">
-Graphic Designer
-</div>
-<div class="cell" data-title="Location">
-New York, NY
-</div>
-</div>
-<div class="row">
-<div class="cell" data-title="Full Name">
-Austin Medina
-</div>
- <div class="cell" data-title="Age">
-32
-</div>
-<div class="cell" data-title="Job Title">
-Photographer
-</div>
-<div class="cell" data-title="Location">
-New York
-</div>
-</div>
-<div class="row">
-<div class="cell" data-title="Full Name">
-Vincent Williamson
-</div>
-<div class="cell" data-title="Age">
-31
-</div>
-<div class="cell" data-title="Job Title">
-iOS Developer
-</div>
-<div class="cell" data-title="Location">
-Washington
-</div>
-</div>
-<div class="row">
-<div class="cell" data-title="Full Name">
-Joseph Smith
-</div>
-<div class="cell" data-title="Age">
-27
-</div>
-<div class="cell" data-title="Job Title">
-Project Manager
-</div>
-<div class="cell" data-title="Location">
-Somerville, MA
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-	
+	<div class="container">
+		<h2 class="mb-5 mt-5">오늘의 중고 인기 검색어</h2>
+		  <table class="rwd-table col-4 tbody">
+		    <tbody>
+		      <tr>
+		        <th>#</th>
+		        <th>인기 검색어</th>
+		      </tr>
+				<c:forEach begin="0" end="9" items="${list}" var="list"
+					varStatus="status">
+					<tr>
+						<th id="count" scope="row">${status.count}</th>
+						<td><a href="search?c=all&v=product&keyword=${list.keyword}">${list.keyword}</a></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		  </table>
+		  <h3 class="mb-5 mt-3">Resize Me</h3>
+	</div>
 </body>
+<script type="text/javascript"></script>
 <jsp:include page="../include/footer.jsp"/>
 </html>
