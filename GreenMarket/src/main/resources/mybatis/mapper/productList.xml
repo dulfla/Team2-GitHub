@@ -6,103 +6,169 @@
 <mapper namespace="mybatis.mapper.productList">
 
 	<!-- 8-1) 생성된 쿼리 -->				<!-- 9)pListVO (mybatisConfig.xml)--><!-- spring.vo.ProductListVO -->
-	<select id="selectAll" resultType="pListVO">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,trade,fileName,uploadPath,uuid
-			FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-			WHERE  SUBSTR(pd.p_id, 4) between 0 and 8
+	<select id="selectAll"  parameterType="PagingInfo" resultType="pListVO">
+		SELECT rn, pd.p_id,p_name,category,regdate,views,price,email,description,trade,fileName,uploadPath,uuid
+		FROM productDetail pd left outer join (select idx, email, p_id, ROWNUM as rn from product) p on pd.p_id = p.p_id
+	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE rn BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15) 
 	</select><!--  where uuid like 's_%' -->
 	
-	<select id="brandNew" resultType="pListVO">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		ORDER BY regdate DESC
+	<select id="brandNew" parameterType="PagingInfo" resultType="pListVO">
+		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        from
+        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
+	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+        ORDER BY regdate DESC )
+		WHERE ROWNUM BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)		
 	</select>
 	
-	<select id="priceLow" resultType="pListVO">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		ORDER BY price ASC
+	<select id="priceLow" parameterType="PagingInfo" resultType="pListVO">
+		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        from
+        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
+	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+        ORDER BY price ASC )
+		WHERE ROWNUM BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)
 	</select>
 	
-	<select id="priceHigh" resultType="pListVO">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		ORDER BY price DESC
+	<select id="priceHigh" parameterType="PagingInfo" resultType="pListVO">
+		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        from
+        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
+	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+        ORDER BY price DESC )
+		WHERE ROWNUM BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)
 	</select>
 	
-	<select id="viewsLevel" resultType="pListVO">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		ORDER BY views DESC
+	<select id="viewsLevel"  parameterType="PagingInfo" resultType="pListVO">
+		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        from
+        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
+	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+        ORDER BY views DESC )
+		WHERE ROWNUM BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15) 
 	</select>
 		
-	<select id="category" parameterType="String" resultType="pListVO">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE category = #{category}  
+	 <select id="category" parameterType="PagingInfo" resultType="pListVO">
+		SELECT rn, pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+		FROM productDetail pd left outer join(select idx, email, p_id, ROWNUM as rn from product) p on pd.p_id = p.p_id
+	        left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+		WHERE category = #{category} AND rn BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)
+	</select> 
+	
+	<select id="countProductNumber" resultType="int">
+		SELECT COUNT(*) FROM ProductDetail
 	</select>
+	
 	
 	
 	<!-- ================================================================ -->
 	
-	<select id="sellList" parameterType="String" resultType="pListVO">
-	SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM (select * from productDetail WHERE trade='CLEAR' or trade='clear') pd  left outer join 
-			(SELECT p_id,email FROM product WHERE email=#{email}) p  on pd.p_id = p.p_id
-            left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-            where email=#{email}
-	</select><!--  where uuid like 's_%' -->
-	
-	<select id="unSellList"  parameterType="String" resultType="pListVO">
-	SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM (select * from productDetail WHERE trade='TRADE' or trade='trade') pd  left outer join 
-		(SELECT p_id,email FROM product WHERE email=#{email}) p  on pd.p_id = p.p_id
-            left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-            where email=#{email}
-	</select>
-	
-	<select id="myProductList" parameterType="String" resultType="pListVO">
-	SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join  (SELECT p_id,email FROM product WHERE email=#{email}) p  on pd.p_id = p.p_id
-		 left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		 where email=#{email}
-	</select>
+		<select id="sellList" parameterType="PagingInfo" resultType="pListVO">
+		SELECT rn, pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+			FROM (select * from productDetail WHERE trade='CLEAR' or trade='clear') pd  left outer join 
+				(SELECT p_id,email,ROWNUM as rn from product WHERE email=#{email}) p  on pd.p_id = p.p_id
+	            left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+	            WHERE rn BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)
+		</select><!--  where uuid like 's_%' -->
+		
+	<!-- count(myproduct) -->
+		<select id="countMyProductNumber" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM productDetail pd, 
+				(SELECT p_id,email,ROWNUM as rn from product WHERE email=#{email}) p where pd.p_id = p.p_id
+		</select>
+		
+		<!-- conut(clear) -->
+		<select id="countMySellNumber"  parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM (select * from productDetail WHERE trade='CLEAR' or trade='clear') pd,
+				(SELECT p_id,email,ROWNUM as rn from product WHERE email=#{email}) p WHERE pd.p_id = p.p_id
+		</select>
+		
+		<!-- conut(trade) -->
+		<select id="countMyUnSellNumber" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM (select * from productDetail WHERE trade='TRADE' or trade='trade') pd,
+				(SELECT p_id,email,ROWNUM as rn from product WHERE email=#{email}) p WHERE pd.p_id = p.p_id
+		</select>
+		
+		<select id="unSellList"  parameterType="PagingInfo" resultType="pListVO">
+		SELECT rn, pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+			FROM (select * from productDetail WHERE trade='TRADE' or trade='trade') pd  left outer join 
+				(SELECT p_id,email,ROWNUM as rn from product WHERE email=#{email}) p  on pd.p_id = p.p_id
+	            left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+	            WHERE rn BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)
+		</select>
+		
+		<select id="myProductList" parameterType="PagingInfo" resultType="pListVO">
+		SELECT rn, pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+			FROM productDetail pd left outer join  (SELECT p_id,email, ROWNUM as rn from product WHERE email=#{email}) p  on pd.p_id = p.p_id
+			 left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+			 where rn BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)
+		</select>
 	
 	<!-- ==========================카테고리================================== -->
 	
-	<select id="cateBrandNew" parameterType="String" resultType="pListVO">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE category = #{category} ORDER BY regdate DESC 
+	<select id="cateBrandNew" parameterType="PagingInfo" resultType="pListVO">
+		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        from
+        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
+	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+        WHERE category = #{category}
+        ORDER BY regdate DESC )
+        where ROWNUM BETWEEN (1-1)*150 + (1-1)*15+1 AND (1-1)*150+(1*15)  
 	</select>
 	
-	<select id="catePriceLow" parameterType="String" resultType="pListVO">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE category = #{category} ORDER BY price ASC 
+	<select id="catePriceLow" parameterType="PagingInfo" resultType="pListVO">
+		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        from
+        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
+	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+        WHERE category = #{category}
+        ORDER BY price ASC  )
+        where ROWNUM BETWEEN (1-1)*150 + (1-1)*15+1 AND (1-1)*150+(1*15)		
 	</select>
 	
-	<select id="catePriceHigh" parameterType="String" resultType="pListVO">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE category = #{category} ORDER BY price DESC  
+	<select id="catePriceHigh" parameterType="PagingInfo" resultType="pListVO">
+		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        from
+        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
+	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+        WHERE category = #{category}
+        ORDER BY price DESC )
+        where ROWNUM BETWEEN (1-1)*150 + (1-1)*15+1 AND (1-1)*150+(1*15)		
 	</select>
 	
-	<select id="cateViewsLevel" parameterType="String" resultType="pListVO">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE category = #{category} ORDER BY views DESC 
+	<select id="cateViewsLevel" parameterType="PagingInfo" resultType="pListVO">
+		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        from
+        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
+        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
+	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+        WHERE category = #{category}
+        ORDER BY views DESC )
+        where ROWNUM BETWEEN (1-1)*150 + (1-1)*15+1 AND (1-1)*150+(1*15)		
 	</select>
+	
+	<!-- count(category) -->
+	<select id="countCategory" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM (select * from productDetail where category=#{category}) pd, product p
+				where pd.p_id = p.p_id
+	</select>
+	
+	<!-- ===========================================페이징============================================ -->
+	
+<!-- 	<select id="productPaging" resultType="pListVO" parameterType="map">
+		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,trade,fileName,uploadPath,uuid
+			FROM productDetail pd left outer join product p on pd.p_id = p.p_id
+	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
+			WHERE SUBSTR(pd.p_id, 4) BETWEEN (#{section}-1)*100 + (#{pageNum}-1)*10+1 AND (#{section}-1)*100+(#{pageNum}*10) 
+	</select> -->
 	
 	
 	
