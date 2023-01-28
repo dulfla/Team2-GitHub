@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import spring.vo.product.CategoryVO;
 import spring.vo.product.ProductListVO;
+import spring.vo.search.Search;
 
 @Repository
 public class SearchDao {
@@ -233,6 +234,17 @@ public class SearchDao {
 		map.put("category", c);
 		
 		return sqlSession.selectOne("mybatis.mapper.search.cateNumberOfSearches",map);
+	}
+
+	// 검색어 저장
+	public void searchInsert(Search search) {
+		sqlSession.insert("mybatis.mapper.search.searchInsert",search);
+	}
+
+
+	public List<Search> popSearchList() {
+		List<Search>list = sqlSession.selectList("mybatis.mapper.search.popSearchList");
+		return list;
 	}
 	
 	

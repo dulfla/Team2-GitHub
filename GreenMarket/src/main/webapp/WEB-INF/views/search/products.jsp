@@ -39,7 +39,7 @@
 	  </button>
 	  <ul class="dropdown-menu dropdown-menu-end">
 	  <c:forEach items="${categoryList}" var="c">
-	  	<li><a class="dropdown-item" href="search?c=${c.category}&v=product&search=${search}">${c.category}</a></li>
+	  	<li><a class="dropdown-item" href="search?c=${c.category}&v=product&keyword=${search}">${c.category}</a></li>
 	  </c:forEach>
 	    
 <!-- 	    <li><a class="dropdown-item" href="#">기타 중고물품</a></li>
@@ -65,10 +65,10 @@
 	    정렬기준
 	  </button>
 	  <ul class="dropdown-menu">
-	    <li><a class="dropdown-item" href="search?c=${c}&v=brandNew&search=${search}">최신순</a></li>
-	    <li><a class="dropdown-item" href="search?c=${c}&v=viewsLevel&search=${search}">조회순</a></li>
-	    <li><a class="dropdown-item" href="search?c=${c}&v=priceLow&search=${search}">낮은 가격순</a></li>
-	    <li><a class="dropdown-item" href="search?c=${c}&v=priceHigh&search=${search}">높은 가격순</a></li>
+	    <li><a class="dropdown-item" href="search?c=${c}&v=brandNew&keyword=${search}">최신순</a></li>
+	    <li><a class="dropdown-item" href="search?c=${c}&v=viewsLevel&keyword=${search}">조회순</a></li>
+	    <li><a class="dropdown-item" href="search?c=${c}&v=priceLow&keyword=${search}">낮은 가격순</a></li>
+	    <li><a class="dropdown-item" href="search?c=${c}&v=priceHigh&keyword=${search}">높은 가격순</a></li>
 	  </ul>
 	</div>
 		
@@ -115,18 +115,18 @@
       </c:forEach>
       </div>
     </div>
-  </div>  
-  <%@ include file="../include/footer.jsp" %>
-  <script type="text/javascript">
-  	window.onload = function(){
-  		let moveToDetail = document.getElementsByName('moveToDetail');
-  		for(let i=0; i<moveToDetail.length; i++){
-  			moveToDetail[i].addEventListener('click', function(){
-  	  			let href = moveToDetail[i].getAttribute('href');
-  	  			location.href = href;
-  	  		}, false);
-  		}
-  	}
-  </script>
+  </div> 
 </body>
+<script type="text/javascript">
+	window.onload = function(){
+		let moveToDetail = document.getElementsByName('moveToDetail');
+		for(let i=0; i<moveToDetail.length; i++){
+			moveToDetail[i].addEventListener('click', function(){
+	  			let href = moveToDetail[i].getAttribute('href');
+	  			location.href = href;
+	  		}, false);
+		}
+	}
+</script>
+<jsp:include page="../include/footer.jsp"/>
 </html>

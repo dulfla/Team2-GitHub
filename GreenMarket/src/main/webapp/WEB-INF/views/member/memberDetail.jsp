@@ -18,10 +18,10 @@
 	crossorigin="anonymous">
 </script>
 <style type="text/css">
-	#container2{
+	/* #container2{
 		width:100%;
 		height:100vh;
-	}
+	} */
 </style>
 <jsp:include page="../include/header.jsp"/>
 </head>

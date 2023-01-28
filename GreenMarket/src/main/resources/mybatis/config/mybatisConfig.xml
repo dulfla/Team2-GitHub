@@ -26,6 +26,7 @@
 		
 		<typeAlias type="spring.vo.product.PagingInfoVO" alias="PagingInfo"/>
 		<typeAlias type="spring.vo.product.ProductListVO" alias="pListVO"/>
+		<typeAlias type="spring.vo.search.Search" alias="search"/>
 	</typeAliases>
 	
 </configuration>

@@ -1,4 +1,4 @@
-package spring.controller.member;
+package spring.controller.product;
 
 import java.util.ArrayList;
 import java.util.List;
