@@ -23,7 +23,7 @@ public class SocketServer {
 	
 	private int max = 500;
 	private ServerSocket serverSocket;
-	private ExecutorService threadPool = Executors.newFixedThreadPool(max);
+	private ExecutorService threadPool;
 	private static Map<String, Map<String, SocketClient>> chatRoom = Collections.synchronizedMap(new HashMap<>());
 	private static Map<String, Map<String, Collection<WebSocketSession>>> webSessions = Collections.synchronizedMap(new HashMap<>());
 	
@@ -35,6 +35,7 @@ public class SocketServer {
 	
 	public void start() throws IOException {
 		serverSocket = new ServerSocket(12005);
+		threadPool = Executors.newFixedThreadPool(max);
 		System.out.println("[server] 시작");
 		Thread thread = new Thread(() -> {
 			try {
@@ -45,7 +46,7 @@ public class SocketServer {
 				}
 			} catch (IOException e) {
 				System.out.println("[server] 종료");
-//				e.printStackTrace();
+				// e.printStackTrace();
 			}
 		});
 		thread.start();
@@ -107,11 +108,6 @@ public class SocketServer {
 	
 	public void stop() {
 		try {
-//			chatRoom.values().stream().forEach(crv -> {
-//				crv.values().stream().forEach(cr -> {
-//					cr.close();
-//				});
-//			});
 			Collection<Map<String, SocketClient>> roomClient = chatRoom.values();
 			if(0<roomClient.size()) {
 				for(Map<String, SocketClient> rc : roomClient) {
@@ -125,23 +121,12 @@ public class SocketServer {
 					}
 				}
 			}
-//			webSessions.values().stream().forEach(wsvl -> {
-//				wsvl.values().stream().forEach(wsv -> {
-//					wsv.stream().forEach(ws -> {
-//						try {
-//							ws.close();
-//						} catch (IOException e) {
-//							e.printStackTrace();
-//						}
-//					});
-//				});
-//			});
 			Collection<Map<String, Collection<WebSocketSession>>> sLs = webSessions.values();
 			for(int i=0; i<sLs.size(); i++) {
 				Map<String, Collection<WebSocketSession>> sL = (Map<String, Collection<WebSocketSession>>) sLs.toArray()[i];
 				for(int j=0; j<sL.size(); j++) {
 					Collection<WebSocketSession> s = (Collection<WebSocketSession>)sL.values().toArray()[j];
-					for(int l=0; l<s.size(); l++) { System.out.println(s.size());
+					for(int l=s.size()-1; 0<s.size(); l--) {
 						if(s.toArray()[l]!=null) {
 							try {
 								((WebSocketSession)s.toArray()[l]).close();
@@ -159,7 +144,7 @@ public class SocketServer {
 		}
 	}
 
-	public void saveWebSession(Map<String, String> info, WebSocketSession session) {// System.out.println("등록");
+	public void saveWebSession(Map<String, String> info, WebSocketSession session) {
 		String key = info.get("email"); // +"@"+session.getId()
 		if(0<webSessions.size()) {
 			if(webSessions.containsKey(info.get("c_id"))) {
@@ -167,13 +152,11 @@ public class SocketServer {
 					if(! webSessions.get(info.get("c_id")).get(key).contains(session)) {
 						webSessions.get(info.get("c_id")).get(key).add(session);
 					}
-//					System.out.println("[등록] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());
 					return;
 				}
 				List<WebSocketSession> wscL = new ArrayList<>();
 				wscL.add(session);
 				webSessions.get(info.get("c_id")).put(key, wscL);
-//				System.out.println("[등록] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());
 				return;
 			}
 		}
@@ -182,13 +165,11 @@ public class SocketServer {
 		Map<String, Collection<WebSocketSession>> map = new HashMap<>();
 		map.put(key, wscL);
 		webSessions.put(info.get("c_id"), map);
-//		System.out.println("[등록] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());
 	}
 
-	public void removeWebSesseion(Map<String, String> info, WebSocketSession session) {// System.out.println("제거");
+	public void removeWebSesseion(Map<String, String> info, WebSocketSession session) {
 		String key = info.get("email"); // +"@"+session.getId()
 		webSessions.get(info.get("c_id")).get(key).remove(session);
-//		System.out.println("[제거] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());
 		if(webSessions.get(info.get("c_id")).get(key).size()==0) {
 			webSessions.get(info.get("c_id")).remove(key);
 		}

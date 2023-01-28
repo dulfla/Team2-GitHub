@@ -30,7 +30,6 @@ public class CategoryAdminService {
 	
 	public void deleteCategory(Map<String, String> map) {
 		String originFileName = dao.originFileName(map.get("category"));
-		System.out.println("originFileName : "+originFileName);
 		String originFile = "C:\\upload\\category";
 		File fileObj = new File(originFile, originFileName);
 		if(fileObj.exists()) {
@@ -57,10 +56,11 @@ public class CategoryAdminService {
         
         map.put("icon", newFileName);
         
-        if(map.get("data")!=map.get("move")) {
+		dao.updateCategory(map);
+		
+        if(!map.get("data").equals(map.get("move"))) {
         	dao.updateProduct(map);
         }
-		dao.updateCategory(map);
 	}
 
 	public int modifyCategoryIcon(MultipartFile file, String c, String fileType) {

@@ -558,12 +558,12 @@ function onMsge(msg) {
 		if(result && msgInfo[3][1]=='IMG'){
 			check.addEventListener('load', function(){
 				if(!scrollChecking(result)){
-					mesgPopup(msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
+					mesgPopup(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
 				}
 			}, false);
 		}else{
 			if(!scrollChecking(result)){
-				mesgPopup(msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
+				mesgPopup(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
 			}
 		}
 	}
@@ -643,8 +643,9 @@ function approximateChecking(nowPosition){ // 위치 확인 - 맨 아래 스크�
 	}
 }
 
-function mesgPopup(nick, msg, msgType){
+function mesgPopup(sender, nick, msg, msgType){
 	let toast = document.createElement('div');
+	toast.setAttribute('sender', sender);
 	toast.classList.add("messagePopUp");
 	
 	let header = document.createElement('div');

@@ -54,7 +54,7 @@ public class AdminDao {
 		return sqlSession.selectList("mybatis.mapper.admin.selectAllCategory");
 	}
 
-	public List<CategoryVO> getAllCategory() {
+	public List<CategoryAdminVo> getAllCategory() {
 		return sqlSession.selectList("mybatis.mapper.admin.selectAllCategorys");
 	}
 

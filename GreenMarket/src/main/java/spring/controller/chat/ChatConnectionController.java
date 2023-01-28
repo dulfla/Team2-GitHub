@@ -39,8 +39,23 @@ public class ChatConnectionController {
 	@Autowired
 	private ChatService chatService;
 	
+	@ResponseBody
+	@RequestMapping("ChattingImage{c_id}{fileName}")
+	public ResponseEntity<byte[]> getFile(String c_id, String fileName){
+		ResponseEntity<byte[]> img = null;
+		File file = new File("c:\\upload\\"+c_id+"\\"+fileName);
+		try {
+			HttpHeaders header = new HttpHeaders();
+			header.add("Content-type", Files.probeContentType(file.toPath()));
+			img = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		return img;
+	}
+	
 	@GetMapping(value = {"SelectChatRoom", "SelectChatRooms", "ChatRoomCheck", "ConnecteWithClientServer", "Chat", "SendMessage", "SendFile", "BreakeOffClientServer", "GetProductImg"})
-	public String locationErr(HttpServletRequest request, RedirectAttributes reda) {
+	public String getTypeAccess(HttpServletRequest request, RedirectAttributes reda) {
 		String referer = request.getHeader("Referer");
 		String errorMsg = "접속할 수 없는 주소 입니다.";
 		reda.addFlashAttribute("errMsg", errorMsg);
@@ -124,27 +139,16 @@ public class ChatConnectionController {
 			return 2;
 		}
 	}
-	
-	@ResponseBody
-	@RequestMapping("ChattingImage{c_id}{fileName}")
-	public ResponseEntity<byte[]> getFile(String c_id, String fileName){
-		ResponseEntity<byte[]> img = null;
-		File file = new File("c:\\upload\\"+c_id+"\\"+fileName);
-		try {
-			HttpHeaders header = new HttpHeaders();
-			header.add("Content-type", Files.probeContentType(file.toPath()));
-			img = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-		}catch (IOException e) {
-			e.printStackTrace();
-		}
-		return img;
-	}
 
 	@ResponseBody
 	@PostMapping("BreakeOffClientServer")
 	public int closeClientSoket(@RequestBody Map<String, String> map) throws IOException {
 		ChatClient client = chatService.checkClient(map.get("c_id"), map.get("email"));
-		chatService.close(client, map.get("c_id"), map.get("email"));
+		if(!client.getSocket().isClosed()) {
+			chatService.close(client, map.get("c_id"), map.get("email"));
+		}else {
+			return 2;
+		}
 		return 1;
 	}
 	

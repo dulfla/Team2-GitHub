@@ -11,57 +11,18 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
-<script src="${path}resources/script//.js"></script>
-<link rel="stylesheet" href="${path}resources/style/basicStryle.css">
 <style type="text/css">
-	#container{
-		position: relative;
-	}
-	.index{
-		width:25vw;
-		font-size:0.4vw;
-		padding: 20px 10px;
-		border-top-left-radius: 15px;
-		border-top-right-radius: 15px;
-		border:1px solid black;
-		border-bottom:none;
-	}
-	#first{
-		
-	}
-	#second{
-		position: absolute;
-		
-		
-	}
-	#third{
-		
-	}
-	.page{
-		width:100%;
-		position: absolute;
-		top: 0;
-	}
-	.data{
-		border: 1px solid black;
-		border-radius: 15px;
-	}
-	#first 
+/* 	#container{
+		height:100vh;
+	} */
 </style>
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
  	<div id="container">
- 		<div id="carouselExampleControlsNoTouching" class="position-relative carousel carousel-dark slide mt-5" data-bs-touch="false" data-bs-interval="false">
+ 		<div id="carouselExampleControlsNoTouching" class="position-relative carousel carousel-dark slide mt-5 mb-5" data-bs-touch="false" data-bs-interval="false">
 			<div class="carousel-inner">
-<%--
- 				<div class="carousel-item active">
-					<div class="container w-75 chart-container">
-						<canvas id="realTimeMemberAdmin"></canvas>
-					</div>
-				</div>
---%>
-				<div class="carousel-item">
+				<div class="carousel-item active">
 					<div class="container w-75 chart-container">
 						<canvas id="memberAdminByYear"></canvas>
 					</div>
@@ -92,14 +53,6 @@
 				<span class="visually-hidden">Next</span>
 			</button>
 		</div>
- 		<div class="position-relative row align-items-center">
- 			<div class="chart-container col-xl-8">
-		        <canvas id="realTimeMemberAdmin"></canvas>
-		    </div>
-		    <div class="chart-container col-xl-4">
-		        <canvas id="memberAdminByYear"></canvas>
-		    </div>
- 		</div>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	<script>

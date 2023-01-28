@@ -155,7 +155,7 @@
 	<update id="updateCategoryInProduct" parameterType="map">
 		UPDATE productDetail
 		SET	category=#{move}
-		WHERE category=#{category}
+		WHERE category=#{data}
 	</update>
 
 	<!-- 카테고리 확인 -->

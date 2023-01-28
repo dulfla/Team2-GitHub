@@ -10,11 +10,90 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
 <%-- <link rel="stylesheet" href="${path}resources/style/basicStryle.css"> --%>
+<style type="text/css">
+	#categorys{
+		width:50vw;
+		margin:0px auto;
+		text-align:center;
+	}
+	.moveToCategorys{
+		display:inline-block;
+		text-decoration:none;
+		text-align:center;
+		color:black;
+		margin:10px 20px;
+	}
+	.categoryIcon{
+		width:45px;
+		height:45px;
+	}
+	.categoryTitle{
+		display:inline-block;
+		font-size:12px;
+		font-weight:bold;
+	}
+	.moveToCategorys:hover .categoryTitle{
+		background-color:darkgreen;
+		color:white;
+	}
+</style>
 </head>
 <body>
 	<%@ include file="include/header.jsp" %>
 	<div id="container">
-		<!-- 메인 공간 -->
+		<div id="carouselExampleDark" class="carousel carousel-dark slide m-5" data-bs-ride="carousel" data-bs-interval="2500">
+			<div class="carousel-indicators">
+				<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+				<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+				<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+				<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3" aria-label="Slide 4"></button>
+				<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4" aria-label="Slide 5"></button>
+			</div>
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<div class="container w-75">
+						<img src="${path}resources/img/mainPageImg/1.png" class="d-block w-100" alt="샘플 이미지">
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="container w-75">
+						<img src="${path}resources/img/mainPageImg/2.png" class="d-block w-100" alt="샘플 이미지">
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="container w-75">
+						<img src="${path}resources/img/mainPageImg/3.png" class="d-block w-100" alt="샘플 이미지">
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="container w-75">
+						<img src="${path}resources/img/mainPageImg/4.png" class="d-block w-100" alt="샘플 이미지">
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="container w-75">
+						<img src="${path}resources/img/mainPageImg/5.png" class="d-block w-100" alt="샘플 이미지">
+					</div>
+				</div>
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>
+		</div>
+		<div id="categorys" class="mb-5">
+			<c:forEach items="${categoryList}" var="c" varStatus="ci">
+				<a class="moveToCategorys" href="productList?c=${c.category}&v=brandNew">
+					<img alt="${c.category} 아이콘" src="CategoryImage?fileName=${c.icon}" class="categoryIcon">
+					<br>
+					<p class="categoryTitle">${c.category}</p>
+				</a>
+			</c:forEach>
+		</div>
 	</div>
 	<%@ include file="include/footer.jsp" %>
 </body>

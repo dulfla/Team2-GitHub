@@ -34,7 +34,6 @@ public class ChatClient {
 	}
 	
 	public void unconnect() throws IOException{
-		System.out.println("ChatClient : unconnect");
 		socket.close();
 	}
 	
@@ -62,6 +61,9 @@ public class ChatClient {
 	}
 	public void setChatRoom(String chatRoom) {
 		this.chatRoom = chatRoom;
+	}
+	public Socket getSocket() {
+		return socket;
 	}
 	
 }

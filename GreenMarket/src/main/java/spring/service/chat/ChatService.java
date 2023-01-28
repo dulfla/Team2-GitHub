@@ -121,14 +121,10 @@ public class ChatService {
 		if(chatRoom.containsKey(c_id)) {
 			Map<String, ChatClient> mem = chatRoom.get(c_id);
 			if(mem.containsKey(email)) {
-				System.out.println("채팅방("+c_id+") 있음, 클라이언트("+email+")도 있음");
-				System.out.println(mem.get(email));
 				return mem.get(email);
 			}else {
 				ChatClient client = new ChatClient();
 				mem.put(email, client);
-				System.out.println("채팅방("+c_id+") 있음, 클라이언트("+email+") 없음");
-				System.out.println(client);
 				return client;
 			}
 		}else {
@@ -136,8 +132,6 @@ public class ChatService {
 			ChatClient client = new ChatClient();
 			list.put(email, client);
 			chatRoom.put(c_id, list);
-			System.out.println("채팅방("+c_id+") 있음, 클라이언트("+email+") 없음");
-			System.out.println(client);
 			return client;
 		}
 	}

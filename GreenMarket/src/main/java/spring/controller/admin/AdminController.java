@@ -1,36 +1,30 @@
 package spring.controller.admin;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import net.coobird.thumbnailator.Thumbnails;
 import spring.dao.admin.AdminDao;
 import spring.service.admin.AdminJsonParsing;
 import spring.service.admin.CategoryAdminService;
 import spring.vo.admin.CategoryAdminVo;
+import spring.vo.member.AuthInfo;
 import spring.vo.product.CategoryVO;
 
 @Controller
@@ -44,8 +38,7 @@ public class AdminController {
 	
 	@Autowired
 	private AdminDao dao;
-		
-/*	// 관리자가 아닌 일반 회원이 접속할 경우의 처리	
+	
 	@RequestMapping("/MemberStatus")
 	public String memberAdmin(HttpServletRequest request, Model model, HttpSession session, RedirectAttributes reda) throws ParseException {
 		String referer = request.getHeader("Referer");
@@ -84,7 +77,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping("/CategoryAdmin")
-	public String productAdmin(HttpServletRequest request, Model model, HttpSession session, RedirectAttributes reda) throws ParseException {
+	public String categoryAdmin(HttpServletRequest request, Model model, HttpSession session, RedirectAttributes reda) throws ParseException {
 		String referer = request.getHeader("Referer");
 		
 		AuthInfo who = (AuthInfo)session.getAttribute("authInfo");
@@ -92,7 +85,7 @@ public class AdminController {
 		
 		if(who!=null) {
 			if(who.getType().equalsIgnoreCase("M")) {
-				List<CategoryVO> categorys= dao.getAllCategory();
+				List<CategoryAdminVo> categorys= dao.getAllCategory();
 				model.addAttribute("categorys", categorys);
 				return "admin/category";
 			}else { errorMsg = "관리자만 접속할 수 있는 페이지 입니다."; }
@@ -101,8 +94,7 @@ public class AdminController {
 		reda.addFlashAttribute("errMsg", errorMsg);
 		return "redirect:"+(referer!=null?referer:"index");
 	}
-*/
-
+/*	// 테스트용
 	@RequestMapping("/MemberStatus")
 	public String memberAdmin(Model model) throws ParseException {
 		JSONObject json = adminJsonParsing.memverAdmin();
@@ -121,12 +113,27 @@ public class AdminController {
 	
 	@RequestMapping("/CategoryAdmin")
 	public String categoryAdmin(Model model) {
-		List<CategoryVO> categorys= dao.getAllCategory();
+		List<CategoryAdminVo> categorys= dao.getAllCategory();
 		model.addAttribute("categorys", categorys);
 		
 		return "admin/category";
 	}
+*/
 	
+	@ResponseBody
+	@RequestMapping("CategoryImage{fileName}")
+	public ResponseEntity<byte[]> getFile(String fileName){
+		return categoryAS.getImg(fileName);
+	}
+	
+	@GetMapping({"CategoryDelete", "CategoryTitleModify", "CategoryIconModify", "CheckCategoryTitle", "CategoryRegister", "CategoryList"})
+	public String getTypeAccess(HttpServletRequest request, RedirectAttributes reda) {
+		String referer = request.getHeader("Referer");
+		String errorMsg = "접속할 수 없는 주소 입니다.";
+		reda.addFlashAttribute("errMsg", errorMsg);
+	    return "redirect:"+(referer!=null?referer:"index");
+	}
+
 	@ResponseBody
 	@PostMapping("CategoryDelete")
 	public int categoryDelete(@RequestBody Map<String, String> map) {
@@ -159,12 +166,6 @@ public class AdminController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("CategoryImage{fileName}")
-	public ResponseEntity<byte[]> getFile(String fileName){
-		return categoryAS.getImg(fileName);
-	}
-	
-	@ResponseBody
 	@PostMapping("CategoryRegister{c}{fileType}")
 	public int categoryRegister(MultipartFile file, String c, String fileType) {
 		return categoryAS.registerCategory(file, c, fileType);
@@ -172,7 +173,7 @@ public class AdminController {
 	
 	@ResponseBody
 	@PostMapping("CategoryList")
-	public List<CategoryVO> reloadCategory() {
+	public List<CategoryAdminVo> reloadCategory() {
 		return dao.getAllCategory();
 	}
 }
