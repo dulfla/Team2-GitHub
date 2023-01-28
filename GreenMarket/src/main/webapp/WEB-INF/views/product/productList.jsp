@@ -21,15 +21,14 @@
 		  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" 
 		  data-bs-display="static" aria-expanded="false">
 		   <c:choose>
-		               	<c:when test="${empty c}">카테고리</c:when>
-		               	<c:otherwise>
-		               		<c:choose>
-		               			<c:when test="${c eq 'all'}">전체 보기</c:when>
-		               			<c:otherwise>${c}</c:otherwise>
-		               		</c:choose>
-		               	</c:otherwise>
-		               </c:choose>
-		    
+              	<c:when test="${empty c}">카테고리</c:when>
+              	<c:otherwise>
+              		<c:choose>
+              			<c:when test="${c eq 'all'}">전체 보기</c:when>
+              			<c:otherwise>${c}</c:otherwise>
+              		</c:choose>
+              	</c:otherwise>
+           </c:choose>
 		  </button>
 		  <ul class="dropdown-menu dropdown-menu-end">
 		  <li><a class="dropdown-item" href="productList?c=all&v=${v}">전체 보기</a></li>
@@ -42,14 +41,13 @@
 		  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" 
 		  data-bs-display="static" aria-expanded="false"> <!-- data-bs-offset="10,20" -->
 		  <c:choose>
-		               	<c:when test="${v eq 'product'}" >조회유형</c:when>
-		               	<c:when test="${v eq 'brandNew'}">최신순</c:when>
-		               	<c:when test="${v eq 'viewsLevel'}">조회순</c:when>
-		               	<c:when test="${v eq 'priceLow'}">낮은 가격순</c:when>
-		               	<c:when test="${v eq 'priceHigh'}" >높은 가격순</c:when>
-		               	<c:otherwise>${v}</c:otherwise>
-		               </c:choose>
-		    
+           	<c:when test="${v eq 'product'}" >조회유형</c:when>
+           	<c:when test="${v eq 'brandNew'}">최신순</c:when>
+           	<c:when test="${v eq 'viewsLevel'}">조회순</c:when>
+           	<c:when test="${v eq 'priceLow'}">낮은 가격순</c:when>
+           	<c:when test="${v eq 'priceHigh'}" >높은 가격순</c:when>
+           	<c:otherwise>${v}</c:otherwise>
+          </c:choose>
 		  </button>
 		  <ul class="dropdown-menu">
 		    <li><a class="dropdown-item" href="productList?c=${c}&v=brandNew">최신순</a></li>
