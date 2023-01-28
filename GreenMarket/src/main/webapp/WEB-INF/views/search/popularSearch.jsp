@@ -51,7 +51,7 @@ h2{
 	background-color: #9acd32;
 	/*  background: #428bca; */
 	color: white;
-	font-size: 23px;
+	font-size: 21px;
 }
 
 .rwd-table tr {
