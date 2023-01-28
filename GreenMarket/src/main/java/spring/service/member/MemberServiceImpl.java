@@ -70,7 +70,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		// 상품 수정
 		@Override
-		public void productModify(ProductVO vo) {		
+		public void productModify(ProductVO vo, List<ProductImageVO> imgs) {		
 			
 			dao.productModify(vo);
 			

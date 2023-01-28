@@ -265,13 +265,25 @@ public class ProductController {
 		
 		return "product/productModify";
 	}
-
 	@RequestMapping(value = "productModify", method = RequestMethod.POST)
 	public String postProductModify(ProductVO vo) throws Exception{
-
-		logger.info("상품 수정 controller.................." + vo);
-		memberServiceImpl.productModify(vo);
 	
+		
+		String[] uuids = vo.getImageList().get(0).getUuid().split(",");
+		String[] fileNames = vo.getImageList().get(0).getFileName().split(",");
+		String[] uploadPaths = vo.getImageList().get(0).getUploadPath().split(",");
+		List<ProductImageVO> imgVoList = new ArrayList<>();
+		for(int i=0; i<uuids.length; i++) {
+			ProductImageVO img = new ProductImageVO();
+			img.setFileName(fileNames[i]);
+			img.setUploadPath(uploadPaths[i]);
+			img.setUuid(uuids[i]);
+			imgVoList.add(img);
+		}
+
+		memberServiceImpl.productModify(vo, imgVoList);
+
+		
 		return "redirect:/productList?c=all&v=brandNew";
 	}
 	

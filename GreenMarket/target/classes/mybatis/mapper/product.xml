@@ -27,15 +27,6 @@
 		values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
 	</insert>	
 
-<!-- 	<insert id="productPic" parameterType="ProductVO">
-		insert all
-		<foreach collection="imageList" item="file" separator="">
-			into productPic(p_id, fileName, uploadPath, uuid)
-			values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
-		</foreach>
-		select * from dual
-	</insert>	 -->
-
 	<!-- 조회수 증가 -->
 	<update id="modifyProductViews" parameterType="String">
 		update productDetail 
@@ -75,11 +66,20 @@
 			 , lat=#{lat}
 			 , lng=#{lng}
      	 where p_id = #{p_id}
-	</update>		
+	</update>
+<!-- 	
+	<update id="modifyPic" parameterType="ProductImageVO">
+		update productPic set fileName=#{fileName}
+			,uploadPath=#{uploadPath}
+			,uuid=#{uuid}
+		where p_id = #{p_id} 
+	</update>	 -->	
+
 	<insert id="modifyPic" parameterType="ProductImageVO">
 		insert into productPic(p_id, fileName, uploadPath, uuid)
 		values (#{p_id},#{fileName},#{uploadPath},#{uuid})
 	</insert>
+
 	
 	 <!-- 상품 삭제 -->
 	 <delete id="productDelete1">

@@ -25,7 +25,7 @@ public interface MemberService {
 	public List<ProductImageVO> getImageList(String p_id);
 	
 	// 상품 수정
-	public void productModify(ProductVO vo);
+	public void productModify(ProductVO vo, List<ProductImageVO> imgs);
 	
 	// 상품 삭제
 	public void productDelete(String p_id);
