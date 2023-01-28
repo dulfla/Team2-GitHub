@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	// 상품등록
 		@Override
-		public void productRegister(ProductVO vo, Product1VO vo1) {
+		public void productRegister(ProductVO vo, Product1VO vo1, List<ProductImageVO> imgs) {
 			dao.productRegister(vo);
 			vo1.setProductId(vo.getProductId());
 			dao.productRegister1(vo1);
@@ -39,12 +39,11 @@ public class MemberServiceImpl implements MemberService {
 			if(vo.getImageList() == null || vo.getImageList().size() <= 0) {
 				return;
 			}	
-			//향상된 for문
-			for(ProductImageVO attach : vo.getImageList()) {
+			imgs.forEach(attach ->{
+				System.out.println(vo.getProductId());
 				attach.setProductId(vo.getProductId());
-				
-				dao.imageRegister(attach);
-			}				
+				dao.imageRegister(attach);		
+			});
 		}
 		
 		// 카테고리
@@ -53,7 +52,6 @@ public class MemberServiceImpl implements MemberService {
 			return dao.category();
 		}
 		
-
 		// 상품 조회
 		@Override
 		public ProductVO productDetail(String p_id) {
@@ -72,8 +70,7 @@ public class MemberServiceImpl implements MemberService {
 		
 		// 상품 수정
 		@Override
-		public void productModify(ProductVO vo) {		
-			logger.info("상품 수정 service......................." + vo);
+		public void productModify(ProductVO vo, List<ProductImageVO> imgs) {		
 			
 			dao.productModify(vo);
 			

@@ -13,7 +13,7 @@ import spring.vo.product.ProductVO;
 public interface MemberService {
 
 	// 상품등록
-	public void productRegister(ProductVO vo, Product1VO vo1);
+	public void productRegister(ProductVO vo, Product1VO vo1, List<ProductImageVO> imgs );
 	
 	// 카테고리
 	public List<CategoryVO> category(); 
@@ -25,7 +25,7 @@ public interface MemberService {
 	public List<ProductImageVO> getImageList(String p_id);
 	
 	// 상품 수정
-	public void productModify(ProductVO vo);
+	public void productModify(ProductVO vo, List<ProductImageVO> imgs);
 	
 	// 상품 삭제
 	public void productDelete(String p_id);

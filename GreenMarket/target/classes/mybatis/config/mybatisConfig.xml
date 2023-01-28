@@ -26,4 +26,5 @@
 		
 		<typeAlias type="spring.vo.product.ProductListVO" alias="pListVO"/>
 	</typeAliases>
+	
 </configuration>

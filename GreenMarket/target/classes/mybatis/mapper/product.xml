@@ -21,13 +21,13 @@
 		insert into product(idx,email,p_id)
 		values (product_seq.nextval,#{email},#{productId})	
 	</insert>
-	
+
 	<insert id="productPic" parameterType="ProductImageVO">
 		insert into productPic(p_id, fileName, uploadPath, uuid)
 		values (#{productId}, #{fileName}, #{uploadPath}, #{uuid})
 	</insert>	
 
-	<!-- 리스트에서 상품 보기 클릭시 조회수 증가 -->
+	<!-- 조회수 증가 -->
 	<update id="modifyProductViews" parameterType="String">
 		update productDetail 
 		set views = views + TO_NUMBER(1)
@@ -59,21 +59,28 @@
 		
 	<update id="productModify" parameterType="ProductVO">
 		 update productDetail set p_name=#{p_name}
-		 , description=#{description}
-		 , category=#{category}
-		 , price=#{price}
-		 , trade=#{trade}
-		 , lat=#{lat}
-		 , lng=#{lng}
+			 , description=#{description}
+			 , category=#{category}
+			 , price=#{price}
+			 , trade=#{trade}
+			 , lat=#{lat}
+			 , lng=#{lng}
      	 where p_id = #{p_id}
-	</update>		
+	</update>
+<!-- 	
+	<update id="modifyPic" parameterType="ProductImageVO">
+		update productPic set fileName=#{fileName}
+			,uploadPath=#{uploadPath}
+			,uuid=#{uuid}
+		where p_id = #{p_id} 
+	</update>	 -->	
+
 	<insert id="modifyPic" parameterType="ProductImageVO">
 		insert into productPic(p_id, fileName, uploadPath, uuid)
 		values (#{p_id},#{fileName},#{uploadPath},#{uuid})
 	</insert>
+
 	
-	 
-	 <!-- 상품 삭제할때 상품상세정보를 마지막에 지워야함 -->
 	 <!-- 상품 삭제 -->
 	 <delete id="productDelete1">
 		delete product where p_id=#{p_id}
@@ -84,7 +91,7 @@
 	</delete> 
 	<!-- 이미지 삭제 -->
 	<delete id="deleteImage">	
-		delete from productPic where p_id=#{p_id}
+		delete productPic where p_id=#{p_id}
 	</delete>
 	
 	<select id="getImageInfo" resultType="ProductImageVO">
