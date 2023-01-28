@@ -44,7 +44,7 @@ public class ChangeMemberInfoController {
 		
 		
 		try {
-			changeMemberInfoService.changeMember(changeCommand);
+			changeMemberInfoService.changeMember(changeCommand,loginMember.getEmail());
 			return 1;
 
 		}catch (AlreadyExistingMemberException e) {
@@ -78,7 +78,7 @@ public class ChangeMemberInfoController {
 		}
 		
 		try {
-			changeMemberInfoService.changeMember(changeCommand);
+			changeMemberInfoService.changeMember(changeCommand,loginMember.getEmail());
 			return 1;
 
 		}catch (AlreadyExistingMemberException e) {
@@ -108,7 +108,7 @@ public class ChangeMemberInfoController {
 		
 		
 		try {
-			changeMemberInfoService.changeMember(changeCommand);
+			changeMemberInfoService.changeMember(changeCommand,loginMember.getEmail());
 			return 1;
 
 		}catch (AlreadyExistingMemberException e) {
@@ -136,7 +136,7 @@ public class ChangeMemberInfoController {
 			return 2;
 		}
 		
-		changeMemberInfoService.changeMember(changeCommand);
+		changeMemberInfoService.changeMember(changeCommand,loginMember.getEmail());
 		
 		try {
 			return 1;
@@ -149,32 +149,8 @@ public class ChangeMemberInfoController {
 		
 	}
 	
-	@PostMapping("updateEmail")
-	public int updateEmail(@RequestBody ChangeMemberInfoCommand changeCommand ,
-				Errors errors,HttpSession session) {
-		new ChangeMemberInfoValidator().validate(changeCommand, errors);
-		
-		int result = changeMemberInfoService.getEmailMember(changeCommand.getEmail());
-		
-		if(errors.hasErrors()) {
-			return 2;
-		}
-		
-		try {
-			changeMemberInfoService.changeEmail(changeCommand);
-			session.invalidate();
-			return result;
-
-		}catch (AlreadyExistingMemberException e) {
-			errors.rejectValue("email", "duplicate");
-			
-			return result;
-		}
-		
-	}
-	
 	@PostMapping("updateNickname")
-	public int updateNickname(@RequestBody ChangeMemberInfoCommand changeCommand, Errors errors) {
+	public int updateNickname(@RequestBody ChangeMemberInfoCommand changeCommand, Errors errors,HttpSession session) {
 		new ChangeMemberInfoValidator().validate(changeCommand, errors);
 		
 		int result = changeMemberInfoService.getNicknameMember(changeCommand.getNickname());
@@ -185,13 +161,13 @@ public class ChangeMemberInfoController {
 			return 1;
 		}
 		
-		
+		Member loginMember = (Member) session.getAttribute("member");
 		try {
 			if(result == 1) {
 				return result;
 
 			}else {
-				changeMemberInfoService.changeMember(changeCommand);
+				changeMemberInfoService.changeMember(changeCommand,loginMember.getEmail());
 				System.out.println(result);
 				return result;
 			}

@@ -97,7 +97,16 @@
 		        		<div class="material-symbols-outlined col-11 col-lg-auto ">search</div>
 		        	</div>
 	        	</form> 
-				<div class="nav-link px-2 link-dark">${authInfo.nickname}</div>
+	        	
+	        	<c:choose>
+	        		<c:when test="${!empty member.nickname}">
+	        			<div class="nav-link px-2 link-dark">${member.nickname}</div>
+	        		</c:when>
+	        		<c:otherwise>
+	        			<div class="nav-link px-2 link-dark">${authInfo.nickname}</div>
+	        		</c:otherwise>
+	        	</c:choose>
+	        	
 	      	<div class="dropdown text-end">
 	      		<c:if test="${empty authInfo}">
 	      			<a href="login"><button type="button" class="btn btn-outline-dark me-2">로그인</button></a>

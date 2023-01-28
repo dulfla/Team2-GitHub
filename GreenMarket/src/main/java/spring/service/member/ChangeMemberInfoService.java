@@ -16,10 +16,10 @@ public class ChangeMemberInfoService {
 	@Autowired
 	private MemberDao dao;
 	
-	public void changeMember(ChangeMemberInfoCommand changeCommand) {
+	public void changeMember(ChangeMemberInfoCommand changeCommand, String email) {
 		
 		Member updateMember = new
-		Member(changeCommand.getEmail(),changeCommand.getBirth(),changeCommand.getAddress(),
+		Member(email,changeCommand.getBirth(),changeCommand.getAddress(),
 				  changeCommand.getPhone(), changeCommand.getName(),changeCommand.getNickname());
 		
 		dao.updateMember(updateMember);

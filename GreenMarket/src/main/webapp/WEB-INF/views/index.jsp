@@ -35,6 +35,13 @@
 		background-color:darkgreen;
 		color:white;
 	}
+	.radi{
+		border-radius: 40px;
+		overflow: hidden;
+		box-shadow: 4px 4px 10px rgba(0, 0, 0, .15);
+		cursor: pointer;
+	}
+	
 /* 광고 배너*/
 .advertising  .badges2 {
 	position: absolute;
@@ -65,27 +72,27 @@
 			<div class="carousel-inner">
 				<div class="carousel-item active">
 					<div class="container w-75">
-						<img src="${path}resources/img/mainPageImg/1.png" class="d-block w-100" alt="샘플 이미지">
+						<img src="${path}resources/img/mainPageImg/1.png" class="d-block w-100 radi" alt="샘플 이미지">
 					</div>
 				</div>
 				<div class="carousel-item">
 					<div class="container w-75">
-						<img src="${path}resources/img/mainPageImg/2.png" class="d-block w-100" alt="샘플 이미지">
+						<img src="${path}resources/img/mainPageImg/2.png" class="d-block w-100 radi" alt="샘플 이미지">
 					</div>
 				</div>
 				<div class="carousel-item">
 					<div class="container w-75">
-						<img src="${path}resources/img/mainPageImg/3.png" class="d-block w-100" alt="샘플 이미지">
+						<img src="${path}resources/img/mainPageImg/3.png" class="d-block w-100 radi" alt="샘플 이미지">
 					</div>
 				</div>
 				<div class="carousel-item">
 					<div class="container w-75">
-						<img src="${path}resources/img/mainPageImg/4.png" class="d-block w-100" alt="샘플 이미지">
+						<img src="${path}resources/img/mainPageImg/4.png" class="d-block w-100 radi" alt="샘플 이미지">
 					</div>
 				</div>
 				<div class="carousel-item">
 					<div class="container w-75">
-						<img src="${path}resources/img/mainPageImg/5.png" class="d-block w-100" alt="샘플 이미지">
+						<img src="${path}resources/img/mainPageImg/5.png" class="d-block w-100 radi" alt="샘플 이미지">
 					</div>
 				</div>
 			</div>
@@ -112,9 +119,7 @@
 		        <img src="${path}resources/img/badge3.jpg" alt="Badge">
 		      </div>
 		      <div class="badge2">
-		        <img src="https://greened.co.kr/assets/_img/header/new23_headerlogo0.svg?3" alt="Badge">
-		      </div>
-		      <div class="badge2">
+		        <a href="https://suwon.greenart.co.kr/" target='_blank'><img src="https://greened.co.kr/assets/_img/header/new23_headerlogo0.svg?3" alt="Badge"></a> 
 		      </div>
 		    </div>
 		</div>

@@ -29,15 +29,6 @@ public class ChangeMemberInfoValidator implements Validator{
 		
 		ChangeMemberInfoCommand changeCommand  = (ChangeMemberInfoCommand)target;
 		
-		if(changeCommand.getEmail() == null || changeCommand.getEmail().trim().isEmpty()) {
-			errors.rejectValue("email","required");
-		}else{
-			Matcher matcher = pattern.matcher(changeCommand.getEmail());
-			if(!matcher.matches()) {
-				// 정규식과 패턴이 일치한다면 true, 일치하지 않는다면 false
-				errors.rejectValue("email","bad");
-			}
-		}
 		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "required");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birth", "required");

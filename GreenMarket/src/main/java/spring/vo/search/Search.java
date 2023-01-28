@@ -9,7 +9,6 @@ public class Search {
 	private String email;
 	private Date regdate;
 	
-	
 	public Search() {}
 	
 	public Search(long idx, String keyword, String email) {

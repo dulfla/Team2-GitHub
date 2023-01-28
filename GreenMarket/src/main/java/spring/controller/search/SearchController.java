@@ -76,6 +76,7 @@ public class SearchController {
 		model.addAttribute("productModel", list);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("c", c);
+		model.addAttribute("v", v);
 		model.addAttribute("search",searches.getKeyword());
 		return "search/products";
 	}

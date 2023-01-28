@@ -39,7 +39,7 @@
 	
 	<update id="updateMember" parameterType="member">
 		UPDATE member 
-		SET email=#{email},name = #{name},birth=#{birth},address=#{address},
+		SET name = #{name},birth=#{birth},address=#{address},
 			phone=#{phone},nickname=#{nickname}
 		WHERE email=#{email}
 	</update>

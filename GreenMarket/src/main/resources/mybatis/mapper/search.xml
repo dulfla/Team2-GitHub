@@ -112,7 +112,7 @@
 	<select id="popSearchList" resultType="search">
 		select keyword ,count(keyword)
 		from search
-		where TO_CHAR(SYSDATE, 'MM/dd') = TO_CHAR(regdate, 'MM/dd')
+		<!-- where TO_CHAR(SYSDATE, 'MM/dd') = TO_CHAR(regdate, 'MM/dd') -->
 		group by keyword 
 		order by count(keyword) desc
 	</select>
