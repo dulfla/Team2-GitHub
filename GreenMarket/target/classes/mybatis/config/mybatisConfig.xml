@@ -24,6 +24,7 @@
 		<typeAlias type="spring.vo.product.CategoryVO" alias="CategoryVO"/>
 		<typeAlias type="spring.vo.product.ProductImageVO" alias="ProductImageVO"/>
 		
+		<typeAlias type="spring.vo.product.PagingInfoVO" alias="PagingInfo"/>
 		<typeAlias type="spring.vo.product.ProductListVO" alias="pListVO"/>
 	</typeAliases>
 </configuration>
