@@ -78,12 +78,17 @@ public class MemberServiceImpl implements MemberService {
 				
 				dao.deleteImage(vo.getP_id());
 
-				for(ProductImageVO attach : vo.getImageList()) {
-				
-					attach.setP_id(vo.getP_id());
-					logger.info("deleteImageFor........" + attach);
-					dao.modifyImage(attach);
-				}	
+//				for(ProductImageVO attach : vo.getImageList()) {
+//				
+//					attach.setP_id(vo.getP_id());
+//					logger.info("deleteImageFor........" + attach);
+//					dao.modifyImage(attach);
+//				}
+				imgs.forEach(attach ->{
+					System.out.println(vo.getP_id());
+					attach.setProductId(vo.getP_id());
+					dao.imageRegister(attach);		
+				});
 			}
 			
 		}

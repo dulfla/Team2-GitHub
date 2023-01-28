@@ -14,7 +14,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
 <style type="text/css">
-	#result_card img{
+/* 	#result_card img{
 		max-width: 100%;
 	    height: 500px;
 	    display: block;
@@ -22,7 +22,7 @@
 	    margin-top: 10px;
 	    margin: auto;
 	    border-radius: 2%;
-	}
+	} */
 	.breadcrumb {
     	margin-top: 0px;
     	font-size: 13px;
@@ -134,7 +134,25 @@
 									<div class="row">
 										<div class="col-md-12">
 											<div class="form-group">
-												<div id="uploadResult"></div>                       
+												<div id="uploadResult" class="position-relative">
+													<div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
+													  <div class="carousel-inner" id="imgList">
+													    <div class="carousel-item active">
+													    	<div class="w-75">
+													    		<img src="./resources/img/noImage.png" class="d-block w-100" alt="" class='img-fluid'>
+													    	</div>
+													    </div>
+													  </div>
+													  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+													    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+													    <span class="visually-hidden">Previous</span>
+													  </button>
+													  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+													    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+													    <span class="visually-hidden">Next</span>
+													  </button>
+													</div>
+												</div>                       
 											</div>
 										</div>
 									</div>
@@ -284,33 +302,65 @@
 	
 	
 			$.getJSON("getImageList", {p_id : p_id}, function(arr){
-	
+			    
 				console.log(arr);
-				if(arr.length === 0){	
-	
-					let str = "";
-	
-					str += "<div id='result_card'>";
-					str += "<img src='./resources/img/noImage.png' class='img-fluid'>";
-					str += "</div>";
-	
-					//uploadResult.html(str);
-					//$("#uploadResult").append(str);
-					$("#uploadResult").html(str);
+				if(arr.length === 0){
 					return;
 				} 
-	
-				let str = "";
-				let obj = arr[0];
-	
-				let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
-				str += "<div id='result_card'";
-				str += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "'";
-				str += ">";
-				str += "<img src='display?fileName=" + fileCallPath +"'>";
-				str += "</div>";		
+				
+/* 				let str = "";
+				let obj;
+				
+				str += "<div id='result_card'"; */
+				if(arr.length==1){
+					let imgResult = document.getElementById('uploadResult');
+					imgResult.innerHTML = null;
+					
+					obj = arr[0];
+					
+					let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+					
+					let img = document.createElement('img');
+					img.setAttribute('src', 'display?fileName='+fileCallPath);
+					img.classList.add('w-100')
+					
+					imgResult.appendChild(img)
+					
+/* 					str += "data-path='" + obj.uploadPath + "' data-uuid='" + obj.uuid + "' data-filename='" + obj.fileName + "'";
+					str += ">"; */
+						
+				}else{
+					let imgBox = document.getElementById('imgList');
+					imgBox.innerHTML = null;
+					
+					for(let i=0; i<arr.length; i++){
+						obj = arr[i];
+						let carouselItem = document.createElement('div');
+						carouselItem.classList.add('carousel-item');
+						
+						if(i==0){
+							carouselItem.classList.add('active');
+						}
+						
+						let div = document.createElement('div');
+						div.classList.add('w-75');
+						div.setAttribute('style', 'margin:0px auto');
+						
+						let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+						
+						let img = document.createElement('img');
+						img.setAttribute('src', 'display?fileName='+fileCallPath);
+						img.classList.add('w-100')
+						
+						div.appendChild(img)
+						carouselItem.appendChild(div)
+						imgBox.appendChild(carouselItem)
+					}
+				}
+				
+				/* str += "</div>"; */
 				//uploadResult.html(str);
-				$("#uploadResult").html(str);
+/* 				$("#uploadResult").html(str); */
 			});		
 		}); 
 		$("#modify_Btn").click(function(){ 

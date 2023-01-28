@@ -255,9 +255,8 @@
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	
-	
-	
-	
+
+	<%-- <script src="${path}resources/script/asdf/asdf.js"></script> --%>
 	<script type="text/javascript">
 		var lat = $("#lat").val();
 		var lng = $("#lng").val();
@@ -363,7 +362,7 @@
 		
 		let str = "";
 		
-		let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
+		let fileCallPath = encodeURIComponent(obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName);
 		
 		str += "<div id='result_card'>";
 		str += "<img src='display?fileName=" + fileCallPath +"'>";
@@ -389,28 +388,31 @@
 		
 		$("#result_card").remove();
 	}
-		$(document).ready(function(){
-			  /* 이미지 정보 호출 */
-			  let p_id = '<c:out value="${product.p_id}"/>';
-			  let uploadResult = $("uploadResult");
-			 
+	
+	$(document).ready(function(){
+		  /* 이미지 정보 호출 */
+		  let p_id = '<c:out value="${product.p_id}"/>';
+		  let uploadResult = $("uploadResult");
+		 
+		  
+		  $.getJSON("getImageList", {p_id : p_id}, function(arr){
 			  
-			  $.getJSON("getImageList", {p_id : p_id}, function(arr){
-				  
-				 	if(arr.length === 0){	
-					  
-						let str = "";
-						
-						str += "<div id='result_card'>";
-						str += "<img src='./resources/img/noImage.png'>";
-						str += "</div>";
-
-						$("#uploadResult").html(str);
-						return;
-					} 
+			 	if(arr.length === 0){	
 				  
 					let str = "";
-					let obj = arr[0];
+					
+					str += "<div id='result_card'>";
+					str += "<img src='./resources/img/noImage.png'>";
+					str += "</div>";
+
+					$("#uploadResult").html(str);
+					return;
+				} 
+			  
+				let str = "";
+				
+				for(let i=0; i<arr.length; i++){
+					let obj = arr[i];
 					
 					let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
 					str += "<div id='result_card'";
@@ -424,8 +426,9 @@
 					str += "</div>";		
 
 					$("#uploadResult").html(str);
-			  });		
-		  });
+				}
+		  });		
+	  });
 	
 	
 		$("#back_Btn").click(function(){
