@@ -20,6 +20,7 @@ public class MemberDao {
 	}
 	
 	public Member selectByEmail(String email) {
+		System.out.println("테스트 : "+email);
 		return sqlSession.selectOne(nameSpace+"selectByEmail",email);	
 	}
 	

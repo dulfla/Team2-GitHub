@@ -183,6 +183,7 @@ main button {
 	width: 40px;
 }
 </style>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
 <jsp:include page="../include/header.jsp"/>
 </head>
 <body>
@@ -193,8 +194,7 @@ main button {
 			<form:errors />
 				<h1>로그인</h1>
 				<div class="social-container">
-					<a href="#" class="social"><i class="fa fa-facebook fa-2x"></i></a>
-					<a href="#" class="social"><i class="fab fa fa-twitter fa-2x"></i></a>
+					<div id="naverIdLogin"></div>
 				</div>
 				<span>or use your account</span>
 				<input class="input" type="email"	name="email" id="email"  placeholder="이메일" /> 
@@ -214,6 +214,7 @@ main button {
 		</div>
 	</div>
 	</main>
+	<!-- 네이버 로그인 버튼 생성 위치 -->
 </body>
 <script type="text/javascript">
 	$('#login_form').on('keypress', function(e){ 
@@ -221,6 +222,65 @@ main button {
 	        $('#loginBtn').click(); 
 	    }
 	}); 
+	var naverLogin = new naver.LoginWithNaverId(
+			{
+				clientId: "zPr1GMk6QFJ0KznVNkPd",
+	  			// 본인의 Client ID로 수정, 띄어쓰기는 사용하지 마세요.
+				callbackUrl: "http://localhost:8085/GreenMarket/index",
+	  			// 본인의 callBack url로 수정하세요.
+				isPopup: false,
+				loginButton: {color: "white", type: 3, height: 50}
+	  			// 네이버 로그인버튼 디자인 설정. 한번 바꿔보세요:D
+			}
+		);
+	naverLogin.init();
+	 
+	window.addEventListener('click', function () {
+		naverLogin.getLoginStatus(function (status) {
+
+		if (status) {
+			console.log(naverLogin.user); 
+			var birthday = naverLogin.user.getBirthday();
+			var email = naverLogin.user.getEmail();
+			var name = naverLogin.user.getName();
+			var nickName = naverLogin.user.getNickName();
+			
+			console.log(email);
+			console.log(name);
+			console.log(nickName);
+			console.log(birthday);
+			
+			let jsonData = {
+				'n_email':email,
+				'n_name':name,
+				'n_nickName':nickName
+			}
+			
+			$.ajax({
+				type: 'post',
+				url: 'naverSave',
+				data : JSON.stringify(jsonData),  
+				dataType : 'json', 
+				contentType : 'application/json;charset=UTF-8',
+				success: function(result) {
+					if(result=='ok') {
+						console.log('성공')
+				/* 		location.replace("http://localhost:8085/GreenMarket/login")  */
+					} else if(result=='no') {
+						console.log('실패')
+						/* location.replace("http://localhost:8085/GreenMarket/index") */
+					}
+				},
+				error: function(result) {
+					console.log('오류 발생')
+				}
+			})
+
+		} else {
+			console.log("callback 처리에 실패하였습니다.");
+		}
+		});
+	});
 </script>
 <script type="text/javascript" defer="defer" src="${path}resources/script/member/login.js"></script>
 <jsp:include page="../include/footer.jsp"/>
