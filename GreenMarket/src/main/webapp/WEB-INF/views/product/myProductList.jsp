@@ -21,6 +21,17 @@
   		<a href="sell" class="list-group-item list-group-item-action">판매완료된 상품</a>
   		<a href="unSell" class="list-group-item list-group-item-action">판매중인 상품</a> 
 	</div>
+	<div class="btn-group">
+	  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+		  	${pageData.oip} 개
+	  	</button>
+	  	<ul class="dropdown-menu">
+		    <li><a class="dropdown-item" href="${location}?pis=${pageData.pis}&oip=15">15 개</a></li>
+		    <li><a class="dropdown-item" href="${location}?pis=${pageData.pis}&oip=30">30 개</a></li>
+		    <li><a class="dropdown-item" href="${location}?pis=${pageData.pis}&oip=60">60 개</a></li>
+		    <li><a class="dropdown-item" href="${location}?pis=${pageData.pis}&oip=90">90 개</a></li>
+	  	</ul>
+	</div>
  	<div class="album py-5">
    	 	<div class="container">
       		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -71,19 +82,19 @@
 		  			<c:if test="${totalCnt>pageData.oip}">
 						<c:if test="${pageData.s>1}">
 							<li class="page-item">
-								<a class="page-link" href="${location}?s=${pageData.s-1}&p=${pageData.pis}"><<</a>
+								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s-1}&p=${pageData.pis}"><<</a>
 							</li>
 						</c:if>
 						<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<totalCnt)?(pageData.pis):(((totalCnt+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
 							<li class="page-item">
 								<c:if test="${pageData.p==page}"><b></c:if>
-								<a class="page-link" href="${location}?s=${pageData.s}&p=${page}">${page}</a>
+								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${page}</a>
 								<c:if test="${pageData.p==page}"></b></c:if>
 							</li>
 						</c:forEach>
 						<c:if test="${(pageData.s*(pageData.pis*pageData.oip)) < totalCnt}">
 							<li class="page-item">
-								<a class="page-link" href="${location}?s=${pageData.s+1}&p=1">>></a>
+								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s+1}&p=1">>></a>
 							</li>
 						</c:if>
 					</c:if>

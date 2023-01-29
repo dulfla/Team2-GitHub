@@ -3,7 +3,7 @@ package spring.vo.product;
 import java.util.Date;
 
 public class ProductListVO {
-				// VO 데이터를 담는 그릇
+	
 	private String p_id;
 	private String p_name;	
 	private String category;
@@ -17,8 +17,6 @@ public class ProductListVO {
 	private String uuid;
 	private String trade;
 	private String imgurl;
-	
-	
 	
 	public String getImgurl() {
 		return imgurl;
@@ -98,6 +96,5 @@ public class ProductListVO {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
-	
 	
 }

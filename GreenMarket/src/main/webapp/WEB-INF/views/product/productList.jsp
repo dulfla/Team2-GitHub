@@ -16,7 +16,7 @@
 <body>
 <%@ include file="../include/header.jsp" %>
 <div class="container">
-	<div id="optionGroups" class="">
+	<div id="optionGroups">
 		<div class="btn-group">
 		  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 			   	<c:choose>
@@ -30,9 +30,9 @@
 	           	</c:choose>
 		  	</button>
 		  	<ul class="dropdown-menu dropdown-menu-end">
-		  		<li><a class="dropdown-item" href="productList?c=all&v=${pageData.v}">전체 보기</a></li>
-		  		<c:forEach items="${categoryList}" var="c">
-		  			<li><a class="dropdown-item" href="productList?c=${c.category}&v=${pageData.v}">${c.category}</a></li>
+		  		<li><a class="dropdown-item" href="productList?c=all&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}">전체 보기</a></li>
+		  		<c:forEach items="${categorys}" var="c">
+		  			<li><a class="dropdown-item" href="productList?c=${c.category}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}">${c.category}</a></li>
 		  		</c:forEach>		    
 		  	</ul>
 		</div>	
@@ -47,10 +47,21 @@
 	          	</c:choose>
 		  	</button>
 		  	<ul class="dropdown-menu">
-			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=brandNew">최신순</a></li>
-			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=viewsLevel">조회순</a></li>
-			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=priceLow">낮은 가격순</a></li>
-			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=priceHigh">높은 가격순</a></li>
+			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=brandNew&pis=${pageData.pis}&oip=${pageData.oip}">최신순</a></li>
+			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=viewsLevel&pis=${pageData.pis}&oip=${pageData.oip}">조회순</a></li>
+			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=priceLow&pis=${pageData.pis}&oip=${pageData.oip}">낮은 가격순</a></li>
+			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=priceHigh&pis=${pageData.pis}&oip=${pageData.oip}">높은 가격순</a></li>
+		  	</ul>
+		</div>
+		<div class="btn-group">
+		  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+			  	${pageData.oip} 개
+		  	</button>
+		  	<ul class="dropdown-menu">
+			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=15">15 개</a></li>
+			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=30">30 개</a></li>
+			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=60">60 개</a></li>
+			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=90">90 개</a></li>
 		  	</ul>
 		</div>
 	</div>
@@ -104,19 +115,19 @@
 		  			<c:if test="${totalCnt>pageData.oip}">
 						<c:if test="${pageData.s>1}">
 							<li class="page-item">
-								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&s=${pageData.s-1}&p=${pageData.pis}"><<</a>
+								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s-1}&p=${pageData.pis}"><<</a>
 							</li>
 						</c:if>
 						<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<totalCnt)?(pageData.pis):(((totalCnt+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
 							<li class="page-item">
 								<c:if test="${pageData.p==page}"><b></c:if>
-								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&s=${pageData.s}&p=${page}">${page}</a>
+								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${page}</a>
 								<c:if test="${pageData.p==page}"></b></c:if>
 							</li>
 						</c:forEach>
 						<c:if test="${(pageData.s*(pageData.pis*pageData.oip)) < totalCnt}">
 							<li class="page-item">
-								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&s=${pageData.s+1}&p=1">>></a>
+								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s+1}&p=1">>></a>
 							</li>
 						</c:if>
 					</c:if>
