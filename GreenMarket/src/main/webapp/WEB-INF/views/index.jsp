@@ -69,7 +69,7 @@
 				<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3" aria-label="Slide 4"></button>
 				<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4" aria-label="Slide 5"></button>
 			</div>
-			<div class="carousel-inner">
+			<div class="carousel-inner" >
 				<div class="carousel-item active">
 					<div class="container w-75">
 						<img src="${path}resources/img/mainPageImg/1.png" class="d-block w-100 radi" alt="샘플 이미지">

@@ -7,6 +7,7 @@ import spring.dao.member.MemberDao;
 import spring.exception.AlreadyExistingMemberException;
 import spring.exception.IdPasswordNotMatchingException;
 import spring.exception.MemberNotFoundException;
+import spring.exception.RequiredException;
 import spring.vo.member.ChangeMemberInfoCommand;
 import spring.vo.member.Member;
 
@@ -33,14 +34,15 @@ public class ChangeMemberInfoService {
 		return dao.getNickName(nickname);
 	}
 
-	public void changeEmail(ChangeMemberInfoCommand changeCommand) {
-		System.out.println(changeCommand.getEmail());	
-		Member updateMember = new
-				Member(changeCommand.getEmail(),changeCommand.getBirth(),changeCommand.getAddress(),
-						  changeCommand.getPhone(), changeCommand.getName(),changeCommand.getNickname());
+	public void changePhoneMember(ChangeMemberInfoCommand changeCommand, Member loginMember) {
 		
-		dao.updateEmail(updateMember);
+		if(changeCommand.getPhone().equals("") ||
+				changeCommand.getPhone() == null) {
+			throw new RequiredException();
+		}
+		
 	}
+
 	
 	
 }

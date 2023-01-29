@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import spring.exception.IdNotMatchingException;
 import spring.exception.IdPasswordNotMatchingException;
 import spring.service.member.AuthService;
+import spring.service.member.RegisterService;
 import spring.vaildator.LoginCommandValidator;
 import spring.vo.member.AuthInfo;
 import spring.vo.member.LoginCommand;
@@ -30,7 +32,9 @@ public class LoginController {
 	@Autowired
 	private AuthService authService;
 	
-
+	@Autowired
+	private RegisterService registerService;
+	
 	@GetMapping("login")
 	public String memberLoginGet(HttpSession session) {
 		Object result = (Object)session.getAttribute("authInfo");
@@ -58,7 +62,7 @@ public class LoginController {
 			
 			session.setAttribute("authInfo", authInfo);
 			result = authInfo;
-		} catch (IdPasswordNotMatchingException e) {
+		} catch (IdNotMatchingException e) {
 			
 			return null;
 		}
@@ -78,25 +82,24 @@ public class LoginController {
 	@RequestMapping(value="naverSave", method=RequestMethod.POST)
 	@ResponseBody
 	public String naverSave(@RequestBody NaverCommand naverCommand,HttpSession session) {
-	System.out.println("#############################################");
-	System.out.println(naverCommand.getN_email());
-	System.out.println(naverCommand.getN_name());
-	System.out.println(naverCommand.getN_nickName());
-	System.out.println("#############################################");
-
-	Member naver = new Member();
-    
-	// ajax에서 성공 결과에서 ok인지 no인지에 따라 다른 페이지에 갈 수 있게끔 result의 기본값을 "no"로 선언
-	String result = "no";
-	AuthInfo authInfo = authService.naverAuthenticate(naverCommand);
-	if(authInfo!=null) {
-		session.setAttribute("authInfo", authInfo);
-		// naver가 비어있지 않는다는건 데이터를 잘 받아왔다는 뜻이므로 result를 "ok"로 설정
-		result = "ok";
-	}
-
-	return result;
-    
+		Member naver = new Member();
+	    
+		// ajax에서 성공 결과에서 ok인지 no인지에 따라 다른 페이지에 갈 수 있게끔 result의 기본값을 "no"로 선언
+		String result = "no";
+		try {
+			AuthInfo authInfo = authService.naverAuthenticate(naverCommand);
+			session.setAttribute("authInfo", authInfo);
+			// naver가 비어있지 않는다는건 데이터를 잘 받아왔다는 뜻이므로 result를 "ok"로 설정
+			result = "ok";
+		}catch (IdPasswordNotMatchingException e) {
+			registerService.naverRegist(naverCommand);
+			AuthInfo authInfo = authService.naverAuthenticate(naverCommand);
+			session.setAttribute("authInfo", authInfo);
+			result = "ok";
+		}
+		
+		return result;
+	    
 	}
 
 }

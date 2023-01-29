@@ -11,12 +11,6 @@ import spring.vo.member.ChangeMemberInfoCommand;
 
 public class ChangeMemberInfoValidator implements Validator{
 	
-	private static final String emailExp = // 정규 표현식
-			"^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
-	
-	private Pattern pattern = Pattern.compile(emailExp);
-	// 자바, 정규표현식
-	
 	
 	@Override
 	public boolean supports(Class<?> clazz) {

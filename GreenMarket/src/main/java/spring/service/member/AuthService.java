@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import spring.dao.member.MemberDao;
+import spring.exception.IdNotMatchingException;
 import spring.exception.IdPasswordNotMatchingException;
 import spring.vo.member.AuthInfo;
 import spring.vo.member.LoginCommand;
@@ -40,12 +41,13 @@ public class AuthService { // 실제 로그인 기능을 담당할 객체
 	}
 
 	public AuthInfo naverAuthenticate(NaverCommand naverCommand) {
-		System.out.println("서비스 : "+naverCommand.getN_email());
 		Member member = memberDao.selectByEmail(naverCommand.getN_email());
 		//System.out.println(member.getEmail());
-		/*
-		 * if(member == null) { throw new IdPasswordNotMatchingException(); }
-		 */
+		
+		  if(member == null) { 
+			  throw new IdNotMatchingException(); 
+		}
+		 
 		
 		AuthInfo authInfo = new AuthInfo()
 				.setNickname(member.getNickname())

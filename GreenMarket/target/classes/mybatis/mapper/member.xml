@@ -37,6 +37,11 @@
 			   #{address},#{phone},#{name},#{nickname})
 	</insert>
 	
+	<insert id="naverInsertMember" parameterType="member">
+	 	INSERT INTO member (email,name,nickname)
+		VALUES(#{email},#{name},#{nickname})
+	</insert>
+	
 	<update id="updateMember" parameterType="member">
 		UPDATE member 
 		SET name = #{name},birth=#{birth},address=#{address},

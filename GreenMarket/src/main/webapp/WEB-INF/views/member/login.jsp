@@ -192,7 +192,7 @@ main button {
 		<div class="form-container log-in-container">
 			<form class="form" action="postLogin" method="post" id="login_form" name="frm">
 			<form:errors />
-				<h1>로그인</h1>
+				<h1 class="mt-2">로그인</h1>
 				<div class="social-container">
 					<div id="naverIdLogin"></div>
 				</div>
@@ -222,28 +222,31 @@ main button {
 	        $('#loginBtn').click(); 
 	    }
 	}); 
-	var naverLogin = new naver.LoginWithNaverId(
+	
+	let naverLogin = new naver.LoginWithNaverId(
 			{
 				clientId: "zPr1GMk6QFJ0KznVNkPd",
-	  			// 본인의 Client ID로 수정, 띄어쓰기는 사용하지 마세요.
-				callbackUrl: "http://localhost:8085/GreenMarket/index",
-	  			// 본인의 callBack url로 수정하세요.
+				callbackUrl: "http://localhost:8085/GreenMarket/login",
 				isPopup: false,
-				loginButton: {color: "white", type: 3, height: 50}
-	  			// 네이버 로그인버튼 디자인 설정. 한번 바꿔보세요:D
+				loginButton: {
+					color: "white", type: 3, height: 50
+				}
 			}
 		);
+	
 	naverLogin.init();
-	 
-	window.addEventListener('click', function () {
+	const button = document.getElementById('naverIdLogin');
+ 
+	button.addEventListener('click', function () {
 		naverLogin.getLoginStatus(function (status) {
 
 		if (status) {
-			console.log(naverLogin.user); 
-			var birthday = naverLogin.user.getBirthday();
-			var email = naverLogin.user.getEmail();
-			var name = naverLogin.user.getName();
-			var nickName = naverLogin.user.getNickName();
+			console.log(naverLogin); 
+			
+			let birthday = naverLogin.user.getBirthday();
+			let email = naverLogin.user.getEmail();
+			let name = naverLogin.user.getName();
+			let nickName = naverLogin.user.getNickName();
 			
 			console.log(email);
 			console.log(name);
@@ -281,6 +284,7 @@ main button {
 		}
 		});
 	});
+	
 </script>
 <script type="text/javascript" defer="defer" src="${path}resources/script/member/login.js"></script>
 <jsp:include page="../include/footer.jsp"/>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import spring.exception.AlreadyExistingMemberException;
+import spring.exception.RequiredException;
 import spring.service.member.ChangeMemberInfoService;
 import spring.vaildator.ChangeMemberInfoValidator;
 import spring.vo.member.ChangeMemberInfoCommand;
@@ -62,10 +63,9 @@ public class ChangeMemberInfoController {
 		new ChangeMemberInfoValidator().validate(changeCommand, errors);
 		
 		
-		if(errors.hasErrors()) {
-			// 에러 객체에 에러가 하나라도 검출이 되었다면
-			return 0;
-		}
+		/*
+		 * if(errors.hasErrors()) { // 에러 객체에 에러가 하나라도 검출이 되었다면 return 0; }
+		 */
 		
 		Member loginMember = (Member) session.getAttribute("member");
 		
@@ -73,16 +73,12 @@ public class ChangeMemberInfoController {
 			return 2;
 		}
 		
-		for(int i = 0; i < 3; i++) {
-			System.out.println("테스트 중 : "+loginMember);
-		}
-		
 		try {
 			changeMemberInfoService.changeMember(changeCommand,loginMember.getEmail());
 			return 1;
 
 		}catch (AlreadyExistingMemberException e) {
-			errors.rejectValue("birth", "duplicate");
+			errors.rejectValue("birth", "required");
 			
 			return 0;
 		}
@@ -90,33 +86,19 @@ public class ChangeMemberInfoController {
 	}
 	
 	@PostMapping("updatePhone")
-	public int updatePhone(@RequestBody ChangeMemberInfoCommand changeCommand ,HttpSession session,
-				Errors errors) {
-		new ChangeMemberInfoValidator().validate(changeCommand, errors);
-		
-		
-		if(errors.hasErrors()) {
-			// 에러 객체에 에러가 하나라도 검출이 되었다면
-			return 0;
-		}
+	public int updatePhone(@RequestBody ChangeMemberInfoCommand changeCommand ,HttpSession session) {
 		
 		Member loginMember = (Member) session.getAttribute("member");
 		
-		if(loginMember.getPhone().equals(changeCommand.getPhone())) {
-			return 2;
-		}
-		
-		
 		try {
-			changeMemberInfoService.changeMember(changeCommand,loginMember.getEmail());
-			return 1;
-
-		}catch (AlreadyExistingMemberException e) {
-			errors.rejectValue("phone", "duplicate");
-			
+			changeMemberInfoService.changePhoneMember(changeCommand,loginMember);
+			return 1;	
+		}catch (RequiredException e) {
+			return 0;
+		}catch (Exception e) {
+			// TODO: handle exception
 			return 0;
 		}
-		
 		
 	}
 	

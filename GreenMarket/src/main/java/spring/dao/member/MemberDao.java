@@ -56,4 +56,8 @@ public class MemberDao {
 	public void deleteMember(Member member) {
 		sqlSession.delete(nameSpace+"deleteMember",member);
 	}
+
+	public void naverInsertMember(Member naverMember) {
+		sqlSession.insert(nameSpace+"naverInsertMember",naverMember);
+	}
 }

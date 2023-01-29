@@ -1,6 +1,7 @@
 package spring.vo.member;
 
 public class MailAuthCommand {
+	
 	private String email;
 	private int authKey;
 	private String isAuth;
