@@ -19,26 +19,42 @@ public class PagingInfoVO {
 	public int getS() {
 		return s;
 	}
-	public void setS(int s) {
-		this.s = s;
+	public void setS(String s) {
+		if(s=="" || s==null) {
+			return;
+		}else {
+			this.s = Integer.parseInt(s);
+		}
 	}
 	public int getP() {
 		return p;
 	}
-	public void setP(int p) {
-		this.p = p;
+	public void setP(String p) {
+		if(p=="" || p==null) {
+			return;
+		}else {
+			this.p = Integer.parseInt(p);
+		}
 	}
 	public int getPis() {
 		return pis;
 	}
-	public void setPis(int pis) {
-		this.pis = pis;
+	public void setPis(String pis) {
+		if(pis=="" || pis==null) {
+			return;
+		}else {
+			this.pis = Integer.parseInt(pis);
+		}
 	}
 	public int getOip() {
 		return oip;
 	}
-	public void setOip(int oip) {
-		this.oip = oip;
+	public void setOip(String oip) {
+		if(oip=="" || oip==null) {
+			return;
+		}else {
+			this.oip = Integer.parseInt(oip);
+		}
 	}
 	public String getC() {
 		return c;

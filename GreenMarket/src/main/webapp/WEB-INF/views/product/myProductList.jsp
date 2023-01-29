@@ -2,8 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%-- <%@ page import="spring.controller.ProductDateTimeAgo" contentType="text/html;charset=UTF-8" %>
-<jsp:useBean id="dateTime" class="spring.controller.ProductDateTimeAgo" scope="page" /> --%>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -16,10 +14,12 @@
 <body>
 <%@ include file="../include/header.jsp" %>
 <div class="container">
+	<c:if test="${empty pageData}">pageData 비어있음</c:if>
+	<c:if test="${empty pageData.oip}">pageData.oip 비어있음</c:if>
 	<div class="list-group">
   		<a href="myProduct" class="list-group-item list-group-item-action">내 상품</a>
-  		<a href="sell" class="list-group-item list-group-item-action">판매완료된 상품</a>
-  		<a href="unSell" class="list-group-item list-group-item-action">판매중인 상품</a> 
+  		<a href="selled" class="list-group-item list-group-item-action">판매완료된 상품</a>
+  		<a href="unSelled" class="list-group-item list-group-item-action">판매중인 상품</a> 
 	</div>
 	<div class="btn-group">
 	  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">

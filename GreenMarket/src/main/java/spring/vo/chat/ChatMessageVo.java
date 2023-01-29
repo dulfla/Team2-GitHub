@@ -10,7 +10,7 @@ public class ChatMessageVo {
 	private String messType;
 	private String sender;
 	private String nickname;
-	private char read;
+	private int read;
 	private Date send_date;
 	
 	public String getNickname() {
@@ -49,10 +49,10 @@ public class ChatMessageVo {
 	public void setSender(String sender) {
 		this.sender = sender;
 	}
-	public char getRead() {
+	public int getRead() {
 		return read;
 	}
-	public void setRead(char read) {
+	public void setRead(int read) {
 		this.read = read;
 	}
 	public Date getSend_date() {

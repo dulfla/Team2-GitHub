@@ -81,23 +81,15 @@
 				    <li><a href="CategoryAdmin" class="nav-link px-2 link-dark">카테고리 관리</a></li>
 		    	</c:if>
 		    </ul>
-	
-	   		<%-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="search" method="get">
-	   			<input type="hidden" name="c" value="all">
-		        <input type="hidden" name="v" value="product">
-	      		<input type="search" class="form-control" value="${search}" placeholder="검색어 입력..."  aria-label="Search" name="search">
-	      	</form>
-			 --%>
-		      	 <form class="col-8 col-lg-auto mb-2 mb-lg-0 me-lg-4" role="search" action="search" method="get">
-			      	<div class="search col-4 col-lg-auto mb-2 mb-lg-0 me-lg-0" >
-		          		<input type="hidden" name="c" value="all">
-		          		<input type="hidden" name="v" value="product">
-		          		<input type="hidden" name="email" value="${authInfo.email}">
-		          		<input type="search"  id="keyword" name="keyword" aria-label="Search">
-		        		<div class="material-symbols-outlined col-11 col-lg-auto ">search</div>
-		        	</div>
-	        	</form> 
-			
+			<form class="col-8 col-lg-auto mb-2 mb-lg-0 me-lg-4" role="search" action="search" method="get">
+				<div class="search col-4 col-lg-auto mb-2 mb-lg-0 me-lg-0" >
+			  		<input type="hidden" name="c" value="all">
+			  		<input type="hidden" name="v" value="product">
+			  		<input type="hidden" name="email" value="${authInfo.email}">
+			  		<input type="search"  id="keyword" name="keyword" aria-label="Search">
+					<div class="material-symbols-outlined col-11 col-lg-auto ">search</div>
+				</div>
+			</form>
 	      	<div class="dropdown text-end">
 	      		<c:if test="${empty authInfo}">
 	      			<a href="login"><button type="button" class="btn btn-outline-dark me-2">로그인</button></a>

@@ -96,12 +96,12 @@
 	        SELECT chatMessage_seq.NEXTVAL FROM dual
 	    </selectKey>
  		INSERT INTO chatMessage
- 		VALUES(#{idx}, #{c_id}, #{message}, #{messType}, #{sender}, 0, sysdate)
+ 		VALUES(#{idx}, #{c_id}, #{message}, #{messType}, #{sender}, 1, sysdate)
  	</insert>
  	
  	<!-- 메세지 idx에 해당하는 메세지 가져오기 -->
  	<select id="selectSendedMessage" parameterType="long" resultType="chatMessageVo">
- 		SELECT message, messType, sender, read, send_date, nickname
+ 		SELECT *
  		FROM chatMessage c, member m
  		WHERE c.sender = m.email AND idx=#{idx}
  	</select>
@@ -110,5 +110,19 @@
  	<select id="selectNicknameByEmil" parameterType="String" resultType="String">
  		SELECT nickname FROM member WHERE email=#{email}
  	</select>
+ 	
+ 	<update id="readAllMessage" parameterType="chatMessageVo">
+ 		UPDATE chatMessage
+		SET read=0
+		WHERE c_id=#{c_id}
+			<![CDATA[AND sender<>#{sender}]]>
+			<![CDATA[AND send_date<=#{send_date}]]>
+ 	</update>
+ 	
+ 	<update id="readThisMessage">
+ 		UPDATE chatMessage
+		SET read=0
+		WHERE idx=#{idx}
+ 	</update>
  	
 </mapper>

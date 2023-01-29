@@ -127,7 +127,7 @@ CREATE TABLE chatMessage(
     idx NUMBER CONSTRAINT chatMessage_pk_idx PRIMARY KEY,
     c_id VARCHAR2(50),
     message NCLOB NOT NULL,
-    messType varchar(10), -- 메세지 타입 구분(text, jpg, mp4, mp3..)
+    messType varchar(10), -- 메세지 타입 구분(text, img)
     sender VARCHAR2(50), --  보낸사람이 누군지
     read char(1) NOT NULL, -- 읽음 : 0, 안 읽음 : 1
     send_date DATE NOT NULL

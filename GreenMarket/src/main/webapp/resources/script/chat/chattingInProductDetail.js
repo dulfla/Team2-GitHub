@@ -416,7 +416,7 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 			let msgL = data.messages;
 			if(0<msgL.length){
 				msgL.forEach((m) => {
-					let newElem = insertMessage(m.sender, m.nickname, m.message, m.messType);
+					let newElem = insertMessage(m.sender, m.nickname, m.message, m.messType); // , m.read
 					if(m.messType=='IMG'){
 						newElem.addEventListener('load', function(){
 							scrollCheck(true);
@@ -608,27 +608,56 @@ function onMessage(msg) {
 			
 	let nowPosition = messageBox.scrollTop;
 	let result = approximateCheck(nowPosition);
-	
-	let check = insertMessage(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
-	
-	if(msgInfo[0][1]==personalId){
-		scrollCheck(true);
+		
+	if(msgInfo[3][1]=='READ'){
+		if(msgInfo[0][1]!=personId){
+			console.log('상대방이 내 채팅을 읽었습니다.');
+		 //	document.getElementsByClassName('readMarks').remove();
+		}	 
 	}else{
-		if(result && msgInfo[3][1]=='IMG'){
-			check.addEventListener('load', function(){
+		let check = insertMessage(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]); // , 1
+		
+		if(msgInfo[0][1]==personalId){
+			scrollCheck(true);
+		}else{
+			readMsge(msgInfo[5][1]);
+			if(result && msgInfo[3][1]=='IMG'){
+				check.addEventListener('load', function(){
+					if(!scrollCheck(result)){
+						messagePopup(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
+					}
+				}, false);
+			}else{
 				if(!scrollCheck(result)){
 					messagePopup(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
 				}
-			}, false);
-		}else{
-			if(!scrollCheck(result)){
-				messagePopup(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
 			}
 		}
 	}
 }
 
-function insertMessage(sender, nick, msg, msgType){
+function readMsge(msgIdx){
+	$.ajax({
+		url:"ReadMessage",
+		method:"POST",
+		contentType:'application/json; charset=UTF-8',
+		data : JSON.stringify({
+			c_id : chatRoomId,
+    		p_id : null,
+    		email : personalId,
+    		msgIdx : msgIdx,
+    		type : "READ"
+    	}),
+    	error:function(){
+			alert('서버 연결에 문제가 생겨 메세지가 전송되지 않았습니다.');
+		},
+		success:function(data){
+			if(data==1){console.log('읽기 완료')}
+		}
+	});
+}
+
+function insertMessage(sender, nick, msg, msgType){ // , read
 	if(sender==personalId){
 		let myText = document.createElement('div');
 		myText.classList.add('messageBox', 'myMessageBox');
@@ -647,7 +676,14 @@ function insertMessage(sender, nick, msg, msgType){
 				scrollCheck(true);
 			}, false);
 		}
-	
+		/*
+			if(read==1){
+				let readMarks = document.createElement('p');
+				readMarks.classList.add('readMarks');
+				readMarks.innerHTML = "1";
+				myMessage.appendChild(readMarks);
+			}
+		*/
 		myText.appendChild(myMessage);
 		messageBox.appendChild(myText);
 		

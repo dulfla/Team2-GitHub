@@ -95,8 +95,10 @@ public class ProducListController {
 		return "product/myProductList";
 	}	
 	
-	@RequestMapping("unSell")
+	@RequestMapping("unSelled")
 	public String ProductUnSellList(PagingInfoVO data, HttpSession session, Model model) {
+		System.out.println("unSelled getOip : "+data.getOip());
+		
 		AuthInfo authInfo = (AuthInfo)session.getAttribute("authInfo");
 		data.setEmail(authInfo.getEmail());
 		
@@ -105,16 +107,21 @@ public class ProducListController {
 		
 		int totalCnt = dao.selectMyUnSellNumboard(data.getEmail());
 		
-		model.addAttribute("location", "unSell");
+		model.addAttribute("location", "unSelled");
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("products", list);
 		model.addAttribute("pageDate", data);
+
+		System.out.println("unSelled totalCnt : "+totalCnt);
+		System.out.println("unSelled getOip : "+data.getOip());
 		
 		return "product/myProductList";
 	}
 	
-	@RequestMapping("sell")
+	@RequestMapping("selled")
 	public String ProductSellList(PagingInfoVO data, HttpSession session, Model model) {
+		System.out.println("selled getOip : "+data.getOip());
+		
 		AuthInfo authInfo = (AuthInfo)session.getAttribute("authInfo");
 		data.setEmail(authInfo.getEmail());
 		
@@ -123,10 +130,13 @@ public class ProducListController {
 		
 		int totalCnt = dao.selectMySellNumboard(data.getEmail());
 		
-		model.addAttribute("location", "sell");
+		model.addAttribute("location", "selled");
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("products", list);
 		model.addAttribute("pageDate", data);
+		
+		System.out.println("selled totalCnt : "+totalCnt);
+		System.out.println("selled getOip : "+data.getOip());
 		
 		return "product/myProductList";
 	}

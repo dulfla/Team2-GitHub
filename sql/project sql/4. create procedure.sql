@@ -32,7 +32,7 @@ BEGIN
         FOR  idx IN 1..15 LOOP
             timeset := TO_DATE('2022121017'||TO_CHAR(idx, '00')||TO_CHAR(ROUND(DBMS_RANDOM.VALUE(0, 59)), '00'), 'YYYYMMDDHH24MISS');
             INSERT INTO chatMessage
-            VALUES(chatMessage_seq.NEXTVAL, csor_c_id, 'messageSample'||sampleMessage_seq.NEXTVAL, 'TEXT', csor_sender_email, 0, timeset);
+            VALUES(chatMessage_seq.NEXTVAL, csor_c_id, 'messageSample'||sampleMessage_seq.NEXTVAL, 'TEXT', csor_sender_email, 1, timeset);
         END LOOP;
     END LOOP;
     CLOSE chattingRoomMember;
