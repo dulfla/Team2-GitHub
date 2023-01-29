@@ -1,3 +1,18 @@
+-- 채팅방이 없는 경우 채팅방을 새롭게 만들어주는 프로시저 :: 여기서 실행 안 함
+CREATE OR REPLACE PROCEDURE newChattingRoom(
+    p_id IN chatInfomation.p_id%TYPE,
+    email IN chatParticipants.sender_email%TYPE,
+    c_id OUT chatInfomation.c_id%TYPE)
+IS
+    chatR chatInfomation.c_id%TYPE:= 'chat'||chatInfomation_seq.NEXTVAL;
+BEGIN
+    INSERT INTO chatInfomation VALUES(chatR, p_id);
+    INSERT INTO chatParticipants VALUES(chatParticipants_seq.NEXTVAL, chatR, email, sysdate);
+    c_id := chatR;
+END;
+
+------------------------------------------------------------------------------------------------------------------------
+
 -- 채팅방 정보와 채팅 참여자 정보를 읽어와서 해당 채팅방에 샘플 메세지를 데이터 넣을 프로시저
 CREATE OR REPLACE PROCEDURE chattingMessageSample
 IS
@@ -24,21 +39,6 @@ BEGIN
 END;
 
 EXECUTE chattingMessageSample;
-
-------------------------------------------------------------------------------------------------------------------------
-
--- 채팅방이 없는 경우 채팅방을 새롭게 만들어주는 프로시저 :: 여기서 실행 안 함
-CREATE OR REPLACE PROCEDURE newChattingRoom(
-    p_id IN chatInfomation.p_id%TYPE,
-    email IN chatParticipants.sender_email%TYPE,
-    c_id OUT chatInfomation.c_id%TYPE)
-IS
-    chatR chatInfomation.c_id%TYPE:= 'chat'||chatInfomation_seq.NEXTVAL;
-BEGIN
-    INSERT INTO chatInfomation VALUES(chatR, p_id);
-    INSERT INTO chatParticipants VALUES(chatParticipants_seq.NEXTVAL, chatR, email, sysdate);
-    c_id := chatR;
-END;
 
 ------------------------------------------------------------------------------------------------------------------------
 
@@ -90,6 +90,73 @@ BEGIN
 END;
 
 EXECUTE withdraw_sampleDate;
+
+------------------------------------------------------------------------------------------------------------------------
+
+-- 페이징용 상품 샘플 데이터 - productDetail tbl
+CREATE OR REPLACE PROCEDURE product_sampleDate
+IS
+    maxinput NUMBER(3);
+    priceVu productDetail.price%TYPE;
+    randomN NUMBER(3);
+    dayDate DATE;
+    c category.category%TYPE;
+    CURSOR categorys
+        IS SELECT category FROM category;
+BEGIN
+    OPEN categorys;
+    LOOP
+        FETCH categorys INTO c;
+        EXIT WHEN categorys%NOTFOUND;
+        
+        maxinput:=ROUND(DBMS_RANDOM.VALUE(10, 19)); -- *10
+        FOR idx IN 1..maxinput LOOP
+            priceVu:=ROUND(DBMS_RANDOM.VALUE(5000, 999999));
+            randomN:=ROUND(DBMS_RANDOM.VALUE(1, 999));
+            dayDate:=TO_DATE(sysdate-randomN);
+            
+            IF idx<=100 THEN
+                INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
+                VALUES('pid'||pid_seq.NEXTVAL, 'Product Sample'||pid_seq.CURRVAL, '상품 설명'||pid_seq.CURRVAL, c, dayDate, randomN, priceVu);
+            ELSE
+                INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price, trade)
+                VALUES('pid'||pid_seq.NEXTVAL, 'Product Sample'||pid_seq.CURRVAL, '상품 설명'||pid_seq.CURRVAL, c, dayDate, randomN, priceVu, 'CLEAR');
+            END IF;            
+        END LOOP;
+    END LOOP;
+    CLOSE categorys;
+END;
+
+EXECUTE product_sampleDate;
+
+-- 페이징용 상품 샘플 데이터 - product tbl
+CREATE OR REPLACE PROCEDURE product_who_sampleDate
+IS
+    lastSampleDate NUMBER:=6; -- SELECT pid_seq.CURRVAL INTO lastSampleDate FROM dual;
+    num NUMBER(1);
+    who product.email%TYPE;
+    prodId productDetail.p_id%TYPE;
+    CURSOR products
+    IS
+        SELECT p_id
+        FROM productDetail
+        WHERE lastSampleDate<TO_NUMBER(SUBSTR(p_id, 4))
+        ORDER BY TO_NUMBER(SUBSTR(p_id, 4)) ASC;
+BEGIN
+    OPEN products;
+    LOOP
+        FETCH products INTO prodId;
+        EXIT WHEN products%NOTFOUND;
+        num:=ROUND(DBMS_RANDOM.VALUE(1, 5)); -- 최대치는 직업 입력한 member 샘플 데이터 만큼.. 아니면 특정해서.?(아무튼 관리자는 아니게)
+        SELECT email INTO who FROM (SELECT email, rn FROM (SELECT email, ROWNUM AS rn FROM member) WHERE rn=num);
+        
+        INSERT INTO product
+        VALUES(pid_seq.NEXTVAL, who, prodId);
+    END LOOP;
+    CLOSE products;
+END;
+
+EXECUTE product_who_sampleDate;
 
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------

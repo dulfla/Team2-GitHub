@@ -4,240 +4,179 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="mybatis.mapper.productList">
-
-	<!-- 8-1) 생성된 쿼리 -->				<!-- 9)pListVO (mybatisConfig.xml)--><!-- spring.vo.ProductListVO -->
-	<select id="selectAll"  parameterType="PagingInfo" resultType="pListVO">
-		SELECT rn, pd.p_id,p_name,category,regdate,views,price,email,description,trade,fileName,uploadPath,uuid
-		FROM productDetail pd left outer join (select idx, email, p_id, ROWNUM as rn from product) p on pd.p_id = p.p_id
-	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE rn BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15) 
-	</select><!--  where uuid like 's_%' -->
-	
-	<select id="brandNew" parameterType="PagingInfo" resultType="pListVO">
-		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        from
-        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
-	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-        ORDER BY regdate DESC )
-		WHERE ROWNUM BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)		
-	</select>
-	
-	<select id="priceLow" parameterType="PagingInfo" resultType="pListVO">
-		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        from
-        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
-	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-        ORDER BY price ASC )
-		WHERE ROWNUM BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)
-	</select>
-	
-	<select id="priceHigh" parameterType="PagingInfo" resultType="pListVO">
-		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        from
-        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
-	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-        ORDER BY price DESC )
-		WHERE ROWNUM BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)
-	</select>
-	
-	<select id="viewsLevel"  parameterType="PagingInfo" resultType="pListVO">
-		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        from
-        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
-	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-        ORDER BY views DESC )
-		WHERE ROWNUM BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15) 
-	</select>
-		
-	 <select id="category" parameterType="PagingInfo" resultType="pListVO">
-		SELECT rn, pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join(select idx, email, p_id, ROWNUM as rn from product) p on pd.p_id = p.p_id
-	        left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE category = #{category} AND rn BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)
-	</select> 
 	
 	<select id="countProductNumber" resultType="int">
 		SELECT COUNT(*) FROM ProductDetail
 	</select>
 	
+	<select id="countMyProductNumber" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM productDetail pd, 
+			(SELECT p_id, email, ROWNUM as rn
+				FROM product
+				WHERE email=#{email}) p
+		WHERE pd.p_id = p.p_id
+	</select>
 	
+	<select id="countMySellNumber"  parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM (SELECT * FROM productDetail
+				WHERE trade='CLEAR' or trade='clear') pd,
+			 (SELECT p_id, email, ROWNUM as rn
+				FROM product
+				WHERE email=#{email}) p
+		WHERE pd.p_id = p.p_id
+	</select>
 	
-	<!-- ================================================================ -->
+	<select id="countMyUnSellNumber" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM (SELECT * FROM productDetail
+				WHERE trade='TRADE' or trade='trade') pd,
+			 (SELECT p_id, email, ROWNUM as rn
+			 	FROM product
+			 	WHERE email=#{email}) p
+		WHERE pd.p_id = p.p_id
+	</select>
 	
-		<select id="sellList" parameterType="PagingInfo" resultType="pListVO">
-		SELECT rn, pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-			FROM (select * from productDetail WHERE trade='CLEAR' or trade='clear') pd  left outer join 
-				(SELECT p_id,email,ROWNUM as rn from product WHERE email=#{email}) p  on pd.p_id = p.p_id
-	            left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-	            WHERE rn BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)
-		</select><!--  where uuid like 's_%' -->
-		
-	<!-- count(myproduct) -->
-		<select id="countMyProductNumber" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM productDetail pd, 
-				(SELECT p_id,email,ROWNUM as rn from product WHERE email=#{email}) p where pd.p_id = p.p_id
-		</select>
-		
-		<!-- conut(clear) -->
-		<select id="countMySellNumber"  parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM (select * from productDetail WHERE trade='CLEAR' or trade='clear') pd,
-				(SELECT p_id,email,ROWNUM as rn from product WHERE email=#{email}) p WHERE pd.p_id = p.p_id
-		</select>
-		
-		<!-- conut(trade) -->
-		<select id="countMyUnSellNumber" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM (select * from productDetail WHERE trade='TRADE' or trade='trade') pd,
-				(SELECT p_id,email,ROWNUM as rn from product WHERE email=#{email}) p WHERE pd.p_id = p.p_id
-		</select>
-		
-		<select id="unSellList"  parameterType="PagingInfo" resultType="pListVO">
-		SELECT rn, pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-			FROM (select * from productDetail WHERE trade='TRADE' or trade='trade') pd  left outer join 
-				(SELECT p_id,email,ROWNUM as rn from product WHERE email=#{email}) p  on pd.p_id = p.p_id
-	            left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-	            WHERE rn BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)
-		</select>
-		
-		<select id="myProductList" parameterType="PagingInfo" resultType="pListVO">
-		SELECT rn, pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-			FROM productDetail pd left outer join  (SELECT p_id,email, ROWNUM as rn from product WHERE email=#{email}) p  on pd.p_id = p.p_id
-			 left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-			 where rn BETWEEN (#{section}-1)*150 + (#{pageNum}-1)*15+1 AND (#{section}-1)*150+(#{pageNum}*15)
-		</select>
+	<select id="countCategory" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM (SELECT * FROM productDetail
+				WHERE category=#{c}) pd,
+			 product p
+		WHERE pd.p_id = p.p_id
+	</select>
+
+	<sql id="selectPL">
+		SELECT prod.*, f.fileName, f.uploadPath, f.uuid
+		FROM
+		    (SELECT * FROM productPic
+		    WHERE ROWNUM=1) f
+		RIGHT OUTER JOIN
+		    (SELECT pd.*, p.email
+		    FROM productDetail pd,
+		    	(SELECT ROWNUM AS rn, product.* FROM product) p
+		    WHERE pd.p_id=p.p_id) prod
+		ON f.p_id=prod.p_id
+	</sql>
 	
-	<!-- ==========================카테고리================================== -->
+	<sql id="selectMyPL">
+		SELECT prod.*, f.fileName, f.uploadPath, f.uuid
+		FROM
+		    (SELECT * FROM productPic
+		    WHERE ROWNUM=1) f
+		RIGHT OUTER JOIN
+		    (SELECT pd.*, p.email
+		    FROM productDetail pd,
+		    	(SELECT ROWNUM AS rn, product.*
+		    	FROM product
+		    	WHERE email=#{email}) p
+		    WHERE pd.p_id=p.p_id) prod
+		ON f.p_id=prod.p_id
+	</sql>
+	
+	<sql id="paging">
+		rn BETWEEN
+			((#{s}-1)*(#{pis}*#{oip}) + (#{p}-1)*#{oip}+1)
+		   AND
+			((#{s}-1)*(#{pis}*#{oip})+(#{p}*#{oip}))
+	</sql>
+
+	<sql id="selectSeletedPL">
+		SELECT * FROM 
+			(SELECT ROWNUM AS rn, prodt.*
+			FROM (<include refid="selectPL"/>
+	</sql>
+	
+	<sql id="selectByCategory">
+		<include refid="selectSeletedPL"/>
+		WHERE category = #{c}
+	</sql>
+	
+	<sql id="selectSeletedCategoryPL">
+		SELECT * FROM 
+			(SELECT ROWNUM AS rn, prodt.*
+			FROM (<include refid="selectCategoryPL"/>
+	</sql>
+
+	<select id="selectAll"  parameterType="PagingInfo" resultType="pListVO">
+		<include refid="selectSeletedPL"/>) prodt)
+		WHERE <include refid="paging"/>
+	</select>
+	
+	<select id="brandNew" parameterType="PagingInfo" resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+			ORDER BY regdate DESC) prodt)
+		WHERE <include refid="paging"/>		
+	</select>
+	
+	<select id="priceLow" parameterType="PagingInfo" resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+			ORDER BY price ASC) prodt)
+		WHERE <include refid="paging"/>
+	</select>
+	
+	<select id="priceHigh" parameterType="PagingInfo" resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+			ORDER BY price DESC) prodt)
+		WHERE <include refid="paging"/>	
+	</select>
+	
+	<select id="viewsLevel"  parameterType="PagingInfo" resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+			ORDER BY views DESC) prodt)
+		WHERE <include refid="paging"/>	 
+	</select>
+		
+	 <select id="category" parameterType="PagingInfo" resultType="pListVO">
+	 	<include refid="selectByCategory"/>) prodt)
+		WHERE <include refid="paging"/>
+	</select> 
 	
 	<select id="cateBrandNew" parameterType="PagingInfo" resultType="pListVO">
-		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        from
-        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
-	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-        WHERE category = #{category}
-        ORDER BY regdate DESC )
-        where ROWNUM BETWEEN (1-1)*150 + (1-1)*15+1 AND (1-1)*150+(1*15)  
+		<include refid="selectByCategory"/>
+			ORDER BY regdate DESC) prodt)
+		WHERE <include refid="paging"/>
 	</select>
 	
 	<select id="catePriceLow" parameterType="PagingInfo" resultType="pListVO">
-		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        from
-        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
-	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-        WHERE category = #{category}
-        ORDER BY price ASC  )
-        where ROWNUM BETWEEN (1-1)*150 + (1-1)*15+1 AND (1-1)*150+(1*15)		
+		<include refid="selectByCategory"/>
+			ORDER BY price ASC) prodt)
+		WHERE <include refid="paging"/>
 	</select>
 	
 	<select id="catePriceHigh" parameterType="PagingInfo" resultType="pListVO">
-		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        from
-        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
-	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-        WHERE category = #{category}
-        ORDER BY price DESC )
-        where ROWNUM BETWEEN (1-1)*150 + (1-1)*15+1 AND (1-1)*150+(1*15)		
+		<include refid="selectByCategory"/>
+			ORDER BY price DESC) prodt)
+		WHERE <include refid="paging"/>		
 	</select>
 	
 	<select id="cateViewsLevel" parameterType="PagingInfo" resultType="pListVO">
-		SELECT ROWNUM as rn, p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        from
-        	(select pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-        FROM productDetail pd left outer join(select idx, email, p_id from product) p on pd.p_id = p.p_id
-	    	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-        WHERE category = #{category}
-        ORDER BY views DESC )
-        where ROWNUM BETWEEN (1-1)*150 + (1-1)*15+1 AND (1-1)*150+(1*15)		
+		<include refid="selectByCategory"/>
+			ORDER BY views DESC) prodt)
+		WHERE <include refid="paging"/>	
 	</select>
 	
-	<!-- count(category) -->
-	<select id="countCategory" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM (select * from productDetail where category=#{category}) pd, product p
-				where pd.p_id = p.p_id
+	<select id="myProductList" parameterType="PagingInfo" resultType="pListVO">
+		SELECT * FROM
+			(SELECT ROWNUM AS rn, prodt.*
+			FROM (<include refid="selectMyPL"/>) prodt)
+		WHERE <include refid="paging"/>
+	</select>
+
+	<select id="sellList" parameterType="PagingInfo" resultType="pListVO">
+		SELECT * FROM
+			(SELECT ROWNUM AS rn, prodt.*
+			FROM (<include refid="selectMyPL"/>
+					WHERE trade='CLEAR' or trade='clear') prodt)
+		WHERE <include refid="paging"/>
 	</select>
 	
-	<!-- ===========================================페이징============================================ -->
-	
-<!-- 	<select id="productPaging" resultType="pListVO" parameterType="map">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,trade,fileName,uploadPath,uuid
-			FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-			WHERE SUBSTR(pd.p_id, 4) BETWEEN (#{section}-1)*100 + (#{pageNum}-1)*10+1 AND (#{section}-1)*100+(#{pageNum}*10) 
-	</select> -->
-	
-	
-	
-	<!-- 
-	SELECT pd.p_id,p_name,category,regdate,views,price
-       FROM productDetail pd,trade tr 
-       WHERE 
-            pd.p_id = tr.p_id
-            AND
-            tr.p_id IN (SELECT p_id from product WHERE email='hong@naver.com');  email=#{email}  (판매내역)
-             상품들중 내가 등록한 상품들중 거래된걸 찾아와
-            
-SELECT pd.p_id,p_name,category,regdate,views,price,email
-       FROM productDetail pd, product p
-       WHERE
-            pd.p_id = p.p_id
-            AND
-            pd.p_id IN 
-            (SELECT p_id FROM trade WHERE email = 'hong@naver.com');  email=#{email}  (구매내역)
-             거래된 상품들중 산 아이디가 나인걸 찾아와 -->
-	
-	
-	<!-- 그냥 상품목록에서 불러버리기 -->
-	
-	<!-- <resultMap type="member" id="memVO">
-		<result column="id" property="id"/>
-		<result column="email" property="email"/>
-		<result column="password" property="password"/>
-		<result column="name" property="name"/>
-		<result column="regdate" property="registerDate"/>
-	</resultMap>
-	
-	<sql id="selectAllMember">
-		select * from member
-	</sql>
-	
-	<select id="selectAll" resultMap="memVO">
-		<include refid="selectAllMember"/>
-		order by id ASC
+	<select id="unSellList"  parameterType="PagingInfo" resultType="pListVO">
+		SELECT * FROM
+			(SELECT ROWNUM AS rn, prodt.*
+			FROM (<include refid="selectMyPL"/>
+					WHERE trade='TRADE' or trade='trade') prodt)
+		WHERE <include refid="paging"/>
 	</select>
 	
-	<select id="selectByEmail" resultMap="memVO" parameterType="String">
-		<include refid="selectAllMember"/>
-		WHERE email=#{email}
-	</select>
-	
-	<select id="selectCount" resultType="int">
-		SELECT count(*) FROM member
-	</select>
-	
-	<select id="selectByRegdate" resultMap="memVO" parameterType="spring.vo.ListCommand">
-		<include refid="selectAllMember"/>
-		WHERE regdate BETWEEN #{from} AND #{to} 
-		ORDER BY regdate ASC
-	</select>
-	
-	<select id="selectById" resultMap="memVO" parameterType="long">
-		<include refid="selectAllMember"/>
-		WHERE id =#{id}
-	</select> 
-	
-	<insert id="insertMember" parameterType="member">
-		INSERT INTO member 
-		VALUES(member_seq.NEXTVAL,#{email},#{password},#{name},sysdate)
-	</insert>
-	
-	<update id="updateMember" parameterType="member">
-		UPDATE member
-		SET name=#{name}, password=#{password} 
-		WHERE email =#{email}
-	</update> -->
 </mapper>

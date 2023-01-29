@@ -2,6 +2,7 @@
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
+  
 <configuration>
 	<typeAliases>
 		<typeAlias type="spring.vo.chat.ChattingRoomInfoListVo" alias="chattingRoomInfosVo"/>
@@ -26,6 +27,7 @@
 		
 		<typeAlias type="spring.vo.product.PagingInfoVO" alias="PagingInfo"/>
 		<typeAlias type="spring.vo.product.ProductListVO" alias="pListVO"/>
+		
 		<typeAlias type="spring.vo.search.Search" alias="search"/>
 	</typeAliases>
 	

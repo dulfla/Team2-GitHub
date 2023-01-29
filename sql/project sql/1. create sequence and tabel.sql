@@ -28,14 +28,14 @@ DROP SEQUENCE chatParticipants_seq;
 ------------------------------------------------------------------------------------------------------------------------
 
 -- SEQUENCE
-CREATE SEQUENCE search_seq START WITH 4 NOCYCLE NOCACHE; -- search(idx) - 샘플데이터 3개
+CREATE SEQUENCE search_seq START WITH 1 NOCYCLE NOCACHE; -- search(idx)
 CREATE SEQUENCE memberTracking_seq START WITH 1 NOCYCLE NOCACHE; -- memberHistory(idx)
-CREATE SEQUENCE pid_seq START WITH 6 NOCYCLE NOCACHE; -- productDetail(p_id) - 샘플데이터 5개
-CREATE SEQUENCE product_seq START WITH 6 NOCYCLE NOCACHE; -- product(idx) - 샘플데이터 5개
+CREATE SEQUENCE pid_seq START WITH 1 NOCYCLE NOCACHE; -- productDetail(p_id)
+CREATE SEQUENCE product_seq START WITH 1 NOCYCLE NOCACHE; -- product(idx)
 CREATE SEQUENCE picture_seq START WITH 1 NOCYCLE NOCACHE; -- productPic(idx)
 CREATE SEQUENCE productTracking_seq START WITH 1 NOCYCLE NOCACHE; -- productHistory(idx)
-CREATE SEQUENCE chatInfomation_seq START WITH 4 NOCACHE NOCYCLE; -- chatInfomation(c_id) - 샘플데이터 3개
-CREATE SEQUENCE chatParticipants_seq START WITH 4 NOCACHE NOCYCLE; -- chatParticipants(idx) - 샘플데이터 3개
+CREATE SEQUENCE chatInfomation_seq START WITH 1 NOCACHE NOCYCLE; -- chatInfomation(c_id)
+CREATE SEQUENCE chatParticipants_seq START WITH 1 NOCACHE NOCYCLE; -- chatParticipants(idx)
 CREATE SEQUENCE sampleMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(message)
 CREATE SEQUENCE chatMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(idx)
 
@@ -107,20 +107,6 @@ CREATE TABLE category(
     category NVARCHAR2(20) CONSTRAINT category_pk_category PRIMARY KEY,
     icon NVARCHAR2(150) NOT NULL
 );
-
-INSERT INTO category VALUES('디지털 기기', '디지털 기기.png');
-INSERT INTO category VALUES('생활가전', '생활가전.png');
-INSERT INTO category VALUES('생활주방', '생활주방.png');
-INSERT INTO category VALUES('유아동', '유아동.png');
-INSERT INTO category VALUES('의류', '의류.png');
-INSERT INTO category VALUES('잡화', '잡화.png');
-INSERT INTO category VALUES('뷰티•미용', '뷰티•미용.png');
-INSERT INTO category VALUES('취미•게임•음반', '취미•게임•음반.png');
-INSERT INTO category VALUES('도서', '도서.png');
-INSERT INTO category VALUES('중고차', '중고차.png');
-INSERT INTO category VALUES('가공식품', '가공식품.png');
-INSERT INTO category VALUES('반려동물 물품', '반려동물 물품.png');
-INSERT INTO category VALUES('기타 중고물품', '기타 중고물품.png');
 
 CREATE TABLE productHistory(
     idx number CONSTRAINT productHistory_pk_idx PRIMARY key,

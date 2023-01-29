@@ -21,7 +21,9 @@
 			dates AS "year",
 			COUNT(CASE WHEN m2.type='IN   ' THEN 1 END)-COUNT(CASE WHEN m2.type='OUT  ' THEN 1 END) AS "cnt"
 		FROM
-		    (SELECT TO_CHAR(trakingDate,'YYYY') AS dates FROM memberHistory GROUP BY TO_CHAR(trakingDate,'YYYY')) m1,
+		    (SELECT TO_CHAR(trakingDate,'YYYY') AS dates
+		    	FROM memberHistory
+		    	GROUP BY TO_CHAR(trakingDate,'YYYY')) m1,
 		    memberHistory m2
 		<![CDATA[WHERE TO_DATE(TO_CHAR(m2.trakingDate,'YYYY'), 'YYYY')<=TO_DATE(dates, 'YYYY')]]>
 		GROUP BY dates
@@ -83,7 +85,8 @@
 			c.category,
 			COUNT(p_id) AS "cnt"
 		FROM
-			category c LEFT OUTER JOIN
+			category c
+		LEFT OUTER JOIN
 			(SELECT category, p_id FROM productHistory WHERE type=#{type}) p
 		ON c.category = p.category
 		GROUP BY c.category
@@ -95,7 +98,9 @@
 		SELECT
 			c.category,
 			COUNT(p_id) AS "cnt"
-		FROM category c LEFT OUTER JOIN
+		FROM
+			category c
+		LEFT OUTER JOIN
 			<![CDATA[(SELECT category, p_id FROM productHistory WHERE type='OUT' AND type<>'TRADE') p]]>
 		ON c.category = p.category
 		GROUP BY c.category
@@ -107,8 +112,12 @@
 		SELECT
 			c.category,
 			COUNT(p_id) AS "cnt"
-		FROM category c LEFT OUTER JOIN
-			(SELECT category, p_id FROM productHistory WHERE type='OUT' AND type='TRADE') p
+		FROM
+			category c
+		LEFT OUTER JOIN
+			(SELECT category, p_id
+				FROM productHistory
+				WHERE type='OUT' AND type='TRADE') p
 		ON c.category = p.category
 		GROUP BY c.category
 		ORDER BY c.category ASC
@@ -120,7 +129,12 @@
 	<!-- 카테고리 가져오기 -->
 	<select id="selectAllCategorys" resultType="cCategory">
 		SELECT c.category, c.icon , NVL("count",0) AS "cnt"
-		FROM category c LEFT OUTER JOIN (SELECT category, COUNT(*) AS "count" FROM productDetail GROUP BY category) pd
+		FROM
+			category c
+		LEFT OUTER JOIN
+			(SELECT category, COUNT(*) AS "count"
+				FROM productDetail
+				GROUP BY category) pd
         ON c.category=pd.category
 		ORDER BY category ASC
 	</select>

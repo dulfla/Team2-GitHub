@@ -9,8 +9,12 @@
 	<select id="selectChattingRoomByPId" parameterType="String" resultType="chattingRoomInfosVo">
 		SELECT c.c_id, p_id, p_name, nickname AS "chatMember", 'sell' AS "type"
 		FROM
-			(SELECT c_id, p.p_id, p_name FROM chatInfomation ci, productDetail p WHERE ci.p_id=p.p_id) c,
-			(SELECT c_id, nickname FROM chatParticipants cp, member b WHERE sender_email=email) m
+			(SELECT c_id, p.p_id, p_name
+				FROM chatInfomation ci, productDetail p
+				WHERE ci.p_id=p.p_id) c,
+			(SELECT c_id, nickname
+				FROM chatParticipants cp, member b
+				WHERE sender_email=email) m
 		WHERE c.c_id = m.c_id
 			AND p_id=#{p_id}
 	</select>
@@ -18,13 +22,29 @@
 	<!-- 내 채팅방 목록 보기 :: 내가 (구매자/판매자로)참여하고 있는 모든 채팅방 확인 -->
 	<select id="selectAllChatRoomByEmil" parameterType="String" resultType="chattingRoomInfosVo">
 		SELECT c.c_id, c.p_id, p_name, nickname AS "chatMember", 'sell' AS "type"
-		FROM (SELECT c_id, p.p_id, p_name FROM chatInfomation ci, product p, productDetail pd WHERE ci.p_id=p.p_id AND p.p_id=pd.p_id AND p.email=#{email}) c,
-            (SELECT c_id, nickname FROM chatParticipants cp, member b  WHERE sender_email=email) m
+		FROM (SELECT c_id, p.p_id, p_name
+				FROM chatInfomation ci, product p, productDetail pd
+				WHERE ci.p_id=p.p_id
+					AND p.p_id=pd.p_id
+					AND p.email=#{email}) c,
+            (SELECT c_id, nickname
+            	FROM chatParticipants cp, member b 
+            	WHERE sender_email=email) m
 		WHERE c.c_id=m.c_id
 		UNION
 		SELECT c.c_id, c.p_id, p_name, nickname AS "chatMember", 'buy' AS "type"
-		FROM (SELECT cp.c_id, pd.p_id, p_name FROM (SELECT c_id FROM chatParticipants WHERE sender_email=#{email}) cp, chatInfomation ci, productDetail pd WHERE cp.c_id=ci.c_id AND ci.p_id=pd.p_id) c,
-            (SELECT c_id, nickname FROM chatInfomation ci, product p, member b WHERE ci.p_id=p.p_id AND p.email=b.email) m
+		FROM (SELECT cp.c_id, pd.p_id, p_name
+				FROM (SELECT c_id
+						FROM chatParticipants
+						WHERE sender_email=#{email}) cp,
+					chatInfomation ci,
+					productDetail pd
+				WHERE cp.c_id=ci.c_id
+					AND ci.p_id=pd.p_id) c,
+            (SELECT c_id, nickname
+            	FROM chatInfomation ci, product p, member b
+            	WHERE ci.p_id=p.p_id
+            		AND p.email=b.email) m
 		WHERE c.c_id=m.c_id
 	</select>
 	
@@ -32,7 +52,9 @@
 	<select id="selectChattingRoom" parameterType="chatRoomSearchInfoVo" resultType="String">
  		SELECT c_id
  		FROM chatInfomation
- 		WHERE c_id IN (SELECT c_id FROM chatParticipants WHERE sender_email=#{email})
+ 		WHERE c_id IN (SELECT c_id
+ 							FROM chatParticipants
+ 							WHERE sender_email=#{email})
  			AND p_id=#{p_id}
  	</select>
  	
@@ -40,7 +62,9 @@
 	<select id="selectProductByChatRoomId" parameterType="String" resultType="chatPdInfoVo">
  		SELECT p_id, p_name
 		FROM productDetail
-		WHERE p_id=(SELECT p_id FROM chatInfomation WHERE c_id=#{c_id})
+		WHERE p_id=(SELECT p_id
+						FROM chatInfomation
+						WHERE c_id=#{c_id})
 	</select>
 	
 	<!-- 해당 채팅방의 상품에 대한 샘플 이미지 정보 가져오기 -->
@@ -61,7 +85,8 @@
  	<select id="selectAllMessages" parameterType="String" resultType="chatMessageVo">
  		SELECT message, messType, sender, read, send_date, nickname
  		FROM chatMessage c, member m
- 		WHERE c.sender = m.email AND c_id=#{c_id}
+ 		WHERE c.sender = m.email
+ 			AND c_id=#{c_id}
  		ORDER BY TO_CHAR(send_date, 'YYYYMMDDHH24MISS') ASC
  	</select>
  	
