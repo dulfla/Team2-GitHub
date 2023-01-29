@@ -49,18 +49,11 @@
 		WHERE email=#{email}
 	</update>
 	
-	<update id="updateEmail" parameterType="member">
-		UPDATE member 
-		SET email=#{email}
-		WHERE birth =#{birth}
-	</update>
-	
 	<update id="updatePassword" parameterType="member">
 		UPDATE member 
 		SET password=#{password}
 		WHERE email=#{email}
 	</update>
-	
 	
   <delete id="deleteMember" parameterType="member">
     delete from member 

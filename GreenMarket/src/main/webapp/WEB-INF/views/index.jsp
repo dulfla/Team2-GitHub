@@ -61,6 +61,7 @@
 <body>
 	<%@ include file="include/header.jsp" %>
 	<div id="container">
+	${member.nickname}
 		<div id="carouselExampleDark" class="carousel carousel-dark slide m-5" data-bs-ride="carousel" data-bs-interval="2500">
 			<div class="carousel-indicators">
 				<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
