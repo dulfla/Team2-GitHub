@@ -33,6 +33,12 @@ public class Member {
 	
 
 	
+	public Member(String email, String name, String nickname) {
+		this.email = email;
+		this.name = name;
+		this.nickname = nickname;
+	}
+
 	// 회원수정 객체
 	public Member(String email, int birth, String address, String phone, String name, String nickname) {
 		this.email = email;

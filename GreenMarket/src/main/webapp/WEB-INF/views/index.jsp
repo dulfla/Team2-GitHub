@@ -35,6 +35,13 @@
 		background-color:darkgreen;
 		color:white;
 	}
+	.radi{
+		border-radius: 40px;
+		overflow: hidden;
+		box-shadow: 4px 4px 10px rgba(0, 0, 0, .15);
+		cursor: pointer;
+	}
+	
 /* 광고 배너*/
 .advertising  .badges2 {
 	position: absolute;
@@ -54,6 +61,7 @@
 <body>
 	<%@ include file="include/header.jsp" %>
 	<div id="container">
+	${member.nickname}
 		<div id="carouselExampleDark" class="carousel carousel-dark slide m-5" data-bs-ride="carousel" data-bs-interval="2500">
 			<div class="carousel-indicators">
 				<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -62,30 +70,30 @@
 				<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="3" aria-label="Slide 4"></button>
 				<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="4" aria-label="Slide 5"></button>
 			</div>
-			<div class="carousel-inner">
+			<div class="carousel-inner" >
 				<div class="carousel-item active">
 					<div class="container w-75">
-						<img src="${path}resources/img/mainPageImg/1.png" class="d-block w-100" alt="샘플 이미지">
+						<img src="${path}resources/img/mainPageImg/1.png" class="d-block w-100 radi" alt="샘플 이미지">
 					</div>
 				</div>
 				<div class="carousel-item">
 					<div class="container w-75">
-						<img src="${path}resources/img/mainPageImg/2.png" class="d-block w-100" alt="샘플 이미지">
+						<img src="${path}resources/img/mainPageImg/2.png" class="d-block w-100 radi" alt="샘플 이미지">
 					</div>
 				</div>
 				<div class="carousel-item">
 					<div class="container w-75">
-						<img src="${path}resources/img/mainPageImg/3.png" class="d-block w-100" alt="샘플 이미지">
+						<img src="${path}resources/img/mainPageImg/3.png" class="d-block w-100 radi" alt="샘플 이미지">
 					</div>
 				</div>
 				<div class="carousel-item">
 					<div class="container w-75">
-						<img src="${path}resources/img/mainPageImg/4.png" class="d-block w-100" alt="샘플 이미지">
+						<img src="${path}resources/img/mainPageImg/4.png" class="d-block w-100 radi" alt="샘플 이미지">
 					</div>
 				</div>
 				<div class="carousel-item">
 					<div class="container w-75">
-						<img src="${path}resources/img/mainPageImg/5.png" class="d-block w-100" alt="샘플 이미지">
+						<img src="${path}resources/img/mainPageImg/5.png" class="d-block w-100 radi" alt="샘플 이미지">
 					</div>
 				</div>
 			</div>
@@ -112,9 +120,7 @@
 		        <img src="${path}resources/img/badge3.jpg" alt="Badge">
 		      </div>
 		      <div class="badge2">
-		        <img src="https://greened.co.kr/assets/_img/header/new23_headerlogo0.svg?3" alt="Badge">
-		      </div>
-		      <div class="badge2">
+		        <a href="https://suwon.greenart.co.kr/" target='_blank'><img src="https://greened.co.kr/assets/_img/header/new23_headerlogo0.svg?3" alt="Badge"></a> 
 		      </div>
 		    </div>
 		</div>

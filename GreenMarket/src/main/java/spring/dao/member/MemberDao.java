@@ -20,6 +20,7 @@ public class MemberDao {
 	}
 	
 	public Member selectByEmail(String email) {
+		System.out.println("테스트 : "+email);
 		return sqlSession.selectOne(nameSpace+"selectByEmail",email);	
 	}
 	
@@ -54,5 +55,9 @@ public class MemberDao {
 
 	public void deleteMember(Member member) {
 		sqlSession.delete(nameSpace+"deleteMember",member);
+	}
+
+	public void naverInsertMember(Member naverMember) {
+		sqlSession.insert(nameSpace+"naverInsertMember",naverMember);
 	}
 }

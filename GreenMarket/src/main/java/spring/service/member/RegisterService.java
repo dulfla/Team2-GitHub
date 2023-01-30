@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import spring.dao.member.MemberDao;
 import spring.exception.AlreadyExistingMemberException;
 import spring.vo.member.Member;
+import spring.vo.member.NaverCommand;
 import spring.vo.member.RegisterRequest;
 
 @Service
@@ -40,6 +41,15 @@ public class RegisterService { // 회원정보를 저장하기 위한 기능을 
 	public int getEmailMember(String email) {
 		System.out.println(email);
         return dao.getEmail(email);
+	}
+
+
+	public void naverRegist(NaverCommand naverCommand) {
+		
+		Member naverMember = new Member(naverCommand.getN_email(),
+				naverCommand.getN_name(), naverCommand.getN_nickName());
+		
+		dao.naverInsertMember(naverMember);
 	}
 	
 }

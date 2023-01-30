@@ -51,7 +51,7 @@ h2{
 	background-color: #9acd32;
 	/*  background: #428bca; */
 	color: white;
-	font-size: 23px;
+	font-size: 21px;
 }
 
 .rwd-table tr {
@@ -268,8 +268,16 @@ a {
 				<c:forEach begin="0" end="9" items="${list}" var="list"
 					varStatus="status">
 					<tr>
-						<th id="count" scope="row">${status.count}</th>
-						<td><a href="search?c=all&v=product&keyword=${list.keyword}">${list.keyword}</a></td>
+						<c:choose>
+							<c:when test="${status.count lt 4}">
+								<th id="count" scope="row" style="color:#ff5232">${status.count}</th>
+								<td><a style="color: #ff5232" href="search?c=all&v=product&keyword=${list.keyword}">${list.keyword}</a></td>
+							</c:when>
+							<c:otherwise>
+								<th id="count" scope="row">${status.count}</th>
+								<td><a href="search?c=all&v=product&keyword=${list.keyword}">${list.keyword}</a></td>
+							</c:otherwise>
+						</c:choose>
 					</tr>
 				</c:forEach>
 			</tbody>
