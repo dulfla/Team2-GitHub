@@ -11,13 +11,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>그린 마켓</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    
+    <style type="text/css">
+
+	@font-face {
+	  font-family: "hana";
+	  src: url("${path}resources/fonts/BMJUA_ttf.ttf");
+	}
+	
+	@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
+	
+	p{
+		font-family: hana;
+	}
+	.py-5{
+    	padding-top : 1rem!important;
+    	padding-bottom : 1rem!important;
+    }
+	 .paging {
+    	padding-bottom : 2rem;
+    	padding-top : 2rem;
+    }   
+    .linewarp{
+    	margin-left:14px;
+    }
+	</style>
+    
 </head>
 <body>
 <%@ include file="../include/header.jsp" %>
 <div class="container">
 	<div id="optionGroups">
-		<div class="btn-group">
+		<div class="btn-group linewarp">
 		  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 			   	<c:choose>
 	              	<c:when test="${empty pageData.c}">카테고리</c:when>
@@ -36,7 +63,7 @@
 		  		</c:forEach>		    
 		  	</ul>
 		</div>	
-		<div class="btn-group">
+		<div class="btn-group linewarp">
 		  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 			  	<c:choose>
 		           	<c:when test="${pageData.v eq 'product'}" >조회유형</c:when>
@@ -53,7 +80,7 @@
 			    <li><a class="dropdown-item" href="productList?c=${pageData.c}&v=priceHigh&pis=${pageData.pis}&oip=${pageData.oip}">높은 가격순</a></li>
 		  	</ul>
 		</div>
-		<div class="btn-group">
+		<div class="btn-group linewarp">
 		  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 			  	${pageData.oip} 개
 		  	</button>
@@ -89,8 +116,8 @@
 			            			</div>
 			            			<div class="col">
 			            				<c:choose>
-						               		<c:when test="${p.trade eq'trade' or p.trade eq 'TRADE'}"><p  class="position-relative text-end">거래중</p></c:when>
-						               		<c:when test="${p.trade eq'clear' or p.trade eq 'CLEAR'}"><p class="position-relative text-end">거래완료</p></c:when>
+						               		<c:when test="${p.trade eq'trade' or p.trade eq 'TRADE'}"><p  class="position-relative text-end" style="color : #11B339">거래중</p></c:when>
+						               		<c:when test="${p.trade eq'clear' or p.trade eq 'CLEAR'}"><p class="position-relative text-end" style="color : #04622">거래완료</p></c:when>
 						               	</c:choose>
 			            			</div>
 		            			</div>
