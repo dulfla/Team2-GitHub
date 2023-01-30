@@ -19,40 +19,6 @@
   		<a href="selled" class="list-group-item list-group-item-action">판매완료된 상품</a>
   		<a href="unSelled" class="list-group-item list-group-item-action">판매중인 상품</a> 
 	</div>
- <div class="album py-5 bg-light">
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      	<c:forEach items="${productModel}" var="p">
-      		<div class="col">
-          		<div class="card shadow-sm">
-            		<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" 
-            		role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">       
-            		<title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/>
-					<c:choose>
-						<c:when test="${empty p.imgurl}">
-							<image href="${path}resources/img/그린마켓2.png" width="100%" height="100%"></svg>
-			    		</c:when>
-			    		<c:when test="${!empty p.imgurl}">
-			         		<image href="display?fileName=${p.imgurl}" width="100%" height="100%"></svg> <!-- /GreenMarket/product/ -->
-			     		</c:when>
-		     		</c:choose>
-		  			<div class="card-body">
-		  				<div id="card-body-header" class="row">
-		  					<div class="col">
-		  						<p class="card-text">${p.category}</p>		                
-		  					</div>
-		  					<div class="col">
-			 					<c:choose>
-									<c:when test="${p.trade eq'trade' or p.trade eq 'TRADE'}"><p  class="position-relative text-end">거래중</p></c:when>
-									<c:when test="${p.trade eq'clear' or p.trade eq 'CLEAR'}"><p class="position-relative text-end">거래완료</p></c:when>
-			 					</c:choose>
-				 			</div>
-		      			</div>
-		      				<h4 class="card-head mb-3">${p.p_name}</h4>
-		      				<div class="d-flex justify-content-between align-items-center">
-		      					<div class="btn-group">
-		        					<button href="productDetail?p_id=${p.p_id}" type="button" class="btn btn-sm btn-outline-secondary" name="moveToDetail">보기</button>
-		        				</div>
 	<div class="btn-group">
 	  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 		  	${pageData.oip} 개
@@ -107,27 +73,6 @@
       		</div>
     	</div>
     </div>
-	<div class="cls2">		<!-- 페이징 -->
-		<c:if test="${totalCnt != null}">
-		<nav aria-label="Page navigation example">
-		<ul class="pagination justify-content-center">
-			<c:choose>
-				<c:when test="${totalCnt > 100}">		<!-- 전체 갯수가 100개가 넘는가 -->
-					<c:if test="${(section*100) < totalCnt}">		<!-- 다음 섹션이 존재하는가  '>>' O -->
-						<c:forEach var="page" begin="1" end="10" step="1">		<!-- 번호 매기기 -->
-							<c:if test="${section>1 && page==1}">  <!-- 이전 섹션 표시 -->
-								<li class="page-item disabled">
-									<a class="page-link" href="myProduct?sN=${section-1}&pN=${10}"><<</a>
-								</li>
-							</c:if>	
-								<li class="page-item"><a class="page-link" href="myProduct?sN=${section}&pN=${page}">${(section-1)*10+page}</a></li>
-												<!-- 번호를 눌렀을때 해당 섹션과 해당 페이지 번호를 서버에 전달 -->							
-							<c:if test="${page==10}">		<!-- 다음 섹션 표시 -->
-								<li class="page-item">
-									<a class="page-link" href="myProduct?sN=${section+1}&pN=${1}">>></a>
-								</li>
-							</c:if>
-						</c:forEach>
     <div class="paging">
 		<c:if test="${!empty totalCnt}">
 			<nav aria-label="Page navigation example">
@@ -141,29 +86,9 @@
 						<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<totalCnt)?(pageData.pis):(((totalCnt+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
 							<li class="page-item">
 								<c:if test="${pageData.p==page}"><b></c:if>
-								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${page}</a>
+								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${(pageData.s-1)*pageData.pis+page}</a>
 								<c:if test="${pageData.p==page}"></b></c:if>
 							</li>
-						</c:forEach>
-						<c:if test="${(pageData.s*(pageData.pis*pageData.oip)) < totalCnt}">
-							<li class="page-item">
-								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s+1}&p=1">>></a>
-							</li>
-						</c:if>
-					</c:if>
-					<c:if test="${(section*100) >= totalCnt}">		<!-- 다음 섹션이 없는가  '>>' X -->
-						<c:forEach var="page" begin="1" end="${((totalCnt+9)-(section-1)*100)/10}" step="1">
-							<c:if test="${section>1 && page==1}">  <!-- 이전 섹션 표시 -->
-								<li class="page-item disabled">
-									<a class="page-link" href="myProduct?sN=${section-1}&pN=${10}"><<</a>
-								</li>
-							</c:if>							
-								<li class="page-item"><a class="page-link" href="myProduct?sN=${section}&pN=${page}">${(section-1)*10+page}</a></li> <!-- 번호를 눌렀을때 해당 섹션과 해당 페이지 번호를 서버에 전달 -->																	
-
-								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${((pageData.s-1)*pageData.pis)+page}</a>
-								<c:if test="${pageData.p==page}"></b></c:if>
-							</li>
-
 						</c:forEach>
 						<c:if test="${(pageData.s*(pageData.pis*pageData.oip)) < totalCnt}">
 							<li class="page-item">

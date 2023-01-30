@@ -92,13 +92,14 @@
 	        	</form> 
 	        	
 	        	<c:choose>
-	        		<c:when test="${!empty member.nickname}">
-	        			<div class="nav-link px-2 link-dark">${member.nickname}</div>
+	        		<c:when test="${empty member}">
+	        			<div class="nav-link px-2 link-dark">${authInfo.nickname}</div>
 	        		</c:when>
 	        		<c:otherwise>
-	        			<div class="nav-link px-2 link-dark">${authInfo.nickname}</div>
+	        			<div class="nav-link px-2 link-dark">${member.nickname}</div>
 	        		</c:otherwise>
 	        	</c:choose>
+	        	
 	      	<div class="dropdown text-end">
 	      		<c:if test="${empty authInfo}">
 	      			<a href="login"><button type="button" class="btn btn-outline-dark me-2">로그인</button></a>

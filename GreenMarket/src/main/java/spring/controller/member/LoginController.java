@@ -91,7 +91,7 @@ public class LoginController {
 			session.setAttribute("authInfo", authInfo);
 			// naver가 비어있지 않는다는건 데이터를 잘 받아왔다는 뜻이므로 result를 "ok"로 설정
 			result = "ok";
-		}catch (IdPasswordNotMatchingException e) {
+		}catch (IdNotMatchingException e) {
 			registerService.naverRegist(naverCommand);
 			AuthInfo authInfo = authService.naverAuthenticate(naverCommand);
 			session.setAttribute("authInfo", authInfo);

@@ -237,7 +237,7 @@ main button {
 	naverLogin.init();
 	const button = document.getElementById('naverIdLogin');
  
-	button.addEventListener('click', function () {
+	window.addEventListener('load', function () {
 		naverLogin.getLoginStatus(function (status) {
 
 		if (status) {

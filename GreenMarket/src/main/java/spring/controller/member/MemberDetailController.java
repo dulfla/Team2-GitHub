@@ -29,7 +29,6 @@ public class MemberDetailController {
 			throw new MemberNotFoundException();
 		}
 		session.setAttribute("member", member);
-		
 		return "member/memberDetail";
 	}
 	

@@ -5,78 +5,121 @@
   
 <mapper namespace="mybatis.mapper.search">
 	
+	<sql id="selectPL">
+		SELECT prod.*, f.fileName, f.uploadPath, f.uuid
+		FROM
+		    (SELECT * FROM productPic
+		    	WHERE uuid IN (SELECT min(uuid)
+		    					FROM productPic
+		    					GROUP BY p_id)) f
+		RIGHT OUTER JOIN
+		    (SELECT pd.*, p.email
+		    FROM productDetail pd,
+		    	(SELECT ROWNUM AS rn, product.* FROM product) p
+		    WHERE pd.p_id=p.p_id) prod
+		ON f.p_id=prod.p_id
+	</sql>
+	
+	<sql id="selectSeletedPL">
+		SELECT * FROM 
+			(SELECT ROWNUM AS rn, prodt.*
+			FROM (<include refid="selectPL"/>
+	</sql>
+	
+	<sql id="paging">
+		rn BETWEEN
+			((#{s}-1)*(#{pis}*#{oip}) + (#{p}-1)*#{oip}+1)
+		   AND
+			((#{s}-1)*(#{pis}*#{oip})+(#{p}*#{oip}))
+	</sql>
+	
 	<sql id="searchJoin">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-		left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE UPPER(p_name) like UPPER('%'||#{search}||'%') 
-		or category =#{search}
+		<include refid="selectSeletedPL"/>
+		WHERE UPPER(p_name) like UPPER('%'||#{keyword}||'%')) prodt)
+		WHERE <include refid="paging"/>
 	</sql>
 	
 	<sql id="cateSearchJoin">
-		SELECT pd.p_id,p_name,category,regdate,views,price,email,description,fileName,uploadPath,uuid,trade
-		FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-		left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE category = #{category}  and  (UPPER(p_name)
-		like UPPER('%'||#{search}||'%')
-		or category =#{search})
+		<include refid="selectSeletedPL"/>
+		WHERE category = #{c}
+			AND UPPER(p_name) like UPPER('%'||#{keyword}||'%')) prodt)
+		WHERE <include refid="paging"/>
 	</sql>
 	
+<!-- 	<select id="searchAllCount">
+		select count(*) from productDetail WHERE category = #{category}
+			AND UPPER(p_name) like UPPER('%'||#{search}||'%')
+	</select>
+	
+	<select id="searchCategoryCount">
+		select count(*) from productDetail where UPPER(p_name) like UPPER('%'||#{search}||'%')
+	</select> -->
 	
 	<!-- 전체 검색어 -->
-	<select id="searchAll" parameterType="String" resultType="pListVO">
-	 	SELECT pd.p_id,p_name,category,regdate,views,price,email,description,trade,fileName,uploadPath,uuid
-			FROM productDetail pd left outer join product p on pd.p_id = p.p_id
-	        	left outer join (select fileName,uploadPath,uuid, p_id from PRODUCTPIC) f on f.p_id=pd.p_id
-		WHERE UPPER(p_name) like UPPER('%'||#{search}||'%') or category =#{search}
+	<select id="searchAll" parameterType="PagingInfo" resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+	 	WHERE UPPER(p_name) like UPPER('%'||#{keyword}||'%') or category =#{keyword}) prodt)
+		WHERE <include refid="paging"/>
 	</select>
 	
-	<select id="brandNew" parameterType="String"  resultType="pListVO">
-		<include refid="searchJoin"/>
-		ORDER BY regdate DESC
+	<select id="brandNew" parameterType="PagingInfo"  resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+			ORDER BY regdate DESC) prodt)
+		WHERE <include refid="paging"/>
 	</select>
 	
-	<select id="viewsLevel" parameterType="String"  resultType="pListVO">
-		<include refid="searchJoin"/>
-		ORDER BY views DESC
+	<select id="viewsLevel" parameterType="PagingInfo"  resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+			ORDER BY views DESC) prodt)
+		WHERE <include refid="paging"/>
 	</select>
 	
-	<select id="priceHigh" parameterType="String"  resultType="pListVO">
-		<include refid="searchJoin"/>
-		ORDER BY price DESC
+	<select id="priceHigh" parameterType="PagingInfo"  resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+			ORDER BY price DESC) prodt)
+		WHERE <include refid="paging"/>
 	</select>
 	
-	<select id="priceLow" parameterType="String"  resultType="pListVO">
-		<include refid="searchJoin"/>
-		ORDER BY price ASC
+	<select id="priceLow" parameterType="PagingInfo"  resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+			ORDER BY price ASC) prodt)
+		WHERE <include refid="paging"/>
 	</select>
 	
 	<!-- 카테고리 -->
 	
-	<select id="categorySearch" parameterType="hashmap" resultType="pListVO">
+	<select id="categorySearch" parameterType="PagingInfo" resultType="pListVO">
 		<include refid="cateSearchJoin"/>
 	</select>
 	
-	<select id="cateBrandNew" parameterType="hashmap" resultType="pListVO">
-		<include refid="cateSearchJoin"/>
-		ORDER BY regdate DESC 
+	<select id="cateBrandNew" parameterType="PagingInfo" resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+		WHERE category = #{c}
+		ORDER BY regdate DESC) prodt)
+		WHERE <include refid="paging"/>
 	</select>
 	
-	<select id="catePriceLow" parameterType="hashmap" resultType="pListVO">
-		<include refid="cateSearchJoin"/>
-		ORDER BY price ASC 
+	<select id="catePriceLow" parameterType="PagingInfo" resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+		WHERE category = #{c}
+		ORDER BY price ASC) prodt)
+		WHERE <include refid="paging"/>
 	</select>
 	
-	<select id="catePriceHigh" parameterType="hashmap" resultType="pListVO">
-		<include refid="cateSearchJoin"/>
-		ORDER BY price DESC  
+	<select id="catePriceHigh" parameterType="PagingInfo" resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+		WHERE category = #{c}
+		ORDER BY price DESC) prodt)
+		WHERE <include refid="paging"/>
 	</select>
 	
 	
-	<select id="cateViewsLevel" parameterType="hashmap" resultType="pListVO">
-		<include refid="cateSearchJoin"/>
-		ORDER BY views DESC 
-	</select>
+	<select id="cateViewsLevel" parameterType="PagingInfo" resultType="pListVO">
+		<include refid="selectSeletedPL"/>
+		WHERE category = #{c}
+		ORDER BY views DESC) prodt)
+		WHERE <include refid="paging"/>
+	</select><!-- 이거 안됨 -->
 	
 	<!-- 검색건수 -->
 	<select id="numberOfSearches" parameterType="String" resultType="int">
@@ -84,8 +127,7 @@
 	    from productDetail
 	    WHERE UPPER(p_name) like UPPER('%'||#{search}||'%')
 	    or category =#{search}
-		<!-- WHERE p_name like INITCAP ('%'||#{search}||'%') -->
-	</select>
+	</select><!-- WHERE p_name like INITCAP ('%'||#{search}||'%') -->
 	
 	
 	<!-- 카테고리 검색건수 -->
@@ -112,9 +154,8 @@
 	<select id="popSearchList" resultType="search">
 		select keyword ,count(keyword)
 		from search
-		<!-- where TO_CHAR(SYSDATE, 'MM/dd') = TO_CHAR(regdate, 'MM/dd') -->
 		group by keyword 
 		order by count(keyword) desc
-	</select>
+	</select><!-- where TO_CHAR(SYSDATE, 'MM/dd') = TO_CHAR(regdate, 'MM/dd') -->
 	
 </mapper>

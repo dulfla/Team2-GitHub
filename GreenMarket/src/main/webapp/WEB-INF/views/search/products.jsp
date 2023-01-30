@@ -24,7 +24,7 @@
 <body>
 <%@ include file="../include/header.jsp" %>
 
-	<div class="album py-5 bg-light">
+	<div class="album py-5">
 		<div class="container">
 			<h4>
 				<span>${search}</span>의 검색결과 ${count}개
@@ -34,21 +34,21 @@
 					data-bs-toggle="dropdown" data-bs-display="static"
 					aria-expanded="false">
 					<c:choose>
-						<c:when test="${empty c}">카테고리</c:when>
+						<c:when test="${empty pageData.c}">카테고리</c:when>
 						<c:otherwise>
 							<c:choose>
-								<c:when test="${c eq 'all'}">전체 보기</c:when>
-								<c:otherwise>${c}</c:otherwise>
+								<c:when test="${pageData.c eq 'all'}">전체 보기</c:when>
+								<c:otherwise>${pageData.c}</c:otherwise>
 							</c:choose>
 						</c:otherwise>
 					</c:choose>
 				</button>
 				<ul class="dropdown-menu dropdown-menu-end">
 					<li><a class="dropdown-item"
-						href="search?c=all&v=${v}&keyword=${search}">전체 보기</a></li>
+						href="search?c=all&v=${pageData.v}&keyword=${search}">전체 보기</a></li>
 					<c:forEach items="${categoryList}" var="c">
 						<li><a class="dropdown-item"
-							href="search?c=${c.category}&v=${v}&keyword=${search}">${c.category}</a></li>
+							href="search?c=${c.category}&v=${pageData.v}&keyword=${search}">${c.category}</a></li>
 					</c:forEach>
 				</ul>
 			</div>
@@ -59,23 +59,23 @@
 					<!-- data-bs-offset="10,20" -->
 					<c:choose>
 						<%-- <a class="dropdown-item" href="search?c=${c.category}&v=product&keyword=${search}">${c.category}</a> --%>
-						<c:when test="${v eq 'product'}">조회유형</c:when>
-						<c:when test="${v eq 'brandNew'}">최신순</c:when>
-						<c:when test="${v eq 'viewsLevel'}">조회순</c:when>
-						<c:when test="${v eq 'priceLow'}">낮은 가격순</c:when>
-						<c:when test="${v eq 'priceHigh'}">높은 가격순</c:when>
-						<c:otherwise>${v}</c:otherwise>
+						<c:when test="${empty pageData.v or pageData.v eq 'product'}">조회유형</c:when>
+						<c:when test="${pageData.v eq 'brandNew'}">최신순</c:when>
+						<c:when test="${pageData.v eq 'viewsLevel'}">조회순</c:when>
+						<c:when test="${pageData.v eq 'priceLow'}">낮은 가격순</c:when>
+						<c:when test="${pageData.v eq 'priceHigh'}">높은 가격순</c:when>
+						<c:otherwise>${pageData.v}</c:otherwise>
 					</c:choose>
 				</button>
 				<ul class="dropdown-menu">
 					<li><a class="dropdown-item"
-						href="search?c=${c}&v=brandNew&keyword=${search}">최신순</a></li>
+						href="search?c=${pageData.c}&v=brandNew&keyword=${search}">최신순</a></li>
 					<li><a class="dropdown-item"
-						href="search?c=${c}&v=viewsLevel&keyword=${search}">조회순</a></li>
+						href="search?c=${pageData.c}&v=viewsLevel&keyword=${search}">조회순</a></li>
 					<li><a class="dropdown-item"
-						href="search?c=${c}&v=priceLow&keyword=${search}">낮은 가격순</a></li>
+						href="search?c=${pageData.c}&v=priceLow&keyword=${search}">낮은 가격순</a></li>
 					<li><a class="dropdown-item"
-						href="search?c=${c}&v=priceHigh&keyword=${search}">높은 가격순</a></li>
+						href="search?c=${pageData.c}&v=priceHigh&keyword=${search}">높은 가격순</a></li>
 				</ul>
 			</div>
 			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -131,6 +131,34 @@
 				</c:forEach>
 			</div>
 		</div>
+	</div>
+		<div class="paging">
+		<c:if test="${!empty count}">
+			<nav aria-label="Page navigation example">
+		  		<ul class="pagination justify-content-center">
+		  			<c:if test="${count>pageData.oip}">
+						<c:if test="${pageData.s>1}">
+							<li class="page-item">
+								<a class="page-link" href="search?c=${pageData.c}&v=${pageData.v}&keyword=${search}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s-1}&p=${pageData.pis}"><<</a>
+							</li>
+						</c:if>
+						<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<count)?(pageData.pis):(((count+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
+							<li class="page-item">
+								<c:if test="${pageData.p==page}"><b></c:if>
+								<a class="page-link" href="search?c=${pageData.c}&v=${pageData.v}&keyword=${search}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${(pageData.s-1)*pageData.pis+page}</a>
+								<c:if test="${pageData.p==page}"></b></c:if>
+							</li>
+						</c:forEach>
+						<c:if test="${(pageData.s*(pageData.pis*pageData.oip)) < count}">
+							<li class="page-item">
+								<a class="page-link" href="search?c=${pageData.c}&v=${pageData.v}&keyword=${search}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s+1}&p=1">>></a>
+							</li>
+						</c:if>
+					</c:if>
+				</ul>
+			</nav>
+		</c:if>
+	</div>
 </body>
 <script type="text/javascript">
 	window.onload = function() {

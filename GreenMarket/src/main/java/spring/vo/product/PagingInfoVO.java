@@ -9,7 +9,14 @@ public class PagingInfoVO {
 	private int oip = 15;
 	private String c;
 	private String v;
+	private String keyword;
 	
+	public String getKeyword() {
+		return keyword;
+	}
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
 	public String getEmail() {
 		return email;
 	}
