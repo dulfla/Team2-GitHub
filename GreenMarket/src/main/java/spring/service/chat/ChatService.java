@@ -17,6 +17,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.WebSession;
+import org.springframework.web.socket.WebSocketSession;
 
 import chat.server.ChatClient;
 import chat.server.ChattingWebSocket;
@@ -38,6 +40,7 @@ public class ChatService {
 	
 	@Autowired
 	private SocketServer ss;
+	private Map<String, Map<String, Collection<WebSocketSession>>> webSessions = null;
 	
 	@Autowired
 	private ChattingWebSocket cws;
@@ -93,8 +96,20 @@ public class ChatService {
 
 	public void close(ChatClient client, String c_id, String email) throws IOException {
 		if(client!=null) {
-			client.unconnect();
+			webSessions = ss.getWebSessions();
+			if(0<webSessions.size()) {
+				for(int i=0; i<webSessions.size(); i++) {
+					if(webSessions.containsKey(c_id)) {
+						if(webSessions.get(c_id).containsKey(email)) {
+							if(0!=webSessions.get(c_id).get(email).size()) {
+								return;
+							}
+						}
+					}
+				}
+			}
 			chatRoom.get(c_id).remove(email, client);
+			client.unconnect();
 		}
 	}
 
@@ -103,30 +118,22 @@ public class ChatService {
 	}
 
 	public ChatClient checkClient(String c_id, String email) {
-		Collection<String> cr = chatRoom.keySet();
-		if(0<cr.size()) {
-			for(String id : cr) {
-				if(id.equals(c_id)) {
-					Collection<Map<String, ChatClient>> clients = chatRoom.values();
-					for(Map<String, ChatClient> cl : clients) {
-						Collection<String> emails = cl.keySet();
-						for(String e : emails) {
-							if(e.equals(email)) {
-								return cl.get(email);
-							}
-						}
-						ChatClient client = new ChatClient();
-						cl.put(email, client);
-						return client;
-					}
-				}
+		if(chatRoom.containsKey(c_id)) {
+			Map<String, ChatClient> mem = chatRoom.get(c_id);
+			if(mem.containsKey(email)) {
+				return mem.get(email);
+			}else {
+				ChatClient client = new ChatClient();
+				mem.put(email, client);
+				return client;
 			}
+		}else {
+			Map<String, ChatClient> list = Collections.synchronizedMap(new HashMap<>());
+			ChatClient client = new ChatClient();
+			list.put(email, client);
+			chatRoom.put(c_id, list);
+			return client;
 		}
-		Map<String, ChatClient> list = Collections.synchronizedMap(new HashMap<>());
-		ChatClient client = new ChatClient();
-		list.put(email, client);
-		chatRoom.put(c_id, list);
-		return client;
 	}
 
 	public ChatMessageVo selectSendedMessage(long idx) {
@@ -186,6 +193,24 @@ public class ChatService {
 
 	public String getNickName(String email) {
 		return cdao.selectNickNameByEmail(email);
+	}
+
+	public void readMessage(ChatClient client, Map<String, String> map) throws IOException {
+		json = new JSONObject();
+		json.put("command", "read");
+		json.put("msgIdx", map.get("msgIdx"));
+		json.put("room", map.get("c_id"));
+		json.put("who", map.get("email"));
+		String jsonStr = json.toString();
+		client.send(jsonStr);
+	}
+
+	public void readMsg(ChatMessageVo message) {
+		if(message.getIdx()==0) {
+			cdao.readAllMessage(message);
+		}else {
+			cdao.readThisMessage(message);
+		}
 	}
 	
 }

@@ -1,16 +1,15 @@
 package spring.dao.member;
 
-import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import spring.vo.member.ChangeMemberInfoCommand;
 import spring.vo.member.Member;
 
 @Repository
 public class MemberDao {
+	
 	@Autowired
 	private SqlSession sqlSession;
 	
@@ -21,7 +20,7 @@ public class MemberDao {
 	}
 	
 	public Member selectByEmail(String email) {
-		System.out.println(email);
+		System.out.println("테스트 : "+email);
 		return sqlSession.selectOne(nameSpace+"selectByEmail",email);	
 	}
 	
@@ -44,19 +43,21 @@ public class MemberDao {
 	}
 
 	public void updateEmail(Member updateMember) {
-		System.out.println(updateMember.getEmail());
 		sqlSession.update(nameSpace+"updateEmail",updateMember);
 		
 	}
 
 
 	public void updatePassword(Member member) {
-		System.out.println();
 		sqlSession.update(nameSpace+"updatePassword",member);
 	}
 
 
 	public void deleteMember(Member member) {
 		sqlSession.delete(nameSpace+"deleteMember",member);
+	}
+
+	public void naverInsertMember(Member naverMember) {
+		sqlSession.insert(nameSpace+"naverInsertMember",naverMember);
 	}
 }

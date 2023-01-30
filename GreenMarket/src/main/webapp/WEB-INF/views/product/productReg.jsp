@@ -21,17 +21,81 @@ crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
   
 <style type="text/css">
+
+	#descriptionForm {
+		padding-bottom: 2rem;
+	}
+	#imageForm {
+		width: 100%;
+	    display: flex;
+	    padding: 2rem 0px;
+	    border-top: 1px solid rgb(220, 219, 228);
+	    border-bottom: 1px solid rgb(220, 219, 228);
+	    margin-left: 12.5px;
+	}
+	#uploud-group{
+		display: flex;
+	    width: 1006px;
+	    overflow-x: hidden;
+	    flex-wrap: wrap;
+	}
+
+	.uploadResultBox{
+	    display: contents;
+	}
+	#uploud-group input {
+	    position: absolute;
+	    top: 0px;
+	    left: 0px;
+	    opacity: 0;
+	    cursor: pointer;
+	    font-size: 0px;
+	}
+	
+	.file-label {
+		width: 225px;
+		height: 225px;
+		margin-right: 1.4rem;
+	}
+	.file-li {
+	    width: 225px;
+	    height: 225px;
+	    position: relative;
+	    border: 1px solid rgb(230, 229, 239);
+	    background: rgb(250, 250, 253);
+	    display: flex;
+	    -webkit-box-align: center;
+	    align-items: center;
+	    -webkit-box-pack: center;
+	    justify-content: center;
+	    flex-direction: column;
+	    color: rgb(155, 153, 169);
+	    font-size: 1rem;
+	    margin-bottom: 1.4rem;
+	    cursor: pointer;
+	}
+	.file-li::before {
+	    content: "";
+	    background-position: center center;
+	    background-repeat: no-repeat;
+	    background-size: cover;
+	    width: 2rem;
+	    height: 2rem;
+	    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj4KICAgIDxwYXRoIGZpbGw9IiNEQ0RCRTQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTI4LjQ3MSAzMkgzLjUzYy0uOTcxIDAtMS44OTQtLjQyMi0yLjUyOS0xLjE1N2wtLjAyNi0uMDNBNCA0IDAgMCAxIDAgMjguMTk4VjguNjA3QTQgNCAwIDAgMSAuOTc0IDUuOTlMMSA1Ljk2YTMuMzQzIDMuMzQzIDAgMCAxIDIuNTI5LTEuMTU2aDIuNTM0YTIgMiAwIDAgMCAxLjUzNy0uNzJMMTAuNC43MkEyIDIgMCAwIDEgMTEuOTM3IDBoOC4xMjZBMiAyIDAgMCAxIDIxLjYuNzJsMi44IDMuMzYzYTIgMiAwIDAgMCAxLjUzNy43MmgyLjUzNGMuOTcxIDAgMS44OTQuNDIzIDIuNTI5IDEuMTU3bC4wMjYuMDNBNCA0IDAgMCAxIDMyIDguNjA2djE5LjU5MWE0IDQgMCAwIDEtLjk3NCAyLjYxN2wtLjAyNi4wM0EzLjM0MyAzLjM0MyAwIDAgMSAyOC40NzEgMzJ6TTE2IDkuNmE4IDggMCAxIDEgMCAxNiA4IDggMCAwIDEgMC0xNnptMCAxMi44YzIuNjQ3IDAgNC44LTIuMTUzIDQuOC00LjhzLTIuMTUzLTQuOC00LjgtNC44YTQuODA1IDQuODA1IDAgMCAwLTQuOCA0LjhjMCAyLjY0NyAyLjE1MyA0LjggNC44IDQuOHoiLz4KPC9zdmc+Cg==);
+	    margin-bottom: 1rem;
+	}
 	#result_card img{
- 		max-width: 100%; 
-	    height: 400px; 
-	    display: block;
-	    padding: 5px;
-	    margin-top: 10px;
-	    margin: auto;	
+	    width: 100%;
+    	height: 100%;
 	}
 	#result_card {
 		position: relative;
-		width:100%
+		width: 225px;
+    	height: 225px;
+    	border: 1px solid rgb(230, 229, 239);
+    	position: relative;
+    	margin-right: 1.4rem;
+    	margin-bottom: 1.4rem;
 	}
 	.imgDeleteBtn{
 	    position: absolute;
@@ -48,7 +112,13 @@ crossorigin="anonymous"></script>
 	    border: none;
 	    display: block;
 	    cursor: pointer;	
-	}	
+	}
+	.location{
+		width: 100%;
+   		text-align: center;
+   		margin-top : 20px;
+	}
+
 </style>
 
 </head>
@@ -81,8 +151,9 @@ crossorigin="anonymous"></script>
 	                                <div class="row">
 	                                    <div class="col-md-6">
 	                                        <div class="form-group">
-	                                            <label for="form_lastname">상품 가격</label>
-	                                            <input id="form_lastname" type="text" id="price" name="price" class="form-control" placeholder="가격을 입력해주세요  *" oninput="checkPwd()" required>
+	                                            <label for="form_lastname">상품가격 (원)</label>
+	                                            <input id="form_lastname" type="text" id="price" name="price" class="form-control" placeholder="가격을 입력해주세요  *" 
+	                                            	 numberOnlyMinComma="true" required onblur="handleOnInput(this, 9)">
 	                                        </div>
 	                                    </div>
 	                                    <div class="col-md-6">
@@ -96,25 +167,30 @@ crossorigin="anonymous"></script>
 	                                    </div>
 	                                </div>
 	                                <div class="row">
-	                                    <div class="col-md-12">
+	                                    <div class="col-md-12" id="descriptionForm">
 	                                        <div class="form-group">
 	                                            <label for="form_message">상품 정보</label>
-	                                            <textarea id="form_message" name="description" class="form-control" placeholder="상품 정보를 입력해주세요 *" rows="4" required data-error="상품 정보는 필수입력입니다."></textarea>
+	                                            <textarea id="form_message" name="description" class="form-control" placeholder="상품 정보를 입력해주세요 *" 
+	                                            	rows="4" required data-error="상품 정보는 필수입력입니다."></textarea>
 	                                        </div>
 	                                    </div>
 	                                </div>
 	                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="form_message" style="margin-top : 20px">사진 업로드</label>
-                                            <input type="file" id="fileItem" name='uploadFile' multiple>
-                                            <div id="uploadResult"></div> 
+                                    <div class="col-md-12 p-2 pt-5 pb-5" id="imageForm">
+                                        <div class="form-group" id="uploud-group">
+                                            <label for="chooseFile" class="file-label">
+                                            	<li class="file-li">
+                                            		"이미지 업로드"
+                                            	</li>
+                                            </label>
+                                            <input type="file" class="file" id="chooseFile" name='uploadFile'accept=".jpg, .png" required>
+                                            <div id="uploadResult" class="uploadResultBox"></div> 
                                             
                                         </div>                          
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-group">
-                                            <label for="form_message" style="margin-top : 20px">거래 위치</label>
+                                            <label for="form_message" class="location">거래 위치</label>
                                             <div id="map" style="width:100%;height:400px;"></div>
                                                 <p><em>지도를 클릭해주세요!</em></p>    
                                             <div id="clickLatlng"></div>
@@ -122,8 +198,8 @@ crossorigin="anonymous"></script>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <button type="submit" class="btn btn-success btn-send  pt-2 btn-block">상품 등록</button> 
-                                        <button type="button" class="btn btn-danger btn-send  pt-2 btn-block">목록</button>
+                                        <button type="submit" id="register_Btn" class="btn btn-success btn-send  pt-2 btn-block" onclick="fileCheck()">상품 등록</button> 
+                                        <button type="button" id="list_Btn" class="btn btn-outline-dark">목록</button>
                                     </div>
                                 </div>
                             </form> 
@@ -136,6 +212,9 @@ crossorigin="anonymous"></script>
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script type="text/javascript">
+
+		var formObj = $("form[role='form']");
+	
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = { 
 			center: new kakao.maps.LatLng(37.267868108956456, 127.00053552238002), // 지도의 중심좌표
@@ -172,18 +251,19 @@ crossorigin="anonymous"></script>
 			$("#lng").val(lng);
 		});	
 
-
+		
 		$("input[type='file']").on("change", function(e){
 					
 			/* 등록된 이미지 존재시 삭제 */
-			if($(".imgDeleteBtn").length > 0){
+ 			/* if($(".imgDeleteBtn").length > 0){
 					deleteFile();
-			}
+			}  */
 				
 			let formData = new FormData();
 			let fileInput = $('input[name="uploadFile"]');
 			let fileList = fileInput[0].files;
-			let fileObj = fileList[0];
+			/* let fileObj = fileList[0];  */
+			
 		
 			// 사용자가 선택한 파일을 FormData에 "uploadFile"이란 이름(key)으로 추가해주는 코드
 			for(let i = 0; i < fileList.length; i++){
@@ -201,7 +281,12 @@ crossorigin="anonymous"></script>
 					showUploadImage(result);
 				},
 				error : function(result){
-					alert("이미지 파일이 아닙니다.");
+					Swal.fire({
+					      icon: 'error',
+					      title: '이미지 파일이 아닙니다.',
+					      text: '',
+					});
+					return false;
 				}
 			});	
 		});
@@ -212,12 +297,16 @@ crossorigin="anonymous"></script>
 		function fileCheck(fileName, fileSize){
 		
 			if(fileSize >= maxSize){
-				alert("파일 사이즈 초과");
+				Swal.fire({
+				      icon: 'error',
+				      title: '10MB 이상의 파일입니다',
+				      text: '',
+				});
 				return false;
 			}
 					  
 			if(!regex.test(fileName)){
-				alert("해당 종류의 파일은 업로드할 수 없습니다.");
+				
 				return false;
 			}			
 				return true;					
@@ -273,23 +362,78 @@ crossorigin="anonymous"></script>
 				}
 			 });
 		}
+
 		
-		function checkPwd() {
-			var objEv = event.srcElement;
-			var numPattern = /([^0-9])/;
-			var numPattern = objEv.value.match(numPattern);
-			if (numPattern != null) {
-				/* alert('숫자만 입력해주세요'),  */
+		/* 가격 숫자만 입력, 쉼표 */
+ 		$(document).on("keyup", "input:text[numberOnlyMinComma]", function()	{
+ 			var strVal = $(this).val();
+
+ 			event = event || window.event;
+ 			var keyID = (event.which) ? event.which : event.keyCode;
+
+ 			if( ( keyID >=48 && keyID <= 57 ) || ( keyID >=96 && keyID <= 105 )
+ 						|| keyID == 46 || keyID == 8 || keyID == 109
+ 						|| keyID == 189 || keyID == 9
+ 						|| keyID == 37 || keyID == 39){
+
+ 				if(strVal.length > 1 && (keyID == 109 || keyID == 189)){
+ 					return false;
+ 				}else{
+ 					return;
+ 				}
+ 			}else{
+ 				return false;
+ 			}
+ 		});
+ 		$(document).on("keyup", "input:text[numberOnlyMinComma]", function()	{
+ 			$(this).val( $(this).val().replace(/[^-\.0-9]/gi,"") );
+ 			$(this).val( $(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );
+ 		});  		
+ 		$(document).on("focusout", "input:text[numberOnlyMinComma]", function()	{
+ 			$(this).val( $(this).val().replace(",","") );
+ 			$(this).val( $(this).val().replace(/[^-\.0-9]/gi,"") );
+ 			$(this).val( $(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );		
+ 		});
+ 		$(document).on("focusout", "input:text[numberOnlyMinComma]", function(){
+ 		    var value = $(this).val();
+ 		    value = value.replace(/,/g,'');
+ 		    $(this).val(value);
+ 		});
+
+ 		
+ 		/* 목록 버튼 */
+ 		$("#list_Btn").click(function(el, maxlength){ 
+			location.href='productList?c=all&v=brandNew'
+		});
+/*   		
+ 		$("#register_Btn").click(function(){ 
+		});
+ 		 */
+ 		function fileCheck() {
+ 			var imgFile = $('#chooseFile').val();
+ 			if($('#chooseFile').val() == ""){
+ 				Swal.fire({
+ 				      icon: 'error',
+ 				      title: '이미지 업로드는 필수입니다!',
+ 				      text: '',
+ 				});
+ 				$('#chooseFile').focus();
+ 			}	
+		}
+		function handleOnInput(el, maxlength) {
+			if(el.value.length > maxlength)  {
 				Swal.fire({
 				      icon: 'error',
-				      title: '상품 가격은 숫자만 입력해주세요',
-				      text: '',
+				      title: '가격 최대값 초과',
+				      text: '가격은 10억원 미만으로 해주세요',
+				 
 				});
-				objEv.value = "";
-				objEv.focus();
-				return false;
+				el.value = el.value.substr(999999999);
 			}
 		}
+
+
+ 		
 	</script>
 </body>
 </html>

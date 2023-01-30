@@ -64,7 +64,6 @@ public class ProductDaoImp implements ProductDao{
 	// 상품수정
 	@Override
 	public void productModify(ProductVO vo) {
-		logger.info("상품 수정 Dao..........................." + vo);
 		sqlSession.update("mybatis.mapper.product.productModify", vo);
 	}
 	

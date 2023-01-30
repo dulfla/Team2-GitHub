@@ -23,7 +23,6 @@ public class ChatServerController {
 	@Autowired
 	private SocketServer ss;
 	
-/*	
 	@RequestMapping("Server")
 	public String server(HttpServletRequest request, HttpSession session, RedirectAttributes reda) {
 		String referer = request.getHeader("Referer");
@@ -37,13 +36,13 @@ public class ChatServerController {
 		
 		reda.addFlashAttribute("errMsg", errorMsg);
 		return "redirect:"+(referer!=null?referer:"index");
-	}	
-*/
-	
+	}
+/*	// 테스트용
 	@RequestMapping("Server")
 	public String server() {
 		return "chat/serverOnOff";
 	}
+*/
 	
 	@GetMapping(value = {"ServerOpen", "ServerClose"})
 	public String locationErr(HttpServletRequest request, RedirectAttributes reda) {

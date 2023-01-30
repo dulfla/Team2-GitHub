@@ -61,5 +61,13 @@ public class ChatDao {
 	public String selectNickNameByEmail(String email) {
 		return sqlSesison.selectOne("mybatis.mapper.chat.selectNicknameByEmil", email);
 	}
+
+	public void readAllMessage(ChatMessageVo message) {
+		sqlSesison.selectOne("mybatis.mapper.chat.readAllMessage", message);
+	}
+
+	public void readThisMessage(ChatMessageVo message) {
+		sqlSesison.selectOne("mybatis.mapper.chat.readThisMessage", message);
+	}
 	
 }

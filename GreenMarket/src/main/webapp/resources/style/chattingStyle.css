@@ -8,40 +8,11 @@
 /* ---------------------------------------------------------------------------------------------------------- */
 
 /* 공통 */
-#container{
-	height:100vh;
-	width:100vw;
-}
 .offcanvas{
 	height:100%;
 }
 .offcanvas-header{
 	height:130px;
-}
-a{
-	text-decoration:none;
-}
-
-/* ---------------------------------------------------------------------------------------------------------- */
-
-/* messageBox */
-#messageBox{ /* 주고받은 메세지들이 담길 공간 */
-	height:calc(100% - 180px);
-	width:100%;
-	position: absolute;
-	top:130px;
-}
-#messagesBox{ /* 주고받은 메세지들이 담길 공간 */
-	height:calc(100% - 180px);
-	width:100%;
-	position: absolute;
-	top:130px;
-}
-#message{ /* input-group을 묶는 상위 container */
-	height:50px;
-}
-#message{ /* input-group을 묶는 상위 container */
-	height:50px;
 }
 .messageBox{ /* 실제 메세지 text가 담길 div 공간 */
 	display:block;
@@ -69,27 +40,65 @@ a{
 	float:left;
 	background-color:rgb(232, 255, 198);
 }
-
-.backSpageBtn{
+a{
+	text-decoration:none;
+}
+.backSpageBtn{ /* 뒤로가기 버튼 */
 	border:none;
 	background:none;
 	font-size:1.7em;
 	font-weight:bold;
 	color:gray;
 }
+.messagePopUp{
+	position:fixed;
+	bottom:50px;
+	right: 0;
+	margin:0 30px;
+	padding:10px;
+	border:1px solid #eee;
+	border-radius:5px;
+	background-color:ghostwhite;
+	width:350px;
+}
+
+/* ---------------------------------------------------------------------------------------------------------- */
+
+/*productDetail*/
+
+/* messageBox */
+#messageBox{ /* 주고받은 메세지들이 담길 공간 */
+	height:calc(100% - 50px);
+	width:100%;
+}
+#message{ /* input-group을 묶는 상위 container */
+	height:40px;
+}
+.readMarks{
+	font-size:10px;
+}
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
 /* chatRoomList */
+#messagesBox{ /* 주고받은 메세지들이 담길 공간 */
+	height:calc(100% - 50px);
+	width:100%;
+}
+#messages{ /* input-group을 묶는 상위 container */
+	height:40px;
+}
 .chatRoomImg{ /* 채팅방 앞의 작은 이미지 */
 	width:32px;
 	height:32px;
 }
-
 #chatPdPic{
 	width:130px;
 	height:130px;
 }
 .chattingImage{
 	width:100%;
+}
+.readMark{
+	font-size:10px;
 }

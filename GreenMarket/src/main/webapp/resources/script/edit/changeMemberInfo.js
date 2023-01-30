@@ -222,59 +222,6 @@ function updateAddress(){
 	
 }	
 
-function updateEmail(){
-	
-	var email = $("#email").val();
-	var birth = $("#birth").val();
-	var address = $("#address_kakao").val();
-	var phone = $("#phone").val();
-	var name = $("#name").val();
-	var nickname = $("#nickname").val();
-	
-	var jsonData ={
-		"name": name,
-		"nickname": nickname,
-		"email": email,
-		"birth": birth,
-		"phone": phone,
-		"address": address
-	};
-	
-	
-	$.ajax({
-		type:"POST",
-		url:"updateEmail",
-		data : JSON.stringify(jsonData),  
-		dataType : 'json', 
-		contentType : 'application/json;charset=UTF-8', 
-		 success: function(result){
-			 console.log(result +'이메일')
-			 if(email == null || email == ''){
-				 noValue();
-			 
-			 }else if(result == 2){
-					Swal.fire({
-					    icon: 'warning',
-					    title: '이메일 형식이아닙니다.'
-
-				    });
-				}else if(result == 1){
-					Swal.fire({
-					    icon: 'warning',
-					    title: '이미 있는 이메일 입니다.'
-
-				    });
-					
-				}else{
-					ModifySuccess2();
-	
-				}
-		 		
-	  	}
-	})
-	
-}	
-
 function updateNickname(){
 	
 	var email = $("#email").val();
@@ -302,7 +249,7 @@ function updateNickname(){
 		contentType : 'application/json;charset=UTF-8', 
 		 success: function(result){
 			 console.log(result +'닉네임')
-			 if(nickname == '' || nickname == null){
+			 if(result == 2){
 				 noValue();
 			 } else if(result == 1){
 					Swal.fire({

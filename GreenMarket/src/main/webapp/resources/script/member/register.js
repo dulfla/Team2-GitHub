@@ -23,9 +23,9 @@ window.addEventListener('load', () => {
 
 		button.addEventListener('click', function (event) {
 
-			var inputed = $('#password').val();
-			var reinputed = $('#confirmPassword').val();
-			var resultCheck = $('#result_checkNickname').val();
+			let inputed = $('#password').val();
+			let reinputed = $('#confirmPassword').val();
+			let resultCheck = $('#result_checkNickname').val();
 
 			const pwdCheck = document.getElementById('result_checkPwd2').getAttribute('value');
 			const pwdCheck2 = document.getElementsByClassName('form-control')[5].getAttribute('class');
@@ -100,16 +100,16 @@ window.addEventListener('load', () => {
 
 
 function registerAjax() {
-	var email = $("#email").val();
-	var password = $("#password").val();
-	var confirmPassword = $("#confirmPassword").val();
-	var birth = $("#birth").val();
-	var address = $("#address_kakao").val();
-	var phone = $("#phone").val();
-	var name = $("#name").val();
-	var nickname = $("#nickname").val();
+	let email = $("#email").val();
+	let password = $("#password").val();
+	let confirmPassword = $("#confirmPassword").val();
+	let birth = $("#birth").val();
+	let address = $("#address_kakao").val();
+	let phone = $("#phone").val();
+	let name = $("#name").val();
+	let nickname = $("#nickname").val();
 
-	var jsonData = {
+	let jsonData = {
 		"name": name,
 		"nickname": nickname,
 		"email": email,
@@ -152,13 +152,13 @@ function registerAjax() {
 
 
 function checkNick() {
-	var nickname = $("#nickname").val();
+	let nickname = $("#nickname").val();
 	const check = document.getElementById("result_checkNickname2");
 	const check2 = document.getElementsByClassName('form-control')[1];
 
 	/* const check2 = document.querySelector(".form-control"); */
 	
-	var jsonData = {
+	let jsonData = {
 		"nickname": nickname
 	};
 
@@ -191,11 +191,11 @@ function checkNick() {
 }
 
 function checkEmail() {
-	var email = $("#email").val();
+	let email = $("#email").val();
 	const check = document.getElementById("result_email2");
 	const check2 = document.getElementsByClassName('form-control')[2];
 
-	var jsonData = {
+	let jsonData = {
 		"email": email
 	};
 	
@@ -235,14 +235,14 @@ function checkEmail() {
 }
 
 function checkPwd() {
-	var password = $('#password').val();
-	var confirmPassword = $('#confirmPassword').val();
+	let password = $('#password').val();
+	let confirmPassword = $('#confirmPassword').val();
 	const check = document.getElementById("result_checkPwd2");
 
 	const pwdCheck = document.getElementsByClassName('form-control')[3];
 	const pwdCheck2 = document.getElementsByClassName('form-control')[4];
 
-	var jsonData = {
+	let jsonData = {
 		"password": password,
 		"confirmPassword": confirmPassword
 	};

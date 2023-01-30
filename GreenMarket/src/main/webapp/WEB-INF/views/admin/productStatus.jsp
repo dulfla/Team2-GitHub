@@ -11,23 +11,37 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
-<script src="${path}resources/script//.js"></script>
-<link rel="stylesheet" href="${path}resources/style/basicStryle.css">
+<style type="text/css">
+/* 	#container{
+		height:100vh;
+	} */
+</style>
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
-	<div id="container" class="container position-relative">
-		<div class="chart-container">
-	        <canvas id="realTimeProductAdmin"></canvas>
-	    </div>
-		<div class="position-relative row align-items-center">
- 			<div class="chart-container col-xl-4">
-		        <canvas id="productTrade"></canvas>
-		    </div>
-		    <div class="chart-container col-xl-8">
-		        <canvas id="productCategory"></canvas>
-		    </div>
- 		</div>
+	<div id="container">
+		<div id="carouselExampleControlsNoTouching" class="position-relative carousel carousel-dark slide mt-5 mb-5" data-bs-touch="false" data-bs-interval="false">
+			<div class="carousel-inner">
+				<div class="carousel-item active">
+					<div class="container w-75 chart-container">
+						<canvas id="productTrade"></canvas>
+					</div>
+				</div>
+				<div class="carousel-item">
+					<div class="container w-75 chart-container">
+						<canvas id="productCategory"></canvas>
+					</div>
+				</div>
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>
+		</div>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	<script>
@@ -117,7 +131,7 @@
 				},
 				title: {
 					display: true,
-					text: '전체 상품 등록 대비 상품 현황',
+					text: '카테고리별 상품 현황',
 					fontSize: 40
 				}
 	        }

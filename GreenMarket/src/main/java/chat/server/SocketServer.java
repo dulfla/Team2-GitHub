@@ -21,10 +21,9 @@ import spring.vo.chat.ChatMessageVo;
 
 public class SocketServer {
 	
-	private int max = 100;
+	private int max = 500;
 	private ServerSocket serverSocket;
-	private ExecutorService threadPool = Executors.newFixedThreadPool(max);
-//	private static Map<String, Map<String, Collection<SocketClient>>> chatRoom = Collections.synchronizedMap(new HashMap<>());
+	private ExecutorService threadPool;
 	private static Map<String, Map<String, SocketClient>> chatRoom = Collections.synchronizedMap(new HashMap<>());
 	private static Map<String, Map<String, Collection<WebSocketSession>>> webSessions = Collections.synchronizedMap(new HashMap<>());
 	
@@ -36,6 +35,7 @@ public class SocketServer {
 	
 	public void start() throws IOException {
 		serverSocket = new ServerSocket(12005);
+		threadPool = Executors.newFixedThreadPool(max);
 		System.out.println("[server] 시작");
 		Thread thread = new Thread(() -> {
 			try {
@@ -45,31 +45,14 @@ public class SocketServer {
 					sc.setCs(cs);
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("[server] 종료");
+				// e.printStackTrace();
 			}
 		});
 		thread.start();
 	}
 	
 	public void addSocketClient(SocketClient socketClient) {
-//		String key = socketClient.getChatName()+"@"+socketClient.getClientIp();
-//		if(0<chatRoom.size()) {
-//			if(chatRoom.containsKey(socketClient.getChatRoom())) {
-//				if(chatRoom.get(socketClient.getChatRoom()).containsKey(key)) {
-//					chatRoom.get(socketClient.getChatRoom()).get(key).add(socketClient);
-//					return;
-//				}
-//				List<SocketClient> scL = new ArrayList<>();
-//				scL.add(socketClient);
-//				chatRoom.get(socketClient.getChatRoom()).put(key, scL);
-//				return;
-//			}
-//		}
-//		List<SocketClient> scL = new ArrayList<>();
-//		scL.add(socketClient);
-//		Map<String, Collection<SocketClient>> map = new HashMap<>();
-//		map.put(key, scL);
-//		chatRoom.put(socketClient.getChatRoom(), map);
 		String key = socketClient.getChatName()+"@"+socketClient.getClientIp();
 		if(0<chatRoom.size()) {
 			if(chatRoom.containsKey(socketClient.getChatRoom())) {
@@ -82,9 +65,23 @@ public class SocketServer {
 		chatRoom.put(socketClient.getChatRoom(), map);
 	}
 	
-	public void removeSocketClient(SocketClient socketClient) {
-		String key = socketClient.getChatName()+"@"+socketClient.getClientIp();
-		chatRoom.get(socketClient.getChatRoom()).remove(key, socketClient);
+	public void removeSocketClient(SocketClient sc) {
+		String key = sc.getChatName()+"@"+sc.getClientIp();
+		if(sc!=null) {
+			if(0<webSessions.size()) {
+				for(int i=0; i<webSessions.size(); i++) {
+					if(webSessions.containsKey(sc.getChatRoom())) {
+						if(webSessions.get(sc.getChatRoom()).containsKey(key)) {
+							if(0!=webSessions.get(sc.getChatRoom()).get(key).size()) {
+								return;
+							}
+						}
+					}
+				}
+			}
+			chatRoom.get(sc.getChatRoom()).remove(key, sc);
+			sc.close();
+		}
 	}
 	
 	public void sendToAll(SocketClient sender, ChatMessageVo message) throws Exception {
@@ -94,6 +91,7 @@ public class SocketServer {
 		root.put("room", sender.getChatRoom());
 		root.put("message", message.getMessage());
 		root.put("messType", message.getMessType());
+		root.put("msgIdx", message.getIdx());
 		String jsonStr = root.toString();
 		
 		Map<String, SocketClient> roomClient = chatRoom.get(root.getString("room"));
@@ -103,7 +101,7 @@ public class SocketServer {
 		}
 		Collection<Collection<WebSocketSession>> sessionList = webSessions.get(sender.getChatRoom()).values();
 		for(Collection<WebSocketSession> sL : sessionList) {
-			for(WebSocketSession s : sL) { System.out.println(s.getId()+"에 메시지 전송");
+			for(WebSocketSession s : sL) {
 				cws.sendMessage(s, root);
 			}
 		}
@@ -111,36 +109,55 @@ public class SocketServer {
 	
 	public void stop() {
 		try {
+			Collection<Map<String, SocketClient>> roomClient = chatRoom.values();
+			if(0<roomClient.size()) {
+				for(Map<String, SocketClient> rc : roomClient) {
+					Collection<SocketClient> socketClientList = rc.values();
+					if(0<socketClientList.size()) {
+						for(SocketClient sc : socketClientList) {
+							if(sc!=null) {
+								sc.close();
+							}
+						}
+					}
+				}
+			}
+			Collection<Map<String, Collection<WebSocketSession>>> sLs = webSessions.values();
+			for(int i=0; i<sLs.size(); i++) {
+				Map<String, Collection<WebSocketSession>> sL = (Map<String, Collection<WebSocketSession>>) sLs.toArray()[i];
+				for(int j=0; j<sL.size(); j++) {
+					Collection<WebSocketSession> s = (Collection<WebSocketSession>)sL.values().toArray()[j];
+					for(int l=s.size()-1; 0<s.size(); l--) {
+						if(s.toArray()[l]!=null) {
+							try {
+								((WebSocketSession)s.toArray()[l]).close();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			}
 			serverSocket.close();
 			threadPool.shutdownNow();
-			chatRoom.values().stream().forEach(crm -> crm.values().stream().forEach(sc -> sc.close()));
-			webSessions.values().stream().forEach(ws -> ws.values().stream().forEach(w -> w.forEach(s -> {
-				try {
-					s.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			})));
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void saveWebSession(Map<String, String> info, WebSocketSession session) {// System.out.println("등록");
+	public void saveWebSession(Map<String, String> info, WebSocketSession session) {
 		String key = info.get("email"); // +"@"+session.getId()
 		if(0<webSessions.size()) {
 			if(webSessions.containsKey(info.get("c_id"))) {
-				if(webSessions.get(info.get("c_id")).containsKey(key)) { System.out.println(session.getId());
-					if(! webSessions.get(info.get("c_id")).get(key).contains(session)) {System.out.println("저장된 session과 다름");
+				if(webSessions.get(info.get("c_id")).containsKey(key)) {
+					if(! webSessions.get(info.get("c_id")).get(key).contains(session)) {
 						webSessions.get(info.get("c_id")).get(key).add(session);
 					}
-//					System.out.println("[등록] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());
 					return;
 				}
 				List<WebSocketSession> wscL = new ArrayList<>();
 				wscL.add(session);
 				webSessions.get(info.get("c_id")).put(key, wscL);
-//				System.out.println("[등록] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());
 				return;
 			}
 		}
@@ -149,13 +166,11 @@ public class SocketServer {
 		Map<String, Collection<WebSocketSession>> map = new HashMap<>();
 		map.put(key, wscL);
 		webSessions.put(info.get("c_id"), map);
-//		System.out.println("[등록] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());
 	}
 
-	public void removeWebSesseion(Map<String, String> info, WebSocketSession session) {// System.out.println("제거");
+	public void removeWebSesseion(Map<String, String> info, WebSocketSession session) {
 		String key = info.get("email"); // +"@"+session.getId()
 		webSessions.get(info.get("c_id")).get(key).remove(session);
-//		System.out.println("[제거] 사용자 "+key+"에 종속된 web 소캣의 개수 : "+webSessions.get(info.get("c_id")).get(key).size());
 		if(webSessions.get(info.get("c_id")).get(key).size()==0) {
 			webSessions.get(info.get("c_id")).remove(key);
 		}

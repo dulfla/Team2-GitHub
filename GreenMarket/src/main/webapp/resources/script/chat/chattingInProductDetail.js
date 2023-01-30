@@ -5,6 +5,7 @@ let messageBox = null;
 let msg = null;
 let fileInput = null;
 let addFileBtn = null;
+let startB = null;
 
 let roomBox = null;
 
@@ -35,8 +36,8 @@ window.addEventListener('load', function() {
 		roomBox.innerHTML = null;
 	}
 
-	let startBtn = document.getElementById('openChattingBtn');
-	startBtn.addEventListener('click', function (e){
+	startB = document.getElementById('openChattingBtn');
+	startB.addEventListener('click', function (e){
 		personalId = document.getElementById('userEmail').value;
 		if(memberType=='buy'){
 			chatting();
@@ -52,29 +53,31 @@ window.addEventListener('load', function() {
 		}
 	};
 
-	document.addEventListener('click', () => {
-		let activeE = document.activeElement;
-		let body = document.getElementsByTagName('body')[0];
-		if(activeE==body){
-			closeServer();
-		}else if(activeE==startBtn){
-			if(offCanvas.classList.contains('show')){
-				closeServer();
-			}else{
-				let chatRoomOffcanvs = document.getElementById('offcanvasRight chatRoomOffcanvas');
-				if(chatRoomOffcanvs){
-					if(chatRoomOffcanvs.classList.contains('show')){
-						chatRoomOffcanvs.classList.toggle('show');
-					}
-				}
-				openOffCanvas();
-			}
-		}
-	}, false);
+	document.addEventListener('click', offCanvasCloseChecking, false);
 	
 	let closeBtn = document.getElementById('closeBtn chatOffcanvas');
 	closeBtn.addEventListener('click', closeServer, false);
 });
+
+function offCanvasCloseChecking(){
+	let activeE = document.activeElement;
+	let body = document.getElementsByTagName('body')[0];
+	if(activeE==body){
+		closeServer();
+	}else if(activeE==startB){
+		if(offCanvas.classList.contains('show')){
+			closeServer();
+		}else{
+			let chatRoomOffcanvs = document.getElementById('offcanvasRight chatRoomOffcanvas');
+			if(chatRoomOffcanvs){
+				if(chatRoomOffcanvs.classList.contains('show')){
+					chatRoomOffcanvs.classList.toggle('show');
+				}
+			}
+			openOffCanvas();
+		}
+	}
+}
 
 function actionInputFile(){
 	document.getElementById('fileInput').click();
@@ -131,7 +134,7 @@ function chattingRoom(){
     	contentType : 'application/json; charset=UTF-8',
     	data : JSON.stringify({ // 해당되는 모든 채팅방을 가져올 구분자(상품 id)
     		p_id : productId,
-    		email : personalId /* 임시 */
+    		email : personalId
     	}),
 	    error: function(data) {
 	    	console.log(JSON.stringify(data));
@@ -262,11 +265,11 @@ function openChatting(e){
 	offcanvasBody.innerHTML = null;
 
 	let msgBox = document.createElement('div');
-	msgBox.classList.add("overflow-auto");
+	msgBox.classList.add("overflow-auto", "position-relative");
 	msgBox.setAttribute('id', "messageBox");
 
 	let messageBoxContainer = document.createElement('div');
-	messageBoxContainer.classList.add('container', 'fixed-bottom');
+	messageBoxContainer.classList.add('container', 'position-relative');
 	messageBoxContainer.setAttribute('id', "message");
 
 	let inputGroup = document.createElement('div');
@@ -338,7 +341,7 @@ function chatting(){ // 채팅방 연결 - 채팅방이 있으면 해당 채팅�
     	contentType : 'application/json; charset=UTF-8',
     	data : JSON.stringify({ // 연결할 채팅방 아이디 확인
     		p_id : productId,
-    		email : personalId /* 임시 */
+    		email : personalId
     	}),
 	    error: function(){
 	    	console.log('통신실패!!');
@@ -404,7 +407,7 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
 			c_id : chatRoomId, 
-			email : personalId /* 임시 */
+			email : personalId
 		}),
 		error:function(){
 			console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
@@ -413,18 +416,23 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 			let msgL = data.messages;
 			if(0<msgL.length){
 				msgL.forEach((m) => {
-					insertMessage(m.sender, m.nickname, m.message, m.messType);
+					let newElem = insertMessage(m.sender, m.nickname, m.message, m.messType); // , m.read
+					if(m.messType=='IMG'){
+						newElem.addEventListener('load', function(){
+							scrollCheck(true);
+						}, false);
+					}
 				});
 			}
 		},
 		complete: function(){
-			messageBox.scrollTo(0, messageBox.scrollHeight);
+			scrollCheck(true);
 		}
 	});	
 }
 
 function chattingClose(){ // 서버 연결 끊고, messageBox 비우기
-	sock = null;
+	sock.close();
 	
 	document.removeEventListener('keydown', enterSend, false);
 	document.getElementsByName("sendBtn")[0].removeEventListener('click', msgNullcheck, false);
@@ -436,7 +444,7 @@ function chattingClose(){ // 서버 연결 끊고, messageBox 비우기
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
 			c_id : chatRoomId, 
-			email : personalId /* 임시 */
+			email : personalId
 		}),
 		success:function(){   
 			console.log('서버와의 연결이 정상적으로 해제되었습니다.');
@@ -450,40 +458,109 @@ function chattingClose(){ // 서버 연결 끊고, messageBox 비우기
 
 function sendFile(e){
 	let files = e.currentTarget.files;
+	let currectFiles = [];
+	let errorFiles = [];
+	
 	if(0<files.length){
 		for(let i=0; i<files.length; i++){
 			let fileType = files[i].name.split(".");
 			fileType = fileType[fileType.length-1];
 			
 			if(imgFileCheck(fileType, files[i].size)){
-				let formData = new FormData();
-				formData.append("file", files[i]);
-				
-				const date = new Date(files[i].lastModifiedDate);
-				let day = ""+date.getFullYear()+((date.getMonth()+1)<=9?"0"+(date.getMonth()+1):(date.getMonth()+1))+(date.getDate()<=9?"0"+date.getDate():date.getDate());
-				let time = date.getTime();
-				let newFileName = day+"_"+time+"."+fileType;
-				
-				$.ajax({
-				 	url: 'SendFile?c_id='+chatRoomId+'&email='+personalId+'&name='+newFileName,
-				 	processData : false,
-				 	contentType : false,
-				 	data : formData,
-				 	type : 'POST',
-				 	dataType : 'json',
-				 	success : function(data){
-				 		if(data==1){
-				 			console.log('파일 전송 완료');
-				 		}else if(data==2){
-				 			console.log('파일 전송 오류');
-				 		}
-				 	},
-				 	error : function(data){
-				 		console.log(JSON.stringify(data))
-				 	}
-				});
+				currectFiles.push(files[i]);
+			}else{
+				errorFiles.push(files[i]);
 			}
-		}		
+			
+			if(i==files.length-1){
+				filesConfrim(errorFiles, currectFiles);
+			}
+		}
+	}
+}
+
+function filesConfrim(errorFiles, currectFiles){
+	let header = "";
+	let msg = "";
+	if(currectFiles.length==0){
+		header = "파일을 전송할 수 없습니다.";
+		msg = "모든 파일이 누락되었습니다.";
+		imgList = null;
+	}else{
+		header = "파일을 전송하시겠습니까?";
+		if(errorFiles.length==0){
+			msg = "누락된 파일이 없습니다."
+		}else{
+			msg = errorFiles.length+" 개의 파일이 누락되었습니다."
+		}
+		imgList = "<br>= 전송 가능한 파일 =<br><br>";
+		for(let i=currectFiles.length-1; 0<=i; i--){
+			let tempUrl = window.URL.createObjectURL(currectFiles[i]);
+			imgList += "<img src='"+tempUrl+"' style='width:400px; margin-bottom:10px;'>";
+		}
+	}
+	
+	document.removeEventListener('click', offCanvasCloseChecking);
+	
+	Swal.fire({
+	   title: header,
+	   html: '- '+msg+' -<br><small>.jpg, .png 형식의 1MB 이하의 파일만 전송 가능합니다.</small><br><br>'+imgList,
+	   
+	   showCancelButton: true,
+	   confirmButtonColor: '#3085d6',
+	   cancelButtonColor: '#d33',
+	   confirmButtonText: '확인',
+	   cancelButtonText: '취소',
+	   
+	   reverseButtons: false,
+	   
+	}).then(result => {
+	    if (result.isConfirmed) {
+	    	fileSend(currectFiles);
+	    }else if (result.isDismissed) {
+	    	setTimeout(() => {
+				document.addEventListener('click', offCanvasCloseChecking, false);
+			}, 100);
+	    }
+	});
+}
+
+function fileSend(files){
+	if(0<files.length){
+		for(let i=files.length-1; 0<=i; i--){
+			let formData = new FormData();
+			formData.append("file", files[i]);
+			
+			let fileType = files[i].name.split(".");
+			fileType = fileType[fileType.length-1];
+			
+			const date = new Date();
+			let day = ""+date.getFullYear()+((date.getMonth()+1)<=9?"0"+(date.getMonth()+1):(date.getMonth()+1))+(date.getDate()<=9?"0"+date.getDate():date.getDate());
+			let time = date.getTime();
+			let newFileName = day+"_"+time+"."+fileType;
+			
+			$.ajax({
+			 	url: 'SendFile?c_id='+chatRoomId+'&email='+personalId+'&name='+newFileName,
+			 	processData : false,
+			 	contentType : false,
+			 	data : formData,
+			 	type : 'POST',
+			 	dataType : 'json',
+			 	success : function(data){
+			 		if(data==1){
+			 			console.log('파일 전송 완료');
+			 		}else if(data==2){
+			 			console.log('파일 전송 오류');
+			 		}
+			 	},
+			 	error : function(data){
+			 		console.log(JSON.stringify(data))
+			 	},
+			 	complete : function(){
+				 	document.addEventListener('click', offCanvasCloseChecking, false);
+			 	}
+			});
+		}
 	}
 }
 
@@ -507,8 +584,9 @@ function sendMessage(){ // 메세지 보내기
 		data : JSON.stringify({
 			c_id : chatRoomId,
     		p_id : productId,
-    		email : personalId, /* 임시 */
-    		message : msg.value
+    		email : personalId,
+    		message : msg.value,
+    		type : "TEXT"
     	}),
     	error:function(){
 			alert('서버 연결에 문제가 생겨 메세지가 전송되지 않았습니다.');
@@ -530,13 +608,56 @@ function onMessage(msg) {
 			
 	let nowPosition = messageBox.scrollTop;
 	let result = approximateCheck(nowPosition);
-	
-	insertMessage(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
-	
-	scrollCheck(result);
+		
+	if(msgInfo[3][1]=='READ'){
+		if(msgInfo[0][1]!=personId){
+			console.log('상대방이 내 채팅을 읽었습니다.');
+		 //	document.getElementsByClassName('readMarks').remove();
+		}	 
+	}else{
+		let check = insertMessage(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]); // , 1
+		
+		if(msgInfo[0][1]==personalId){
+			scrollCheck(true);
+		}else{
+			readMsge(msgInfo[5][1]);
+			if(result && msgInfo[3][1]=='IMG'){
+				check.addEventListener('load', function(){
+					if(!scrollCheck(result)){
+						messagePopup(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
+					}
+				}, false);
+			}else{
+				if(!scrollCheck(result)){
+					messagePopup(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]);
+				}
+			}
+		}
+	}
 }
 
-function insertMessage(sender, nick, msg, msgType){
+function readMsge(msgIdx){
+	$.ajax({
+		url:"ReadMessage",
+		method:"POST",
+		contentType:'application/json; charset=UTF-8',
+		data : JSON.stringify({
+			c_id : chatRoomId,
+    		p_id : null,
+    		email : personalId,
+    		msgIdx : msgIdx,
+    		type : "READ"
+    	}),
+    	error:function(){
+			alert('서버 연결에 문제가 생겨 메세지가 전송되지 않았습니다.');
+		},
+		success:function(data){
+			if(data==1){console.log('읽기 완료')}
+		}
+	});
+}
+
+function insertMessage(sender, nick, msg, msgType){ // , read
 	if(sender==personalId){
 		let myText = document.createElement('div');
 		myText.classList.add('messageBox', 'myMessageBox');
@@ -551,12 +672,22 @@ function insertMessage(sender, nick, msg, msgType){
 			myMessage = document.createElement('img');
 			myMessage.classList.add('chattingImage');
 			myMessage.setAttribute('src', "ChattingImage?c_id="+chatRoomId+"&fileName="+msg);
+			myMessage.addEventListener('load', function(){
+				scrollCheck(true);
+			}, false);
 		}
-	
+		/*
+			if(read==1){
+				let readMarks = document.createElement('p');
+				readMarks.classList.add('readMarks');
+				readMarks.innerHTML = "1";
+				myMessage.appendChild(readMarks);
+			}
+		*/
 		myText.appendChild(myMessage);
 		messageBox.appendChild(myText);
 		
-		scrollCheck(true);
+		return myMessage;
 	}else{
 		let reciveText = document.createElement('div');
 		reciveText.classList.add('messageBox', 'reciveMessageBox');
@@ -584,14 +715,17 @@ function insertMessage(sender, nick, msg, msgType){
 		
 		reciveText.appendChild(sendingMessage);
 		messageBox.appendChild(reciveText);
+		
+		return sendingMessage;
 	}
 }
 
 function scrollCheck(result){ // 스크롤이 맨 아래에 있다면 새 메세지를 보내거나 받았을 때 스크롤을 아래로 고정, 맨 아래가 아니라면 위치 그대로에, 메세지 보내고, 팝업 띄우기
 	if(result){
 		messageBox.scrollTo(0, messageBox.scrollHeight);
+		return true;
 	}else{
-		messagePopup();
+		return false;
 	}
 }
 
@@ -602,4 +736,33 @@ function approximateCheck(nowPosition){ // 위치 확인 - 맨 아래 스크롤�
 	}else{
 		return false; // 스크롤 위치 변경됨
 	}
+}
+
+function messagePopup(sender, nick, msg, msgType){
+	let toast = document.createElement('div');
+	toast.setAttribute('sender', sender);
+	toast.classList.add("messagePopUp");
+	
+	let header = document.createElement('div');
+	let name = document.createElement('h6');
+	name.innerHTML = nick;
+	
+	let body = document.createElement('div');
+	let msge = document.createElement('small');
+	msge.innerHTML = (msgType=='IMG')?("(사진)"):((msg.length<=20)?(msg):(msg.substr(0, 20)+"..."));
+	
+	body.appendChild(msge);
+	header.appendChild(name);
+	toast.appendChild(header);
+	toast.appendChild(body);
+	toast.addEventListener('click', function(){
+		messageBox.removeChild(toast);
+		scrollCheck(true);
+	}, false);
+	
+	messageBox.appendChild(toast);
+
+	setTimeout(()=>{
+		messageBox.removeChild(toast);
+	}, 1300);
 }

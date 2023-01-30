@@ -32,22 +32,21 @@
 	</select>
 	
 	<insert id="insertMember" parameterType="member">
-		INSERT INTO member (email, password,birth, address, phone,name,nickname)
+		INSERT INTO member (email, password, birth, address, phone, name, nickname)
 		VALUES(#{email},#{password},#{birth},
 			   #{address},#{phone},#{name},#{nickname})
 	</insert>
 	
+	<insert id="naverInsertMember" parameterType="member">
+	 	INSERT INTO member (email, name, nickname)
+		VALUES(#{email},#{name},#{nickname})
+	</insert>
+	
 	<update id="updateMember" parameterType="member">
 		UPDATE member 
-		SET email=#{email},name = #{name},birth=#{birth},address=#{address},
+		SET name = #{name},birth=#{birth},address=#{address},
 			phone=#{phone},nickname=#{nickname}
 		WHERE email=#{email}
-	</update>
-	
-	<update id="updateEmail" parameterType="member">
-		UPDATE member 
-		SET email=#{email}
-		WHERE birth =#{birth}
 	</update>
 	
 	<update id="updatePassword" parameterType="member">
@@ -55,7 +54,6 @@
 		SET password=#{password}
 		WHERE email=#{email}
 	</update>
-	
 	
   <delete id="deleteMember" parameterType="member">
     delete from member 

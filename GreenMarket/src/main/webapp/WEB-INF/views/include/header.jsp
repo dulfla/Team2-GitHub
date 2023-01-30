@@ -5,6 +5,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />	
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
 
+<!-- jQuery -->
+<script
+  src="https://code.jquery.com/jquery-3.6.3.js"
+  integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+  crossorigin="anonymous">
+</script>
+
 <style>
 	header .search {
 	  position: relative;
@@ -52,6 +59,7 @@
 
 		    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 			    <li><a href="productList?c=all&v=product" class="nav-link px-2 link-dark">중고 거래</a></li>
+			    <li><a href="popularSearch" class="nav-link px-2 link-dark">인기검색어</a></li>
 		    	<c:if test="${!empty authInfo && authInfo.type=='U'}">
 				    <li>
 				    	<a href="#" class="nav-link px-2 link-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">내 물건</a>
@@ -73,22 +81,24 @@
 				    <li><a href="CategoryAdmin" class="nav-link px-2 link-dark">카테고리 관리</a></li>
 		    	</c:if>
 		    </ul>
-	
-	   		<%-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="search" method="get">
-	   			<input type="hidden" name="c" value="all">
-		        <input type="hidden" name="v" value="product">
-	      		<input type="search" class="form-control" value="${search}" placeholder="검색어 입력..."  aria-label="Search" name="search">
-	      	</form>
-			 --%>
 		      	 <form class="col-8 col-lg-auto mb-2 mb-lg-0 me-lg-4" role="search" action="search" method="get">
 			      	<div class="search col-4 col-lg-auto mb-2 mb-lg-0 me-lg-0" >
 		          		<input type="hidden" name="c" value="all">
 		          		<input type="hidden" name="v" value="product">
-		          		<input type="search"  id="search" name="search" aria-label="Search">
+		          		<input type="hidden" name="email" value="${authInfo.email}">
+		          		<input type="search"  id="keyword" name="keyword" aria-label="Search">
 		        		<div class="material-symbols-outlined col-11 col-lg-auto ">search</div>
 		        	</div>
 	        	</form> 
-			
+	        	
+	        	<c:choose>
+	        		<c:when test="${!empty member.nickname}">
+	        			<div class="nav-link px-2 link-dark">${member.nickname}</div>
+	        		</c:when>
+	        		<c:otherwise>
+	        			<div class="nav-link px-2 link-dark">${authInfo.nickname}</div>
+	        		</c:otherwise>
+	        	</c:choose>
 	      	<div class="dropdown text-end">
 	      		<c:if test="${empty authInfo}">
 	      			<a href="login"><button type="button" class="btn btn-outline-dark me-2">로그인</button></a>
@@ -116,6 +126,7 @@
 </c:if>
 
 <script type="text/javascript">
+	
 	const searchEl = document.querySelector('.search');
 	const searchInputEl = searchEl.querySelector('input[type=search]');
 	

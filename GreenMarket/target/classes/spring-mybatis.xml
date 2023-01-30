@@ -57,11 +57,7 @@
 	</bean>
 	
 	<bean id="productListDAO" class="spring.dao.product.ProductListDAO">
-		<constructor-arg name="sqlSession" ref="sqlSession" /> <!-- 생성자 일때 콘스트럭터 앍 -->
-	</bean>
-	
-	<bean id="memberProductListDAO" class="spring.dao.product.MemberProductListDAO">
-		<constructor-arg name="sqlSession" ref="sqlSession" /> <!-- 생성자 일때 콘스트럭터 앍 -->
+		<constructor-arg name="sqlSession" ref="sqlSession" />
 	</bean>
 	
 	<bean id="searchDao" class="spring.dao.search.SearchDao">

@@ -18,23 +18,36 @@ public class ChattingWebSocket extends TextWebSocketHandler{
     private SocketServer ss;
     
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) throws Exception { System.out.println(session.getId()+", WebSocket 연결");
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+    	System.out.println(session.getId()+", WebSocket 연결");
         Map<String, String> info = getURIInfos(session);
     	ss.saveWebSession(info, session);	
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception { System.out.println(session.getId()+", WebSocket 분리"); /* * 서버 종료, 새로고침시에만 작동 * */
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+		System.out.println(session.getId()+", WebSocket 분리");
     	Map<String, String> info = getURIInfos(session);
         ss.removeWebSesseion(info, session);
     }
     
     protected void sendMessage(WebSocketSession session, JSONObject root) throws Exception {
-    	String msgPack = "chatName:"+root.getString("chatName")+","
-    					+"room:"+root.getString("room")+","
-    					+"message:"+root.getString("message")+","
-    					+"messType:"+root.getString("messType")+","
-    					+"nickName:"+root.getString("clientNickname");
+    	String msgPack = "";
+    	if(root.getString("messType").equals("READ")) {
+    		msgPack = "chatName:"+root.getString("chatName")+","
+					+"room:"+root.getString("room")+","
+					+"message:null,"
+					+"messType:"+root.getString("messType")+","
+					+"nickName:null,"
+					+"msgIdx:"+root.getInt("msgIdx");
+    	}else {
+    		msgPack = "chatName:"+root.getString("chatName")+","
+					+"room:"+root.getString("room")+","
+					+"message:"+root.getString("message")+","
+					+"messType:"+root.getString("messType")+","
+					+"nickName:"+root.getString("clientNickname")+","
+					+"msgIdx:"+root.getInt("msgIdx");
+    	}
         session.sendMessage(new TextMessage(msgPack));
     }
  

@@ -12,8 +12,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" crossorigin="anonymous"></script> 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <style type="text/css">
-	#result_card img{
+/* 	#result_card img{
 		max-width: 100%;
 	    height: 400px;
 	    display: block;
@@ -58,6 +60,102 @@
 	.card{
 		margin-left: 10px;
 		margin-right: 10px;
+	} */
+		#descriptionForm {
+		padding-bottom: 2rem;
+	}
+	#imageForm {
+		width: 100%;
+	    display: flex;
+	    padding: 2rem 0px;
+	    border-top: 1px solid rgb(220, 219, 228);
+	    border-bottom: 1px solid rgb(220, 219, 228);
+	    margin-left: 12.5px;
+	}
+	#uploud-group{
+		display: flex;
+	    width: 1006px;
+	    overflow-x: hidden;
+	    flex-wrap: wrap;
+	}
+
+	.uploadResultBox{
+	    display: contents;
+	}
+	#uploud-group input {
+	    position: absolute;
+	    top: 0px;
+	    left: 0px;
+	    opacity: 0;
+	    cursor: pointer;
+	    font-size: 0px;
+	}
+	
+	.file-label {
+		width: 225px;
+		height: 225px;
+		margin-right: 1.4rem;
+	}
+	.file-li {
+	    width: 225px;
+	    height: 225px;
+	    position: relative;
+	    border: 1px solid rgb(230, 229, 239);
+	    background: rgb(250, 250, 253);
+	    display: flex;
+	    -webkit-box-align: center;
+	    align-items: center;
+	    -webkit-box-pack: center;
+	    justify-content: center;
+	    flex-direction: column;
+	    color: rgb(155, 153, 169);
+	    font-size: 1rem;
+	    margin-bottom: 1.4rem;
+	    cursor: pointer;
+	}
+	.file-li::before {
+	    content: "";
+	    background-position: center center;
+	    background-repeat: no-repeat;
+	    background-size: cover;
+	    width: 2rem;
+	    height: 2rem;
+	    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj4KICAgIDxwYXRoIGZpbGw9IiNEQ0RCRTQiIGZpbGwtcnVsZT0iZXZlbm9kZCIgZD0iTTI4LjQ3MSAzMkgzLjUzYy0uOTcxIDAtMS44OTQtLjQyMi0yLjUyOS0xLjE1N2wtLjAyNi0uMDNBNCA0IDAgMCAxIDAgMjguMTk4VjguNjA3QTQgNCAwIDAgMSAuOTc0IDUuOTlMMSA1Ljk2YTMuMzQzIDMuMzQzIDAgMCAxIDIuNTI5LTEuMTU2aDIuNTM0YTIgMiAwIDAgMCAxLjUzNy0uNzJMMTAuNC43MkEyIDIgMCAwIDEgMTEuOTM3IDBoOC4xMjZBMiAyIDAgMCAxIDIxLjYuNzJsMi44IDMuMzYzYTIgMiAwIDAgMCAxLjUzNy43MmgyLjUzNGMuOTcxIDAgMS44OTQuNDIzIDIuNTI5IDEuMTU3bC4wMjYuMDNBNCA0IDAgMCAxIDMyIDguNjA2djE5LjU5MWE0IDQgMCAwIDEtLjk3NCAyLjYxN2wtLjAyNi4wM0EzLjM0MyAzLjM0MyAwIDAgMSAyOC40NzEgMzJ6TTE2IDkuNmE4IDggMCAxIDEgMCAxNiA4IDggMCAwIDEgMC0xNnptMCAxMi44YzIuNjQ3IDAgNC44LTIuMTUzIDQuOC00LjhzLTIuMTUzLTQuOC00LjgtNC44YTQuODA1IDQuODA1IDAgMCAwLTQuOCA0LjhjMCAyLjY0NyAyLjE1MyA0LjggNC44IDQuOHoiLz4KPC9zdmc+Cg==);
+	    margin-bottom: 1rem;
+	}
+	#result_card img{
+	    width: 100%;
+    	height: 100%;
+	}
+	#result_card {
+		position: relative;
+		width: 225px;
+    	height: 225px;
+    	border: 1px solid rgb(230, 229, 239);
+    	position: relative;
+    	margin-right: 1.4rem;
+    	margin-bottom: 1.4rem;
+	}
+	.imgDeleteBtn{
+	    position: absolute;
+	    top: 0;
+	    right: 5%;
+	    background-color: #ef7d7d;
+	    color: wheat;
+	    font-weight: 900;
+	    width: 30px;
+	    height: 30px;
+	    border-radius: 50%;
+	    line-height: 26px;
+	    text-align: center;
+	    border: none;
+	    display: block;
+	    cursor: pointer;	
+	}
+	.location{
+		width: 100%;
+   		text-align: center;
+   		margin-top : 20px;
 	}
 </style>
 </head>
@@ -96,8 +194,9 @@
 		                            <div class="row">
 		                                <div class="col-md-6">
 		                                    <div class="form-group">
-		                                        <label for="form_lastname">상품 가격</label>
-		                                        <input id="form_lastname" type="text" name="price" class="form-control" placeholder="가격을 입력해주세요 *" oninput="checkPwd()" required value="${product.price}">
+		                                        <label for="form_lastname">상품가격 (원)</label>
+		                                        <input id="form_lastname" type="text" name="price" class="form-control" placeholder="가격을 입력해주세요 *" 
+		                                        	numberOnlyMinComma="true" required onblur="handleOnInput(this, 9)" required value="${product.price}">
 		                                    </div>
 		                                </div>
 		                                <div class="col-md-6">
@@ -115,7 +214,7 @@
 		                                </div>
 		                            </div>
 		                            <div class="row">
-		                                <div class="col-md-12">
+		                                <div class="col-md-12" id="descriptionForm">
 		                                    <div class="form-group">
 		                                        <label for="form_message">상품 정보</label>
 		                                        <textarea id="form_message" name="description" class="form-control" placeholder="상품 정보를 입력해주세요." rows="4" required data-error="상품 정보는 필수입력입니다.">${product.description}</textarea>
@@ -123,16 +222,20 @@
 		                                </div>
 		                            </div>  
 		                            <div class="row">
-			                            <div class="col-md-6">
-	                                        <div class="form-group">
-	                                            <label for="form_message" style="margin-top : 20px">상품 이미지</label>
-	                                            <input type="file" id="fileItem" name='uploadFile' style="height: 30px;">
-	                                            <div id="uploadResult"></div>
+			                            <div class="col-md-12" id="imageForm">
+	                                        <div class="form-group" id="uploud-group">
+	                                            <label for="chooseFile" class="file-label">
+	                                            	<li class="file-li">
+                                            		"이미지 등록"
+                                            		</li>
+	                                            </label>
+	                                            <input type="file" class="file" id="chooseFile" name='uploadFile' accept=".jpg, .png">
+	                                            <div id="uploadResult" class="uploadResultBox"></div>
 	                                        </div>
                                     	</div>
-		                            	<div class="col-md-6">
+		                            	<div class="col-md-12">
 			                                <div class="form-group">
-			                                    <label for="form_message" style="margin-top : 20px">거래 위치</label>
+			                                    <label for="form_message" class="location">거래 위치</label>
 			                                    <div id="map" style="width:100%;height:400px;"></div>
 			                                        <p><em>지도를 클릭해주세요!</em></p> 
 			                                    <div id="clickLatlng"></div>
@@ -153,9 +256,8 @@
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	
-	
-	
-	
+
+	<%-- <script src="${path}resources/script/asdf/asdf.js"></script> --%>
 	<script type="text/javascript">
 		var lat = $("#lat").val();
 		var lng = $("#lng").val();
@@ -203,9 +305,9 @@
 		/* 등록된 이미지 존재시 삭제 */		
 		/* 이미지 없는 게시판 수정시 이미지없음 사진이 안지워져서 수정 */
 		//if($(".imgDeleteBtn").length > 0){
-		if($("#result_card").length > 0){
+/* 		if($("#result_card").length > 0){
 			deleteFile();
-		}
+		} */
 		
 		let formData = new FormData();
 		let fileInput = $('input[name="uploadFile"]');
@@ -261,7 +363,7 @@
 		
 		let str = "";
 		
-		let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
+		let fileCallPath = encodeURIComponent(obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName);
 		
 		str += "<div id='result_card'>";
 		str += "<img src='display?fileName=" + fileCallPath +"'>";
@@ -287,28 +389,31 @@
 		
 		$("#result_card").remove();
 	}
-		$(document).ready(function(){
-			  /* 이미지 정보 호출 */
-			  let p_id = '<c:out value="${product.p_id}"/>';
-			  let uploadResult = $("uploadResult");
-			 
+	
+	$(document).ready(function(){
+		  /* 이미지 정보 호출 */
+		  let p_id = '<c:out value="${product.p_id}"/>';
+		  let uploadResult = $("uploadResult");
+		 
+		  
+		  $.getJSON("getImageList", {p_id : p_id}, function(arr){
 			  
-			  $.getJSON("getImageList", {p_id : p_id}, function(arr){
-				  
-				 	if(arr.length === 0){	
-					  
-						let str = "";
-						
-						str += "<div id='result_card'>";
-						str += "<img src='./resources/img/noImage.png'>";
-						str += "</div>";
-
-						$("#uploadResult").html(str);
-						return;
-					} 
+			 	if(arr.length === 0){	
 				  
 					let str = "";
-					let obj = arr[0];
+					
+					str += "<div id='result_card'>";
+					str += "<img src='./resources/img/noImage.png'>";
+					str += "</div>";
+
+					$("#uploadResult").html(str);
+					return;
+				} 
+			  
+				let str = "";
+				
+				for(let i=0; i<arr.length; i++){
+					let obj = arr[i];
 					
 					let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
 					str += "<div id='result_card'";
@@ -322,8 +427,9 @@
 					str += "</div>";		
 
 					$("#uploadResult").html(str);
-			  });		
-		  });
+				}
+		  });		
+	  });
 	
 	
 		$("#back_Btn").click(function(){
@@ -335,7 +441,6 @@
 			var numPattern = /([^0-9])/;
 			var numPattern = objEv.value.match(numPattern);
 			if (numPattern != null) {
-				/* alert('숫자만 입력해주세요'),  */
 				Swal.fire({
 				      icon: 'error',
 				      title: '상품 가격은 숫자만 입력해주세요',
@@ -344,6 +449,65 @@
 				objEv.value = "";
 				objEv.focus();
 				return false;
+			}
+		}
+		
+		/* 가격 숫자만 입력, 쉼표 */
+ 		$(document).on("keyup", "input:text[numberOnlyMinComma]", function()	{
+ 			var strVal = $(this).val();
+
+ 			event = event || window.event;
+ 			var keyID = (event.which) ? event.which : event.keyCode;
+
+ 			if( ( keyID >=48 && keyID <= 57 ) || ( keyID >=96 && keyID <= 105 )
+ 						|| keyID == 46 || keyID == 8 || keyID == 109
+ 						|| keyID == 189 || keyID == 9
+ 						|| keyID == 37 || keyID == 39){
+
+ 				if(strVal.length > 1 && (keyID == 109 || keyID == 189)){
+ 					return false;
+ 				}else{
+ 					return;
+ 				}
+ 			}else{
+ 				return false;
+ 			}
+ 		});
+ 		$(document).on("keyup", "input:text[numberOnlyMinComma]", function()	{
+ 			$(this).val( $(this).val().replace(/[^-\.0-9]/gi,"") );
+ 			$(this).val( $(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );
+ 		});  		
+ 		$(document).on("focusout", "input:text[numberOnlyMinComma]", function()	{
+ 			$(this).val( $(this).val().replace(",","") );
+ 			$(this).val( $(this).val().replace(/[^-\.0-9]/gi,"") );
+ 			$(this).val( $(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );		
+ 		});
+ 		$(document).on("focusout", "input:text[numberOnlyMinComma]", function(){
+ 		    var value = $(this).val();
+ 		    value = value.replace(/,/g,'');
+ 		    $(this).val(value);
+ 		});
+ 		
+ 		function fileCheck() {
+ 			var imgFile = $('#chooseFile').val();
+ 			if($('#chooseFile').val() == ""){
+ 				Swal.fire({
+ 				      icon: 'error',
+ 				      title: '이미지 업로드는 필수입니다!',
+ 				      text: '',
+ 				});
+ 				$('#chooseFile').focus();
+ 			}	
+		}
+		function handleOnInput(el, maxlength) {
+			if(el.value.length > maxlength)  {
+				Swal.fire({
+				      icon: 'error',
+				      title: '가격 최대값 초과',
+				      text: '가격은 10억원 미만으로 해주세요',
+				 
+				});
+				el.value = el.value.substr(999999999);
 			}
 		}
 	</script>
