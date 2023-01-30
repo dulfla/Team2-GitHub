@@ -8,27 +8,63 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>그린 마켓</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"> 	
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    
+    <style>
+    @font-face {
+	  font-family: "hana";
+	  src: url("${path}resources/fonts/BMJUA_ttf.ttf");
+	}
+	
+	@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
+	
+	p{
+	font-family: hana;
+	}
+   	.list-group{
+   		margin : auto;
+   		width:160px;   		
+   		position:fixed;
+   		top:150px;
+   		left:80px;
+   		background-color : #fff;
+   		/* #A2F36A; */
+   	}
+   	.btn-group1{   
+   		position:fixed;
+   		top:300px;
+   		left:150px;
+   		padding-bottom : 0;
+   	}
+    .py-5{
+    	padding-top : 1rem!important;
+    	padding-bottom : 1rem!important;
+    }
+    .paging {
+    	padding-bottom : 2rem;
+    	padding-top : 2rem;
+    }    
+    </style>
 </head>
 <body>
-<%@ include file="../include/header.jsp" %>
+<%@ include file="../include/header.jsp" %>	
 <div class="container">
 	<div class="list-group">
   		<a href="myProduct" class="list-group-item list-group-item-action">내 상품</a>
   		<a href="selled" class="list-group-item list-group-item-action">판매완료된 상품</a>
   		<a href="unSelled" class="list-group-item list-group-item-action">판매중인 상품</a> 
 	</div>
-	<div class="btn-group">
-	  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
-		  	${pageData.oip} 개
-	  	</button>
-	  	<ul class="dropdown-menu">
+	<div class="btn-group1">
+		  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+			  	${pageData.oip} 개
+		  	</button>
+		  	<ul class="dropdown-menu">
 		    <li><a class="dropdown-item" href="${location}?pis=${pageData.pis}&oip=15">15 개</a></li>
 		    <li><a class="dropdown-item" href="${location}?pis=${pageData.pis}&oip=30">30 개</a></li>
 		    <li><a class="dropdown-item" href="${location}?pis=${pageData.pis}&oip=60">60 개</a></li>
 		    <li><a class="dropdown-item" href="${location}?pis=${pageData.pis}&oip=90">90 개</a></li>
-	  	</ul>
+		  	</ul>
 	</div>
  	<div class="album py-5">
    	 	<div class="container">
@@ -54,8 +90,8 @@
 		  							</div>
 		  							<div class="col">
 			 							<c:choose>
-											<c:when test="${p.trade eq'trade' or p.trade eq 'TRADE'}"><p  class="position-relative text-end">거래중</p></c:when>
-											<c:when test="${p.trade eq'clear' or p.trade eq 'CLEAR'}"><p class="position-relative text-end">거래완료</p></c:when>
+											<c:when test="${p.trade eq'trade' or p.trade eq 'TRADE'}"><p  class="position-relative text-end" style="color : #11B339">거래중❗</p></c:when>
+											<c:when test="${p.trade eq'clear' or p.trade eq 'CLEAR'}"><p class="position-relative text-end" style="color : #04622">거래완료🚫</p></c:when>
 			 							</c:choose>
 				 					</div>
 		      					</div>
