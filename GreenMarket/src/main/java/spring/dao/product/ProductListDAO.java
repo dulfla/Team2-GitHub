@@ -4,18 +4,12 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 
-import spring.vo.product.CategoryPagingVO;
 import spring.vo.product.PagingInfoVO;
 import spring.vo.product.ProductListVO;
 
-public class ProductListDAO { //DAO 쿼리문으로 데이터 소환(담은걸 받아서 전달, 데이터베이스와 연결할 역할)
+public class ProductListDAO {
 
-	private ProductListDAO() {}
-	private static ProductListDAO dao = new ProductListDAO();
-	
-	// 7)
 	private SqlSession sqlSession;
-
 	public ProductListDAO(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
 	}
@@ -34,7 +28,6 @@ public class ProductListDAO { //DAO 쿼리문으로 데이터 소환(담은걸 �
 
 	public List<ProductListVO> selectAllPriceHigh(PagingInfoVO pInfo){
 		return sqlSession.selectList("mybatis.mapper.productList.priceHigh",pInfo);
-				
 	}
 
 	public List<ProductListVO> selectAllPriceLow(PagingInfoVO pInfo){
@@ -66,11 +59,32 @@ public class ProductListDAO { //DAO 쿼리문으로 데이터 소환(담은걸 �
 	}
 
 	public int selectCateNumboard(String c) {
-		return sqlSession.selectOne("mybatis.mapper.productList.countCategory",c);
+		return sqlSession.selectOne("mybatis.mapper.productList.countCategory", c);
 	}
 	
+	public List<ProductListVO> selectAllProductSellList(PagingInfoVO pInfo){
+		return sqlSession.selectList("mybatis.mapper.productList.sellList", pInfo);
+	}
 	
+	public List<ProductListVO> selectAllProductUnSellList(PagingInfoVO pInfo){
+		return sqlSession.selectList("mybatis.mapper.productList.unSellList", pInfo);
+	}
 	
+	public List<ProductListVO> selectAllProductBuyList(PagingInfoVO pInfo){
+		return sqlSession.selectList("mybatis.mapper.productList.myProductList", pInfo);
+	}	
+
+	public int selectMyProductNumboard(String email) {
+		return sqlSession.selectOne("mybatis.mapper.productList.countMyProductNumber", email);
+	}
+	
+	public int selectMyUnSelledNumboard(String email) {
+		return sqlSession.selectOne("mybatis.mapper.productList.countMyUnSelledNumber", email);
+	}
+	
+	public int selectMySelledNumboard(String email) {
+		return sqlSession.selectOne("mybatis.mapper.productList.countMySelledNumber", email);
+	}
 	
 }
 

@@ -91,6 +91,7 @@ public class SocketServer {
 		root.put("room", sender.getChatRoom());
 		root.put("message", message.getMessage());
 		root.put("messType", message.getMessType());
+		root.put("msgIdx", message.getIdx());
 		String jsonStr = root.toString();
 		
 		Map<String, SocketClient> roomClient = chatRoom.get(root.getString("room"));

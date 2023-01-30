@@ -16,29 +16,34 @@
 <body>
 <%@ include file="../include/header.jsp" %>
 <<<<<<< HEAD
+<<<<<<< HEAD
  <div class="album py-5 bg-light">
     <div class="container">	
+=======
+<div class="container">
+	<div id="optionGroups">
+>>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
 		<div class="btn-group">
-		  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" 
-		  data-bs-display="static" aria-expanded="false">
-		   <c:choose>
-              	<c:when test="${empty c}">카테고리</c:when>
-              	<c:otherwise>
-              		<c:choose>
-              			<c:when test="${c eq 'all'}">전체 보기</c:when>
-              			<c:otherwise>${c}</c:otherwise>
-              		</c:choose>
-              	</c:otherwise>
-           </c:choose>
-		  </button>
-		  <ul class="dropdown-menu dropdown-menu-end">
-		  <li><a class="dropdown-item" href="productList?c=all&v=${v}">전체 보기</a></li>
-		  <c:forEach items="${categoryList}" var="c">
-		  	<li><a class="dropdown-item" href="productList?c=${c.category}&v=${v}">${c.category}</a></li>
-		  </c:forEach>		    
-		  </ul>
+		  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+			   	<c:choose>
+	              	<c:when test="${empty pageData.c}">카테고리</c:when>
+	              	<c:otherwise>
+	              		<c:choose>
+	              			<c:when test="${pageData.c eq 'all'}">전체 보기</c:when>
+	              			<c:otherwise>${pageData.c}</c:otherwise>
+	              		</c:choose>
+	              	</c:otherwise>
+	           	</c:choose>
+		  	</button>
+		  	<ul class="dropdown-menu dropdown-menu-end">
+		  		<li><a class="dropdown-item" href="productList?c=all&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}">전체 보기</a></li>
+		  		<c:forEach items="${categorys}" var="c">
+		  			<li><a class="dropdown-item" href="productList?c=${c.category}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}">${c.category}</a></li>
+		  		</c:forEach>		    
+		  	</ul>
 		</div>	
 		<div class="btn-group">
+<<<<<<< HEAD
 		  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" 
 		  data-bs-display="static" aria-expanded="false"> <!-- data-bs-offset="10,20" -->
 		  <c:choose>
@@ -120,6 +125,8 @@
 		  	</ul>
 		</div>	
 		<div class="btn-group">
+=======
+>>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
 		  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 			  	<c:choose>
 		           	<c:when test="${pageData.v eq 'product'}" >조회유형</c:when>
@@ -189,12 +196,17 @@
 		        	</div>
 	      		</c:forEach>
 	      	</div>
+<<<<<<< HEAD
 >>>>>>> 7a982df (김형관님 피트 한 페이지당 상품 개수 변경 기능 추가)
+=======
+>>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
     	</div>
-		<div class="cls2">		<!-- 페이징 -->
-			<c:if test="${totalCnt != null}">
-				<nav aria-label="Page navigation example">
+ 	</div>
+ 	<div class="paging">
+		<c:if test="${!empty totalCnt}">
+			<nav aria-label="Page navigation example">
 		  		<ul class="pagination justify-content-center">
+<<<<<<< HEAD
 <<<<<<< HEAD
 				<c:choose>
 					<c:when test="${totalCnt > 100}">		<!-- 전체 갯수가 100개가 넘는가 -->
@@ -225,11 +237,14 @@
 								<!-- 번호를 눌렀을때 해당 섹션과 해당 페이지 번호를 서버에 전달 -->					
 							</c:forEach>
 =======
+=======
+>>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
 		  			<c:if test="${totalCnt>pageData.oip}">
 						<c:if test="${pageData.s>1}">
 							<li class="page-item">
 								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s-1}&p=${pageData.pis}"><<</a>
 							</li>
+<<<<<<< HEAD
 						</c:if>
 						<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<totalCnt)?(pageData.pis):(((totalCnt+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
 							<li class="page-item">
@@ -243,26 +258,29 @@
 								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s+1}&p=1">>></a>
 							</li>
 >>>>>>> 7a982df (김형관님 피트 한 페이지당 상품 개수 변경 기능 추가)
+=======
+>>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
 						</c:if>
-					</c:when>
-					<c:when test="${totalCnt == 100}">		<!-- 전체 갯수가 100개가 딱 맞는가 -->
-						<c:forEach var="page" begin="1" end="10" step="1">
-							<li class="page-item"><a class="page-link" href="productList?c=${c}&v=${v}&sN=${section}&pN=${page}">${(section-1)*10+page}</a></li>
-								<!-- 번호를 눌렀을때 해당 섹션과 해당 페이지 번호를 서버에 전달 -->				
+						<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<totalCnt)?(pageData.pis):(((totalCnt+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
+							<li class="page-item">
+								<c:if test="${pageData.p==page}"><b></c:if>
+								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${((pageData.s-1)*pageData.pis)+page}</a>
+								<c:if test="${pageData.p==page}"></b></c:if>
+							</li>
 						</c:forEach>
-					</c:when>
-					<c:when test="${totalCnt < 100}">		<!-- 전체 갯수가 100개보다 적은가 -->
-						<c:forEach var="page" begin="1" end="${(totalCnt+9)/10}" step="1">
-							<li class="page-item"><a class="page-link" href="productList?c=${c}&v=${v}&sN=${section}&pN=${page}">${(section-1)*10+page}</a></li>
-								<!-- 번호를 눌렀을때 해당 섹션과 해당 페이지 번호를 서버에 전달 -->				
-						</c:forEach>
-					</c:when>
-				</c:choose>
-			</c:if>
-		</div>
- </div>  
-  <%@ include file="../include/footer.jsp" %>
-  <script type="text/javascript">
+						<c:if test="${(pageData.s*(pageData.pis*pageData.oip)) < totalCnt}">
+							<li class="page-item">
+								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s+1}&p=1">>></a>
+							</li>
+						</c:if>
+					</c:if>
+				</ul>
+			</nav>
+		</c:if>
+	</div>
+</div>
+<%@ include file="../include/footer.jsp" %>
+<script type="text/javascript">
   	window.onload = function(){
   		let moveToDetail = document.getElementsByName('moveToDetail');
   		for(let i=0; i<moveToDetail.length; i++){
@@ -272,6 +290,6 @@
   	  		}, false);
   		}
   	}
-  </script>
+</script>
 </body>
 </html>

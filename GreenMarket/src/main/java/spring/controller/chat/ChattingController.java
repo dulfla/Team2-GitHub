@@ -34,7 +34,7 @@ import spring.vo.chat.ChattingRoomInfoListVo;
 import spring.vo.member.AuthInfo;
 
 @Controller
-public class ChatConnectionController {
+public class ChattingController {
 
 	@Autowired
 	private ChatService chatService;
@@ -54,7 +54,7 @@ public class ChatConnectionController {
 		return img;
 	}
 	
-	@GetMapping(value = {"SelectChatRoom", "SelectChatRooms", "ChatRoomCheck", "ConnecteWithClientServer", "Chat", "SendMessage", "SendFile", "BreakeOffClientServer", "GetProductImg"})
+	@GetMapping(value = {"SelectChatRoom", "SelectChatRooms", "ChatRoomCheck", "ConnecteWithClientServer", "Chat", "SendMessage", "ReadMessage", "SendFile", "BreakeOffClientServer", "GetProductImg"})
 	public String getTypeAccess(HttpServletRequest request, RedirectAttributes reda) {
 		String referer = request.getHeader("Referer");
 		String errorMsg = "접속할 수 없는 주소 입니다.";
@@ -116,6 +116,14 @@ public class ChatConnectionController {
 	public int sendMessage(@RequestBody Map<String, String> map) throws IOException {
 		ChatClient client = chatService.checkClient(map.get("c_id"), map.get("email"));
 		chatService.sendMessage(client, map);
+		return 1;
+	}
+	
+	@ResponseBody
+	@PostMapping("ReadMessage")
+	public int readMessage(@RequestBody Map<String, String> map) throws IOException {
+		ChatClient client = chatService.checkClient(map.get("c_id"), map.get("email"));
+		chatService.readMessage(client, map);
 		return 1;
 	}
 	

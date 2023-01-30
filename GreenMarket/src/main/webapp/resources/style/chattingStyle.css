@@ -74,6 +74,9 @@ a{
 #message{ /* input-group을 묶는 상위 container */
 	height:40px;
 }
+.readMarks{
+	font-size:10px;
+}
 
 /* ---------------------------------------------------------------------------------------------------------- */
 
@@ -95,4 +98,7 @@ a{
 }
 .chattingImage{
 	width:100%;
+}
+.readMark{
+	font-size:10px;
 }

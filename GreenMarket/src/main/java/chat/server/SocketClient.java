@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Collection;
+import java.util.Date;
 
 import org.json.JSONObject;
 
@@ -51,41 +52,52 @@ public class SocketClient {
 					InetSocketAddress isa = (InetSocketAddress) socket.getRemoteSocketAddress();
 					this.clientIp = isa.getHostName();
 					
+					ChatMessageVo message = new ChatMessageVo();
+					
 					switch(command) {
 					case "incoming":
 						this.clientNickname = jsonObject.getString("name");
 						this.chatName = jsonObject.getString("who");
 						this.chatRoom = jsonObject.getString("room");
 						
-//						ChatMessageVo message = new ChatMessageVo();
-//						message.setMessage("들어오셨습니다.");
-//						message.setMessType("TEXT");
 						chatServer.addSocketClient(this);
-//						try {
-//							chatServer.sendToAll(this, message);
-//						} catch (Exception e) {
-//							e.printStackTrace();
-//						}
-						break;
-					case "message":
-						long idx = jsonObject.getLong("msgIdx");
-						ChatMessageVo msg = cs.selectSendedMessage(idx);
+						
+						message.setMessType("READ");
+						message.setSend_date(new Date());
+						message.setC_id(chatRoom);
+						message.setSender(chatName);
 						try {
-							chatServer.sendToAll(this, msg);
+							cs.readMsg(message);
+							chatServer.sendToAll(this, message);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
+						break;
+					case "message":
+						long idx = jsonObject.getLong("msgIdx");
+						message = cs.selectSendedMessage(idx);
+						try {
+							chatServer.sendToAll(this, message);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						break;
+					case "read":
+						message = new ChatMessageVo();
+						message.setMessType("READ");
+						message.setIdx(jsonObject.getInt("msgIdx"));
+						message.setC_id(chatRoom);
+						message.setSender(chatName);
+						try {
+							cs.readMsg(message);
+							chatServer.sendToAll(this, message);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						break;
 					}
 				}
 			}catch (IOException e) {
-				ChatMessageVo message = new ChatMessageVo();
-//				message.setMessage("나가셨습니다.");
-//				message.setMessType("TEXT");
-//				try {
-//					chatServer.sendToAll(this, message);
-//				} catch (Exception ee) {
-//					ee.printStackTrace();
-//				}
 				chatServer.removeSocketClient(this);
 			}
 		});

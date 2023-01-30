@@ -32,11 +32,22 @@ public class ChattingWebSocket extends TextWebSocketHandler{
     }
     
     protected void sendMessage(WebSocketSession session, JSONObject root) throws Exception {
-    	String msgPack = "chatName:"+root.getString("chatName")+","
-    					+"room:"+root.getString("room")+","
-    					+"message:"+root.getString("message")+","
-    					+"messType:"+root.getString("messType")+","
-    					+"nickName:"+root.getString("clientNickname");
+    	String msgPack = "";
+    	if(root.getString("messType").equals("READ")) {
+    		msgPack = "chatName:"+root.getString("chatName")+","
+					+"room:"+root.getString("room")+","
+					+"message:null,"
+					+"messType:"+root.getString("messType")+","
+					+"nickName:null,"
+					+"msgIdx:"+root.getInt("msgIdx");
+    	}else {
+    		msgPack = "chatName:"+root.getString("chatName")+","
+					+"room:"+root.getString("room")+","
+					+"message:"+root.getString("message")+","
+					+"messType:"+root.getString("messType")+","
+					+"nickName:"+root.getString("clientNickname")+","
+					+"msgIdx:"+root.getInt("msgIdx");
+    	}
         session.sendMessage(new TextMessage(msgPack));
     }
  

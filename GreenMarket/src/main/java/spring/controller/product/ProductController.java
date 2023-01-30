@@ -268,7 +268,6 @@ public class ProductController {
 	@RequestMapping(value = "productModify", method = RequestMethod.POST)
 	public String postProductModify(ProductVO vo) throws Exception{
 	
-		
 		String[] uuids = vo.getImageList().get(0).getUuid().split(",");
 		String[] fileNames = vo.getImageList().get(0).getFileName().split(",");
 		String[] uploadPaths = vo.getImageList().get(0).getUploadPath().split(",");

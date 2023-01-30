@@ -195,7 +195,8 @@
 		                                <div class="col-md-6">
 		                                    <div class="form-group">
 		                                        <label for="form_lastname">상품가격 (원)</label>
-		                                        <input id="form_lastname" type="text" name="price" class="form-control" placeholder="가격을 입력해주세요 *" oninput="checkPwd()" required="required" value="${product.price}">
+		                                        <input id="form_lastname" type="text" name="price" class="form-control" placeholder="가격을 입력해주세요 *" 
+		                                        	numberOnlyMinComma="true" required onblur="handleOnInput(this, 9)" required value="${product.price}">
 		                                    </div>
 		                                </div>
 		                                <div class="col-md-6">
@@ -255,9 +256,8 @@
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	
-	
-	
-	
+
+	<%-- <script src="${path}resources/script/asdf/asdf.js"></script> --%>
 	<script type="text/javascript">
 		var lat = $("#lat").val();
 		var lng = $("#lng").val();
@@ -363,7 +363,7 @@
 		
 		let str = "";
 		
-		let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
+		let fileCallPath = encodeURIComponent(obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName);
 		
 		str += "<div id='result_card'>";
 		str += "<img src='display?fileName=" + fileCallPath +"'>";
@@ -389,28 +389,31 @@
 		
 		$("#result_card").remove();
 	}
-		$(document).ready(function(){
-			  /* 이미지 정보 호출 */
-			  let p_id = '<c:out value="${product.p_id}"/>';
-			  let uploadResult = $("uploadResult");
-			 
+	
+	$(document).ready(function(){
+		  /* 이미지 정보 호출 */
+		  let p_id = '<c:out value="${product.p_id}"/>';
+		  let uploadResult = $("uploadResult");
+		 
+		  
+		  $.getJSON("getImageList", {p_id : p_id}, function(arr){
 			  
-			  $.getJSON("getImageList", {p_id : p_id}, function(arr){
-				  
-				 	if(arr.length === 0){	
-					  
-						let str = "";
-						
-						str += "<div id='result_card'>";
-						str += "<img src='./resources/img/noImage.png'>";
-						str += "</div>";
-
-						$("#uploadResult").html(str);
-						return;
-					} 
+			 	if(arr.length === 0){	
 				  
 					let str = "";
-					let obj = arr[0];
+					
+					str += "<div id='result_card'>";
+					str += "<img src='./resources/img/noImage.png'>";
+					str += "</div>";
+
+					$("#uploadResult").html(str);
+					return;
+				} 
+			  
+				let str = "";
+				
+				for(let i=0; i<arr.length; i++){
+					let obj = arr[i];
 					
 					let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
 					str += "<div id='result_card'";
@@ -424,8 +427,9 @@
 					str += "</div>";		
 
 					$("#uploadResult").html(str);
-			  });		
-		  });
+				}
+		  });		
+	  });
 	
 	
 		$("#back_Btn").click(function(){
@@ -445,6 +449,65 @@
 				objEv.value = "";
 				objEv.focus();
 				return false;
+			}
+		}
+		
+		/* 가격 숫자만 입력, 쉼표 */
+ 		$(document).on("keyup", "input:text[numberOnlyMinComma]", function()	{
+ 			var strVal = $(this).val();
+
+ 			event = event || window.event;
+ 			var keyID = (event.which) ? event.which : event.keyCode;
+
+ 			if( ( keyID >=48 && keyID <= 57 ) || ( keyID >=96 && keyID <= 105 )
+ 						|| keyID == 46 || keyID == 8 || keyID == 109
+ 						|| keyID == 189 || keyID == 9
+ 						|| keyID == 37 || keyID == 39){
+
+ 				if(strVal.length > 1 && (keyID == 109 || keyID == 189)){
+ 					return false;
+ 				}else{
+ 					return;
+ 				}
+ 			}else{
+ 				return false;
+ 			}
+ 		});
+ 		$(document).on("keyup", "input:text[numberOnlyMinComma]", function()	{
+ 			$(this).val( $(this).val().replace(/[^-\.0-9]/gi,"") );
+ 			$(this).val( $(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );
+ 		});  		
+ 		$(document).on("focusout", "input:text[numberOnlyMinComma]", function()	{
+ 			$(this).val( $(this).val().replace(",","") );
+ 			$(this).val( $(this).val().replace(/[^-\.0-9]/gi,"") );
+ 			$(this).val( $(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") );		
+ 		});
+ 		$(document).on("focusout", "input:text[numberOnlyMinComma]", function(){
+ 		    var value = $(this).val();
+ 		    value = value.replace(/,/g,'');
+ 		    $(this).val(value);
+ 		});
+ 		
+ 		function fileCheck() {
+ 			var imgFile = $('#chooseFile').val();
+ 			if($('#chooseFile').val() == ""){
+ 				Swal.fire({
+ 				      icon: 'error',
+ 				      title: '이미지 업로드는 필수입니다!',
+ 				      text: '',
+ 				});
+ 				$('#chooseFile').focus();
+ 			}	
+		}
+		function handleOnInput(el, maxlength) {
+			if(el.value.length > maxlength)  {
+				Swal.fire({
+				      icon: 'error',
+				      title: '가격 최대값 초과',
+				      text: '가격은 10억원 미만으로 해주세요',
+				 
+				});
+				el.value = el.value.substr(999999999);
 			}
 		}
 	</script>

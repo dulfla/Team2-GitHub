@@ -2,8 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%-- <%@ page import="spring.controller.ProductDateTimeAgo" contentType="text/html;charset=UTF-8" %>
-<jsp:useBean id="dateTime" class="spring.controller.ProductDateTimeAgo" scope="page" /> --%>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -15,18 +13,13 @@
 </head>
 <body>
 <%@ include file="../include/header.jsp" %>
-
-<%-- <c:if test="${!empty productModel}">정보 넘어옴</c:if> --%>
-	<%-- <c:forEach items="${productModel}" var="pic" varStatus="p">
-		<img alt="tkwls" src="${path}resources/img/${pic.f_proxy_name}">
-	</c:forEach>	 --%>
-	<div class="container">
+<div class="container">
 	<div class="list-group">
-  <a href="myProduct" class="list-group-item list-group-item-action">내 상품</a>
-  <a href="sell" class="list-group-item list-group-item-action">판매완료된 상품</a>
-  <a href="unSell" class="list-group-item list-group-item-action">판매중인 상품</a> 
-</div>
+  		<a href="myProduct" class="list-group-item list-group-item-action">내 상품</a>
+  		<a href="selled" class="list-group-item list-group-item-action">판매완료된 상품</a>
+  		<a href="unSelled" class="list-group-item list-group-item-action">판매중인 상품</a> 
 	</div>
+<<<<<<< HEAD
 <<<<<<< HEAD
  <div class="album py-5 bg-light">
     <div class="container">
@@ -63,6 +56,8 @@
 		        					<button href="productDetail?p_id=${p.p_id}" type="button" class="btn btn-sm btn-outline-secondary" name="moveToDetail">보기</button>
 		        				</div>
 =======
+=======
+>>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
 	<div class="btn-group">
 	  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 		  	${pageData.oip} 개
@@ -108,15 +103,20 @@
 		      						<div class="btn-group">
 		        						<button href="productDetail?p_id=${p.p_id}" type="button" class="btn btn-sm btn-outline-secondary" name="moveToDetail">보기</button>
 		        					</div>
+<<<<<<< HEAD
 >>>>>>> 7a982df (김형관님 피트 한 페이지당 상품 개수 변경 기능 추가)
+=======
+>>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
                 					<small class="text-muted"><fmt:formatNumber value="${p.price}"  pattern="###,###,###"/>원</small>
-              				</div>
-            		</div>
-          		</div>
-        	</div>
-      	</c:forEach>
-      </div>
+              					</div>
+            				</div>
+          				</div>
+        			</div>
+      			</c:forEach>
+      		</div>
+    	</div>
     </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 	<div class="cls2">		<!-- 페이징 -->
 		<c:if test="${totalCnt != null}">
@@ -140,6 +140,8 @@
 							</c:if>
 						</c:forEach>
 =======
+=======
+>>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
     <div class="paging">
 		<c:if test="${!empty totalCnt}">
 			<nav aria-label="Page navigation example">
@@ -153,6 +155,7 @@
 						<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<totalCnt)?(pageData.pis):(((totalCnt+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
 							<li class="page-item">
 								<c:if test="${pageData.p==page}"><b></c:if>
+<<<<<<< HEAD
 								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${page}</a>
 								<c:if test="${pageData.p==page}"></b></c:if>
 							</li>
@@ -172,30 +175,28 @@
 								</li>
 							</c:if>							
 								<li class="page-item"><a class="page-link" href="myProduct?sN=${section}&pN=${page}">${(section-1)*10+page}</a></li> <!-- 번호를 눌렀을때 해당 섹션과 해당 페이지 번호를 서버에 전달 -->																	
+=======
+								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${((pageData.s-1)*pageData.pis)+page}</a>
+								<c:if test="${pageData.p==page}"></b></c:if>
+							</li>
+>>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
 						</c:forEach>
+						<c:if test="${(pageData.s*(pageData.pis*pageData.oip)) < totalCnt}">
+							<li class="page-item">
+								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s+1}&p=1">>></a>
+							</li>
+						</c:if>
 					</c:if>
-				</c:when>
-				<c:when test="${totalCnt == 100}">		<!-- 전체 갯수가 100개가 딱 맞는가 -->
-					<c:forEach var="page" begin="1" end="10" step="1">
-						<li class="page-item"><a class="page-link" href="myProduct?sN=${section}&pN=${page}">${(section-1)*10+page}</a></li>
-							<!-- 번호를 눌렀을때 해당 섹션과 해당 페이지 번호를 서버에 전달 -->				
-					</c:forEach>
-				</c:when>
-				<c:when test="${totalCnt < 100}">		<!-- 전체 갯수가 100개보다 적은가 -->
-					<c:forEach var="page" begin="1" end="${(totalCnt+9)/10}" step="1">
-						<li class="page-item"><a class="page-link" href="myProduct?sN=${section}&pN=${page}">${(section-1)*10+page}</a></li>
-							<!-- 번호를 눌렀을때 해당 섹션과 해당 페이지 번호를 서버에 전달 -->				
-					</c:forEach>
-				</c:when>
-			</c:choose>
+				</ul>
+			</nav>
 		</c:if>
 	</div>
- </div>  
+</div>  
   <%@ include file="../include/footer.jsp" %>
   <script type="text/javascript">
   	window.onload = function(){
   		let moveToDetail = document.getElementsByName('moveToDetail');
-  		for(let i=0; i<moveToDetail.length; i++){console.log(moveToDetail[i])
+  		for(let i=0; i<moveToDetail.length; i++){
   			moveToDetail[i].addEventListener('click', function(){
   	  			let href = moveToDetail[i].getAttribute('href');
   	  			location.href = href;

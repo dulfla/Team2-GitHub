@@ -194,5 +194,23 @@ public class ChatService {
 	public String getNickName(String email) {
 		return cdao.selectNickNameByEmail(email);
 	}
+
+	public void readMessage(ChatClient client, Map<String, String> map) throws IOException {
+		json = new JSONObject();
+		json.put("command", "read");
+		json.put("msgIdx", map.get("msgIdx"));
+		json.put("room", map.get("c_id"));
+		json.put("who", map.get("email"));
+		String jsonStr = json.toString();
+		client.send(jsonStr);
+	}
+
+	public void readMsg(ChatMessageVo message) {
+		if(message.getIdx()==0) {
+			cdao.readAllMessage(message);
+		}else {
+			cdao.readThisMessage(message);
+		}
+	}
 	
 }
