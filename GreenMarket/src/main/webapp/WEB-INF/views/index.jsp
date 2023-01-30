@@ -48,20 +48,23 @@
 		width:80%;
 		margin:50px auto;
 	}
-/* 광고 배너*/
-.advertising  .badges2 {
-	position: absolute;
-	top: 132px;
-	right:40px;
-}
+	
+	
+	/* 광고 배너*/
+	.advertising  .badges2 {
+		position: absolute;
+		top: 132px;
+		right:40px;
+	}
+	
+	.advertising  .badges2 .badge2 {
+		border-radius: 5px;
+		overflow: hidden;
+		margin-bottom: 12px;
+		box-shadow: 4px 4px 10px rgba(0, 0, 0, .15);
+		cursor: pointer;
+	}
 
-.advertising  .badges2 .badge2 {
-	border-radius: 5px;
-	overflow: hidden;
-	margin-bottom: 12px;
-	box-shadow: 4px 4px 10px rgba(0, 0, 0, .15);
-	cursor: pointer;
-}
 </style>
 </head>
 <body>
@@ -132,6 +135,147 @@
 		    </div>
 		</div>
 	</div>
+	<!-- navigation -->
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="">
+                        <img alt="" src="">
+                    </a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a class="" href="">
+                                <i class="fa fa-home" aria-hidden="true"></i>
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" href="">
+                                <i class="fa fa-certificate"></i>
+                                Courses
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" href="">
+                                <i class="fa fa-lightbulb-o"></i>
+                                Our Method
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="sign-in" href="">
+                                Dashboard
+                                <i class="fa fa-tachometer"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- end navigation -->
+
+        <!-- main content -->
+        <main>
+
+        </main>
+        <!-- end main content -->
+
+        <!-- footer -->
+        <footer class="footer">
+            <div class="container-fluid bg-footer">
+                <div class="container">
+
+                    <!-- footer menus -->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h3>About</h3>
+
+                        </div>
+                        <div class="col-md-3">
+                            <h3>Help</h3>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="">
+                                        Go to a class
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        Find an order
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        Courses
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        Jobs
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        Contact us
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="">
+                                        About us
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h3>Social</h3>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <h3>
+                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                                    </h3>
+                                </li>
+                                <li>
+                                    <h3>
+                                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                                    </h3>
+                                </li>
+                                <li>
+                                    <h3>
+                                        <i class="fa fa-vk" aria-hidden="true"></i>
+                                    </h3>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <a class="btn btn-alt btn-block" href="">
+                                    Student Login
+                                </a>
+                            </div>
+                            <div class="form-group">
+                                <a class="btn btn-alt btn-block" href="">
+                                    Teacher Login
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end footer menus -->
+
+
+                    <!-- footer subtext -->
+                    <!-- end footer subtext -->
+
+                </div>
+            </div>
+
+            <!-- end sub footer -->
+
+        </footer>
+        <!-- end footer -->
+	
 	<%@ include file="include/footer.jsp" %>
 </body>
 </html>
