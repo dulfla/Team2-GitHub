@@ -50,7 +50,9 @@
 		SELECT prod.*, f.fileName, f.uploadPath, f.uuid
 		FROM
 		    (SELECT * FROM productPic
-		    WHERE ROWNUM=1) f
+		    	WHERE uuid IN (SELECT min(uuid)
+		    					FROM productPic
+		    					GROUP BY p_id)) f
 		RIGHT OUTER JOIN
 		    (SELECT pd.*, p.email
 		    FROM productDetail pd,
@@ -63,7 +65,9 @@
 		SELECT prod.*, f.fileName, f.uploadPath, f.uuid
 		FROM
 		    (SELECT * FROM productPic
-		    WHERE ROWNUM=1) f
+		    	WHERE uuid IN (SELECT min(uuid)
+		    					FROM productPic
+		    					GROUP BY p_id)) f
 		RIGHT OUTER JOIN
 		    (SELECT pd.*, p.email
 		    FROM productDetail pd,

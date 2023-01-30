@@ -32,13 +32,13 @@
 	</select>
 	
 	<insert id="insertMember" parameterType="member">
-		INSERT INTO member (email, password,birth, address, phone,name,nickname)
+		INSERT INTO member (email, password, birth, address, phone, name, nickname)
 		VALUES(#{email},#{password},#{birth},
 			   #{address},#{phone},#{name},#{nickname})
 	</insert>
 	
 	<insert id="naverInsertMember" parameterType="member">
-	 	INSERT INTO member (email,name,nickname)
+	 	INSERT INTO member (email, name, nickname)
 		VALUES(#{email},#{name},#{nickname})
 	</insert>
 	

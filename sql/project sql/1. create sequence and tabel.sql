@@ -43,12 +43,12 @@ CREATE SEQUENCE chatMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(idx
 -- 회원 관련 테이블 ------------------------------------------------------------------------------------------------------
 CREATE TABLE member(
     email VARCHAR2(50),
-    password VARCHAR2(50) NOT NULL,
-    birth NUMBER NOT NULL,
-    address VARCHAR2(200) NOT NULL,
-    phone CHAR(13) NOT NULL,
-    name NVARCHAR2(20) not null,
-    nickname NVARCHAR2(20) UNIQUE not null,
+    password VARCHAR2(50), --  NOT NULL
+    birth NUMBER, --  NOT NULL
+    address VARCHAR2(200), --  NOT NULL
+    phone CHAR(13), --  NOT NULL
+    name NVARCHAR2(20) NOT NULL,
+    nickname NVARCHAR2(20) UNIQUE NOT NULL,
     type CHAR(1) DEFAULT 'U' NOT NULL, -- 회원 : U, 관리자 : M
     regdate date DEFAULT sysdate NOT NULL,
     
