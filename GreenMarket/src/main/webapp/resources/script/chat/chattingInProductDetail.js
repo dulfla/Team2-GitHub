@@ -610,8 +610,8 @@ function onMessage(msg) {
 	let result = approximateCheck(nowPosition);
 		
 	if(msgInfo[3][1]=='READ'){
-		if(msgInfo[0][1]!=personId){
-			console.log('상대방이 내 채팅을 읽었습니다.');
+		if(msgInfo[0][1]!=personalId){
+			// console.log(msgInfo[0][1]+'님이 내 채팅을 읽었습니다.');
 		 	let readM = document.getElementsByClassName('readMarks');
 		 	for(let i=readM.length-1; i>=0; i--){
 		 	 	readM[i].parentNode.removeChild(readM[i]);
@@ -671,6 +671,21 @@ function insertMessage(sender, nick, msg, msgType, read){
 			myMessage = document.createElement('p');
 			myMessage.classList.add('message', 'send');
 			myMessage.innerHTML = msg;
+			
+			myText.appendChild(myMessage);
+			messageBox.appendChild(myText);
+	
+			if(read==1){
+				let readMark = document.createElement('p');
+				readMark.classList.add('readMark');
+				readMark.innerHTML = "1";
+				
+				let ph = myMessage.clientHeight;
+				readMark.setAttribute('style', "margin-top:"+(ph-15)+"px;");
+				myText.appendChild(readMark);
+			}
+			
+			return myMessage;
 		}else if(msgType=='IMG'){
 			myMessage = document.createElement('img');
 			myMessage.classList.add('chattingImage');
@@ -678,19 +693,23 @@ function insertMessage(sender, nick, msg, msgType, read){
 			myMessage.setAttribute('src', "ChattingImage?c_id="+chatRoomId+"&fileName="+msg);
 			myMessage.addEventListener('load', function(){
 				scrollCheck(true);
+			
+				if(read==1){
+					let readMark = document.createElement('p');
+					readMark.classList.add('readMark');
+					readMark.innerHTML = "1";
+					
+					let ph = myMessage.clientHeight;
+					readMark.setAttribute('style', "margin-top:"+(ph-15)+"px;");
+					myText.appendChild(readMark);
+				}
 			}, false);
+			
+			myText.appendChild(myMessage);
+			messageBox.appendChild(myText);
+			
+			return myMessage;
 		}
-		myText.appendChild(myMessage);
-		
-		if(read==1){
-			let readMarks = document.createElement('p');
-			readMarks.classList.add('readMarks');
-			readMarks.innerHTML = "1";
-			myText.appendChild(readMarks);
-		}
-		messageBox.appendChild(myText);
-		
-		return myMessage;
 	}else{
 		let reciveText = document.createElement('div');
 		reciveText.classList.add('messageBox', 'reciveMessageBox');

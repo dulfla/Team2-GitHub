@@ -20,16 +20,14 @@
 <body>
 	<%@ include file="../include/header.jsp" %>
 	<div id="main">
-		<div id="container">
-			<c:choose>
-				<c:when test="${empty serverOption or serverOption eq 'Off'}">
-					<button type="button" name="controllServer" class="btn btn-outline-warning" id="serverSetOn">서버 켜기</button>
-				</c:when>
-				<c:when test="${serverOption eq 'On'}">
-					<button type="button" name="controllServer" class="btn btn-outline-danger" id="serverSetOff">서버 끄기</button>
-				</c:when>
-			</c:choose>
-		</div>
+		<c:choose>
+			<c:when test="${empty serverOption or serverOption eq 'Off'}">
+				<button type="button" name="controllServer" class="btn btn-outline-warning position-absolute top-50 start-50 translate-middle" id="serverSetOn">서버 켜기</button>
+			</c:when>
+			<c:when test="${serverOption eq 'On'}">
+				<button type="button" name="controllServer" class="btn btn-outline-danger position-absolute top-50 start-50 translate-middle" id="serverSetOff">서버 끄기</button>
+			</c:when>
+		</c:choose>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 </body>

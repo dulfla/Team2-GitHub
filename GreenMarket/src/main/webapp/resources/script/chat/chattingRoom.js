@@ -550,6 +550,7 @@ function onMsge(msg) {
 		
 	if(msgInfo[3][1]=='READ'){
 		if(msgInfo[0][1]!=personId){
+			// console.log(msgInfo[0][1]+'님이 내 채팅을 읽었습니다.');
 		 	let readM = document.getElementsByClassName('readMark');
 		 	for(let i=readM.length-1; i>=0; i--){
 		 	 	readM[i].parentNode.removeChild(readM[i]);
@@ -608,6 +609,21 @@ function insertMessages(sender, nick, msg, msgType, read){
 			myMessage = document.createElement('p');
 			myMessage.classList.add('message', 'send');
 			myMessage.innerHTML = msg;
+			
+			myText.appendChild(myMessage);
+			messagesBox.appendChild(myText);
+	
+			if(read==1){
+				let readMark = document.createElement('p');
+				readMark.classList.add('readMark');
+				readMark.innerHTML = "1";
+				
+				let ph = myMessage.clientHeight;
+				readMark.setAttribute('style', "margin-top:"+(ph-15)+"px;");
+				myText.appendChild(readMark);
+			}
+			
+			return myMessage;
 		}else if(msgType=='IMG'){
 			myMessage = document.createElement('img');
 			myMessage.classList.add('chattingImage');
@@ -615,20 +631,23 @@ function insertMessages(sender, nick, msg, msgType, read){
 			myMessage.setAttribute('src', "ChattingImage?c_id="+chatRId+"&fileName="+msg);
 			myMessage.addEventListener('load', function(){
 				scrollChecking(true);
+				
+				if(read==1){
+					let readMark = document.createElement('p');
+					readMark.classList.add('readMark');
+					readMark.innerHTML = "1";
+					
+					let ph = myMessage.clientHeight;
+					readMark.setAttribute('style', "margin-top:"+(ph-15)+"px;");
+					myText.appendChild(readMark);
+				}
 			}, false);
+			
+			myText.appendChild(myMessage);
+			messagesBox.appendChild(myText);
+			
+			return myMessage;
 		}
-		myText.appendChild(myMessage);
-
-		if(read==1){
-			let readMark = document.createElement('p');
-			readMark.classList.add('readMark');
-			readMark.innerHTML = "1";
-			myText.appendChild(readMark);
-		}
-	
-		messagesBox.appendChild(myText);
-		
-		return myMessage;
 	}else{
 		let reciveText = document.createElement('div');
 		reciveText.classList.add('messageBox', 'reciveMessageBox');
