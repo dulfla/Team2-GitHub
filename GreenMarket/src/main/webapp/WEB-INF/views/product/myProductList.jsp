@@ -31,7 +31,7 @@
    		background-color : #fff;
    		/* #A2F36A; */
    	}
-   	.btn-group1{   
+   	.linewarp{   
    		position:fixed;
    		top:300px;
    		left:150px;
@@ -55,7 +55,7 @@
   		<a href="selled" class="list-group-item list-group-item-action">판매완료된 상품</a>
   		<a href="unSelled" class="list-group-item list-group-item-action">판매중인 상품</a> 
 	</div>
-	<div class="btn-group1">
+	<div class="btn-group linewarp">
 		  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 			  	${pageData.oip} 개
 		  	</button>

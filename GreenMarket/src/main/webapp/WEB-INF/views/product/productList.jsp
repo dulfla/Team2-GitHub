@@ -114,8 +114,8 @@
 			            			</div>
 			            			<div class="col">
 			            				<c:choose>
-						               		<c:when test="${p.trade eq'trade' or p.trade eq 'TRADE'}"><p  class="position-relative text-end" style="color : #11B339">거래중</p></c:when>
-						               		<c:when test="${p.trade eq'clear' or p.trade eq 'CLEAR'}"><p class="position-relative text-end" style="color : #04622">거래완료</p></c:when>
+						               		<c:when test="${p.trade eq'trade' or p.trade eq 'TRADE'}"><p  class="position-relative text-end" style="color : #11B339">거래중❗</p></c:when>
+						               		<c:when test="${p.trade eq'clear' or p.trade eq 'CLEAR'}"><p class="position-relative text-end" style="color : #04622">거래완료🚫</p></c:when>
 						               	</c:choose>
 			            			</div>
 		            			</div>
