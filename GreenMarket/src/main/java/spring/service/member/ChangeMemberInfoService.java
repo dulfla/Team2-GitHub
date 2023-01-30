@@ -92,9 +92,6 @@ public class ChangeMemberInfoService {
 		update(changeCommand,email);
 	}
 	
-	public int getEmailMember(String email) {
-		return dao.getEmail(email);
-	}
 
 	public int getNicknameMember(String nickname) {
 		return dao.getNickName(nickname);

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import spring.dao.product.ProductDaoImp;
 import spring.dao.search.SearchDao;
 import spring.vo.product.CategoryVO;
+import spring.vo.product.PagingInfoVO;
 import spring.vo.product.ProductListVO;
 import spring.vo.search.Search;
 
@@ -24,14 +25,17 @@ public class SearchController {
 	private SearchDao searchDao;
 	
 	@GetMapping("search")
-	public String search(Search searches, String c, String v, Model model) {
-		
+	public String search(Search searches, PagingInfoVO p, Model model) {
+		System.out.println(p.getKeyword());
+		System.out.println(p.getOip());
 		// 검색어 빈칸으로 입력했을때
 		if(searches.getKeyword() == null ||
 			searches.getKeyword().equals("")) {
 			
 			return "redirect:/index";
 		}
+		
+		System.out.println("테스트 : "+p.getC());
 		
 		List<CategoryVO> categoryList = daoip.category();
 		//검색어 저장
@@ -41,42 +45,42 @@ public class SearchController {
 		
 		List<ProductListVO> list = null;
 		
-		if(!c.equals("all")) { // 특정 카테고리를 지정했을 때
-			int count = searchDao. cateNumberOfSearches(c,searches.getKeyword());
-			
-			if(v.equals("product")) {
-				list = searchDao.selectByCategorySearch(c,searches.getKeyword()); // 전체상품 조회  // DAO에서 return한 데이터 (productList에 담김)
-			}else if(v.equals("brandNew")){
-				list = searchDao.selectByCategoryBrandNew(c,searches.getKeyword());
-			}else if(v.equals("priceHigh")) {
-				list = searchDao.selectByCategoryPriceHigh(c,searches.getKeyword());
-			}else if(v.equals("priceLow")) {
-				list = searchDao.selectByCategoryPriceLow(c,searches.getKeyword());
-			}else if(v.equals("viewsLevel")) {
-				list = searchDao.selectByCategoryViewsLevel(c,searches.getKeyword());
+		if(!p.getC().equals("all")) { // 특정 카테고리를 지정했을 때
+			int count = searchDao. cateNumberOfSearches(p.getC(), searches.getKeyword());
+			System.out.println("count : "+count);
+			if(p.getV().equals("product")) {
+				list = searchDao.selectByCategorySearch(p); // 전체상품 조회  // DAO에서 return한 데이터 (productList에 담김)
+			}else if(p.getV().equals("brandNew")){
+				list = searchDao.selectByCategoryBrandNew(p);
+			}else if(p.getV().equals("priceHigh")) {
+				list = searchDao.selectByCategoryPriceHigh(p);
+			}else if(p.getV().equals("priceLow")) {
+				list = searchDao.selectByCategoryPriceLow(p);
+			}else if(p.getV().equals("viewsLevel")) {
+				list = searchDao.selectByCategoryViewsLevel(p);
 			}
 			model.addAttribute("count",count);
 			
 		}else { // 특정 카테고리 지정 없이 전체 상품을 불러 올 때
 			int count = searchDao.numberOfSearches(searches.getKeyword());
-			if(v.equals("product")) {
-				list = searchDao.searchAll(searches.getKeyword()); // 전체상품 조회  // DAO에서 return한 데이터 (productList에 담김)
-			}else if(v.equals("brandNew")){
-				list = searchDao.searchAllBrandNew(searches.getKeyword());
-			}else if(v.equals("priceHigh")) {
-				list = searchDao.searchAllPriceHigh(searches.getKeyword());
-			}else if(v.equals("priceLow")) {
-				list = searchDao.searchAllPriceLow(searches.getKeyword());
-			}else if(v.equals("viewsLevel")) {
-				list = searchDao.searchAllViewsLevel(searches.getKeyword());
+			if(p.getV().equals("product")) {
+				list = searchDao.searchAll(p); // 전체상품 조회  // DAO에서 return한 데이터 (productList에 담김)
+			}else if(p.getV().equals("brandNew")){
+				list = searchDao.searchAllBrandNew(p);
+			}else if(p.getV().equals("priceHigh")) {
+				list = searchDao.searchAllPriceHigh(p);
+			}else if(p.getV().equals("priceLow")) {
+				list = searchDao.searchAllPriceLow(p);
+			}else if(p.getV().equals("viewsLevel")) {
+				list = searchDao.searchAllViewsLevel(p);
 			}
 			model.addAttribute("count",count);
 		}
 		
+		
 		model.addAttribute("productModel", list);
 		model.addAttribute("categoryList", categoryList);
-		model.addAttribute("c", c);
-		model.addAttribute("v", v);
+		model.addAttribute("pageData", p);
 		model.addAttribute("search",searches.getKeyword());
 		return "search/products";
 	}

@@ -1,5 +1,6 @@
 package spring.controller.main;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,8 @@ public class MainController {
 	@RequestMapping({"/", "/index", "/main", "/Index", "Main"})
 	public String moveToMain(Model model) {
 		model.addAttribute("categoryList", adao.getAllCategory());
+		
+		
 		return "index";
 	}	
 }

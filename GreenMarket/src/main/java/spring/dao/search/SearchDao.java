@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import spring.vo.product.CategoryVO;
+import spring.vo.product.PagingInfoVO;
 import spring.vo.product.ProductListVO;
 import spring.vo.search.Search;
 
@@ -22,8 +23,8 @@ public class SearchDao {
 	}
 
 
-	public List<ProductListVO> searchAll(String search) {
-		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.searchAll", search);
+	public List<ProductListVO> searchAll(PagingInfoVO data) {
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.searchAll", data);
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i).getFileName() == null);
 			if (list.get(i).getFileName() == null) {
@@ -40,27 +41,8 @@ public class SearchDao {
 	}
 
 
-	public List<ProductListVO> searchAllBrandNew(String search) {
-		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.brandNew", search);
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i).getFileName() == null);
-			if (list.get(i).getFileName() == null) {
-				list.get(i).setImgurl(null);
-			} else {
-				String url = "";
-				url += list.get(i).getUploadPath().substring(0, 4) + "%5C" + list.get(i).getUploadPath().substring(5, 7)
-						+ "%5C" + list.get(i).getUploadPath().substring(8);
-				url += "%2Fs_" + list.get(i).getUuid() + "_" + list.get(i).getFileName();
-				list.get(i).setImgurl(url);
-			}
-		}
-		return list;
-	}
-
-
-
-	public List<ProductListVO> searchAllPriceHigh(String search) {
-		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.priceHigh", search);
+	public List<ProductListVO> searchAllBrandNew(PagingInfoVO data) {
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.brandNew", data);
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i).getFileName() == null);
 			if (list.get(i).getFileName() == null) {
@@ -78,8 +60,8 @@ public class SearchDao {
 
 
 
-	public List<ProductListVO> searchAllPriceLow(String search) {
-		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.priceLow", search);
+	public List<ProductListVO> searchAllPriceHigh(PagingInfoVO data) {
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.priceHigh", data);
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i).getFileName() == null);
 			if (list.get(i).getFileName() == null) {
@@ -97,8 +79,27 @@ public class SearchDao {
 
 
 
-	public List<ProductListVO> searchAllViewsLevel(String search) {
-		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.viewsLevel", search);
+	public List<ProductListVO> searchAllPriceLow(PagingInfoVO data) {
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.priceLow", data);
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getFileName() == null);
+			if (list.get(i).getFileName() == null) {
+				list.get(i).setImgurl(null);
+			} else {
+				String url = "";
+				url += list.get(i).getUploadPath().substring(0, 4) + "%5C" + list.get(i).getUploadPath().substring(5, 7)
+						+ "%5C" + list.get(i).getUploadPath().substring(8);
+				url += "%2Fs_" + list.get(i).getUuid() + "_" + list.get(i).getFileName();
+				list.get(i).setImgurl(url);
+			}
+		}
+		return list;
+	}
+
+
+
+	public List<ProductListVO> searchAllViewsLevel(PagingInfoVO data) {
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.viewsLevel", data);
 		
 		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i).getFileName() == null);
@@ -118,12 +119,9 @@ public class SearchDao {
 
 	// 카테고리 검색
 	
-	public List<ProductListVO> selectByCategorySearch(String c, String search) {
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("search", search);
-		map.put("category", c);
+	public List<ProductListVO> selectByCategorySearch(PagingInfoVO data) {
 		
-		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.categorySearch",map);
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.categorySearch",data);
 		
 		for(int i=0;i<list.size();i++) {
 			if(list.get(i).getFileName()==null) {
@@ -139,12 +137,9 @@ public class SearchDao {
 	}
 	
 	
-	public List<ProductListVO> selectByCategoryBrandNew(String c, String search) {
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("search", search);
-		map.put("category", c);
+	public List<ProductListVO> selectByCategoryBrandNew(PagingInfoVO data) {
 		
-		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.cateBrandNew",map);
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.cateBrandNew",data);
 		
 		for(int i=0;i<list.size();i++) {
 			if(list.get(i).getFileName()==null) {
@@ -160,12 +155,9 @@ public class SearchDao {
 	}
 
 
-	public List<ProductListVO> selectByCategoryPriceHigh(String c, String search) {
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("search", search);
-		map.put("category", c);
+	public List<ProductListVO> selectByCategoryPriceHigh(PagingInfoVO data) {
 		
-		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.catePriceHigh",map);
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.catePriceHigh",data);
 		for(int i=0;i<list.size();i++) {
 			if(list.get(i).getFileName()==null) {
 				list.get(i).setImgurl(null);
@@ -180,12 +172,9 @@ public class SearchDao {
 	}
 
 
-	public List<ProductListVO> selectByCategoryPriceLow(String c, String search) {
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("search", search);
-		map.put("category", c);
+	public List<ProductListVO> selectByCategoryPriceLow(PagingInfoVO data) {
 		
-		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.catePriceLow",map);
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.catePriceLow",data);
 		
 		for(int i=0;i<list.size();i++) {
 			if(list.get(i).getFileName()==null) {
@@ -201,12 +190,9 @@ public class SearchDao {
 	}
 
 
-	public List<ProductListVO> selectByCategoryViewsLevel(String c, String search) {
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("search", search);
-		map.put("category", c);
+	public List<ProductListVO> selectByCategoryViewsLevel(PagingInfoVO data) {
 		
-		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.cateViewsLevel",map);
+		List<ProductListVO> list = sqlSession.selectList("mybatis.mapper.search.cateViewsLevel",data);
 		
 		for(int i=0;i<list.size();i++) {
 			if(list.get(i).getFileName()==null) {
