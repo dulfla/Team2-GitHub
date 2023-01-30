@@ -37,12 +37,6 @@ public class ChatServerController {
 		reda.addFlashAttribute("errMsg", errorMsg);
 		return "redirect:"+(referer!=null?referer:"index");
 	}
-/*	// 테스트용
-	@RequestMapping("Server")
-	public String server() {
-		return "chat/serverOnOff";
-	}
-*/
 	
 	@GetMapping(value = {"ServerOpen", "ServerClose"})
 	public String locationErr(HttpServletRequest request, RedirectAttributes reda) {

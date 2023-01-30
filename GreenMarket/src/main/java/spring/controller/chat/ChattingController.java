@@ -76,70 +76,70 @@ public class ChattingController {
 	
 	@ResponseBody
 	@PostMapping("SelectChatRooms{email}")
-	public Map<String, Object> bringingChatRoomByType(HttpSession session, String email) { // @RequestBody Map<String, String> map, 
+	public Map<String, Object> bringingChatRoomByType(String email) { // HttpSession session
 		Map<String, Object> data = new HashMap<>();
-		data.put("person", email);
-		data.put("data", chatService.selectChatRoomInfoByEmail(email)); // map.get("email")
+		data.put("person", email); // ((AuthInfo)session.getAttribute("authInfo")).getEmail()
+		data.put("data", chatService.selectChatRoomInfoByEmail(email)); // ((AuthInfo)session.getAttribute("authInfo")).getEmail()
 		return data;
 	}
 	
 	@ResponseBody
 	@PostMapping("ChatRoomCheck")
-	public String bringingChatRoomInfo(@RequestBody Map<String, String> map, HttpSession session) {
+	public String bringingChatRoomInfo(@RequestBody Map<String, String> map) { // , HttpSession session
 		ChattingRoomBringingCommand crbc = new ChattingRoomBringingCommand();
 		crbc.setP_id(map.get("p_id"));
-		crbc.setEmail(map.get("email")); // ((MemberVo)session.getAttribute("authInfo")).getEmail()
+		crbc.setEmail(map.get("email")); // ((AuthInfo)session.getAttribute("authInfo")).getEmail()
 		
 		return chatService.checkOutChattingRoom(crbc);
 	}
 	
 	@ResponseBody
 	@PostMapping("ConnecteWithClientServer")
-	public int openClientSoket(@RequestBody Map<String, String> map, HttpSession session) throws IOException {
-		ChatClient client = chatService.checkClient(map.get("c_id"), map.get("email"));
-		chatService.connection(client, map.get("c_id"), map.get("email"), chatService.getNickName(map.get("email"))); // ((AuthInfo)session.getAttribute("authInfo")).getNickname()
+	public int openClientSoket(@RequestBody Map<String, String> map) throws IOException { // , HttpSession session
+		ChatClient client = chatService.checkClient(map.get("c_id"), map.get("email")); //((AuthInfo)session.getAttribute("authInfo")).getEmail()
+		chatService.connection(client, map.get("c_id"), map.get("email"), chatService.getNickName(map.get("email"))); // ((AuthInfo)session.getAttribute("authInfo")).getEmail(), ((AuthInfo)session.getAttribute("authInfo")).getNickname()
 		return 1;
 	}
 	
 	@ResponseBody	
 	@PostMapping("Chat")
-	public Map<String, Object> chattings(@RequestBody Map<String, String> map) {
+	public Map<String, Object> chattings(@RequestBody Map<String, String> map) { // , HttpSession session
 		Map<String, Object> msgList = new HashMap<>();
-		msgList.put("productInfo", chatService.productInfo(map.get("c_id"))); // chatService.getProductInfo(map.get("c_id"))
+		msgList.put("productInfo", chatService.productInfo(map.get("c_id")));
 		msgList.put("messages", chatService.getPreviousMessages(map.get("c_id")));
-		msgList.put("me", map.get("email"));
+		msgList.put("me", map.get("email")); // ((AuthInfo)session.getAttribute("authInfo")).getEmail()
 		return msgList;
 	}
 	
 	@ResponseBody
 	@PostMapping("SendMessage")
-	public int sendMessage(@RequestBody Map<String, String> map) throws IOException {
-		ChatClient client = chatService.checkClient(map.get("c_id"), map.get("email"));
+	public int sendMessage(@RequestBody Map<String, String> map) throws IOException { // , HttpSession session
+		ChatClient client = chatService.checkClient(map.get("c_id"), map.get("email")); // ((AuthInfo)session.getAttribute("authInfo")).getEmail()
 		chatService.sendMessage(client, map);
 		return 1;
 	}
 	
 	@ResponseBody
 	@PostMapping("ReadMessage")
-	public int readMessage(@RequestBody Map<String, String> map) throws IOException {
-		ChatClient client = chatService.checkClient(map.get("c_id"), map.get("email"));
+	public int readMessage(@RequestBody Map<String, String> map) throws IOException { // , HttpSession session
+		ChatClient client = chatService.checkClient(map.get("c_id"), map.get("email")); // ((AuthInfo)session.getAttribute("authInfo")).getEmail()
 		chatService.readMessage(client, map);
 		return 1;
 	}
 	
 	@ResponseBody
 	@PostMapping("SendFile{c_id}{email}{name}")
-	public int sendFile(MultipartFile file, String c_id, String email, String name) throws IOException {
+	public int sendFile(MultipartFile file, String c_id, String email, String name) throws IOException { // , HttpSession session
 		boolean save = chatService.saveFile(file, c_id, name);
 		
 		if(save) {
 			Map<String, String> map = new HashMap<>();
 			map.put("c_id", c_id);
-			map.put("email", email);
+			map.put("email", email); // ((AuthInfo)session.getAttribute("authInfo")).getEmail()
 			map.put("message", name);
 			map.put("type", "IMG");
 			
-			ChatClient client = chatService.checkClient(c_id, email);
+			ChatClient client = chatService.checkClient(c_id, email); // ((AuthInfo)session.getAttribute("authInfo")).getEmail()
 			chatService.sendMessage(client, map);
 			
 			return 1;
@@ -150,10 +150,10 @@ public class ChattingController {
 
 	@ResponseBody
 	@PostMapping("BreakeOffClientServer")
-	public int closeClientSoket(@RequestBody Map<String, String> map) throws IOException {
-		ChatClient client = chatService.checkClient(map.get("c_id"), map.get("email"));
+	public int closeClientSoket(@RequestBody Map<String, String> map) throws IOException { // , HttpSession session
+		ChatClient client = chatService.checkClient(map.get("c_id"), map.get("email")); // ((AuthInfo)session.getAttribute("authInfo")).getEmail()
 		if(!client.getSocket().isClosed()) {
-			chatService.close(client, map.get("c_id"), map.get("email"));
+			chatService.close(client, map.get("c_id"), map.get("email")); // ((AuthInfo)session.getAttribute("authInfo")).getEmail()
 		}else {
 			return 2;
 		}

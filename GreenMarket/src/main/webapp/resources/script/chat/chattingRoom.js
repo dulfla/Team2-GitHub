@@ -92,10 +92,9 @@ function shotServer(){
 
 function chattingRooms(){
 	roomsBox.innerHTML = null;
-	personId = document.getElementById('authInfo_email').value;
 	
 	$.ajax({
-	    url: "SelectChatRooms?email="+personId,
+	    url: "SelectChatRooms?email="+personId, /* personId :: 임시 */
 	    type: "POST",
 	    dataType : 'json',
     	contentType : 'application/json; charset=UTF-8',
@@ -316,7 +315,7 @@ function connecteWithSocket(){ // 채팅 서버 연결
 	    	contentType : 'application/json; charset=UTF-8',
 			data : JSON.stringify({ 
 				c_id : chatRId, 
-				email : personId
+				email : personId /* personId :: 임시 */
 			}),
 			error:function(data){ 
 				console.log(JSON.stringify(data));
@@ -342,7 +341,7 @@ function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
 			c_id : chatRId, 
-			email : personId
+			email : personId /* personId :: 임시 */
 		}),
 		error:function(){
 			console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
@@ -357,7 +356,7 @@ function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들
 			let msgL = data.messages;
 			if(0<msgL.length){
 				msgL.forEach((m) => {
-					let newElem = insertMessages(m.sender, m.nickname, m.message, m.messType); // , m.read
+					let newElem = insertMessages(m.sender, m.nickname, m.message, m.messType, m.read);
 					if(m.messType=='IMG'){
 						newElem.addEventListener('load', function(){
 							scrollChecking(true);
@@ -385,7 +384,7 @@ function chatClose(){ // 서버 연결 끊고, messagesBox 비우기
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
 			c_id : chatRId, 
-			email : personId
+			email : personId /* personId :: 임시 */
 		}),
 		success:function(){   
 			console.log('서버와의 연결이 정상적으로 해제되었습니다.');
@@ -475,13 +474,13 @@ function fileSending(files){
 			let fileType = files[i].name.split(".");
 			fileType = fileType[fileType.length-1];
 			
-			const date = new Date(); /*lastModifiedDate => new Date() 로 변경*/
+			const date = new Date();
 			let day = ""+date.getFullYear()+((date.getMonth()+1)<=9?"0"+(date.getMonth()+1):(date.getMonth()+1))+(date.getDate()<=9?"0"+date.getDate():date.getDate());
 			let time = date.getTime();
 			let newFileName = day+"_"+time+"."+fileType;
 			
 			$.ajax({
-			 	url: 'SendFile?c_id='+chatRId+'&email='+personId+'&name='+newFileName,
+			 	url: 'SendFile?c_id='+chatRId+'&email='+personId+'&name='+newFileName, /* personId :: 임시 */
 			 	processData : false,
 			 	contentType : false,
 			 	data : formData,
@@ -524,8 +523,7 @@ function sendMsg(){ // 메세지 보내기
 		contentType:'application/json; charset=UTF-8',
 		data : JSON.stringify({
 			c_id : chatRId,
-    		p_id : null,
-    		email : personId,
+    		email : personId, /* personId :: 임시 */
     		message : msge.value,
     		type : "TEXT"
     	}),
@@ -552,11 +550,13 @@ function onMsge(msg) {
 		
 	if(msgInfo[3][1]=='READ'){
 		if(msgInfo[0][1]!=personId){
-			console.log('상대방이 내 채팅을 읽었습니다.');
-		 //	document.getElementsByClassName('readMark').remove();
+		 	let readM = document.getElementsByClassName('readMark');
+		 	for(let i=readM.length-1; i>=0; i--){
+		 	 	readM[i].parentNode.removeChild(readM[i]);
+		 	};
 		}
 	}else{
-		let check = insertMessages(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]); // , 1
+		let check = insertMessages(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1], 1);
 	
 		if(msgInfo[0][1]==personId){
 			scrollChecking(true);
@@ -584,8 +584,7 @@ function readMsg(msgIdx){
 		contentType:'application/json; charset=UTF-8',
 		data : JSON.stringify({
 			c_id : chatRId,
-    		p_id : null,
-    		email : personId,
+    		email : personId, /* personId :: 임시 */
     		msgIdx : msgIdx,
     		type : "READ"
     	}),
@@ -598,12 +597,12 @@ function readMsg(msgIdx){
 	});
 }
 
-function insertMessages(sender, nick, msg, msgType){ // , read
+function insertMessages(sender, nick, msg, msgType, read){
 	if(sender==personId){
 		let myText = document.createElement('div');
 		myText.classList.add('messageBox', 'myMessageBox');
 		myText.setAttribute('sender', sender);
-		
+
 		let myMessage;
 		if(msgType=='TEXT'){
 			myMessage = document.createElement('p');
@@ -612,20 +611,21 @@ function insertMessages(sender, nick, msg, msgType){ // , read
 		}else if(msgType=='IMG'){
 			myMessage = document.createElement('img');
 			myMessage.classList.add('chattingImage');
+			myMessage.classList.add('send');
 			myMessage.setAttribute('src', "ChattingImage?c_id="+chatRId+"&fileName="+msg);
 			myMessage.addEventListener('load', function(){
 				scrollChecking(true);
 			}, false);
 		}
-		/*
-			if(read==1){
-				let readMark = document.createElement('p');
-				readMark.classList.add('readMark');
-				readMark.innerHTML = "1";
-				myMessage.appendChild(readMark);
-			}
-		*/
 		myText.appendChild(myMessage);
+
+		if(read==1){
+			let readMark = document.createElement('p');
+			readMark.classList.add('readMark');
+			readMark.innerHTML = "1";
+			myText.appendChild(readMark);
+		}
+	
 		messagesBox.appendChild(myText);
 		
 		return myMessage;

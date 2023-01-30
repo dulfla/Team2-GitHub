@@ -92,7 +92,7 @@ function openOffCanvas(){
     	contentType : 'application/json; charset=UTF-8',
     	data : JSON.stringify({
     		p_id : productId,
-    		email : personalId
+    		email : personalId /* personalId :: 임시 */
     	}),
 	    error: function(){
 	    	console.log('통신실패!!');
@@ -132,15 +132,15 @@ function chattingRoom(){
 	    type: "POST",
 	    dataType : 'json',
     	contentType : 'application/json; charset=UTF-8',
-    	data : JSON.stringify({ // 해당되는 모든 채팅방을 가져올 구분자(상품 id)
+    	data : JSON.stringify({
     		p_id : productId,
-    		email : personalId
+    		email : personalId /* personalId :: 임시 */
     	}),
 	    error: function(data) {
 	    	console.log(JSON.stringify(data));
 	    	console.log('통신실패!!');
 	    },
-	    success: function(data) { // 채팅방 리스트 보여주기
+	    success: function(data) {
 	    	if(data!=null){
 				data.forEach((r) => {
 					let aT = document.createElement('a');
@@ -339,14 +339,14 @@ function chatting(){ // 채팅방 연결 - 채팅방이 있으면 해당 채팅�
 	    type: "POST",
 	    dataType : 'text',
     	contentType : 'application/json; charset=UTF-8',
-    	data : JSON.stringify({ // 연결할 채팅방 아이디 확인
+    	data : JSON.stringify({
     		p_id : productId,
-    		email : personalId
+    		email : personalId /* personalId :: 임시 */
     	}),
 	    error: function(){
 	    	console.log('통신실패!!');
 	    },
-	    success: function(data) { // 채팅방으로 연결
+	    success: function(data) {
 	    	if(data!=null){
 	    		chatRoomId = data;
 	    		console.log(chatRoomId); /*****/
@@ -368,7 +368,7 @@ function connecteToSocket(){ // 채팅 서버 연결
 	    	contentType : 'application/json; charset=UTF-8',
 			data : JSON.stringify({ 
 				c_id : chatRoomId, 
-				email : personalId
+				email : personalId /* personalId :: 임시 */
 			}),
 			error:function(){  
 				console.log('서버와의 연결이 이어지지 않았습니다.'); 
@@ -407,7 +407,7 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
 			c_id : chatRoomId, 
-			email : personalId
+			email : personalId /* personalId :: 임시 */
 		}),
 		error:function(){
 			console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
@@ -416,7 +416,7 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 			let msgL = data.messages;
 			if(0<msgL.length){
 				msgL.forEach((m) => {
-					let newElem = insertMessage(m.sender, m.nickname, m.message, m.messType); // , m.read
+					let newElem = insertMessage(m.sender, m.nickname, m.message, m.messType, m.read);
 					if(m.messType=='IMG'){
 						newElem.addEventListener('load', function(){
 							scrollCheck(true);
@@ -444,7 +444,7 @@ function chattingClose(){ // 서버 연결 끊고, messageBox 비우기
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
 			c_id : chatRoomId, 
-			email : personalId
+			email : personalId /* personalId :: 임시 */
 		}),
 		success:function(){   
 			console.log('서버와의 연결이 정상적으로 해제되었습니다.');
@@ -540,7 +540,7 @@ function fileSend(files){
 			let newFileName = day+"_"+time+"."+fileType;
 			
 			$.ajax({
-			 	url: 'SendFile?c_id='+chatRoomId+'&email='+personalId+'&name='+newFileName,
+			 	url: 'SendFile?c_id='+chatRoomId+'&email='+personalId+'&name='+newFileName, /* personalId :: 임시 */
 			 	processData : false,
 			 	contentType : false,
 			 	data : formData,
@@ -584,7 +584,7 @@ function sendMessage(){ // 메세지 보내기
 		data : JSON.stringify({
 			c_id : chatRoomId,
     		p_id : productId,
-    		email : personalId,
+    		email : personalId, /* personalId :: 임시 */
     		message : msg.value,
     		type : "TEXT"
     	}),
@@ -612,10 +612,13 @@ function onMessage(msg) {
 	if(msgInfo[3][1]=='READ'){
 		if(msgInfo[0][1]!=personId){
 			console.log('상대방이 내 채팅을 읽었습니다.');
-		 //	document.getElementsByClassName('readMarks').remove();
+		 	let readM = document.getElementsByClassName('readMarks');
+		 	for(let i=readM.length-1; i>=0; i--){
+		 	 	readM[i].parentNode.removeChild(readM[i]);
+		 	};
 		}	 
 	}else{
-		let check = insertMessage(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1]); // , 1
+		let check = insertMessage(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1], 1);
 		
 		if(msgInfo[0][1]==personalId){
 			scrollCheck(true);
@@ -644,7 +647,7 @@ function readMsge(msgIdx){
 		data : JSON.stringify({
 			c_id : chatRoomId,
     		p_id : null,
-    		email : personalId,
+    		email : personalId, /* personalId :: 임시 */
     		msgIdx : msgIdx,
     		type : "READ"
     	}),
@@ -657,7 +660,7 @@ function readMsge(msgIdx){
 	});
 }
 
-function insertMessage(sender, nick, msg, msgType){ // , read
+function insertMessage(sender, nick, msg, msgType, read){
 	if(sender==personalId){
 		let myText = document.createElement('div');
 		myText.classList.add('messageBox', 'myMessageBox');
@@ -671,20 +674,20 @@ function insertMessage(sender, nick, msg, msgType){ // , read
 		}else if(msgType=='IMG'){
 			myMessage = document.createElement('img');
 			myMessage.classList.add('chattingImage');
+			myMessage.classList.add('send');
 			myMessage.setAttribute('src', "ChattingImage?c_id="+chatRoomId+"&fileName="+msg);
 			myMessage.addEventListener('load', function(){
 				scrollCheck(true);
 			}, false);
 		}
-		/*
-			if(read==1){
-				let readMarks = document.createElement('p');
-				readMarks.classList.add('readMarks');
-				readMarks.innerHTML = "1";
-				myMessage.appendChild(readMarks);
-			}
-		*/
 		myText.appendChild(myMessage);
+		
+		if(read==1){
+			let readMarks = document.createElement('p');
+			readMarks.classList.add('readMarks');
+			readMarks.innerHTML = "1";
+			myText.appendChild(readMarks);
+		}
 		messageBox.appendChild(myText);
 		
 		return myMessage;

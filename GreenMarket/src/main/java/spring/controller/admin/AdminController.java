@@ -94,31 +94,6 @@ public class AdminController {
 		reda.addFlashAttribute("errMsg", errorMsg);
 		return "redirect:"+(referer!=null?referer:"index");
 	}
-/*	// 테스트용
-	@RequestMapping("/MemberStatus")
-	public String memberAdmin(Model model) throws ParseException {
-		JSONObject json = adminJsonParsing.memverAdmin();
-		model.addAttribute("memberAdmin", json);
-		
-		return "admin/memberStatus";
-	}
-	
-	@RequestMapping("/ProductStatus")
-	public String productAdmin(Model model) throws ParseException {
-		JSONObject json = adminJsonParsing.productAdmin();
-		model.addAttribute("productAdmin", json);
-		
-		return "admin/productStatus";
-	}
-	
-	@RequestMapping("/CategoryAdmin")
-	public String categoryAdmin(Model model) {
-		List<CategoryAdminVo> categorys= dao.getAllCategory();
-		model.addAttribute("categorys", categorys);
-		
-		return "admin/category";
-	}
-*/
 	
 	@ResponseBody
 	@RequestMapping("CategoryImage{fileName}")

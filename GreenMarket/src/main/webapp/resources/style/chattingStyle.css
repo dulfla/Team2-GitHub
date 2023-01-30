@@ -21,6 +21,7 @@
 	padding-top:10px;
 }
 .myMessageBox{ /* 보낸 메세지 text가 담길 div 공간  */
+	width:calc(60% + 12px);
 	float:right;
 }
 .reciveMessageBox{ /* 받은 메세지 text가 담길 div 공간  */
@@ -33,12 +34,22 @@
 	border-radius:15px;
 }
 .send{ /* 보낸 메세지 text  */
+	max-width:calc(100% - 12px);
 	float:right;
+}
+p.send{
 	background-color:rgb(232, 255, 198);
+}
+img.send{
+	background-color:none;
 }
 .recive{ /* 받은 메세지 text  */
 	float:left;
 	background-color:rgb(232, 255, 198);
+}
+.reciveMsgSender{ /* 상대방 닉네임 관련 */
+	margin-bottom:0px;
+	margin-left:5px;
 }
 a{
 	text-decoration:none;
@@ -75,6 +86,10 @@ a{
 	height:40px;
 }
 .readMarks{
+	float:right;
+	display:inline-block;
+	width:12px;
+	margin-bottom:0px;
 	font-size:10px;
 }
 
@@ -100,5 +115,9 @@ a{
 	width:100%;
 }
 .readMark{
+	float:right;
+	display:inline-block;
+	width:12px;
+	margin-bottom:0px;
 	font-size:10px;
 }
