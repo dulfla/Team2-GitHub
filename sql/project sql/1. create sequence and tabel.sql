@@ -40,7 +40,7 @@ CREATE SEQUENCE sampleMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(m
 CREATE SEQUENCE chatMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(idx)
 
 
--- íšŒì› ê´€ë ¨ í…Œì´ë¸” ------------------------------------------------------------------------------------------------------
+-- È¸¿ø °ü·Ã Å×ÀÌºí ------------------------------------------------------------------------------------------------------
 CREATE TABLE member(
     email VARCHAR2(50),
     password VARCHAR2(50), --  NOT NULL
@@ -49,7 +49,7 @@ CREATE TABLE member(
     phone CHAR(13), --  NOT NULL
     name NVARCHAR2(20) NOT NULL,
     nickname NVARCHAR2(20) UNIQUE NOT NULL,
-    type CHAR(1) DEFAULT 'U' NOT NULL, -- íšŒì› : U, ê´€ë¦¬ì : M
+    type CHAR(1) DEFAULT 'U' NOT NULL, -- È¸¿ø : U, °ü¸®ÀÚ : M
     regdate date DEFAULT sysdate NOT NULL,
     
     CONSTRAINT PK_member_email PRIMARY KEY(email)
@@ -63,18 +63,18 @@ CREATE TABLE memberHistory(
 );
 
 
--- ê²€ìƒ‰ì–´ í…Œì´ë¸” --------------------------------------------------------------------------------------------------------
+-- °Ë»ö¾î Å×ÀÌºí --------------------------------------------------------------------------------------------------------
 CREATE TABLE search(
     idx number,
     keyword NVARCHAR2(20) NOT NULL,
-    email VARCHAR2(50), -- íšŒì›ì´ ì•„ë‹Œ ì‚¬ëŒë„ ê²€ìƒ‰ ê°€ëŠ¥
+    email VARCHAR2(50), -- È¸¿øÀÌ ¾Æ´Ñ »ç¶÷µµ °Ë»ö °¡´É
     regdate date DEFAULT sysdate NOT NULL,
     
     CONSTRAINT PK_search_idx PRIMARY KEY(idx)
 );
 
 
--- ìƒí’ˆ ê´€ë ¨ í…Œì´ë¸” -----------------------------------------------------------------------------------------------------
+-- »óÇ° °ü·Ã Å×ÀÌºí -----------------------------------------------------------------------------------------------------
 CREATE TABLE product(
     idx number,
     email varchar2(50) NOT NULL,
@@ -90,9 +90,9 @@ CREATE TABLE productDetail(
     regdate date NOT NULL,
     views number DEFAULT 0 NOT NULL,
     price number NOT NULL,
-    trade varchar2(5) DEFAULT 'TRADE' NOT NULL, -- ê±°ë˜ ì¤‘ : TRADE, ê±°ë˜ ì™„ë£Œ : CLEAR
-    lat varchar2(100),  --ìœ„ë„
-    lng varchar2(100),  --ê²½ë„
+    trade varchar2(5) DEFAULT 'TRADE' NOT NULL, -- °Å·¡ Áß : TRADE, °Å·¡ ¿Ï·á : CLEAR
+    lat varchar2(100),  --À§µµ
+    lng varchar2(100),  --°æµµ
     CONSTRAINT  productDetail_pk_p_id PRIMARY KEY(p_id)
 );
 
@@ -118,7 +118,7 @@ CREATE TABLE productHistory(
 );
 
 
--- ì±„íŒ… ê´€ë ¨ í…Œì´ë¸” ------------------------------------------------------------------------------------------------------
+-- Ã¤ÆÃ °ü·Ã Å×ÀÌºí ------------------------------------------------------------------------------------------------------
 CREATE TABLE chatInfomation(
     c_id VARCHAR2(50) CONSTRAINT chatInfomation_pk_c_id PRIMARY KEY,
     p_id VARCHAR2(10)
@@ -128,9 +128,9 @@ CREATE TABLE chatMessage(
     idx NUMBER CONSTRAINT chatMessage_pk_idx PRIMARY KEY,
     c_id VARCHAR2(50),
     message NCLOB NOT NULL,
-    messType varchar(10), -- ë©”ì„¸ì§€ íƒ€ì… êµ¬ë¶„(text, img)
-    sender VARCHAR2(50), --  ë³´ë‚¸ì‚¬ëŒì´ ëˆ„êµ°ì§€
-    read char(1) NOT NULL, -- ì½ìŒ : 0, ì•ˆ ì½ìŒ : 1
+    messType varchar(10), -- ¸Ş¼¼Áö Å¸ÀÔ ±¸ºĞ(text, img)
+    sender VARCHAR2(50), --  º¸³½»ç¶÷ÀÌ ´©±ºÁö
+    read char(1) NOT NULL, -- ÀĞÀ½ : 0, ¾È ÀĞÀ½ : 1
     send_date DATE NOT NULL
 );
 
@@ -141,31 +141,31 @@ CREATE TABLE chatParticipants(
     join_date date NOT NULL
 );
 
--- FORING KEY ì‘ì„±------------------------------------------------------------------------------------------------------
+-- FORING KEY ÀÛ¼º------------------------------------------------------------------------------------------------------
 
--- ìƒí’ˆ fk ì¶”ê°€
+-- »óÇ° fk Ãß°¡
 ALTER TABLE product
 ADD CONSTRAINT product_fk_email FOREIGN KEY(email) REFERENCES member(email) ON DELETE CASCADE;
 ALTER TABLE product
 ADD CONSTRAINT product_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) ON DELETE CASCADE;
 
--- ìƒí’ˆ ìƒì„¸ë³´ê¸° fk ì¶”ê°€
+-- »óÇ° »ó¼¼º¸±â fk Ãß°¡
 ALTER TABLE productDetail
 ADD CONSTRAINT productDetail_fk_category FOREIGN KEY(category) REFERENCES category(category) ON DELETE CASCADE;
 
--- ìƒí’ˆ ì‚¬ì§„ fk ì¶”ê°€
+-- »óÇ° »çÁø fk Ãß°¡
 ALTER TABLE productPic
 ADD CONSTRAINT productPic_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id);
 
--- ì±„íŒ…ë°© fk ì¶”ê°€
+-- Ã¤ÆÃ¹æ fk Ãß°¡
 ALTER TABLE chatInfomation
 ADD CONSTRAINT chatInfomation_fk_p_id FOREIGN KEY(p_id) REFERENCES productDetail(p_id) ON DELETE CASCADE;
 
--- ì±„íŒ… ë©”ì„¸ì§€ fk ì¶”ê°€
+-- Ã¤ÆÃ ¸Ş¼¼Áö fk Ãß°¡
 ALTER TABLE chatMessage
 ADD CONSTRAINT chatMessage_fk_c_id FOREIGN KEY(c_id) REFERENCES chatInfomation(c_id) ON DELETE CASCADE;
 
--- ì±„íŒ… ì¸ì› fk ì¶”ê°€
+-- Ã¤ÆÃ ÀÎ¿ø fk Ãß°¡
 ALTER TABLE chatParticipants
 ADD CONSTRAINT chatParticipants_fk_c_id FOREIGN KEY(c_id) REFERENCES chatInfomation(c_id) ON DELETE CASCADE
 ADD CONSTRAINT chatPartic_fk_sender_email FOREIGN KEY(sender_email) REFERENCES member(email) ON DELETE CASCADE;
