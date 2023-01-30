@@ -26,16 +26,14 @@ public class SearchController {
 	
 	@GetMapping("search")
 	public String search(Search searches, PagingInfoVO p, Model model) {
-		System.out.println(p.getKeyword());
-		System.out.println(p.getOip());
+		
+		
 		// 검색어 빈칸으로 입력했을때
 		if(searches.getKeyword() == null ||
 			searches.getKeyword().equals("")) {
 			
 			return "redirect:/index";
 		}
-		
-		System.out.println("테스트 : "+p.getC());
 		
 		List<CategoryVO> categoryList = daoip.category();
 		//검색어 저장

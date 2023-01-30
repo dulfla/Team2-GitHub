@@ -124,7 +124,7 @@
 		<div class="advertising ">
 			<div class="badges2">
 		      <div class="badge2">
-		        <img src="${path}resources/img/badge3.jpg" alt="Badge">
+		        <a href="https://www.starbucks.co.kr/index.do" target='_blank'><img src="${path}resources/img/badge3.jpg" alt="Badge"></a> 
 		      </div>
 		      <div class="badge2">
 		        <a href="https://suwon.greenart.co.kr/" target='_blank'><img src="https://greened.co.kr/assets/_img/header/new23_headerlogo0.svg?3" alt="Badge"></a> 
