@@ -283,7 +283,7 @@ public class ProductController {
 		memberServiceImpl.productModify(vo, imgVoList);
 
 		
-		return "redirect:/productList?c=all&v=brandNew";
+		return "redirect:/myProduct";
 	}
 	
 

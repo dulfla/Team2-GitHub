@@ -12,9 +12,9 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
 <style type="text/css">
-/* 	#container{
-		height:100vh;
-	} */
+	#container{
+		min-height: 100vh;
+	}
 </style>
 </head>
 <body>

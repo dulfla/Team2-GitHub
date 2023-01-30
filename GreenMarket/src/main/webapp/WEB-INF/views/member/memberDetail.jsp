@@ -18,15 +18,14 @@
 	crossorigin="anonymous">
 </script>
 <style type="text/css">
-	/* #container2{
-		width:100%;
-		height:100vh;
-	} */
+	#main{
+		min-height:100vh;
+	}
 </style>
 <jsp:include page="../include/header.jsp"/>
 </head>
 <body>
-	<div id="container2">
+<div id="main">
 	<div class="container">
     	<div class="row">
         <div class="col-sm-12">

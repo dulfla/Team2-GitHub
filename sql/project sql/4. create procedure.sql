@@ -1,4 +1,4 @@
--- Ã¤ÆÃ¹æÀÌ ¾ø´Â °æ¿ì Ã¤ÆÃ¹æÀ» »õ·Ó°Ô ¸¸µé¾îÁÖ´Â ÇÁ·Î½ÃÀú :: ¿©±â¼­ ½ÇÇà ¾È ÇÔ - ÄÄÆÄÀÏ¸¸
+-- ì±„íŒ…ë°©ì´ ì—†ëŠ” ê²½ìš° ì±„íŒ…ë°©ì„ ìƒˆë¡­ê²Œ ë§Œë“¤ì–´ì£¼ëŠ” í”„ë¡œì‹œì € :: ì—¬ê¸°ì„œ ì‹¤í–‰ ì•ˆ í•¨ - ì»´íŒŒì¼ë§Œ
 CREATE OR REPLACE PROCEDURE newChattingRoom(
     p_id IN chatInfomation.p_id%TYPE,
     email IN chatParticipants.sender_email%TYPE,
@@ -13,7 +13,7 @@ END;
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- Ã¤ÆÃ¹æ Á¤º¸¿Í Ã¤ÆÃ Âü¿©ÀÚ Á¤º¸¸¦ ÀÐ¾î¿Í¼­ ÇØ´ç Ã¤ÆÃ¹æ¿¡ »ùÇÃ ¸Þ¼¼Áö¸¦ µ¥ÀÌÅÍ ³ÖÀ» ÇÁ·Î½ÃÀú
+-- ì±„íŒ…ë°© ì •ë³´ì™€ ì±„íŒ… ì°¸ì—¬ìž ì •ë³´ë¥¼ ì½ì–´ì™€ì„œ í•´ë‹¹ ì±„íŒ…ë°©ì— ìƒ˜í”Œ ë©”ì„¸ì§€ë¥¼ ë°ì´í„° ë„£ì„ í”„ë¡œì‹œì €
 CREATE OR REPLACE PROCEDURE chattingMessageSample
 IS
     csor_c_id chatParticipants.c_id%TYPE;
@@ -44,7 +44,7 @@ EXECUTE chattingMessageSample;
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- È¸¿ø »ùÇÃ µ¥ÀÌÅÍ¸¦ ³Ö¾îÁÖ´Â ÇÁ·Î½ÃÀú
+-- íšŒì› ìƒ˜í”Œ ë°ì´í„°ë¥¼ ë„£ì–´ì£¼ëŠ” í”„ë¡œì‹œì €
 CREATE OR REPLACE PROCEDURE member_sampleDate
 IS
     maxinput NUMBER:=5000;
@@ -61,9 +61,9 @@ BEGIN
         
         INSERT INTO member
         VALUES('mail'||idx||'@naver.com',
-               '1234', 19990101, 'ÁÖ¼Ò'||idx,
+               '1234', 19990101, 'ì£¼ì†Œ'||idx,
                '010'||LPAD(to_char(idx),8, '0'),
-               'ÀÌ¸§'||idx,'È¸¿ø'||idx, 'U', dayDate);
+               'ì´ë¦„'||idx,'íšŒì›'||idx, 'U', dayDate);
     END LOOP;
 END;
 
@@ -71,7 +71,7 @@ EXECUTE member_sampleDate;
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- »ùÇÃ·Î °¡ÀÔÇÑ ÀÏºÎ È¸¿øÀÇ Å»Åð¸¦ ÁøÇàÇÏ´Â ÇÁ·Î½ÃÀú
+-- ìƒ˜í”Œë¡œ ê°€ìž…í•œ ì¼ë¶€ íšŒì›ì˜ íƒˆí‡´ë¥¼ ì§„í–‰í•˜ëŠ” í”„ë¡œì‹œì €
 CREATE OR REPLACE PROCEDURE withdraw_sampleDate
 IS
     maxinput NUMBER:=500;
@@ -80,7 +80,7 @@ IS
 BEGIN
     FOR idx  IN 1..maxinput LOOP
         LOOP
-            nums:=ROUND(DBMS_RANDOM.VALUE(1, 2000)); -- »ùÇÃ·Î ³ÖÀº µ¥ÀÌÅÍ ÃÖ´ëÄ¡·Î ÁöÁ¤
+            nums:=ROUND(DBMS_RANDOM.VALUE(1, 2000)); -- ìƒ˜í”Œë¡œ ë„£ì€ ë°ì´í„° ìµœëŒ€ì¹˜ë¡œ ì§€ì •
             SELECT COUNT(*) INTO deleteCheck FROM member WHERE email = 'mail'||nums||'@naver.com';
             IF 0<deleteCheck THEN
                 DELETE member
@@ -95,7 +95,7 @@ EXECUTE withdraw_sampleDate;
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- ÆäÀÌÂ¡¿ë »óÇ° »ùÇÃ µ¥ÀÌÅÍ - productDetail tbl
+-- íŽ˜ì´ì§•ìš© ìƒí’ˆ ìƒ˜í”Œ ë°ì´í„° - productDetail tbl
 CREATE OR REPLACE PROCEDURE product_sampleDate
 IS
     maxinput NUMBER(3);
@@ -119,10 +119,10 @@ BEGIN
             
             IF idx<=100 THEN
                 INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-                VALUES('pid'||pid_seq.NEXTVAL, 'Product Sample'||pid_seq.CURRVAL, '»óÇ° ¼³¸í'||pid_seq.CURRVAL, c, dayDate, randomN, priceVu);
+                VALUES('pid'||pid_seq.NEXTVAL, 'Product Sample'||pid_seq.CURRVAL, 'ìƒí’ˆ ì„¤ëª…'||pid_seq.CURRVAL, c, dayDate, randomN, priceVu);
             ELSE
                 INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price, trade)
-                VALUES('pid'||pid_seq.NEXTVAL, 'Product Sample'||pid_seq.CURRVAL, '»óÇ° ¼³¸í'||pid_seq.CURRVAL, c, dayDate, randomN, priceVu, 'CLEAR');
+                VALUES('pid'||pid_seq.NEXTVAL, 'Product Sample'||pid_seq.CURRVAL, 'ìƒí’ˆ ì„¤ëª…'||pid_seq.CURRVAL, c, dayDate, randomN, priceVu, 'CLEAR');
             END IF;            
         END LOOP;
     END LOOP;
@@ -131,7 +131,7 @@ END;
 
 EXECUTE product_sampleDate;
 
--- ÆäÀÌÂ¡¿ë »óÇ° »ùÇÃ µ¥ÀÌÅÍ - product tbl
+-- íŽ˜ì´ì§•ìš© ìƒí’ˆ ìƒ˜í”Œ ë°ì´í„° - product tbl
 CREATE OR REPLACE PROCEDURE product_who_sampleDate
 IS
     lastSampleDate NUMBER:=6; -- SELECT pid_seq.CURRVAL INTO lastSampleDate FROM dual;
@@ -149,7 +149,7 @@ BEGIN
     LOOP
         FETCH products INTO prodId;
         EXIT WHEN products%NOTFOUND;
-        num:=ROUND(DBMS_RANDOM.VALUE(1, 5)); -- ÃÖ´ëÄ¡´Â Á÷¾÷ ÀÔ·ÂÇÑ member »ùÇÃ µ¥ÀÌÅÍ ¸¸Å­.. ¾Æ´Ï¸é Æ¯Á¤ÇØ¼­.?(¾Æ¹«Æ° °ü¸®ÀÚ´Â ¾Æ´Ï°Ô)
+        num:=ROUND(DBMS_RANDOM.VALUE(1, 5)); -- ìµœëŒ€ì¹˜ëŠ” ì§ì—… ìž…ë ¥í•œ member ìƒ˜í”Œ ë°ì´í„° ë§Œí¼.. ì•„ë‹ˆë©´ íŠ¹ì •í•´ì„œ.?(ì•„ë¬´íŠ¼ ê´€ë¦¬ìžëŠ” ì•„ë‹ˆê²Œ)
         SELECT email INTO who FROM (SELECT email, rn FROM (SELECT email, ROWNUM AS rn FROM member) WHERE rn=num);
         
         INSERT INTO product
@@ -160,7 +160,7 @@ END;
 
 EXECUTE product_who_sampleDate;
 
--- ÀÏºÎ »óÇ° °Å·¡¿Ï·á·Î ¹Ù²Ù´Â ÇÁ·Î½ÃÀú
+-- ì¼ë¶€ ìƒí’ˆ ê±°ëž˜ì™„ë£Œë¡œ ë°”ê¾¸ëŠ” í”„ë¡œì‹œì €
 CREATE OR REPLACE PROCEDURE product_trade_sampleDate
 IS
     maxinput NUMBER(3);

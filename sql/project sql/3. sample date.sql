@@ -1,71 +1,71 @@
--- Ä«Å×°í¸®
-INSERT INTO category VALUES('µğÁöÅĞ ±â±â', 'µğÁöÅĞ ±â±â.png');
-INSERT INTO category VALUES('»ıÈ°°¡Àü', '»ıÈ°°¡Àü.png');
-INSERT INTO category VALUES('»ıÈ°ÁÖ¹æ', '»ıÈ°ÁÖ¹æ.png');
-INSERT INTO category VALUES('À¯¾Æµ¿', 'À¯¾Æµ¿.png');
-INSERT INTO category VALUES('ÀÇ·ù', 'ÀÇ·ù.png');
-INSERT INTO category VALUES('ÀâÈ­', 'ÀâÈ­.png');
-INSERT INTO category VALUES('ºäÆ¼?¹Ì¿ë', 'ºäÆ¼?¹Ì¿ë.png');
-INSERT INTO category VALUES('Ãë¹Ì?°ÔÀÓ?À½¹İ', 'Ãë¹Ì?°ÔÀÓ?À½¹İ.png');
-INSERT INTO category VALUES('µµ¼­', 'µµ¼­.png');
-INSERT INTO category VALUES('Áß°íÂ÷', 'Áß°íÂ÷.png');
-INSERT INTO category VALUES('°¡°ø½ÄÇ°', '°¡°ø½ÄÇ°.png');
-INSERT INTO category VALUES('¹İ·Áµ¿¹° ¹°Ç°', '¹İ·Áµ¿¹° ¹°Ç°.png');
-INSERT INTO category VALUES('±âÅ¸ Áß°í¹°Ç°', '±âÅ¸ Áß°í¹°Ç°.png');
+-- ì¹´í…Œê³ ë¦¬
+INSERT INTO category VALUES('ë””ì§€í„¸ ê¸°ê¸°', 'ë””ì§€í„¸ ê¸°ê¸°.png');
+INSERT INTO category VALUES('ìƒí™œê°€ì „', 'ìƒí™œê°€ì „.png');
+INSERT INTO category VALUES('ìƒí™œì£¼ë°©', 'ìƒí™œì£¼ë°©.png');
+INSERT INTO category VALUES('ìœ ì•„ë™', 'ìœ ì•„ë™.png');
+INSERT INTO category VALUES('ì˜ë¥˜', 'ì˜ë¥˜.png');
+INSERT INTO category VALUES('ì¡í™”', 'ì¡í™”.png');
+INSERT INTO category VALUES('ë·°í‹° ë¯¸ìš©', 'ë·°í‹° ë¯¸ìš©.png');
+INSERT INTO category VALUES('ì·¨ë¯¸ ê²Œì„ ìŒë°˜', 'ì·¨ë¯¸ ê²Œì„ ìŒë°˜.png');
+INSERT INTO category VALUES('ë„ì„œ', 'ë„ì„œ.png');
+INSERT INTO category VALUES('ì¤‘ê³ ì°¨', 'ì¤‘ê³ ì°¨.png');
+INSERT INTO category VALUES('ê°€ê³µì‹í’ˆ', 'ê°€ê³µì‹í’ˆ.png');
+INSERT INTO category VALUES('ë°˜ë ¤ë™ë¬¼ ë¬¼í’ˆ', 'ë°˜ë ¤ë™ë¬¼ ë¬¼í’ˆ.png');
+INSERT INTO category VALUES('ê¸°íƒ€ ì¤‘ê³ ë¬¼í’ˆ', 'ê¸°íƒ€ ì¤‘ê³ ë¬¼í’ˆ.png');
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- È¸¿ø »ó¼¼
+-- íšŒì› ìƒì„¸
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
-VALUES('hong@naver.com','1234',19990305,'°æ±âµµ¾È»ê½Ã','0103455555','È«±æµ¿','±æµ¿ÀÌ1');
+VALUES('hong@naver.com','1234',19990305,'ê²½ê¸°ë„ì•ˆì‚°ì‹œ','0103455555','í™ê¸¸ë™','ê¸¸ë™ì´1');
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
-VALUES('lee@naver.com','1234',19970205,'°æ±âµµ¿À»ê½Ã','0103455556','ÀÌ±æµ¿','±æµ¿ÀÌ2');
+VALUES('lee@naver.com','1234',19970205,'ê²½ê¸°ë„ì˜¤ì‚°ì‹œ','0103455556','ì´ê¸¸ë™','ê¸¸ë™ì´2');
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
-VALUES('pack@naver.com','1234',19990105,'°æ±âµµ¾È»ê½Ã','0103455557','¹Ú±æµ¿','±æµ¿ÀÌ3');
+VALUES('pack@naver.com','1234',19990105,'ê²½ê¸°ë„ì•ˆì‚°ì‹œ','0103455557','ë°•ê¸¸ë™','ê¸¸ë™ì´3');
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
-VALUES('jeong@naver.com','1234',19890506,'°æ±âµµ¾È»ê½Ã','0103455558','Á¤±æµ¿','±æµ¿ÀÌ4');
+VALUES('jeong@naver.com','1234',19890506,'ê²½ê¸°ë„ì•ˆì‚°ì‹œ','0103455558','ì •ê¸¸ë™','ê¸¸ë™ì´4');
 INSERT INTO member(email, password,birth, address, phone,name,nickname)
-VALUES('choi@naver.com','1234',19900312,'°æ±âµµ¾È»ê½Ã','0103455559','ÃÖ±æµ¿','±æµ¿ÀÌ5');
+VALUES('choi@naver.com','1234',19900312,'ê²½ê¸°ë„ì•ˆì‚°ì‹œ','0103455559','ìµœê¸¸ë™','ê¸¸ë™ì´5');
 
 INSERT INTO member(email, password,birth, address, phone,name,nickname,type)
-VALUES('manager@naver.com','1234',19970205,'°æ±âµµ¿À»ê½Ã','0103455556','°ü¸®ÀÚ','È«ÆÇ¼­','M');
+VALUES('manager@naver.com','1234',19970205,'ê²½ê¸°ë„ì˜¤ì‚°ì‹œ','0103455556','ê´€ë¦¬ì','í™íŒì„œ','M');
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- »óÇ° »ó¼¼
+-- ìƒí’ˆ ìƒì„¸
 INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid'||pid_seq.NEXTVAL,'ÄÄÇ»ÅÍ','ÃÖ½ÅÇü ÄÄÇ»ÅÍÀÔ´Ï´Ù','µğÁöÅĞ ±â±â','2022/05/30',0,1000000);
+VALUES('pid'||pid_seq.NEXTVAL,'ì»´í“¨í„°','ìµœì‹ í˜• ì»´í“¨í„°ì…ë‹ˆë‹¤','ë””ì§€í„¸ ê¸°ê¸°','2022/05/30',0,1000000);
 INSERT INTO product
 VALUES(product_seq.NEXTVAL, 'hong@naver.com', 'pid'||pid_seq.CURRVAL);
 
 INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid'||pid_seq.NEXTVAL,'K5','»óÅÂ ÁÁ½À´Ï´Ù','Áß°íÂ÷','2022/11/13',1,30000000);
+VALUES('pid'||pid_seq.NEXTVAL,'K5','ìƒíƒœ ì¢‹ìŠµë‹ˆë‹¤','ì¤‘ê³ ì°¨','2022/11/13',1,30000000);
 INSERT INTO product
 VALUES(product_seq.NEXTVAL, 'lee@naver.com', 'pid'||pid_seq.CURRVAL);
 
 INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid'||pid_seq.NEXTVAL,'Áö°©','»óÅÂ ±Â','ÀâÈ­','2022/09/20',60,500000);
+VALUES('pid'||pid_seq.NEXTVAL,'ì§€ê°‘','ìƒíƒœ êµ¿','ì¡í™”','2022/09/20',60,500000);
 INSERT INTO product
 VALUES(product_seq.NEXTVAL, 'pack@naver.com', 'pid'||pid_seq.CURRVAL);
 
 INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid'||pid_seq.NEXTVAL,'Ãò¸£','Ãò¸£ 2¹Ú½º ÀÔ´Ï´Ù','¹İ·Áµ¿¹° ¹°Ç°','2022/11/03',0,15000);
+VALUES('pid'||pid_seq.NEXTVAL,'ì¸„ë¥´','ì¸„ë¥´ 2ë°•ìŠ¤ ì…ë‹ˆë‹¤','ë°˜ë ¤ë™ë¬¼ ë¬¼í’ˆ','2022/11/03',0,15000);
 INSERT INTO product
 VALUES(product_seq.NEXTVAL, 'jeong@naver.com', 'pid'||pid_seq.CURRVAL);
 
 INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid'||pid_seq.NEXTVAL,'¿¡¾îÆÌ ¸Æ½º','¿¡¾îÆÌ ¸Æ½º ¹Ì°³ºÀ »óÇ°ÀÔ´Ï´Ù','µğÁöÅĞ ±â±â','2022/12/25',115,600000);
+VALUES('pid'||pid_seq.NEXTVAL,'ì—ì–´íŒŸ ë§¥ìŠ¤','ì—ì–´íŒŸ ë§¥ìŠ¤ ë¯¸ê°œë´‰ ìƒí’ˆì…ë‹ˆë‹¤','ë””ì§€í„¸ ê¸°ê¸°','2022/12/25',115,600000);
 INSERT INTO product
 VALUES(product_seq.NEXTVAL, 'choi@naver.com', 'pid'||pid_seq.CURRVAL);
 
 INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid'||pid_seq.NEXTVAL,'¿¡¾îÆÌ','¿¡¾îÆÌ ¸Æ½º ¹Ì°³ºÀ »óÇ°ÀÔ´Ï´Ù','µğÁöÅĞ ±â±â','2022/01/25',115,500000);
+VALUES('pid'||pid_seq.NEXTVAL,'ì—ì–´íŒŸ','ì—ì–´íŒŸ ë§¥ìŠ¤ ë¯¸ê°œë´‰ ìƒí’ˆì…ë‹ˆë‹¤','ë””ì§€í„¸ ê¸°ê¸°','2022/01/25',115,500000);
 INSERT INTO product
 VALUES(product_seq.NEXTVAL, 'pack@naver.com', 'pid'||pid_seq.CURRVAL);
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- °Ë»ö¾î
+-- ê²€ìƒ‰ì–´
 INSERT INTO search(idx, keyword, email)
 VALUES(search_seq.NEXTVAL, 'ddd', 'hong@naver.com');
 INSERT INTO search(idx, keyword, email)
@@ -75,7 +75,7 @@ VALUES(search_seq.NEXTVAL, 'ddddd', 'jeong@naver.com');
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- Ã¤ÆÃ
+-- ì±„íŒ…
 INSERT INTO chatInfomation
 VALUES('chat'||chatInfomation_seq.NEXTVAL, 'pid1');
 INSERT INTO chatParticipants

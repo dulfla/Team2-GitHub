@@ -29,10 +29,15 @@
 
 <!-- address api -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
+<style type="text/css">
+	#main{
+		min-height:100vh;
+	}
+</style>
 <jsp:include page="../include/header.jsp"/>
 </head>
 <body>
+<div id="main">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
@@ -94,6 +99,7 @@
 		<!-- row -->
 	</div>
 	<!-- container end-->
+</div>
 </body>
 
 <!-- address api script-->

@@ -35,6 +35,9 @@
 
 @import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
 
+#main{
+	min-height:100vh;
+}
 h2{
 	font-family: hana;
 }
@@ -257,32 +260,34 @@ a {
 <jsp:include page="../include/header.jsp"/>
 </head>
 <body>
-	<div class="container">
-		<h2 class="mb-4 mt-4">오늘의 중고 인기 검색어</h2>
-		  <table class="rwd-table col-4 tbody">
-		    <tbody>
-		      <tr>
-		        <th>#</th>
-		        <th>인기 검색어</th>
-		      </tr>
-				<c:forEach begin="0" end="9" items="${list}" var="list"
-					varStatus="status">
-					<tr>
-						<c:choose>
-							<c:when test="${status.count lt 4}">
-								<th id="count" scope="row" style="color:#ff5232">${status.count}</th>
-								<td><a style="color: #ff5232" href="search?c=all&v=product&keyword=${list.keyword}">${list.keyword}</a></td>
-							</c:when>
-							<c:otherwise>
-								<th id="count" scope="row">${status.count}</th>
-								<td><a href="search?c=all&v=product&keyword=${list.keyword}">${list.keyword}</a></td>
-							</c:otherwise>
-						</c:choose>
-					</tr>
-				</c:forEach>
-			</tbody>
-		  </table>
-		  <h3 class="mb-5 mt-3">Resize Me</h3>
+	<div id="main">
+		<div class="container">
+			<h2 class="mb-4 mt-4">오늘의 중고 인기 검색어</h2>
+			  <table class="rwd-table col-4 tbody">
+			    <tbody>
+			      <tr>
+			        <th>#</th>
+			        <th>인기 검색어</th>
+			      </tr>
+					<c:forEach begin="0" end="9" items="${list}" var="list"
+						varStatus="status">
+						<tr>
+							<c:choose>
+								<c:when test="${status.count lt 4}">
+									<th id="count" scope="row" style="color:#ff5232">${status.count}</th>
+									<td><a style="color: #ff5232" href="search?c=all&v=product&keyword=${list.keyword}">${list.keyword}</a></td>
+								</c:when>
+								<c:otherwise>
+									<th id="count" scope="row">${status.count}</th>
+									<td><a href="search?c=all&v=product&keyword=${list.keyword}">${list.keyword}</a></td>
+								</c:otherwise>
+							</c:choose>
+						</tr>
+					</c:forEach>
+				</tbody>
+			  </table>
+			  <h3 class="mb-5 mt-3">Resize Me</h3>
+		</div>
 	</div>
 </body>
 <script type="text/javascript"></script>

@@ -1,4 +1,4 @@
--- memberHistory ÀÚµ¿ ÀÛ¼º Æ®¸®°Å
+-- memberHistory ìë™ ì‘ì„± íŠ¸ë¦¬ê±°
 CREATE OR REPLACE TRIGGER memberAdmin
 BEFORE INSERT OR DELETE
     ON member
@@ -6,14 +6,14 @@ FOR EACH ROW
 BEGIN
     IF INSERTING THEN
         INSERT INTO memberHistory
-        VALUES(memberTracking_seq.NEXTVAL, :NEW.email,:NEW.regdate, 'IN'); -- sysdate ¿©¾ß ÇÔ
+        VALUES(memberTracking_seq.NEXTVAL, :NEW.email,:NEW.regdate, 'IN'); -- sysdate ì—¬ì•¼ í•¨
     ELSIF DELETING THEN
         INSERT INTO memberHistory
-        VALUES(memberTracking_seq.NEXTVAL, :OLD.email,:OLD.regdate, 'OUT'); -- sysdate ¿©¾ß ÇÔ
+        VALUES(memberTracking_seq.NEXTVAL, :OLD.email,:OLD.regdate, 'OUT'); -- sysdate ì—¬ì•¼ í•¨
     END IF;
 END memberAdmin;
 
--- productHistory ÀÚµ¿ ÀÛ¼º Æ®¸®°Å 
+-- productHistory ìë™ ì‘ì„± íŠ¸ë¦¬ê±° 
 CREATE OR REPLACE TRIGGER trackingProduct
 BEFORE INSERT OR UPDATE OR DELETE
     ON productDetail
@@ -25,15 +25,15 @@ BEGIN
     ELSIF updating THEN
         IF :NEW.trade<>'TRADE' OR :NEW.trade<>'trade' THEN
             INSERT INTO productHistory
-            VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :NEW.category, :OLD.regdate, 'TRADE'); -- sysdate ¿©¾ß ÇÔ
+            VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :NEW.category, :OLD.regdate, 'TRADE'); -- sysdate ì—¬ì•¼ í•¨
         END IF;
     ELSIF deleting THEN
         INSERT INTO productHistory
-        VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :OLD.category, :OLD.regdate, 'OUT'); -- sysdate ¿©¾ß ÇÔ
+        VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :OLD.category, :OLD.regdate, 'OUT'); -- sysdate ì—¬ì•¼ í•¨
     END IF;
 END;
 
--- category pk ¼öÁ¤½Ã ¿Ü·¡Å° ÀÚµ¿ ¼öÁ¤ Æ®¸®°Å
+-- category pk ìˆ˜ì •ì‹œ ì™¸ë˜í‚¤ ìë™ ìˆ˜ì • íŠ¸ë¦¬ê±°
 CREATE OR REPLACE TRIGGER categoryChange
 AFTER UPDATE ON category
 FOR EACH ROW

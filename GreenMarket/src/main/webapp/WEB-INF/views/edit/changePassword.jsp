@@ -28,8 +28,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 
 <style>
-		body {
-			min-height: 100vh;
+		#main{
+			min-height:100vh;
 		}
 		.button{
 			width: 600px;
@@ -52,7 +52,7 @@
 <jsp:include page="../include/header.jsp"/>
 </head>
 <body>
-
+<div id="main">
 	<div class="container">
 	<form class="validation-form" novalidate="novalidate">	
 		<div class="input-form-backgroud row">
@@ -83,6 +83,7 @@
 			</div>
 		</form>
 	</div>
+</div>
 </body>
 <script type="text/javascript" defer="defer" src="${path}resources/script/edit/changePassword.js"></script>
 

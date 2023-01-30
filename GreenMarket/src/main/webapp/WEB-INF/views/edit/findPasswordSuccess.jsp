@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 <style>
-		body {
+		#main {
 			min-height: 100vh;
 		}
 		.button{
@@ -49,6 +49,7 @@
 <jsp:include page="../include/header.jsp"/>
 </head>
 <body>
+<div id="main">
 <div class="container">
 		<div class="input-form-backgroud row">
 			<div class="input-form col-md-12 mx-auto">
@@ -78,6 +79,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 </body>
 
 <script type="text/javascript">

@@ -11,18 +11,25 @@
 
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="${path}resources/script/chat/chattingServer.js"></script>
+<style type="text/css">
+	#main{
+		min-height: 100vh;
+	}
+</style>
 </head>
 <body>
 	<%@ include file="../include/header.jsp" %>
-	<div id="container">
-		<c:choose>
-			<c:when test="${empty serverOption or serverOption eq 'Off'}">
-				<button type="button" name="controllServer" class="btn btn-outline-warning" id="serverSetOn">서버 켜기</button>
-			</c:when>
-			<c:when test="${serverOption eq 'On'}">
-				<button type="button" name="controllServer" class="btn btn-outline-danger" id="serverSetOff">서버 끄기</button>
-			</c:when>
-		</c:choose>
+	<div id="main">
+		<div id="container">
+			<c:choose>
+				<c:when test="${empty serverOption or serverOption eq 'Off'}">
+					<button type="button" name="controllServer" class="btn btn-outline-warning" id="serverSetOn">서버 켜기</button>
+				</c:when>
+				<c:when test="${serverOption eq 'On'}">
+					<button type="button" name="controllServer" class="btn btn-outline-danger" id="serverSetOff">서버 끄기</button>
+				</c:when>
+			</c:choose>
+		</div>
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 </body>

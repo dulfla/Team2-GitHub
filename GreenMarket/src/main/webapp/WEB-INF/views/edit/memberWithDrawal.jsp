@@ -28,7 +28,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 	
 <style type="text/css">
-	body {
+	#main {
 			min-height: 100vh;
 		}
 		.button{
@@ -55,6 +55,7 @@
 <jsp:include page="../include/header.jsp"/>
 </head>
 <body>
+<div id="main">
 	<div class="container">
 		<form class="validation-form" novalidate="novalidate">
 		<div class="input-form-backgroud row">
@@ -93,7 +94,7 @@
 			</div>
 		</form>
 	</div>
-	
+</div>
 </body>
 
 <script type="text/javascript" defer="defer" src="${path}resources/script/edit/memberWithDrawal.js"></script>
