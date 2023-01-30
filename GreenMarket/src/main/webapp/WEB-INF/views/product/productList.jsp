@@ -121,7 +121,7 @@
 						<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<totalCnt)?(pageData.pis):(((totalCnt+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
 							<li class="page-item">
 								<c:if test="${pageData.p==page}"><b></c:if>
-								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${page}</a>
+								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${((pageData.s-1)*pageData.pis)+page}</a>
 								<c:if test="${pageData.p==page}"></b></c:if>
 							</li>
 						</c:forEach>

@@ -14,8 +14,6 @@
 <body>
 <%@ include file="../include/header.jsp" %>
 <div class="container">
-	<c:if test="${empty pageData}">pageData 비어있음</c:if>
-	<c:if test="${empty pageData.oip}">pageData.oip 비어있음</c:if>
 	<div class="list-group">
   		<a href="myProduct" class="list-group-item list-group-item-action">내 상품</a>
   		<a href="selled" class="list-group-item list-group-item-action">판매완료된 상품</a>
@@ -88,7 +86,7 @@
 						<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<totalCnt)?(pageData.pis):(((totalCnt+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
 							<li class="page-item">
 								<c:if test="${pageData.p==page}"><b></c:if>
-								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${page}</a>
+								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${((pageData.s-1)*pageData.pis)+page}</a>
 								<c:if test="${pageData.p==page}"></b></c:if>
 							</li>
 						</c:forEach>

@@ -78,12 +78,12 @@ public class ProductListDAO {
 		return sqlSession.selectOne("mybatis.mapper.productList.countMyProductNumber", email);
 	}
 	
-	public int selectMyUnSellNumboard(String email) {
-		return sqlSession.selectOne("mybatis.mapper.productList.countMyUnSellNumber", email);
+	public int selectMyUnSelledNumboard(String email) {
+		return sqlSession.selectOne("mybatis.mapper.productList.countMyUnSelledNumber", email);
 	}
 	
-	public int selectMySellNumboard(String email) {
-		return sqlSession.selectOne("mybatis.mapper.productList.countMySellNumber", email);
+	public int selectMySelledNumboard(String email) {
+		return sqlSession.selectOne("mybatis.mapper.productList.countMySelledNumber", email);
 	}
 	
 }

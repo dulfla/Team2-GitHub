@@ -1,4 +1,4 @@
--- 채팅방이 없는 경우 채팅방을 새롭게 만들어주는 프로시저 :: 여기서 실행 안 함
+-- 채팅방이 없는 경우 채팅방을 새롭게 만들어주는 프로시저 :: 여기서 실행 안 함 - 컴파일만
 CREATE OR REPLACE PROCEDURE newChattingRoom(
     p_id IN chatInfomation.p_id%TYPE,
     email IN chatParticipants.sender_email%TYPE,
@@ -109,7 +109,7 @@ BEGIN
         FETCH categorys INTO c;
         EXIT WHEN categorys%NOTFOUND;
         
-        maxinput:=ROUND(DBMS_RANDOM.VALUE(10, 19)); -- *10
+        maxinput:=ROUND(DBMS_RANDOM.VALUE(10, 19))*5; -- *10
         FOR idx IN 1..maxinput LOOP
             priceVu:=ROUND(DBMS_RANDOM.VALUE(5000, 999999));
             randomN:=ROUND(DBMS_RANDOM.VALUE(1, 999));
@@ -157,6 +157,26 @@ BEGIN
 END;
 
 EXECUTE product_who_sampleDate;
+
+-- 일부 상품 거래완료로 바꾸는 프로시저
+CREATE OR REPLACE PROCEDURE product_trade_sampleDate
+IS
+    maxinput NUMBER(3);
+    randomN NUMBER(3);
+    prodId productDetail.p_id%TYPE;
+    maxProd NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO maxProd FROM productDetail;
+    maxinput:=ROUND(DBMS_RANDOM.VALUE(10, 19))*2;
+    FOR idx IN 1..maxinput LOOP
+        randomN:=ROUND(DBMS_RANDOM.VALUE(1, maxProd-1));
+        UPDATE productDetail
+        SET trade='CLEAR'
+        WHERE p_id='pid'||randomN;
+    END LOOP;
+END;
+
+EXECUTE product_trade_sampleDate;
 
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------

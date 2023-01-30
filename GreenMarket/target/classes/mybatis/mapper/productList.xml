@@ -18,7 +18,7 @@
 		WHERE pd.p_id = p.p_id
 	</select>
 	
-	<select id="countMySellNumber"  parameterType="String" resultType="int">
+	<select id="countMySelledNumber"  parameterType="String" resultType="int">
 		SELECT COUNT(*)
 		FROM (SELECT * FROM productDetail
 				WHERE trade='CLEAR' or trade='clear') pd,
@@ -28,7 +28,7 @@
 		WHERE pd.p_id = p.p_id
 	</select>
 	
-	<select id="countMyUnSellNumber" parameterType="String" resultType="int">
+	<select id="countMyUnSelledNumber" parameterType="String" resultType="int">
 		SELECT COUNT(*)
 		FROM (SELECT * FROM productDetail
 				WHERE trade='TRADE' or trade='trade') pd,

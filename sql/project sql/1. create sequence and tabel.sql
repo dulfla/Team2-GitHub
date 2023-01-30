@@ -39,6 +39,7 @@ CREATE SEQUENCE chatParticipants_seq START WITH 1 NOCACHE NOCYCLE; -- chatPartic
 CREATE SEQUENCE sampleMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(message)
 CREATE SEQUENCE chatMessage_seq START WITH 1 NOCACHE NOCYCLE; -- chatMessage(idx)
 
+
 -- 회원 관련 테이블 ------------------------------------------------------------------------------------------------------
 CREATE TABLE member(
     email VARCHAR2(50),

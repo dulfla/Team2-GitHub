@@ -90,54 +90,44 @@ public class ProducListController {
 		model.addAttribute("location", "myProduct");
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("products", list);
-		model.addAttribute("pageData", data);	
+		model.addAttribute("pageData", data);
 		
 		return "product/myProductList";
 	}	
 	
 	@RequestMapping("unSelled")
 	public String ProductUnSellList(PagingInfoVO data, HttpSession session, Model model) {
-		System.out.println("unSelled getOip : "+data.getOip());
-		
 		AuthInfo authInfo = (AuthInfo)session.getAttribute("authInfo");
 		data.setEmail(authInfo.getEmail());
 		
 		List<ProductListVO> list = dao.selectAllProductUnSellList(data);
 		list = urlMapping(list);
 		
-		int totalCnt = dao.selectMyUnSellNumboard(data.getEmail());
+		int totalCnt = dao.selectMyUnSelledNumboard(data.getEmail());
 		
 		model.addAttribute("location", "unSelled");
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("products", list);
-		model.addAttribute("pageDate", data);
+		model.addAttribute("pageData", data);
 
-		System.out.println("unSelled totalCnt : "+totalCnt);
-		System.out.println("unSelled getOip : "+data.getOip());
-		
 		return "product/myProductList";
 	}
 	
 	@RequestMapping("selled")
 	public String ProductSellList(PagingInfoVO data, HttpSession session, Model model) {
-		System.out.println("selled getOip : "+data.getOip());
-		
 		AuthInfo authInfo = (AuthInfo)session.getAttribute("authInfo");
 		data.setEmail(authInfo.getEmail());
 		
 		List<ProductListVO> list = dao.selectAllProductSellList(data);
 		list = urlMapping(list);
 		
-		int totalCnt = dao.selectMySellNumboard(data.getEmail());
+		int totalCnt = dao.selectMySelledNumboard(data.getEmail());
 		
 		model.addAttribute("location", "selled");
 		model.addAttribute("totalCnt", totalCnt);
 		model.addAttribute("products", list);
-		model.addAttribute("pageDate", data);
-		
-		System.out.println("selled totalCnt : "+totalCnt);
-		System.out.println("selled getOip : "+data.getOip());
-		
+		model.addAttribute("pageData", data);
+
 		return "product/myProductList";
 	}
 	
