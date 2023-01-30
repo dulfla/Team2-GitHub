@@ -19,8 +19,6 @@
   		<a href="selled" class="list-group-item list-group-item-action">판매완료된 상품</a>
   		<a href="unSelled" class="list-group-item list-group-item-action">판매중인 상품</a> 
 	</div>
-<<<<<<< HEAD
-<<<<<<< HEAD
  <div class="album py-5 bg-light">
     <div class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -55,9 +53,6 @@
 		      					<div class="btn-group">
 		        					<button href="productDetail?p_id=${p.p_id}" type="button" class="btn btn-sm btn-outline-secondary" name="moveToDetail">보기</button>
 		        				</div>
-=======
-=======
->>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
 	<div class="btn-group">
 	  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 		  	${pageData.oip} 개
@@ -103,10 +98,6 @@
 		      						<div class="btn-group">
 		        						<button href="productDetail?p_id=${p.p_id}" type="button" class="btn btn-sm btn-outline-secondary" name="moveToDetail">보기</button>
 		        					</div>
-<<<<<<< HEAD
->>>>>>> 7a982df (김형관님 피트 한 페이지당 상품 개수 변경 기능 추가)
-=======
->>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
                 					<small class="text-muted"><fmt:formatNumber value="${p.price}"  pattern="###,###,###"/>원</small>
               					</div>
             				</div>
@@ -116,8 +107,6 @@
       		</div>
     	</div>
     </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
 	<div class="cls2">		<!-- 페이징 -->
 		<c:if test="${totalCnt != null}">
 		<nav aria-label="Page navigation example">
@@ -139,9 +128,6 @@
 								</li>
 							</c:if>
 						</c:forEach>
-=======
-=======
->>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
     <div class="paging">
 		<c:if test="${!empty totalCnt}">
 			<nav aria-label="Page navigation example">
@@ -155,7 +141,6 @@
 						<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<totalCnt)?(pageData.pis):(((totalCnt+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
 							<li class="page-item">
 								<c:if test="${pageData.p==page}"><b></c:if>
-<<<<<<< HEAD
 								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${page}</a>
 								<c:if test="${pageData.p==page}"></b></c:if>
 							</li>
@@ -165,7 +150,6 @@
 								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s+1}&p=1">>></a>
 							</li>
 						</c:if>
->>>>>>> 7a982df (김형관님 피트 한 페이지당 상품 개수 변경 기능 추가)
 					</c:if>
 					<c:if test="${(section*100) >= totalCnt}">		<!-- 다음 섹션이 없는가  '>>' X -->
 						<c:forEach var="page" begin="1" end="${((totalCnt+9)-(section-1)*100)/10}" step="1">
@@ -175,11 +159,11 @@
 								</li>
 							</c:if>							
 								<li class="page-item"><a class="page-link" href="myProduct?sN=${section}&pN=${page}">${(section-1)*10+page}</a></li> <!-- 번호를 눌렀을때 해당 섹션과 해당 페이지 번호를 서버에 전달 -->																	
-=======
+
 								<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${((pageData.s-1)*pageData.pis)+page}</a>
 								<c:if test="${pageData.p==page}"></b></c:if>
 							</li>
->>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
+
 						</c:forEach>
 						<c:if test="${(pageData.s*(pageData.pis*pageData.oip)) < totalCnt}">
 							<li class="page-item">

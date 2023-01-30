@@ -196,18 +196,12 @@
 		        	</div>
 	      		</c:forEach>
 	      	</div>
-<<<<<<< HEAD
->>>>>>> 7a982df (김형관님 피트 한 페이지당 상품 개수 변경 기능 추가)
-=======
->>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
     	</div>
  	</div>
  	<div class="paging">
 		<c:if test="${!empty totalCnt}">
 			<nav aria-label="Page navigation example">
 		  		<ul class="pagination justify-content-center">
-<<<<<<< HEAD
-<<<<<<< HEAD
 				<c:choose>
 					<c:when test="${totalCnt > 100}">		<!-- 전체 갯수가 100개가 넘는가 -->
 						<c:if test="${(section*100) < totalCnt}">		<!-- 다음 섹션이 존재하는가  '>>' O -->
@@ -236,15 +230,11 @@
 									<li class="page-item"><a class="page-link" href="productList?c=${c}&v=${v}&sN=${section}&pN=${page}">${(section-1)*10+page}</a></li>
 								<!-- 번호를 눌렀을때 해당 섹션과 해당 페이지 번호를 서버에 전달 -->					
 							</c:forEach>
-=======
-=======
->>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
 		  			<c:if test="${totalCnt>pageData.oip}">
 						<c:if test="${pageData.s>1}">
 							<li class="page-item">
 								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s-1}&p=${pageData.pis}"><<</a>
 							</li>
-<<<<<<< HEAD
 						</c:if>
 						<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<totalCnt)?(pageData.pis):(((totalCnt+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
 							<li class="page-item">
@@ -257,9 +247,6 @@
 							<li class="page-item">
 								<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s+1}&p=1">>></a>
 							</li>
->>>>>>> 7a982df (김형관님 피트 한 페이지당 상품 개수 변경 기능 추가)
-=======
->>>>>>> 082a0b85f0ccf703a6f5246406b63e56a0a30dd9
 						</c:if>
 						<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<totalCnt)?(pageData.pis):(((totalCnt+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
 							<li class="page-item">
