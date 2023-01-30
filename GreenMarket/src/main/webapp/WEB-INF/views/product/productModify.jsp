@@ -61,7 +61,10 @@
 		margin-left: 10px;
 		margin-right: 10px;
 	} */
-		#descriptionForm {
+	textarea {
+		height: 20rem;
+	}
+	#descriptionForm {
 		padding-bottom: 2rem;
 	}
 	#imageForm {
@@ -243,7 +246,7 @@
 		                                </div>
 		                            </div>
 		                            <div class="col-md-12">
-		                                <button type="submit" class="btn btn-success btn-send  pt-2 btn-block">상품 수정</button> 
+		                                <button type="submit" class="btn btn-success btn-send  pt-2 btn-block" onclick="fileCheck()">상품 수정</button> 
 		                                <button type="button" class="btn btn-danger btn-send  pt-2 btn-block" id="back_Btn">취소</button>
 		                            </div>
 		                        </div>
@@ -261,6 +264,9 @@
 	<script type="text/javascript">
 		var lat = $("#lat").val();
 		var lng = $("#lng").val();
+		
+		console.log('위도 : '+lat);
+		console.log('경도 : '+lng);
 		
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = { 

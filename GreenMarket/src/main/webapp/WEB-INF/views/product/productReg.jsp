@@ -22,6 +22,17 @@ crossorigin="anonymous"></script>
   
 <style type="text/css">
 
+	#titleGroup a{
+		position: absolute;
+	    right: 1rem;
+	    font-size: 1rem;
+	    color: rgb(155, 153, 169);
+	    text-decoration: underline;	
+	    cursor: pointer;
+	}
+	textarea {
+		height: 20rem;
+	}
 	#descriptionForm {
 		padding-bottom: 2rem;
 	}
@@ -142,7 +153,7 @@ crossorigin="anonymous"></script>
 	                            <div class="controls">
 	                                <div class="row">
 	                                    <div class="col-md-12">
-	                                        <div class="form-group">
+	                                        <div class="form-group" id="titleGroup">
 	                                            <label for="form_name">상품명</label>
 	                                            <input id="form_name" type="text" name="p_name" class="form-control" placeholder="상품명을 입력해주세요 *" required data-error="상품명은 필수입력입니다.">                        
 	                                        </div>
@@ -176,31 +187,31 @@ crossorigin="anonymous"></script>
 	                                    </div>
 	                                </div>
 	                                <div class="row">
-                                    <div class="col-md-12 p-2 pt-5 pb-5" id="imageForm">
-                                        <div class="form-group" id="uploud-group">
-                                            <label for="chooseFile" class="file-label">
-                                            	<li class="file-li">
-                                            		"이미지 업로드"
-                                            	</li>
-                                            </label>
-                                            <input type="file" class="file" id="chooseFile" name='uploadFile'accept=".jpg, .png" required>
-                                            <div id="uploadResult" class="uploadResultBox"></div> 
-                                            
-                                        </div>                          
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="form_message" class="location">거래 위치</label>
-                                            <div id="map" style="width:100%;height:400px;"></div>
-                                                <p><em>지도를 클릭해주세요!</em></p>    
-                                            <div id="clickLatlng"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <button type="submit" id="register_Btn" class="btn btn-success btn-send  pt-2 btn-block" onclick="fileCheck()">상품 등록</button> 
-                                        <button type="button" id="list_Btn" class="btn btn-outline-dark">목록</button>
-                                    </div>
+	                                    <div class="col-md-12 p-2 pt-5 pb-5" id="imageForm">
+	                                        <div class="form-group" id="uploud-group">
+	                                            <label for="chooseFile" class="file-label">
+	                                            	<li class="file-li">
+	                                            		"이미지 업로드"
+	                                            	</li>
+	                                            </label>
+	                                            <input type="file" class="file" id="chooseFile" name='uploadFile'accept=".jpg, .png" required>
+	                                            <div id="uploadResult" class="uploadResultBox"></div>             
+	                                        </div>                          
+	                                    </div>
+	                                    <div class="col-md-12">
+	                                        <div class="form-group">
+	                                            <label for="form_message" class="location">거래 위치</label>
+	                                            <div id="map" style="width:100%;height:400px;"></div>
+	                                                <p><em>지도를 클릭해주세요!</em></p>    
+	                                            <div id="clickLatlng"></div>
+	                                        </div>
+	                                    </div>
+									</div>
+	                                    <div class="col-md-12">
+	                                        <button type="submit" id="register_Btn" class="btn btn-success btn-send  pt-2 btn-block" onclick="fileCheck()">상품 등록</button> 
+	                                        <button type="button" id="list_Btn" class="btn btn-outline-dark">목록</button>
+	                                    </div>
+	                             
                                 </div>
                             </form> 
                         </div>
@@ -243,6 +254,7 @@ crossorigin="anonymous"></script>
 					
 			var lat = latlng.getLat();
 			var lng = latlng.getLng();
+			
 			
 			console.log('위도 : ' + lat);
 			console.log('경도 : ' + lng);
@@ -362,7 +374,6 @@ crossorigin="anonymous"></script>
 				}
 			 });
 		}
-
 		
 		/* 가격 숫자만 입력, 쉼표 */
  		$(document).on("keyup", "input:text[numberOnlyMinComma]", function()	{
@@ -405,10 +416,7 @@ crossorigin="anonymous"></script>
  		$("#list_Btn").click(function(el, maxlength){ 
 			location.href='productList?c=all&v=brandNew'
 		});
-/*   		
- 		$("#register_Btn").click(function(){ 
-		});
- 		 */
+ 		
  		function fileCheck() {
  			var imgFile = $('#chooseFile').val();
  			if($('#chooseFile').val() == ""){
@@ -418,7 +426,7 @@ crossorigin="anonymous"></script>
  				      text: '',
  				});
  				$('#chooseFile').focus();
- 			}	
+ 			}
 		}
 		function handleOnInput(el, maxlength) {
 			if(el.value.length > maxlength)  {

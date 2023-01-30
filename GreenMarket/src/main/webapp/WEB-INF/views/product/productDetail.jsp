@@ -23,6 +23,17 @@
 	    margin: auto;
 	    border-radius: 2%;
 	} */
+	.pics {      /* 전체 케러셀 */
+		width: 600px;
+		float: left;
+		position: relative;
+		left: 50%;		
+        }
+	.carousel-inner {
+		width: 100%;
+		height: 400px; /* 이미지 높이 변경 */
+		cursor: pointer;
+	}
 	.breadcrumb {
     	margin-top: 0px;
     	font-size: 13px;
@@ -96,6 +107,8 @@
 	    letter-spacing: -0.6px;
 	    margin: 16px 0;
 	    word-break: break-all;
+	    white-space: pre-wrap;
+    	overflow-wrap: break-word;
 	}
 	#profileImg {
 		width: 40px;
@@ -270,8 +283,7 @@
 		//좌표 
 		var lat = $("#lat").val();
 		var lng = $("#lng").val();
-		console.log(lat);
-		console.log(lng);
+
 	
 		mapOption = { 
 			center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
@@ -296,6 +308,7 @@
 		var formObj = $("form[role='form']");
 	
 		$(document).ready(function(){
+			
 			/* 이미지 정보 호출 */
 			let p_id = '<c:out value="${product.p_id}"/>';
 			let uploadResult = $("uploadResult");
@@ -318,11 +331,14 @@
 					
 					obj = arr[0];
 					
-					let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+					let fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
 					
 					let img = document.createElement('img');
 					img.setAttribute('src', 'display?fileName='+fileCallPath);
 					img.classList.add('w-100')
+					img.onclick= function () {
+							window.open(this.src)
+						};
 					
 					imgResult.appendChild(img)
 					
@@ -346,11 +362,14 @@
 						div.classList.add('w-75');
 						div.setAttribute('style', 'margin:0px auto');
 						
-						let fileCallPath = encodeURIComponent(obj.uploadPath + "/s_" + obj.uuid + "_" + obj.fileName);
+						let fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
 						
 						let img = document.createElement('img');
 						img.setAttribute('src', 'display?fileName='+fileCallPath);
 						img.classList.add('w-100')
+						img.onclick= function () {
+							window.open(this.src)
+						};
 						
 						div.appendChild(img)
 						carouselItem.appendChild(div)
