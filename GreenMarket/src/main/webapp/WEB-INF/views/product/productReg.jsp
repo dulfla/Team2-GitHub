@@ -153,7 +153,7 @@ crossorigin="anonymous"></script>
 	                                        <div class="form-group">
 	                                            <label for="form_lastname">상품가격 (원)</label>
 	                                            <input id="form_lastname" type="text" id="price" name="price" class="form-control" placeholder="가격을 입력해주세요  *" 
-	                                            	 numberOnlyMinComma="true" required>
+	                                            	 numberOnlyMinComma="true" required onblur="handleOnInput(this, 9)">
 	                                        </div>
 	                                    </div>
 	                                    <div class="col-md-6">
@@ -183,7 +183,7 @@ crossorigin="anonymous"></script>
                                             		"이미지 업로드"
                                             	</li>
                                             </label>
-                                            <input type="file" class="file" id="chooseFile" name='uploadFile'accept=".jpg, .png">
+                                            <input type="file" class="file" id="chooseFile" name='uploadFile'accept=".jpg, .png" required>
                                             <div id="uploadResult" class="uploadResultBox"></div> 
                                             
                                         </div>                          
@@ -198,7 +198,7 @@ crossorigin="anonymous"></script>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <button type="submit" id="register_Btn" class="btn btn-success btn-send  pt-2 btn-block">상품 등록</button> 
+                                        <button type="submit" id="register_Btn" class="btn btn-success btn-send  pt-2 btn-block" onclick="fileCheck()">상품 등록</button> 
                                         <button type="button" id="list_Btn" class="btn btn-outline-dark">목록</button>
                                     </div>
                                 </div>
@@ -400,12 +400,39 @@ crossorigin="anonymous"></script>
  		    $(this).val(value);
  		});
 
+ 		
  		/* 목록 버튼 */
- 		$("#list_Btn").click(function(){ 
+ 		$("#list_Btn").click(function(el, maxlength){ 
 			location.href='productList?c=all&v=brandNew'
 		});
- 		
- 		
+/*   		
+ 		$("#register_Btn").click(function(){ 
+		});
+ 		 */
+ 		function fileCheck() {
+ 			var imgFile = $('#chooseFile').val();
+ 			if($('#chooseFile').val() == ""){
+ 				Swal.fire({
+ 				      icon: 'error',
+ 				      title: '이미지 업로드는 필수입니다!',
+ 				      text: '',
+ 				});
+ 				$('#chooseFile').focus();
+ 			}	
+		}
+		function handleOnInput(el, maxlength) {
+			if(el.value.length > maxlength)  {
+				Swal.fire({
+				      icon: 'error',
+				      title: '가격 최대값 초과',
+				      text: '가격은 10억원 미만으로 해주세요',
+				 
+				});
+				el.value = el.value.substr(999999999);
+			}
+		}
+
+
  		
 	</script>
 </body>
