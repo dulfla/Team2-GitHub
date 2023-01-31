@@ -9,16 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import spring.exception.IdNotMatchingException;
-import spring.exception.IdPasswordNotMatchingException;
 import spring.service.member.AuthService;
 import spring.service.member.RegisterService;
 import spring.vaildator.LoginCommandValidator;
@@ -84,9 +81,6 @@ public class LoginController {
 	@RequestMapping(value="naverSave", method=RequestMethod.POST)
 	@ResponseBody
 	public int naverSave(@RequestBody NaverCommand naverCommand,HttpSession session) {
-	    
-		// ajax에서 성공 결과에서 ok인지 no인지에 따라 다른 페이지에 갈 수 있게끔 result의 기본값을 "no"로 선언
-		HashMap<String, String> result = new HashMap<String, String>();
 		try {
 			AuthInfo authInfo = authService.naverAuthenticate(naverCommand);
 			session.setAttribute("authInfo", authInfo);
