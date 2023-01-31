@@ -246,7 +246,7 @@
 		                                </div>
 		                            </div>
 		                            <div class="col-md-12">
-		                                <button type="submit" class="btn btn-success btn-send  pt-2 btn-block" onclick="fileCheck()">상품 수정</button> 
+		                                <button type="submit" class="btn btn-success btn-send  pt-2 btn-block">상품 수정</button> 
 		                                <button type="button" class="btn btn-danger btn-send  pt-2 btn-block" id="back_Btn">취소</button>
 		                            </div>
 		                        </div>
@@ -493,18 +493,6 @@
  		    value = value.replace(/,/g,'');
  		    $(this).val(value);
  		});
- 		
- 		function fileCheck() {
- 			var imgFile = $('#chooseFile').val();
- 			if($('#chooseFile').val() == ""){
- 				Swal.fire({
- 				      icon: 'error',
- 				      title: '이미지 업로드는 필수입니다!',
- 				      text: '',
- 				});
- 				$('#chooseFile').focus();
- 			}	
-		}
 		function handleOnInput(el, maxlength) {
 			if(el.value.length > maxlength)  {
 				Swal.fire({
