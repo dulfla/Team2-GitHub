@@ -160,7 +160,7 @@ function chattingRoom(){
 
 					let h6T = document.createElement('h6');
 					h6T.classList.add('mb-0');
-					h6T.innerHTML = r.p_name;
+					h6T.innerHTML = ((r.p_name.length<=10)?(r.p_name):(r.p_name.substr(0, 10)+"..."));
 
 					let pT = document.createElement('p');
 					pT.classList.add('mb-0', 'opacity-75' ,'h6');
@@ -676,13 +676,13 @@ function insertMessage(sender, nick, msg, msgType, read){
 			messageBox.appendChild(myText);
 	
 			if(read==1){
-				let readMark = document.createElement('p');
-				readMark.classList.add('readMark');
-				readMark.innerHTML = "1";
+				let readMarks = document.createElement('p');
+				readMarks.classList.add('readMarks');
+				readMarks.innerHTML = "1";
 				
 				let ph = myMessage.clientHeight;
-				readMark.setAttribute('style', "margin-top:"+(ph-15)+"px;");
-				myText.appendChild(readMark);
+				readMarks.setAttribute('style', "margin-top:"+(ph-15)+"px;");
+				myText.appendChild(readMarks);
 			}
 			
 			return myMessage;

@@ -123,8 +123,8 @@ function chattingRooms(){
 	
 						let h6T = document.createElement('h6');
 						h6T.classList.add('mb-0');
-						h6T.innerHTML = r.p_name;
-	
+						h6T.innerHTML = ((r.p_name.length<=10)?(r.p_name):(r.p_name.substr(0, 10)+"..."));
+
 						let pT = document.createElement('p');
 						pT.classList.add('mb-0', 'opacity-75' ,'h6');
 						pT.innerHTML = "<small><i>with,</i></small> "+r.chatMember;
@@ -348,7 +348,7 @@ function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들
 		},
 		success:function(data){
 			let chatTitle = document.getElementById("chatPdTitle");
-			chatTitle.innerHTML = data.productInfo.p_name;
+			chatTitle.innerHTML = ((data.productInfo.p_name.length<=10)?(data.productInfo.p_name):(data.productInfo.p_name.substr(0, 10)+"..."));
 			chatTitle.addEventListener('click', function(){
 				location.href = "productDetail?p_id="+data.productInfo.p_id;
 			}, false);

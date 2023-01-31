@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
@@ -15,7 +16,16 @@
 			  		<img id="chatPdPic" class="rounded-circle" src="" alt="${product.p_name} 사진">
 				</div>
 				<div class="col-6 mt-2" class="offcanvas-title" id="offcanvasScrollingLabel">
-					<h2>${product.p_name}</h2>
+					<h2>
+						<c:choose>
+              				<c:when test="${fn:length(product.p_name) gt 5}">
+              					<c:out value="${fn:substring(product.p_name,0,5)}" />...
+              				</c:when>
+              				<c:otherwise>
+              					<c:out value="${product.p_name}" />
+              				</c:otherwise>
+             			</c:choose>
+					</h2>
 					<p>가격 : <fmt:formatNumber value="${product.price}"  pattern="###,###,###"/>원</p>
 				</div>
 			  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeBtn chatOffcanvas"></button>
@@ -40,7 +50,16 @@
 			  		<img id="chatPdPic" class="rounded-circle" src="" alt="${product.p_name} 사진">
 				</div>
 				<div class="col-6 mt-2" class="offcanvas-title" id="offcanvasScrollingLabel">
-					<h2>${product.p_name}</h2>
+					<h2>
+						<c:choose>
+              				<c:when test="${fn:length(product.p_name) gt 5}">
+              					<c:out value="${fn:substring(product.p_name,0,5)}" />...
+              				</c:when>
+              				<c:otherwise>
+              					<c:out value="${product.p_name}" />
+              				</c:otherwise>
+             			</c:choose>
+					</h2>
 					<p>가격 : <fmt:formatNumber value="${product.price}"  pattern="###,###,###"/>원</p>
 				</div>
 			  	<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="closeBtn chatOffcanvas"></button>
