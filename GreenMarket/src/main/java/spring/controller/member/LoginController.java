@@ -1,5 +1,7 @@
 package spring.controller.member;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -81,25 +83,22 @@ public class LoginController {
 	
 	@RequestMapping(value="naverSave", method=RequestMethod.POST)
 	@ResponseBody
-	public String naverSave(@RequestBody NaverCommand naverCommand,HttpSession session) {
-		Member naver = new Member();
+	public int naverSave(@RequestBody NaverCommand naverCommand,HttpSession session) {
 	    
 		// ajax에서 성공 결과에서 ok인지 no인지에 따라 다른 페이지에 갈 수 있게끔 result의 기본값을 "no"로 선언
-		String result = "no";
+		HashMap<String, String> result = new HashMap<String, String>();
 		try {
 			AuthInfo authInfo = authService.naverAuthenticate(naverCommand);
 			session.setAttribute("authInfo", authInfo);
 			// naver가 비어있지 않는다는건 데이터를 잘 받아왔다는 뜻이므로 result를 "ok"로 설정
-			result = "ok";
+			return 0;
 		}catch (IdNotMatchingException e) {
 			registerService.naverRegist(naverCommand);
 			AuthInfo authInfo = authService.naverAuthenticate(naverCommand);
 			session.setAttribute("authInfo", authInfo);
-			result = "ok";
+			return 0;
 		}
 		
-		return result;
-	    
 	}
 
 }

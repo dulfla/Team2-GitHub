@@ -266,20 +266,20 @@ main button {
 				dataType : 'json', 
 				contentType : 'application/json;charset=UTF-8',
 				success: function(result) {
-					if(result=='ok') {
-						console.log('성공')
+					console.log(result);
+					if(result == 0 ) {
+						document.location.href = "index"; 
 				/* 		location.replace("http://localhost:8085/GreenMarket/login")  */
-					} else if(result=='no') {
-						console.log('실패')
-						/* location.replace("http://localhost:8085/GreenMarket/index") */
-					}
+					} 
 				},
 				error: function(result) {
+					console.log(result);
 					console.log('오류 발생')
 				}
 			})
 
-		} else {
+		}else {
+			
 			console.log("callback 처리에 실패하였습니다.");
 		}
 		});
