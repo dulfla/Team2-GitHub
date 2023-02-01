@@ -65,15 +65,54 @@
 		cursor: pointer;
 	}
 	
-	
 
 </style>
 
 </head>
 <body>
 	<%@ include file="include/header.jsp" %>
-
+	
+         
+	
+	
 	<div id="main">
+		<!--  메인 이미지-->
+	    <div class="ratio" style="--bs-aspect-ratio: 35%;">
+	       <img src="${path}resources/img/money-2724235_1920.jpg" alt="mainImage">
+	        <div class="text-white row">
+				<div class="col align-self-center text-center mb-5" style="height: 200px">
+					<h1 class="fw-bolder px-4">Welcome to Green Market</h1>
+					<p class="lead">A functional boilerplate for one page
+						scrolling websites</p>
+				</div>
+			</div>
+		</div>
+		
+		<div id="categorys" class="mt-3 mb-5">
+			<c:forEach items="${categoryList}" var="c" varStatus="ci">
+				<a class="moveToCategorys"
+					href="productList?c=${c.category}&v=brandNew"> <img
+					alt="${c.category} 아이콘" src="CategoryImage?fileName=${c.icon}"
+					class="categoryIcon"> <br>
+					<p class="categoryTitle">${c.category}</p>
+				</a>
+			</c:forEach>
+			<div class="advertising ">
+				<div class="badges2">
+					<div class="badge2">
+						<a href="https://www.starbucks.co.kr/index.do" target='_blank'><img
+							src="${path}resources/img/badge3.jpg" alt="Badge"></a>
+					</div>
+					<div class="badge2">
+						<a href="https://suwon.greenart.co.kr/" target='_blank'><img
+							src="https://greened.co.kr/assets/_img/header/new23_headerlogo0.svg?3"
+							alt="Badge"></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
 		<div id="imgS">
 			<div id="carouselExampleDark"
 				class="carousel carousel-dark slide m-5" data-bs-ride="carousel"
@@ -135,31 +174,18 @@
 				</button>
 			</div>
 		</div>
-		<div id="categorys" class="mb-5">
-			<c:forEach items="${categoryList}" var="c" varStatus="ci">
-				<a class="moveToCategorys"
-					href="productList?c=${c.category}&v=brandNew"> <img
-					alt="${c.category} 아이콘" src="CategoryImage?fileName=${c.icon}"
-					class="categoryIcon"> <br>
-					<p class="categoryTitle">${c.category}</p>
-				</a>
-			</c:forEach>
-			<div class="advertising ">
-				<div class="badges2">
-					<div class="badge2">
-						<a href="https://www.starbucks.co.kr/index.do" target='_blank'><img
-							src="${path}resources/img/badge3.jpg" alt="Badge"></a>
-					</div>
-					<div class="badge2">
-						<a href="https://suwon.greenart.co.kr/" target='_blank'><img
-							src="https://greened.co.kr/assets/_img/header/new23_headerlogo0.svg?3"
-							alt="Badge"></a>
-					</div>
-				</div>
-			</div>
-		</div>
+		
 	</div>
-
+	 
+	<div class="row">
+		<div style="background-color: #f5f5dc" > 
+			<div class="col align-self-center text-center mt-5" style="height: 200px">
+                <p class="lead">A functional Bootstrap 5 boilerplate for one page scrolling websites</p>
+                <a class="btn btn-lg btn-light" href="#about">Start scrolling!</a>
+            </div>    
+		    <img style="float: right" src="${path}resources/img/well-done-3182_512.gif" alt="sample">
+	     </div>	
+     </div> 
 	<%@ include file="include/footer.jsp" %>
 </body>
 </html>

@@ -267,7 +267,7 @@ main button {
 				contentType : 'application/json;charset=UTF-8',
 				success: function(result) {
 					console.log(result);
-					if(result == 0 ) {
+					if(result.message == "ok") {
 						document.location.href = "index"; 
 				/* 		location.replace("http://localhost:8085/GreenMarket/login")  */
 					} 

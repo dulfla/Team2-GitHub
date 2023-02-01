@@ -40,8 +40,9 @@ public class LoginController {
 		if(result != null ) {
 			return "redirect:/index";
 		}else {
-			return "member/login";
+			
 		}
+		return "member/login";
 	}
 	
 	@PostMapping(value = "postLogin",consumes="application/json")
@@ -80,17 +81,22 @@ public class LoginController {
 	
 	@RequestMapping(value="naverSave", method=RequestMethod.POST)
 	@ResponseBody
-	public int naverSave(@RequestBody NaverCommand naverCommand,HttpSession session) {
+	public HashMap<String, String> naverSave (@RequestBody NaverCommand naverCommand,HttpSession session) {
+		
+		HashMap<String, String> result = new HashMap<String, String>();
+		
 		try {
 			AuthInfo authInfo = authService.naverAuthenticate(naverCommand);
 			session.setAttribute("authInfo", authInfo);
 			// naver가 비어있지 않는다는건 데이터를 잘 받아왔다는 뜻이므로 result를 "ok"로 설정
-			return 0;
+			result.put("message", "ok");
+			return result;
 		}catch (IdNotMatchingException e) {
 			registerService.naverRegist(naverCommand);
 			AuthInfo authInfo = authService.naverAuthenticate(naverCommand);
 			session.setAttribute("authInfo", authInfo);
-			return 0;
+			result.put("message", "ok");
+			return result;
 		}
 		
 	}
