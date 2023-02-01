@@ -23,6 +23,15 @@
 	    margin: auto;
 	    border-radius: 2%;
 	} */
+/* 	.w-100{
+		object-fit: scale-down;
+		border-radius: 8px;
+    position: relative;
+    min-width: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+	} */
 	.pics {      /* 전체 케러셀 */
 		width: 600px;
 		float: left;
