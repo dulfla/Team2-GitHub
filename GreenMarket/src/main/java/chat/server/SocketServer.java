@@ -99,6 +99,8 @@ public class SocketServer {
 		for(SocketClient sc : socketClientList) {
 			sc.send(jsonStr);
 		}
+		System.out.println("sender.getChatRoom() : "+sender.getChatRoom());
+		System.out.println("webSessions.get(sender.getChatRoom()).values().size() : "+webSessions);
 		Collection<Collection<WebSocketSession>> sessionList = webSessions.get(sender.getChatRoom()).values();
 		for(Collection<WebSocketSession> sL : sessionList) {
 			for(WebSocketSession s : sL) {
@@ -145,7 +147,7 @@ public class SocketServer {
 		}
 	}
 
-	public void saveWebSession(Map<String, String> info, WebSocketSession session) {
+	public void saveWebSession(Map<String, String> info, WebSocketSession session) { System.out.println("saveWebsession");
 		String key = info.get("email"); // +"@"+session.getId()
 		if(0<webSessions.size()) {
 			if(webSessions.containsKey(info.get("c_id"))) {
@@ -153,11 +155,13 @@ public class SocketServer {
 					if(! webSessions.get(info.get("c_id")).get(key).contains(session)) {
 						webSessions.get(info.get("c_id")).get(key).add(session);
 					}
+					System.out.println(info.get("c_id")+".values().size() (1): "+webSessions.get(info.get("c_id")).values().size());
 					return;
 				}
 				List<WebSocketSession> wscL = new ArrayList<>();
 				wscL.add(session);
 				webSessions.get(info.get("c_id")).put(key, wscL);
+				System.out.println(info.get("c_id")+".values().size() (2): "+webSessions.get(info.get("c_id")).values().size());
 				return;
 			}
 		}
@@ -166,6 +170,7 @@ public class SocketServer {
 		Map<String, Collection<WebSocketSession>> map = new HashMap<>();
 		map.put(key, wscL);
 		webSessions.put(info.get("c_id"), map);
+		System.out.println(info.get("c_id")+".values().size() (3): "+webSessions.get(info.get("c_id")).values().size());
 	}
 
 	public void removeWebSesseion(Map<String, String> info, WebSocketSession session) {

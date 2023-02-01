@@ -3,7 +3,6 @@ let containerDiv;
 
 window.onload = function(){
 	btn = document.getElementsByName('controllServer')[0];
-	containerDiv = document.getElementById('container');
 	
 	if(btn.getAttribute('id')=='serverSetOn'){
 		btn.addEventListener('click', serverSetOn, false);
@@ -20,7 +19,7 @@ function serverSetOn(){
 	    	console.log('통신실패!!');
 	    },
 		success:function(data){
-			newBtnCreate(0);
+			changeBtn(0);
 		}
 	});
 }
@@ -33,26 +32,25 @@ function serverSetOff(){
 	    	console.log('통신실패!!');
 	    },
 		success:function(){
-			newBtnCreate(1);
+			changeBtn(1);
 		}
 	});
 }
 
-function newBtnCreate(newBtnType){
+function changeBtn(newBtnType){
 	let btnColor = ["danger", "warning"]
 	let btnText = ['서버 끄기', '서버 켜기'];
 	
-	containerDiv.innerHTML = null;
-	let newBtn = document.createElement('button');
-	newBtn.setAttribute('type', "button");
-	newBtn.setAttribute('id', "serverSetOff");
-	newBtn.setAttribute('name', "controllServer");
-	newBtn.classList.add('btn', 'btn-outline-'+btnColor[newBtnType]);
-	newBtn.innerHTML = btnText[newBtnType];
+	btn.setAttribute('id', "serverSetOff");
+	btn.setAttribute('class', 'btn btn-outline-'+btnColor[newBtnType]);
+	btn.classList.add('position-absolute', 'top-50', 'start-50', 'translate-middle');
+	btn.innerHTML = btnText[newBtnType];
+	
 	if(newBtnType==0){
-		newBtn.addEventListener('click', serverSetOff, false);
+		btn.removeEventListener('click', serverSetOn);
+		btn.addEventListener('click', serverSetOff, false);
 	}else if(newBtnType==1){
-		newBtn.addEventListener('click', serverSetOn, false);
+		btn.removeEventListener('click', serverSetOff);
+		btn.addEventListener('click', serverSetOn, false);
 	}
-	containerDiv.appendChild(newBtn);
 }

@@ -17,15 +17,15 @@ END memberAdmin;
 CREATE OR REPLACE TRIGGER trackingProduct
 BEFORE INSERT OR UPDATE OR DELETE
     ON productDetail
-FOR EACH ROW
+    FOR EACH ROW
 BEGIN
     IF inserting THEN
         INSERT INTO productHistory
         VALUES(productTracking_seq.NEXTVAL, :NEW.p_id, :NEW.category, :NEW.regdate, 'IN');
     ELSIF updating THEN
-        IF :NEW.trade<>'TRADE' OR :NEW.trade<>'trade' THEN
+        IF :NEW.trade='CLEAR' OR :NEW.trade='clear' THEN
             INSERT INTO productHistory
-            VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :NEW.category, :OLD.regdate, 'TRADE'); -- sysdate 여야 함
+            VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :OLD.category, :OLD.regdate, 'TRADE'); -- sysdate 여야 함
         END IF;
     ELSIF deleting THEN
         INSERT INTO productHistory
