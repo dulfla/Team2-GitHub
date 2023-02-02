@@ -11,20 +11,15 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import org.apache.ibatis.session.SqlSession;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.WebSession;
-import org.springframework.web.socket.WebSocketSession;
 
 import chat.server.ChatClient;
 import chat.server.ChattingWebSocket;
 import chat.server.SocketServer;
 import net.coobird.thumbnailator.Thumbnails;
-import oracle.net.aso.c;
 import spring.dao.chat.ChatDao;
 import spring.vo.chat.ChatMessageVo;
 import spring.vo.chat.ChatProductInfoVo;
@@ -40,7 +35,7 @@ public class ChatService {
 	
 	@Autowired
 	private SocketServer ss;
-	private Map<String, Map<String, Collection<WebSocketSession>>> webSessions = null;
+	private Map<String, Map<String, Collection<String>>> webSessions = null;
 	
 	@Autowired
 	private ChattingWebSocket cws;
@@ -96,17 +91,8 @@ public class ChatService {
 
 	public void close(ChatClient client, String c_id, String email) throws IOException {
 		if(client!=null) {
-			webSessions = ss.getWebSessions();
-			if(0<webSessions.size()) {
-				for(int i=0; i<webSessions.size(); i++) {
-					if(webSessions.containsKey(c_id)) {
-						if(webSessions.get(c_id).containsKey(email)) {
-							if(0!=webSessions.get(c_id).get(email).size()) {
-								return;
-							}
-						}
-					}
-				}
+			if(cws.scCloseCheck(c_id, email)) {
+				return;
 			}
 			chatRoom.get(c_id).remove(email, client);
 			client.unconnect();

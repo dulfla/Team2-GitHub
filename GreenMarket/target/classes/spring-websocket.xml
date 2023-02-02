@@ -9,10 +9,17 @@
 
 	<context:annotation-config/>
 	
+<!--
 	<websocket:handlers>
 	    <websocket:mapping handler="chatHandler" path="/server"/>
         <websocket:sockjs />
     </websocket:handlers>
-	<bean id="chatHandler" class="chat.server.ChattingWebSocket" />
-
+    
+	<bean id="chatHandler" class="chat.server.ChattingWebSocket"/>
+ -->
+ 
+ 	<bean id="cws" class="chat.server.ConnectionWebSocket"/>
+ 	<bean id="ws" class="chat.server.ChattingWebSocket"/>
+ 	
+ 
 </beans>

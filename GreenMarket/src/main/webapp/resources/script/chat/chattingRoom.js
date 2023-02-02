@@ -102,7 +102,7 @@ function chattingRooms(){
 	    	console.log(JSON.stringify(data));
 	    	console.log('통신실패!!');
 	    },
-	    success: function(dt) {
+	    success: function(dt) { // 채팅방 리스트 보여주기
 	    	if(0<dt.data.length){
 				dt.data.forEach((r) => {
 					if(activeBtn=='all' || r.type==activeBtn){
@@ -303,10 +303,9 @@ function enterSending(e){
 	}
 }
 
-function connecteWithSocket(){
-	// http://192.168.0.57:8085/GreenMarket/server?c_id="+chatRId+"&email="+personId
-	// http://localhost:8085/GreenMarket/server?c_id="+chatRId+"&email="+personId
-	socket = new SockJS("http://192.168.0.57:8085/GreenMarket/server?c_id="+chatRId+"&email="+personId);
+function connecteWithSocket(){ // 채팅 서버 연결
+	// 192.168.0.57 // localhost
+	socket = new SockJS("ws/server?c_id="+chatRId+"&email="+personId, null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
 	socket.onmessage = onMsge;
 	
 	setTimeout(() => {
@@ -331,7 +330,7 @@ function connecteWithSocket(){
 	}, 500);
 }
 
-function chatStart(){
+function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들 긁어오기
 	messagesBox.innerHTML = null;
 	document.addEventListener('keydown', enterSending, false);
 	document.getElementsByName("sendB")[0].addEventListener('click', msgeNullcheck, false);
@@ -373,7 +372,7 @@ function chatStart(){
 	});
 }
 
-function chatClose(){
+function chatClose(){ // 서버 연결 끊고, messagesBox 비우기
 	socket.close();
 	
 	document.removeEventListener('keydown', enterSending, false);
@@ -518,7 +517,7 @@ function imgFileChecking(type, size){
 	return true;
 }
 
-function sendMsg(){
+function sendMsg(){ // 메세지 보내기
 	$.ajax({
 		url:"SendMessage",
 		method:"POST",
@@ -552,12 +551,11 @@ function onMsge(msg) {
 		
 	if(msgInfo[3][1]=='READ'){
 		if(msgInfo[0][1]!=personId){
-			document.getElementByTagName('img')[document.getElementsByTagName('img').length-1].load = function(){
-				let readM = document.getElementsByClassName('readMark');
-				for(let i=readM.length-1; i>=0; i--){
-					 readM[i].parentNode.removeChild(readM[i]);
-				};
-			}
+			// console.log(msgInfo[0][1]+'님이 내 채팅을 읽었습니다.');
+		 	let readM = document.getElementsByClassName('readMark');
+		 	for(let i=readM.length-1; i>=0; i--){
+		 	 	readM[i].parentNode.removeChild(readM[i]);
+		 	};
 		}
 	}else{
 		let check = insertMessages(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1], 1);
@@ -683,7 +681,7 @@ function insertMessages(sender, nick, msg, msgType, read){
 	}
 }
 
-function scrollChecking(result){
+function scrollChecking(result){ // 스크롤이 맨 아래에 있다면 새 메세지를 보내거나 받았을 때 스크롤을 아래로 고정, 맨 아래가 아니라면 위치 그대로에, 메세지 보내고, 팝업 띄우기
 	if(result){
 		messagesBox.scrollTo(0, messagesBox.scrollHeight);
 		return true;
@@ -692,12 +690,12 @@ function scrollChecking(result){
 	}
 }
 
-function approximateChecking(nowPosition){
+function approximateChecking(nowPosition){ // 위치 확인 - 맨 아래 스크롤과의 차이가 5 이하라면 맨 아래라고 인식, 그 이상 차이 난다면 팝업으로 전환
 	let originPosition = messagesBox.scrollHeight-messagesBox.offsetHeight;
 	if(originPosition==nowPosition | originPosition-nowPosition<=5){
-		return true;
+		return true; // 스크롤 맨 아래
 	}else{
-		return false;
+		return false; // 스크롤 위치 변경됨
 	}
 }
 

@@ -226,7 +226,7 @@ main button {
 	let naverLogin = new naver.LoginWithNaverId(
 			{
 				clientId: "zPr1GMk6QFJ0KznVNkPd",
-				callbackUrl: "http://localhost:8085/GreenMarket/login",
+				callbackUrl: "http://192.168.0.57:8085/GreenMarket/login#",
 				isPopup: false,
 				loginButton: {
 					color: "white", type: 3, height: 50

@@ -1,19 +1,27 @@
 package chat.server;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-@RequestMapping("/server")
+@Component
 public class ChattingWebSocket extends TextWebSocketHandler{
     
+	private static Map<String, Map<String, Collection<WebSocketSession>>> webSessions = Collections.synchronizedMap(new HashMap<>());
+	
     @Autowired
     private SocketServer ss;
     
@@ -21,17 +29,53 @@ public class ChattingWebSocket extends TextWebSocketHandler{
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
     	System.out.println(session.getId()+", WebSocket 연결");
         Map<String, String> info = getURIInfos(session);
-    	ss.saveWebSession(info, session);	
+    	String key = info.get("email"); // +"@"+session.getId()
+    	
+    	saveThisWebsession(info, session);
     }
 
-    @Override
+    private void saveThisWebsession(Map<String, String> info, WebSocketSession session) {
+    	if(0<webSessions.size()) {
+			if(webSessions.containsKey(info.get("c_id"))) {
+				if(webSessions.get(info.get("c_id")).containsKey(info.get("email"))) {
+					if(! webSessions.get(info.get("c_id")).get(info.get("email")).contains(session)) {
+						webSessions.get(info.get("c_id")).get(info.get("email")).add(session);
+						System.out.println(info.get("c_id")+"에 있는 "+info.get("email")+"에 "+session.getId()+"추가");
+					}
+					return;
+				}
+				List<WebSocketSession> wscL = new ArrayList<>();
+				wscL.add(session);
+				webSessions.get(info.get("c_id")).put(info.get("email"), wscL);
+				System.out.println(info.get("c_id")+"에 "+info.get("email")+"추가 후 "+session.getId()+"추가");
+				return;
+			}
+		}
+		List<WebSocketSession> wscL = new ArrayList<>();
+		wscL.add(session);
+		Map<String, Collection<WebSocketSession>> map = new HashMap<>();
+		map.put(info.get("email"), wscL);
+		webSessions.put(info.get("c_id"), map);
+		System.out.println(info.get("c_id")+"추가 후 "+info.get("email")+"추가 후 "+session.getId()+"추가");
+	}
+
+	@Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		System.out.println(session.getId()+", WebSocket 분리");
     	Map<String, String> info = getURIInfos(session);
-        ss.removeWebSesseion(info, session);
+    	
+        removeThisWebsession(info, session);
     }
     
-    protected void sendMessage(WebSocketSession session, JSONObject root) throws Exception {
+    private void removeThisWebsession(Map<String, String> info, WebSocketSession session) {
+    	String key = info.get("email");
+		webSessions.get(info.get("c_id")).get(key).remove(session);
+		if(webSessions.get(info.get("c_id")).get(key).size()==0) {
+			webSessions.get(info.get("c_id")).remove(key);
+		}
+	}
+
+	protected void sendMessage(WebSocketSession session, JSONObject root) throws Exception {
     	String msgPack = "";
     	if(root.getString("messType").equals("READ")) {
     		msgPack = "chatName:"+root.getString("chatName")+","
@@ -59,6 +103,51 @@ public class ChattingWebSocket extends TextWebSocketHandler{
         	info.put(str[0], str[1]);
         }
 		return info;
+	}
+
+	public void sendMessageThisSession(String s, JSONObject root) {
+		Collection<WebSocketSession> ws = webSessions.get(root.getString("room")).get(s);
+		for(WebSocketSession w : ws) {
+			try {
+				sendMessage(w, root);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void closeAll() {
+		Collection<Map<String, Collection<WebSocketSession>>> sLs = webSessions.values();
+		for(int i=0; i<sLs.size(); i++) {
+			Map<String, Collection<WebSocketSession>> sL = (Map<String, Collection<WebSocketSession>>) sLs.toArray()[i];
+			for(int j=0; j<sL.size(); j++) {
+				Collection<WebSocketSession> s = (Collection<WebSocketSession>)sL.values().toArray()[j];
+				for(int l=s.size()-1; 0<s.size(); l--) {
+					if(s.toArray()[l]!=null) {
+						try {
+							((WebSocketSession)s.toArray()[l]).close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public boolean scCloseCheck(String chatRoom, String chatName) {
+		if(0<webSessions.size()) {
+			for(int i=0; i<webSessions.size(); i++) {
+				if(webSessions.containsKey(chatRoom)) {
+					if(webSessions.get(chatRoom).containsKey(chatName)) {
+						if(0!=webSessions.get(chatRoom).get(chatName).size()) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
     
 }

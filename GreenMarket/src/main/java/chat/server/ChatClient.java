@@ -23,7 +23,7 @@ public class ChatClient {
 	private ChattingWebSocket cws;
 
 	public void connect() throws IOException{
-		socket = new Socket("localhost", 12005);
+		socket = new Socket("192.168.0.57", 12005); // 192.168.0.57 // localhost
 		dis = new DataInputStream(socket.getInputStream());
 		dos = new DataOutputStream(socket.getOutputStream());
 	}
@@ -41,8 +41,8 @@ public class ChatClient {
 	public void setSs(SocketServer ss) {
 		this.ss = ss;
 	}
-	public void setCws(ChattingWebSocket cws) {
-		this.cws = cws;
+	public void setCws(ChattingWebSocket cws2) {
+		this.cws = cws2;
 	}
 	public String getClientNickname() {
 		return clientNickname;

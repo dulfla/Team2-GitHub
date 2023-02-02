@@ -32,39 +32,6 @@ VALUES('manager@naver.com','1234',19970205,'경기도오산시','0103455556','�
 
 ------------------------------------------------------------------------------------------------------------------------
 
--- 상품 상세
-INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid'||pid_seq.NEXTVAL,'컴퓨터','최신형 컴퓨터입니다','디지털 기기','2022/05/30',0,1000000);
-INSERT INTO product
-VALUES(product_seq.NEXTVAL, 'hong@naver.com', 'pid'||pid_seq.CURRVAL);
-
-INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid'||pid_seq.NEXTVAL,'K5','상태 좋습니다','중고차','2022/11/13',1,30000000);
-INSERT INTO product
-VALUES(product_seq.NEXTVAL, 'lee@naver.com', 'pid'||pid_seq.CURRVAL);
-
-INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid'||pid_seq.NEXTVAL,'지갑','상태 굿','잡화','2022/09/20',60,500000);
-INSERT INTO product
-VALUES(product_seq.NEXTVAL, 'pack@naver.com', 'pid'||pid_seq.CURRVAL);
-
-INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid'||pid_seq.NEXTVAL,'츄르','츄르 2박스 입니다','반려동물 물품','2022/11/03',0,15000);
-INSERT INTO product
-VALUES(product_seq.NEXTVAL, 'jeong@naver.com', 'pid'||pid_seq.CURRVAL);
-
-INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid'||pid_seq.NEXTVAL,'에어팟 맥스','에어팟 맥스 미개봉 상품입니다','디지털 기기','2022/12/25',115,600000);
-INSERT INTO product
-VALUES(product_seq.NEXTVAL, 'choi@naver.com', 'pid'||pid_seq.CURRVAL);
-
-INSERT INTO productDetail(p_id, p_name, description, category, regdate, views, price)
-VALUES('pid'||pid_seq.NEXTVAL,'에어팟','에어팟 맥스 미개봉 상품입니다','디지털 기기','2022/01/25',115,500000);
-INSERT INTO product
-VALUES(product_seq.NEXTVAL, 'pack@naver.com', 'pid'||pid_seq.CURRVAL);
-
-------------------------------------------------------------------------------------------------------------------------
-
 -- 검색어
 INSERT INTO search(idx, keyword, email)
 VALUES(search_seq.NEXTVAL, 'ddd', 'hong@naver.com');
@@ -84,12 +51,12 @@ VALUES(chatParticipants_seq.NEXTVAL, 'chat'||chatInfomation_seq.CURRVAL, 'choi@n
 INSERT INTO chatInfomation
 VALUES('chat'||chatInfomation_seq.NEXTVAL, 'pid3');
 INSERT INTO chatParticipants
-VALUES(chatParticipants_seq.NEXTVAL, 'chat'||chatInfomation_seq.CURRVAL, 'hong@naver.com', '2020/11/12');
+VALUES(chatParticipants_seq.NEXTVAL, 'chat'||chatInfomation_seq.CURRVAL, 'lee@naver.com', '2020/11/12');
 
 INSERT INTO chatInfomation
 VALUES('chat'||chatInfomation_seq.NEXTVAL, 'pid2');
 INSERT INTO chatParticipants
-VALUES(chatParticipants_seq.NEXTVAL, 'chat'||chatInfomation_seq.CURRVAL, 'hong@naver.com', '2021/11/12');
+VALUES(chatParticipants_seq.NEXTVAL, 'chat'||chatInfomation_seq.CURRVAL, 'pack@naver.com', '2021/11/12');
 
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
