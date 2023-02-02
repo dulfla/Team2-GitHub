@@ -40,14 +40,12 @@ public class ChattingWebSocket extends TextWebSocketHandler{
 				if(webSessions.get(info.get("c_id")).containsKey(info.get("email"))) {
 					if(! webSessions.get(info.get("c_id")).get(info.get("email")).contains(session)) {
 						webSessions.get(info.get("c_id")).get(info.get("email")).add(session);
-						System.out.println(info.get("c_id")+"에 있는 "+info.get("email")+"에 "+session.getId()+"추가");
 					}
 					return;
 				}
 				List<WebSocketSession> wscL = new ArrayList<>();
 				wscL.add(session);
 				webSessions.get(info.get("c_id")).put(info.get("email"), wscL);
-				System.out.println(info.get("c_id")+"에 "+info.get("email")+"추가 후 "+session.getId()+"추가");
 				return;
 			}
 		}
@@ -56,7 +54,6 @@ public class ChattingWebSocket extends TextWebSocketHandler{
 		Map<String, Collection<WebSocketSession>> map = new HashMap<>();
 		map.put(info.get("email"), wscL);
 		webSessions.put(info.get("c_id"), map);
-		System.out.println(info.get("c_id")+"추가 후 "+info.get("email")+"추가 후 "+session.getId()+"추가");
 	}
 
 	@Override

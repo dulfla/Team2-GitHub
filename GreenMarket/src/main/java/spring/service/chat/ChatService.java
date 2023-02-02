@@ -35,7 +35,6 @@ public class ChatService {
 	
 	@Autowired
 	private SocketServer ss;
-	private Map<String, Map<String, Collection<String>>> webSessions = null;
 	
 	@Autowired
 	private ChattingWebSocket cws;

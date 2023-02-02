@@ -91,8 +91,7 @@ function openOffCanvas(){
 	    dataType : 'text',
     	contentType : 'application/json; charset=UTF-8',
     	data : JSON.stringify({
-    		p_id : productId,
-    		email : personalId /* personalId :: 임시 */
+    		p_id : productId
     	}),
 	    error: function(){
 	    	console.log('통신실패!!');
@@ -133,8 +132,7 @@ function chattingRoom(){
 	    dataType : 'json',
     	contentType : 'application/json; charset=UTF-8',
     	data : JSON.stringify({
-    		p_id : productId,
-    		email : personalId /* personalId :: 임시 */
+    		p_id : productId
     	}),
 	    error: function(data) {
 	    	console.log(JSON.stringify(data));
@@ -333,15 +331,14 @@ function enterSend(e){
 	}
 }
 
-function chatting(){ // 채팅방 연결 - 채팅방이 있으면 해당 채팅방으로, 없으면 새로운 채팅방으로
+function chatting(){
 	$.ajax({
 	    url: "ChatRoomCheck",
 	    type: "POST",
 	    dataType : 'text',
     	contentType : 'application/json; charset=UTF-8',
     	data : JSON.stringify({
-    		p_id : productId,
-    		email : personalId /* personalId :: 임시 */
+    		p_id : productId
     	}),
 	    error: function(){
 	    	console.log('통신실패!!');
@@ -349,14 +346,13 @@ function chatting(){ // 채팅방 연결 - 채팅방이 있으면 해당 채팅�
 	    success: function(data) {
 	    	if(data!=null){
 	    		chatRoomId = data;
-	    		console.log(chatRoomId); /*****/
 	    		connecteToSocket();
 	    	}
 	    }
 	});
 }
 
-function connecteToSocket(){ // 채팅 서버 연결
+function connecteToSocket(){
 	// 192.168.0.57 // localhost
 	sock = new SockJS("ws/server?c_id="+chatRoomId+"&email="+personalId, null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
 	sock.onmessage = onMessage;
@@ -368,8 +364,7 @@ function connecteToSocket(){ // 채팅 서버 연결
 		    dataType : 'text',
 	    	contentType : 'application/json; charset=UTF-8',
 			data : JSON.stringify({ 
-				c_id : chatRoomId, 
-				email : personalId /* personalId :: 임시 */
+				c_id : chatRoomId
 			}),
 			error:function(){  
 				console.log('서버와의 연결이 이어지지 않았습니다.'); 
@@ -382,7 +377,7 @@ function connecteToSocket(){ // 채팅 서버 연결
 	}, 500);
 }
 
-function onMessage(msg) { /**************/
+function onMessage(msg) {
     let data = msg.data; console.log(data);
     let reciveText = document.createElement('div');
 	reciveText.classList.add('messageBox', 'reciveMessageBox');
@@ -396,7 +391,7 @@ function onMessage(msg) { /**************/
 	messageBox.appendChild(reciveText);
 }
 
-function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세지들 긁어오기
+function chattingStart(){
 	messageBox.innerHTML = null;
 	document.addEventListener('keydown', enterSend, false);
 	document.getElementsByName("sendBtn")[0].addEventListener('click', msgNullcheck, false);
@@ -407,8 +402,7 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 	    dataType : 'json',
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
-			c_id : chatRoomId, 
-			email : personalId /* personalId :: 임시 */
+			c_id : chatRoomId
 		}),
 		error:function(){
 			console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
@@ -432,7 +426,7 @@ function chattingStart(){ // 기존에 메세지가 있었다면 해당 메세�
 	});	
 }
 
-function chattingClose(){ // 서버 연결 끊고, messageBox 비우기
+function chattingClose(){
 	sock.close();
 	
 	document.removeEventListener('keydown', enterSend, false);
@@ -444,8 +438,7 @@ function chattingClose(){ // 서버 연결 끊고, messageBox 비우기
 	    dataType : 'json',
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
-			c_id : chatRoomId, 
-			email : personalId /* personalId :: 임시 */
+			c_id : chatRoomId
 		}),
 		success:function(){   
 			console.log('서버와의 연결이 정상적으로 해제되었습니다.');
@@ -541,7 +534,7 @@ function fileSend(files){
 			let newFileName = day+"_"+time+"."+fileType;
 			
 			$.ajax({
-			 	url: 'SendFile?c_id='+chatRoomId+'&email='+personalId+'&name='+newFileName, /* personalId :: 임시 */
+			 	url: 'SendFile?c_id='+chatRoomId+'&name='+newFileName,
 			 	processData : false,
 			 	contentType : false,
 			 	data : formData,
@@ -577,7 +570,7 @@ function imgFileCheck(type, size){
 	return true;
 }
 
-function sendMessage(){ // 메세지 보내기
+function sendMessage(){
 	$.ajax({
 		url:"SendMessage",
 		method:"POST",
@@ -585,7 +578,6 @@ function sendMessage(){ // 메세지 보내기
 		data : JSON.stringify({
 			c_id : chatRoomId,
     		p_id : productId,
-    		email : personalId, /* personalId :: 임시 */
     		message : msg.value,
     		type : "TEXT"
     	}),
@@ -612,11 +604,12 @@ function onMessage(msg) {
 		
 	if(msgInfo[3][1]=='READ'){
 		if(msgInfo[0][1]!=personalId){
-			// console.log(msgInfo[0][1]+'님이 내 채팅을 읽었습니다.');
-		 	let readM = document.getElementsByClassName('readMarks');
-		 	for(let i=readM.length-1; i>=0; i--){
-		 	 	readM[i].parentNode.removeChild(readM[i]);
-		 	};
+		 	imgs[imgs.length-1].load = function(){
+				let readM = document.getElementsByClassName('readMarks');
+			 	for(let i=readM.length-1; i>=0; i--){
+			 	 	readM[i].parentNode.removeChild(readM[i]);
+			 	};
+			}
 		}	 
 	}else{
 		let check = insertMessage(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1], 1);
@@ -648,7 +641,6 @@ function readMsge(msgIdx){
 		data : JSON.stringify({
 			c_id : chatRoomId,
     		p_id : null,
-    		email : personalId, /* personalId :: 임시 */
     		msgIdx : msgIdx,
     		type : "READ"
     	}),
@@ -743,7 +735,7 @@ function insertMessage(sender, nick, msg, msgType, read){
 	}
 }
 
-function scrollCheck(result){ // 스크롤이 맨 아래에 있다면 새 메세지를 보내거나 받았을 때 스크롤을 아래로 고정, 맨 아래가 아니라면 위치 그대로에, 메세지 보내고, 팝업 띄우기
+function scrollCheck(result){
 	if(result){
 		messageBox.scrollTo(0, messageBox.scrollHeight);
 		return true;
@@ -752,12 +744,12 @@ function scrollCheck(result){ // 스크롤이 맨 아래에 있다면 새 메세
 	}
 }
 
-function approximateCheck(nowPosition){ // 위치 확인 - 맨 아래 스크롤과의 차이가 5 이하라면 맨 아래라고 인식, 그 이상 차이 난다면 팝업으로 전환
+function approximateCheck(nowPosition){
 	let originPosition = messageBox.scrollHeight-messageBox.offsetHeight;
 	if(originPosition==nowPosition | originPosition-nowPosition<=5){
-		return true; // 스크롤 맨 아래
+		return true;
 	}else{
-		return false; // 스크롤 위치 변경됨
+		return false;
 	}
 }
 
