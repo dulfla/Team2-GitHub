@@ -335,14 +335,13 @@ crossorigin="anonymous"></script>
 			let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
 				
 			str += "<div id='result_card'>";
-			str += "<img src='display?fileName=" + fileCallPath +"'>";
+			str += "<img src='display?fileName=" + fileCallPath +"'>";			
 			str += "<div class='imgDeleteBtn' data-file='"+ fileCallPath +"'>x</div>";
 			str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
 			str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
 			str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";
-			str += "</div>";		
-				
-			uploadResult.append(str); 
+			str += "</div>";
+			uploadResult.append(str);
 		}
 		/* 이미지 삭제 버튼  동작 */
 		$("#uploadResult").on("click", ".imgDeleteBtn", function(e){	
