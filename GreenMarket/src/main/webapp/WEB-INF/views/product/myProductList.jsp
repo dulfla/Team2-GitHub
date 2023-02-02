@@ -22,7 +22,7 @@
 	p{
 	font-family: hana;
 	}
-   	.list-group{
+   	.list{
    		margin : auto;
    		width:160px;   		
    		position:fixed;
@@ -47,20 +47,36 @@
     }   
     #main{
     	min-height:100vh;
+    }    
+    .bg{
+    	background-color: #96C26B;
+    	border-color: #fff;
     }
+    .bg:hover {
+	    color: #fff;
+	    background-color: #96C26B;
+	    border-color: #96C26B;
+    }
+    .pricetag{
+    	color : #5FAD11!important;
+    	font-weight: bold;
+    }  
+    .page-link{
+    	color : #5FAD11;
+    }    
     </style>
 </head>
 <body>
 <%@ include file="../include/header.jsp" %>	
 <div id="main">
 	<div class="container">
-		<div class="list-group">
+		<div class="list-group list">
 	  		<a href="myProduct" class="list-group-item list-group-item-action">내 상품</a>
 	  		<a href="selled" class="list-group-item list-group-item-action">판매완료된 상품</a>
 	  		<a href="unSelled" class="list-group-item list-group-item-action">판매중인 상품</a> 
 		</div>
 		<div class="btn-group linewarp">
-			  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+			  	<button class="btn btn-secondary dropdown-toggle bg" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 				  	${pageData.oip} 개
 			  	</button>
 			  	<ul class="dropdown-menu">
@@ -94,17 +110,17 @@
 			  							</div>
 			  							<div class="col">
 				 							<c:choose>
-												<c:when test="${p.trade eq'trade' or p.trade eq 'TRADE'}"><p  class="position-relative text-end" style="color : #11B339">거래중❗</p></c:when>
+												<c:when test="${p.trade eq'trade' or p.trade eq 'TRADE'}"><p  class="position-relative text-end" style="color : #5CAF0B">거래중❗</p></c:when>
 												<c:when test="${p.trade eq'clear' or p.trade eq 'CLEAR'}"><p class="position-relative text-end" style="color : red">거래완료🚫</p></c:when>
 				 							</c:choose>
 					 					</div>
 			      					</div>
-			      					<h4 class="card-head mb-3">${p.p_name}</h4>
+			      					<h4 class="card-head mb-3"><p>${p.p_name}</p></h4>
 			      					<div class="d-flex justify-content-between align-items-center">
 			      						<div class="btn-group">
 			        						<button href="productDetail?p_id=${p.p_id}" type="button" class="btn btn-sm btn-outline-secondary" name="moveToDetail">보기</button>
 			        					</div>
-	                					<small class="text-muted"><fmt:formatNumber value="${p.price}"  pattern="###,###,###"/>원</small>
+	                					<small class="text-muted pricetag"><fmt:formatNumber value="${p.price}"  pattern="###,###,###"/>원</small>
 	              					</div>
 	            				</div>
 	          				</div>

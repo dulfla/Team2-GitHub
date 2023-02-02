@@ -11,7 +11,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-    
     <style type="text/css">
 
 	@font-face {
@@ -37,6 +36,27 @@
     }
     #main{
     	min-width:100vh;
+    }     
+    .bg{
+    	background-color: #96C26B;
+    	border-color: white;
+    }
+    .bg:hover {
+	    color: #fff;
+	    background-color: #96C26B;
+	    border-color: #96C26B;
+    }
+    .btn:active{
+    	color : #fff;
+    	background-color: #4A9006;
+    	border-color: #4A9006;
+    }
+    .pricetag{
+    	color : #5FAD11!important;
+    	font-weight: bold;
+    }  
+    .page-link{
+    	color : #5FAD11;
     }
 	</style>
 </head>
@@ -46,7 +66,7 @@
 	<div class="container">
 		<div id="optionGroups">
 			<div class="btn-group linewarp">
-			  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+			  	<button class="btn btn-secondary dropdown-toggle bg" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 				   	<c:choose>
 		              	<c:when test="${empty pageData.c}">카테고리</c:when>
 		              	<c:otherwise>
@@ -65,7 +85,7 @@
 			  	</ul>
 			</div>	
 			<div class="btn-group linewarp">
-			  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+			  	<button class="btn btn-secondary dropdown-toggle bg" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 				  	<c:choose>
 			           	<c:when test="${pageData.v eq 'product'}" >조회유형</c:when>
 			           	<c:when test="${pageData.v eq 'brandNew'}">최신순</c:when>
@@ -82,7 +102,7 @@
 			  	</ul>
 			</div>
 			<div class="btn-group linewarp">
-			  	<button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+			  	<button class="btn btn-secondary dropdown-toggle bg" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 				  	${pageData.oip} 개
 			  	</button>
 			  	<ul class="dropdown-menu">
@@ -115,19 +135,19 @@
 			            				<div class="col">
 				            				<p class="card-text">${p.category}</p>		                
 				            			</div>
-				            			<div class="col">
+				            			<div class="col pricetag">
 				            				<c:choose>
-							               		<c:when test="${p.trade eq'trade' or p.trade eq 'TRADE'}"><p class="position-relative text-end" style="color : #11B339">거래중❗</p></c:when>
+							               		<c:when test="${p.trade eq'trade' or p.trade eq 'TRADE'}"><p class="position-relative text-end" style="color : #5CAF0B">거래중❗</p></c:when>
 							               		<c:when test="${p.trade eq'clear' or p.trade eq 'CLEAR'}"><p class="position-relative text-end" style="color : red">거래완료🚫</p></c:when>
 							               	</c:choose>
 				            			</div>
-			            			</div>
-			               			<h4 class="card-head mb-3">${p.p_name}</h4>
+			            			</div>			            			
+			               			<h4 class="card-head mb-3"><p>${p.p_name}</p></h4>			               			
 			              			<div class="d-flex justify-content-between align-items-center">
 			                			<div class="btn-group">
 			                  				<button href="productDetail?p_id=${p.p_id}" type="button" class="btn btn-sm btn-outline-secondary" name="moveToDetail">보기</button>
 			                			</div>
-			                			<small class="text-muted"><fmt:formatNumber value="${p.price}"  pattern="###,###,###"/>원</small>
+			                			<small class="text-muted pricetag"><fmt:formatNumber value="${p.price}"  pattern="###,###,###"/>원</small>
 			              			</div>
 			            		</div>
 			          		</div>
