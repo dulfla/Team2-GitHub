@@ -26,8 +26,6 @@ function withDrawalCheck(){
 		"password": password,
 		"authKey": authKey,
 	};
-	console.log(memMail);
-	console.log(jsonData.email);
 	
 		$.ajax({
 			type:"POST",
@@ -36,7 +34,6 @@ function withDrawalCheck(){
 			dataType : 'json', 
 			contentType : 'application/json;charset=UTF-8', 
 			 success: function(result){
-				 console.log(result);
 				if(result == 2){
 					Swal.fire({
 					    icon: 'error',

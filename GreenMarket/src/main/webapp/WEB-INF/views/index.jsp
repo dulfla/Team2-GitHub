@@ -235,7 +235,7 @@
 	<div id="main">
 		<!--  메인 이미지-->
 	    <div class="ratio" style="--bs-aspect-ratio: 35%;">
-	       <img src="${path}resources/img/money-2724235_1920.jpg" alt="mainImage">
+	       <img src="${path}resources/img/mainImage/money-2724235_1920.jpg" alt="mainImage">
 	        <div class="text-white row">
 				<div class="col align-self-center text-center mb-5" style="height: 200px">
 					<h1 class="fw-bolder px-4">Welcome to Green Market</h1>
@@ -263,11 +263,11 @@
 				<div class="badges2">
 					<div class="badge2">
 						<a href="https://www.starbucks.co.kr/index.do" target='_blank'><img
-							src="${path}resources/img/badge3.jpg" alt="Badge"></a>
+							src="${path}resources/img/badge/badge3.jpg" alt="Badge"></a>
 					</div>
 					<div class="badge2">
 						<a href="https://suwon.greenart.co.kr/" target='_blank'><img
-							src="${path}resources/img/badge2.jpg"
+							src="${path}resources/img/badge/badge2.jpg"
 							alt="Badge"></a>
 					</div>
 				</div>
@@ -461,7 +461,7 @@
 							src="${path}resources/img/portfolio/6.jpg" alt="..." />
 						</a>
 						<div class="portfolio-caption">
-							<a class="moveToCategorys" href="productList?c=취미•게임•음반&v=brandNew">
+							<a class="moveToCategorys" href="productList?c=취미 게임 음반&v=brandNew">
 								<div class="portfolio-caption-heading">취미 게임 음반</div>
 								<div class="portfolio-caption-subheading text-muted">Photography</div>
 							</a>	

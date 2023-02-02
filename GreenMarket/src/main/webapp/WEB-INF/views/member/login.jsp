@@ -236,7 +236,7 @@ main button {
 			<div class="badges2">
 				<div class="badge2">
 					<a href="https://www.starbucks.co.kr/index.do" target='_blank'><img
-						src="${path}resources/img/badge1.jpg" alt="Badge"></a>
+						src="${path}resources/img/badge/badge1.jpg" alt="Badge"></a>
 				</div>
 				<div class="badge2">
 					<a href="https://suwon.greenart.co.kr/" target='_blank'><img
@@ -257,7 +257,8 @@ main button {
 	
 	let naverLogin = new naver.LoginWithNaverId(
 			{
-				clientId: "zPr1GMk6QFJ0KznVNkPd",
+			/* 테스트용*/ clientId: "effwoF9_h12zWXZpxtMP",
+			/* 	배포용 clientId: zPr1GMk6QFJ0KznVNkPd, */
 				callbackUrl: "http://localhost:8085/GreenMarket/login",
 				isPopup: false,
 				loginButton: {
@@ -273,17 +274,16 @@ main button {
 		naverLogin.getLoginStatus(function (status) {
 
 		if (status) {
-			console.log(naverLogin); 
 			
 			let birthday = naverLogin.user.getBirthday();
 			let email = naverLogin.user.getEmail();
 			let name = naverLogin.user.getName();
 			let nickName = naverLogin.user.getNickName();
 			
-			console.log(email);
+			/* console.log(email);
 			console.log(name);
 			console.log(nickName);
-			console.log(birthday);
+			console.log(birthday); */
 			
 			let jsonData = {
 				'n_email':email,

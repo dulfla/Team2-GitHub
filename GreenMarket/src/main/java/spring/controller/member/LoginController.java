@@ -91,9 +91,11 @@ public class LoginController {
 			result.put("message", "ok");
 			return result;
 		}catch (IdNotMatchingException e) {
+			
 			registerService.naverRegist(naverCommand);
 			AuthInfo authInfo = authService.naverAuthenticate(naverCommand);
 			session.setAttribute("authInfo", authInfo);
+			
 			result.put("message", "ok");
 			return result;
 		}

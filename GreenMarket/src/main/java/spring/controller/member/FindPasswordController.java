@@ -46,7 +46,6 @@ public class FindPasswordController {
 			int getKey = mailSendService.key;
 			authCheck = 1;
 			
-			System.out.println("테스트키 : "+mailSendService.key);
 			findPasswordService.MailAuth(findPwdCmd, getKey);
 			model.addAttribute("findPwdCmd",findPwdCmd);
 			session.setAttribute("findPwdCmd", findPwdCmd.getEmail());
