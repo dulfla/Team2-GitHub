@@ -182,6 +182,22 @@ main button {
 	height: 40px;
 	width: 40px;
 }
+
+	/* 광고 배너*/
+	.advertising  .badges2 {
+		position: absolute;
+		top: 132px;
+		right:40px;
+	}
+	
+	.advertising  .badges2 .badge2 {
+		border-radius: 5px;
+		overflow: hidden;
+		margin-bottom: 12px;
+		box-shadow: 4px 4px 10px rgba(0, 0, 0, .15);
+		cursor: pointer;
+	}
+
 </style>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
 <jsp:include page="../include/header.jsp"/>
@@ -189,30 +205,46 @@ main button {
 <body>
 	<main>
 		<div class="container2" id="container2">
-		<div class="form-container log-in-container">
-			<form class="form" action="postLogin" method="post" id="login_form" name="frm">
-			<form:errors />
-				<h1 class="mt-2">로그인</h1>
-				<div class="social-container">
-					<div id="naverIdLogin"></div>
-				</div>
-				<span>or use your account</span>
-				<input class="input" type="email"	name="email" id="email"  placeholder="이메일" /> 
-				<input class="input" type="password" name="password" id="password" placeholder="비밀번호" /> 
-				<a href="findPassword">비밀번호 찾기</a>
-				<button type="button" id="loginBtn" onclick="return loginCheck()">Log In</button>
-			</form>	
-		</div>
-		<div class="overlay-container">
-			<div class="overlay">
-				<div class="overlay-panel overlay-right">
-					<h1>Green Market Login Form</h1>
-					<p>This login form is created using pure HTML and CSS. For
-						social icons, FontAwesome is used.</p>
+			<div class="form-container log-in-container">
+				<form class="form" action="postLogin" method="post" id="login_form"
+					name="frm">
+					<form:errors />
+					<h1 class="mt-2">로그인</h1>
+					<div class="social-container">
+						<div id="naverIdLogin"></div>
+					</div>
+					<span>or use your account</span> <input class="input" type="email"
+						name="email" id="email" placeholder="이메일" /> <input class="input"
+						type="password" name="password" id="password" placeholder="비밀번호" />
+					<a href="findPassword">비밀번호 찾기</a>
+					<button type="button" id="loginBtn" onclick="return loginCheck()">Log
+						In</button>
+				</form>
+			</div>
+			<div class="overlay-container">
+				<div class="overlay">
+					<div class="overlay-panel overlay-right">
+						<h1>Green Market Login Form</h1>
+						<p>This login form is created using pure HTML and CSS. For
+							social icons, FontAwesome is used.</p>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+		<!-- 광고 배너 -->
+		<div class="advertising ">
+			<div class="badges2">
+				<div class="badge2">
+					<a href="https://www.starbucks.co.kr/index.do" target='_blank'><img
+						src="${path}resources/img/badge1.jpg" alt="Badge"></a>
+				</div>
+				<div class="badge2">
+					<a href="https://suwon.greenart.co.kr/" target='_blank'><img
+						src="https://greened.co.kr/assets/_img/header/new23_headerlogo0.svg?3"
+						alt="Badge"></a>
+				</div>
+			</div>
+		</div>
 	</main>
 	<!-- 네이버 로그인 버튼 생성 위치 -->
 </body>
@@ -267,7 +299,8 @@ main button {
 				contentType : 'application/json;charset=UTF-8',
 				success: function(result) {
 					console.log(result);
-					if(result.message == "ok") {
+					if(result.message == 'ok') {
+						console.log('확인');
 						document.location.href = "index"; 
 				/* 		location.replace("http://localhost:8085/GreenMarket/login")  */
 					} 

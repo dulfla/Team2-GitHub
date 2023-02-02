@@ -26,6 +26,9 @@ public class FindPasswordController {
 	@Autowired
 	private MailSendService mailSendService;
 	
+	// 메일 확인키
+	int authCheck = 0;
+	
 	@Autowired
 	private FindPasswordService findPasswordService;
 	
@@ -41,6 +44,8 @@ public class FindPasswordController {
 		
 		try {
 			int getKey = mailSendService.key;
+			authCheck = 1;
+			
 			System.out.println("테스트키 : "+mailSendService.key);
 			findPasswordService.MailAuth(findPwdCmd, getKey);
 			model.addAttribute("findPwdCmd",findPwdCmd);
@@ -58,8 +63,14 @@ public class FindPasswordController {
 	
 	@GetMapping("mailAuthSuccess")
 	public String mailAuthSuccess() {
+		if(authCheck == 1) {
+			authCheck = 0;
+			return "edit/findPasswordSuccess";
+			
+		}else {
+			return "redirect:/index";
+		}
 		
-		return "edit/findPasswordSuccess";
 	}
 	
 	@PostMapping("changePassword")

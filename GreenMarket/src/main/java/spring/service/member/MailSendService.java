@@ -30,6 +30,7 @@ public class MailSendService {
 	
 	public static int key;
 	
+	
 	public int getKey(int size) {
 		Random r = new Random();
 		int checkNum = r.nextInt(888888) + 111111;

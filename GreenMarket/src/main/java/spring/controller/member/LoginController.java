@@ -39,9 +39,8 @@ public class LoginController {
 		Object result = (Object)session.getAttribute("authInfo");
 		if(result != null ) {
 			return "redirect:/index";
-		}else {
-			
 		}
+		
 		return "member/login";
 	}
 	
