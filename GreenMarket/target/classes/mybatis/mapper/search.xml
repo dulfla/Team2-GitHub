@@ -152,15 +152,6 @@
 		</choose>
 	</insert>
 	
-	<!-- <if test="email == null">
-			insert into search(idx,keyword)
-			VALUES(search_seq.nextval,#{keyword})
-	</if>
-	<if test="email != null">
-		insert into search(idx, keyword, email)
-		VALUES(search_seq.nextval,#{keyword},#{email})
-	</if> -->
-	
 	<!-- 인기 검색어 리스트 -->
 	<select id="popSearchList" resultType="search">
 		select keyword ,count(keyword)

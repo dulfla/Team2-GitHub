@@ -86,7 +86,7 @@
 	
 	.advertising  .badges2 {
 		position: fixed;
-		top: 132px;
+		top: 200px;
 		right: 40px;
 	}
 	
