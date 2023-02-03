@@ -69,7 +69,11 @@
 	
 	<!-- 해당 채팅방의 상품에 대한 샘플 이미지 정보 가져오기 -->
 	<select id="selectProductImg" parameterType="String" resultType="ProductImageVO">
-		SELECT * FROM ProductPic WHERE p_id = #{p_id}
+		SELECT * FROM productPic
+		    	WHERE uuid = (SELECT min(uuid)
+		    					FROM productPic
+		    					WHERE p_id=#{p_id}
+		    					GROUP BY p_id)
 	</select>
 	
 	<!-- 채팅방이 없던 상품에 대해 채팅을 시도하는 경우 새로운 채팅방 만들기 && 새로운 채팅방에 입장했다는 데이터 입력 :: 프로시저 사용 -->
@@ -124,5 +128,31 @@
 		SET read=0
 		WHERE idx=#{idx}
  	</update>
+ 	
+ 	<!--  -->
+ 	
+ 	<insert id="saveWebsocket" parameterType="map">
+ 		insert into websocketsessionmanagement
+ 		values(#{c_id}, #{email}, #{session_id})
+ 	</insert>
+ 	
+ 	<delete id="removeWebsocket" parameterType="map">
+ 		delete websocketsessionmanagement
+ 		where session_id=#{session_id}
+ 	</delete>
+ 	
+ 	<delete id="removeAllWebsocket">
+ 		delete websocketsessionmanagement
+ 	</delete>
+ 	
+ 	<select id="selectChatJoinMembers" parameterType="String" resultType="String">
+ 		select DISTINCT email from websocketsessionmanagement
+ 		where c_id=#{c_id}
+ 	</select>
+ 	
+ 	<select id="selectSessionIdByThis" parameterType="map" resultType="String">
+ 		select session_id from websocketsessionmanagement
+ 		where c_id=#{c_id} AND email=#{email}
+ 	</select>
  	
 </mapper>

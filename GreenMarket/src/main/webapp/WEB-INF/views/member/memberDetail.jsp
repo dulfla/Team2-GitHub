@@ -30,7 +30,7 @@
     	<div class="row">
         <div class="col-sm-12">
             <div class="col-sm-2"></div>
-	        <div class="col-sm-9">
+	        <div class="col-md-8 mt-4 mx-auto">
 	            <h2 class="text-center">회원 정보 보기</h2>
 	            <table class="table table-striped">
 	              <tr>

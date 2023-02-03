@@ -18,9 +18,9 @@ DROP SEQUENCE memberTracking_seq;
 DROP SEQUENCE pid_seq;
 DROP SEQUENCE product_seq;
 DROP SEQUENCE picture_seq;
+DROP SEQUENCE productTracking_seq;
 DROP SEQUENCE sampleMessage_seq;
 DROP SEQUENCE chatMessage_seq;
-DROP SEQUENCE productTracking_seq;
 DROP SEQUENCE chatInfomation_seq;
 DROP SEQUENCE chatParticipants_seq;
 

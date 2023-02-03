@@ -1,11 +1,3 @@
-function enterkey() {
-	if (window.event.keyCode == 13) {
-    	// 엔터키가 눌렸을 때
-    	console.log('테스트중');
-    	alert('테스트');
-    }
-}
-
 
 function loginCheck(){
 	if(document.frm.email.value.length == 0){
@@ -36,7 +28,6 @@ function loginAjax(){
 		"email" : email,
 		"password" : password
 	};
-	console.log(jsonData);
 	
 		$.ajax({
 			type:"POST",
@@ -45,7 +36,6 @@ function loginAjax(){
 			dataType : 'json', 
 			contentType : 'application/json;charset=UTF-8', 
 			 success: function(result){
-				 console.log(result);
 				 if(result != null){
 					 Swal.fire({
 						    icon: 'success',

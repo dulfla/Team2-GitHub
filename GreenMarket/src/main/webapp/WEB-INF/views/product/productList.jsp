@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -46,11 +47,6 @@
 	    background-color: #96C26B;
 	    border-color: #96C26B;
     }
-    .btn:active{
-    	color : #fff;
-    	background-color: #4A9006;
-    	border-color: #4A9006;
-    }
     .pricetag{
     	color : #5FAD11!important;
     	font-weight: bold;
@@ -64,7 +60,7 @@
 <%@ include file="../include/header.jsp" %>
 <div id="main">
 	<div class="container">
-		<div id="optionGroups">
+		<div id="optionGroups" class="mt-3">
 			<div class="btn-group linewarp">
 			  	<button class="btn btn-secondary dropdown-toggle bg" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 				   	<c:choose>
@@ -142,7 +138,16 @@
 							               	</c:choose>
 				            			</div>
 			            			</div>			            			
-			               			<h4 class="card-head mb-3"><p>${p.p_name}</p></h4>			               			
+			               			<h4 class="card-head mb-3">
+			               				<c:choose>
+				               				<c:when test="${fn:length(p.p_name) gt 13}">
+				               					<c:out value="${fn:substring(p.p_name,0,13)}" />...
+				               				</c:when>
+				               				<c:otherwise>
+				               					<c:out value="${p.p_name}" />
+				               				</c:otherwise>
+				               			</c:choose>
+			               			</h4>			               			
 			              			<div class="d-flex justify-content-between align-items-center">
 			                			<div class="btn-group">
 			                  				<button href="productDetail?p_id=${p.p_id}" type="button" class="btn btn-sm btn-outline-secondary" name="moveToDetail">보기</button>

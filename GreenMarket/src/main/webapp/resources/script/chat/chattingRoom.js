@@ -94,7 +94,7 @@ function chattingRooms(){
 	roomsBox.innerHTML = null;
 	
 	$.ajax({
-	    url: "SelectChatRooms?email="+personId, /* personId :: 임시 */
+	    url: "SelectChatRooms",
 	    type: "POST",
 	    dataType : 'json',
     	contentType : 'application/json; charset=UTF-8',
@@ -102,7 +102,7 @@ function chattingRooms(){
 	    	console.log(JSON.stringify(data));
 	    	console.log('통신실패!!');
 	    },
-	    success: function(dt) { // 채팅방 리스트 보여주기
+	    success: function(dt) {
 	    	if(0<dt.data.length){
 				dt.data.forEach((r) => {
 					if(activeBtn=='all' || r.type==activeBtn){
@@ -123,8 +123,8 @@ function chattingRooms(){
 	
 						let h6T = document.createElement('h6');
 						h6T.classList.add('mb-0');
-						h6T.innerHTML = r.p_name;
-	
+						h6T.innerHTML = ((r.p_name.length<=10)?(r.p_name):(r.p_name.substr(0, 10)+"..."));
+
 						let pT = document.createElement('p');
 						pT.classList.add('mb-0', 'opacity-75' ,'h6');
 						pT.innerHTML = "<small><i>with,</i></small> "+r.chatMember;
@@ -303,8 +303,9 @@ function enterSending(e){
 	}
 }
 
-function connecteWithSocket(){ // 채팅 서버 연결
-	socket = new SockJS("http://localhost:8085/GreenMarket/server?c_id="+chatRId+"&email="+personId);
+function connecteWithSocket(){
+	// 192.168.0.57 // localhost
+	socket = new SockJS("ws/server?c_id="+chatRId+"&email="+personId, null, {transports: ["websocket", "xhr-streaming", "xhr-polling"]});
 	socket.onmessage = onMsge;
 	
 	setTimeout(() => {
@@ -314,8 +315,7 @@ function connecteWithSocket(){ // 채팅 서버 연결
 		    dataType : 'text',
 	    	contentType : 'application/json; charset=UTF-8',
 			data : JSON.stringify({ 
-				c_id : chatRId, 
-				email : personId /* personId :: 임시 */
+				c_id : chatRId
 			}),
 			error:function(data){ 
 				console.log(JSON.stringify(data));
@@ -329,7 +329,7 @@ function connecteWithSocket(){ // 채팅 서버 연결
 	}, 500);
 }
 
-function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들 긁어오기
+function chatStart(){
 	messagesBox.innerHTML = null;
 	document.addEventListener('keydown', enterSending, false);
 	document.getElementsByName("sendB")[0].addEventListener('click', msgeNullcheck, false);
@@ -340,15 +340,14 @@ function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들
 	    dataType : 'json',
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
-			c_id : chatRId, 
-			email : personId /* personId :: 임시 */
+			c_id : chatRId
 		}),
 		error:function(){
 			console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
 		},
 		success:function(data){
 			let chatTitle = document.getElementById("chatPdTitle");
-			chatTitle.innerHTML = data.productInfo.p_name;
+			chatTitle.innerHTML = ((data.productInfo.p_name.length<=10)?(data.productInfo.p_name):(data.productInfo.p_name.substr(0, 10)+"..."));
 			chatTitle.addEventListener('click', function(){
 				location.href = "productDetail?p_id="+data.productInfo.p_id;
 			}, false);
@@ -371,7 +370,7 @@ function chatStart(){ // 기존에 메세지가 있었다면 해당 메세지들
 	});
 }
 
-function chatClose(){ // 서버 연결 끊고, messagesBox 비우기
+function chatClose(){
 	socket.close();
 	
 	document.removeEventListener('keydown', enterSending, false);
@@ -383,8 +382,7 @@ function chatClose(){ // 서버 연결 끊고, messagesBox 비우기
 	    dataType : 'json',
     	contentType : 'application/json; charset=UTF-8',
 		data : JSON.stringify({ 
-			c_id : chatRId, 
-			email : personId /* personId :: 임시 */
+			c_id : chatRId
 		}),
 		success:function(){   
 			console.log('서버와의 연결이 정상적으로 해제되었습니다.');
@@ -480,7 +478,7 @@ function fileSending(files){
 			let newFileName = day+"_"+time+"."+fileType;
 			
 			$.ajax({
-			 	url: 'SendFile?c_id='+chatRId+'&email='+personId+'&name='+newFileName, /* personId :: 임시 */
+			 	url: 'SendFile?c_id='+chatRId+'&name='+newFileName,
 			 	processData : false,
 			 	contentType : false,
 			 	data : formData,
@@ -516,14 +514,13 @@ function imgFileChecking(type, size){
 	return true;
 }
 
-function sendMsg(){ // 메세지 보내기
+function sendMsg(){
 	$.ajax({
 		url:"SendMessage",
 		method:"POST",
 		contentType:'application/json; charset=UTF-8',
 		data : JSON.stringify({
 			c_id : chatRId,
-    		email : personId, /* personId :: 임시 */
     		message : msge.value,
     		type : "TEXT"
     	}),
@@ -550,10 +547,18 @@ function onMsge(msg) {
 		
 	if(msgInfo[3][1]=='READ'){
 		if(msgInfo[0][1]!=personId){
-		 	let readM = document.getElementsByClassName('readMark');
-		 	for(let i=readM.length-1; i>=0; i--){
-		 	 	readM[i].parentNode.removeChild(readM[i]);
-		 	};
+			let imgs = document.getElementById('messagesBox').getElementsByTagName('img');
+			if(imgs.length==0){
+				removeReadMark();
+			}else{
+				if(imgs[imgs.length-1].complete){
+					removeReadMark();
+				}else{
+					imgs[imgs.length-1].load = function(){
+						removeReadMark();
+					}
+				}
+			}
 		}
 	}else{
 		let check = insertMessages(msgInfo[0][1], msgInfo[4][1], msgInfo[2][1], msgInfo[3][1], 1);
@@ -577,6 +582,14 @@ function onMsge(msg) {
 	}
 }
 
+function removeReadMark(){
+	let readM = document.getElementsByClassName('readMark');
+	
+	for(let i=readM.length-1; i>=0; i--){
+ 	 	readM[i].parentElement.removeChild(readM[i]);
+ 	};
+}
+
 function readMsg(msgIdx){
 	$.ajax({
 		url:"ReadMessage",
@@ -584,7 +597,6 @@ function readMsg(msgIdx){
 		contentType:'application/json; charset=UTF-8',
 		data : JSON.stringify({
 			c_id : chatRId,
-    		email : personId, /* personId :: 임시 */
     		msgIdx : msgIdx,
     		type : "READ"
     	}),
@@ -608,6 +620,21 @@ function insertMessages(sender, nick, msg, msgType, read){
 			myMessage = document.createElement('p');
 			myMessage.classList.add('message', 'send');
 			myMessage.innerHTML = msg;
+			
+			myText.appendChild(myMessage);
+			messagesBox.appendChild(myText);
+	
+			if(read==1){
+				let readMark = document.createElement('p');
+				readMark.classList.add('readMark');
+				readMark.innerHTML = "1";
+				
+				let ph = myMessage.clientHeight;
+				readMark.setAttribute('style', "margin-top:"+(ph-15)+"px;");
+				myText.appendChild(readMark);
+			}
+			
+			return myMessage;
 		}else if(msgType=='IMG'){
 			myMessage = document.createElement('img');
 			myMessage.classList.add('chattingImage');
@@ -615,20 +642,23 @@ function insertMessages(sender, nick, msg, msgType, read){
 			myMessage.setAttribute('src', "ChattingImage?c_id="+chatRId+"&fileName="+msg);
 			myMessage.addEventListener('load', function(){
 				scrollChecking(true);
+				
+				if(read==1){
+					let readMark = document.createElement('p');
+					readMark.classList.add('readMark');
+					readMark.innerHTML = "1";
+					
+					let ph = myMessage.clientHeight;
+					readMark.setAttribute('style', "margin-top:"+(ph-15)+"px;");
+					myText.appendChild(readMark);
+				}
 			}, false);
+			
+			myText.appendChild(myMessage);
+			messagesBox.appendChild(myText);
+			
+			return myMessage;
 		}
-		myText.appendChild(myMessage);
-
-		if(read==1){
-			let readMark = document.createElement('p');
-			readMark.classList.add('readMark');
-			readMark.innerHTML = "1";
-			myText.appendChild(readMark);
-		}
-	
-		messagesBox.appendChild(myText);
-		
-		return myMessage;
 	}else{
 		let reciveText = document.createElement('div');
 		reciveText.classList.add('messageBox', 'reciveMessageBox');
@@ -661,7 +691,7 @@ function insertMessages(sender, nick, msg, msgType, read){
 	}
 }
 
-function scrollChecking(result){ // 스크롤이 맨 아래에 있다면 새 메세지를 보내거나 받았을 때 스크롤을 아래로 고정, 맨 아래가 아니라면 위치 그대로에, 메세지 보내고, 팝업 띄우기
+function scrollChecking(result){
 	if(result){
 		messagesBox.scrollTo(0, messagesBox.scrollHeight);
 		return true;
@@ -670,12 +700,12 @@ function scrollChecking(result){ // 스크롤이 맨 아래에 있다면 새 메
 	}
 }
 
-function approximateChecking(nowPosition){ // 위치 확인 - 맨 아래 스크롤과의 차이가 5 이하라면 맨 아래라고 인식, 그 이상 차이 난다면 팝업으로 전환
+function approximateChecking(nowPosition){
 	let originPosition = messagesBox.scrollHeight-messagesBox.offsetHeight;
 	if(originPosition==nowPosition | originPosition-nowPosition<=5){
-		return true; // 스크롤 맨 아래
+		return true;
 	}else{
-		return false; // 스크롤 위치 변경됨
+		return false;
 	}
 }
 

@@ -41,7 +41,7 @@ public class MemberWithDrawal {
 		Member member = (Member)session.getAttribute("member");
 		memberWithDrawalService.deleteMember(member);
 		session.invalidate();
-		return "index";
+		return "redirect:/index";
 	}
 	
 	@PostMapping("memberWithDrawalPost")

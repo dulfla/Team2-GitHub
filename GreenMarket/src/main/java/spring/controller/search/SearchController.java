@@ -26,16 +26,14 @@ public class SearchController {
 	
 	@GetMapping("search")
 	public String search(Search searches, PagingInfoVO p, Model model) {
-		System.out.println(p.getKeyword());
-		System.out.println(p.getOip());
+		
+		
 		// 검색어 빈칸으로 입력했을때
 		if(searches.getKeyword() == null ||
 			searches.getKeyword().equals("")) {
 			
 			return "redirect:/index";
 		}
-		
-		System.out.println("테스트 : "+p.getC());
 		
 		List<CategoryVO> categoryList = daoip.category();
 		//검색어 저장
@@ -47,7 +45,7 @@ public class SearchController {
 		
 		if(!p.getC().equals("all")) { // 특정 카테고리를 지정했을 때
 			int count = searchDao. cateNumberOfSearches(p.getC(), searches.getKeyword());
-			System.out.println("count : "+count);
+			
 			if(p.getV().equals("product")) {
 				list = searchDao.selectByCategorySearch(p); // 전체상품 조회  // DAO에서 return한 데이터 (productList에 담김)
 			}else if(p.getV().equals("brandNew")){
