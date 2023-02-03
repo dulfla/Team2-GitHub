@@ -140,17 +140,17 @@
 	
 	<!-- 검색어 저장 -->
 	<insert id="searchInsert" parameterType="search" >
-		<if test="email == null">
-			insert into search(idx,keyword)
-			VALUES(search_seq.nextval,#{keyword})
-		</if>
-		<if test="email != null">
-			insert into search(idx, keyword, email)
-			VALUES(search_seq.nextval,#{keyword},#{email})
-		</if>
+		<choose>
+			<when test="email == null">
+				INSERT INTO search(idx,keyword)
+				VALUES(search_seq.nextval,#{keyword})
+			</when>
+			<otherwise>
+				INSERT INTO search(idx, keyword, email)
+				VALUES(search_seq.nextval,#{keyword},#{email})
+			</otherwise>
+		</choose>
 	</insert>
-	
-	
 	
 	<!-- 인기 검색어 리스트 -->
 	<select id="popSearchList" resultType="search">

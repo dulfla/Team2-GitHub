@@ -129,7 +129,7 @@
 <script type="text/javascript">
 window.onload = function () {
 	document.getElementById("address_kakao").addEventListener("click", function () { //주소입력칸을 클릭하면
-		//카카오 지도 발생
+		//카카오 주소 발생
 		new daum.Postcode({
 			oncomplete: function (data) { //선택시 입력값 세팅
 				document.getElementById("address_kakao").value = data.address; // 주소 넣기
@@ -140,6 +140,5 @@ window.onload = function () {
 }
 </script>
 <script type="text/javascript" defer="defer" src="${path}resources/script/member/register.js"></script>
-
 
 </html>
