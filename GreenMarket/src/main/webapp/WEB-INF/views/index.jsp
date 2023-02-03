@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>그린 마켓</title>
+
+<!-- bootstrap -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
@@ -26,6 +28,7 @@
 	#main{
 			min-height:100vh;
 		} 
+	/* 카테고리 */	
 	#categorys {
 		width: 50vw;
 		margin: 0px auto;
@@ -70,6 +73,7 @@
 		cursor: pointer;
 	}
 	
+	/* 이미지 슬라이드 */
 	#imgS {
 		width: 70%;
 		margin: 50px auto;
@@ -337,206 +341,203 @@
 			</div>
 		</div>
 	
-	<!-- 페이지 아이템 -->
-	<section class="page-section bg-light w-100 p-5" 
-		id="portfolio" >
-		<div class="container">
-			<div class="text-center pb-4">
-				<h2 class="section-heading text-uppercase">추천 카테고리</h2>
-			</div>
-			<div class="row">
-				<div class="col-lg-4 col-sm-6 mb-4">
-					<!-- Portfolio item 1-->
-					<div class="portfolio-item itemRadi">
-						<a class="portfolio-link" data-bs-toggle="modal"
-							href="productList?c=${c.category}&v=brandNew">
-							<div class="portfolio-hover">
-								<div class="portfolio-hover-content">
-									<i class="fas fa-plus fa-3x"></i>
-								</div>
-							</div> <img class="img-fluid"
-							src="${path}resources/img/portfolio/1.jpg" alt="..." />
-						</a>
-						<div class="portfolio-caption">
-							<a class="moveToCategorys" href="productList?c=기타 중고물품&v=brandNew">
-								<div class="portfolio-caption-heading">기타 중고물품</div>
-								<div class="portfolio-caption-subheading text-muted">Illustration</div>
+		<!-- 페이지 아이템 -->
+		<section class="page-section bg-light w-100 p-5" 
+			id="portfolio" >
+			<div class="container">
+				<div class="text-center pb-4">
+					<h2 class="section-heading text-uppercase">추천 카테고리</h2>
+				</div>
+				<div class="row">
+					<div class="col-lg-4 col-sm-6 mb-4">
+						<!-- Portfolio item 1-->
+						<div class="portfolio-item itemRadi">
+							<a class="portfolio-link" data-bs-toggle="modal"
+								href="productList?c=${c.category}&v=brandNew">
+								<div class="portfolio-hover">
+									<div class="portfolio-hover-content">
+										<i class="fas fa-plus fa-3x"></i>
+									</div>
+								</div> <img class="img-fluid"
+								src="${path}resources/img/portfolio/1.jpg" alt="..." />
 							</a>
-							
+							<div class="portfolio-caption">
+								<a class="moveToCategorys" href="productList?c=기타 중고물품&v=brandNew">
+									<div class="portfolio-caption-heading">기타 중고물품</div>
+									<div class="portfolio-caption-subheading text-muted">Illustration</div>
+								</a>
+								
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-lg-4 col-sm-6 mb-4">
-					<!-- Portfolio item 2-->
-					<div class="portfolio-item itemRadi">
-						<a class="portfolio-link" data-bs-toggle="modal"
-							href="#portfolioModal2">
-							<div class="portfolio-hover">
-								<div class="portfolio-hover-content">
-									<i class="fas fa-plus fa-3x"></i>
-								</div>
-							</div> <img class="img-fluid"
-							src="${path}resources/img/portfolio/2.jpg" alt="..." />
-						</a>
-						<div class="portfolio-caption">
-							<a class="moveToCategorys" href="productList?c=잡화&v=brandNew">
-								<div class="portfolio-caption-heading">잡화</div>
-								<div class="portfolio-caption-subheading text-muted">Graphic
+					<div class="col-lg-4 col-sm-6 mb-4">
+						<!-- Portfolio item 2-->
+						<div class="portfolio-item itemRadi">
+							<a class="portfolio-link" data-bs-toggle="modal"
+								href="#portfolioModal2">
+								<div class="portfolio-hover">
+									<div class="portfolio-hover-content">
+										<i class="fas fa-plus fa-3x"></i>
+									</div>
+								</div> <img class="img-fluid"
+								src="${path}resources/img/portfolio/2.jpg" alt="..." />
+							</a>
+							<div class="portfolio-caption">
+								<a class="moveToCategorys" href="productList?c=잡화&v=brandNew">
+									<div class="portfolio-caption-heading">잡화</div>
+									<div class="portfolio-caption-subheading text-muted">Graphic
+										Design</div>
+								</a>		
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-6 mb-4">
+						<!-- Portfolio item 3-->
+						<div class="portfolio-item itemRadi">
+							<a class="portfolio-link" data-bs-toggle="modal"
+								href="#portfolioModal3">
+								<div class="portfolio-hover">
+									<div class="portfolio-hover-content">
+										<i class="fas fa-plus fa-3x"></i>
+									</div>
+								</div> <img class="img-fluid"
+								src="${path}resources/img/portfolio/3.jpg" alt="..." />
+							</a>
+							<div class="portfolio-caption">
+								<a class="moveToCategorys" href="productList?c=중고차&v=brandNew">
+									<div class="portfolio-caption-heading">중고차</div>
+									<div class="portfolio-caption-subheading text-muted">Identity</div>
+								</a>	
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
+						<!-- Portfolio item 4-->
+						<div class="portfolio-item itemRadi">
+							<a class="portfolio-link" data-bs-toggle="modal"
+								href="#portfolioModal4">
+								<div class="portfolio-hover">
+									<div class="portfolio-hover-content">
+										<i class="fas fa-plus fa-3x"></i>
+									</div>
+								</div> <img class="img-fluid"
+								src="${path}resources/img/portfolio/4.jpg" alt="..." />
+							</a>
+							<div class="portfolio-caption">
+								<a class="moveToCategorys" href="productList?c=가공식품&v=brandNew">
+									<div class="portfolio-caption-heading">가공식품</div>
+									<div class="portfolio-caption-subheading text-muted">Branding</div>
+								</a>	
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
+						<!-- Portfolio item 5-->
+						<div class="portfolio-item itemRadi">
+							<a class="portfolio-link" data-bs-toggle="modal"
+								href="#portfolioModal5">
+								<div class="portfolio-hover">
+									<div class="portfolio-hover-content">
+										<i class="fas fa-plus fa-3x"></i>
+									</div>
+								</div> <img class="img-fluid"
+								src="${path}resources/img/portfolio/5.jpg" alt="..." />
+							</a>
+							<div class="portfolio-caption">
+								<a class="moveToCategorys" href="productList?c=디지털 기기&v=brandNew">
+									<div class="portfolio-caption-heading">디지털 기기</div>
+									<div class="portfolio-caption-subheading text-muted">Website
 									Design</div>
-							</a>		
+								</a>	
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-lg-4 col-sm-6 mb-4">
-					<!-- Portfolio item 3-->
-					<div class="portfolio-item itemRadi">
-						<a class="portfolio-link" data-bs-toggle="modal"
-							href="#portfolioModal3">
-							<div class="portfolio-hover">
-								<div class="portfolio-hover-content">
-									<i class="fas fa-plus fa-3x"></i>
-								</div>
-							</div> <img class="img-fluid"
-							src="${path}resources/img/portfolio/3.jpg" alt="..." />
-						</a>
-						<div class="portfolio-caption">
-							<a class="moveToCategorys" href="productList?c=중고차&v=brandNew">
-								<div class="portfolio-caption-heading">중고차</div>
-								<div class="portfolio-caption-subheading text-muted">Identity</div>
-							</a>	
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
-					<!-- Portfolio item 4-->
-					<div class="portfolio-item itemRadi">
-						<a class="portfolio-link" data-bs-toggle="modal"
-							href="#portfolioModal4">
-							<div class="portfolio-hover">
-								<div class="portfolio-hover-content">
-									<i class="fas fa-plus fa-3x"></i>
-								</div>
-							</div> <img class="img-fluid"
-							src="${path}resources/img/portfolio/4.jpg" alt="..." />
-						</a>
-						<div class="portfolio-caption">
-							<a class="moveToCategorys" href="productList?c=가공식품&v=brandNew">
-								<div class="portfolio-caption-heading">가공식품</div>
-								<div class="portfolio-caption-subheading text-muted">Branding</div>
-							</a>	
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-sm-6 mb-4 mb-sm-0">
-					<!-- Portfolio item 5-->
-					<div class="portfolio-item itemRadi">
-						<a class="portfolio-link" data-bs-toggle="modal"
-							href="#portfolioModal5">
-							<div class="portfolio-hover">
-								<div class="portfolio-hover-content">
-									<i class="fas fa-plus fa-3x"></i>
-								</div>
-							</div> <img class="img-fluid"
-							src="${path}resources/img/portfolio/5.jpg" alt="..." />
-						</a>
-						<div class="portfolio-caption">
-							<a class="moveToCategorys" href="productList?c=디지털 기기&v=brandNew">
-								<div class="portfolio-caption-heading">디지털 기기</div>
-								<div class="portfolio-caption-subheading text-muted">Website
-								Design</div>
-							</a>	
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4 col-sm-6">
-					<!-- Portfolio item 6-->
-					<div class="portfolio-item itemRadi">
-						<a class="portfolio-link" data-bs-toggle="modal"
-							href="#portfolioModal6">
-							<div class="portfolio-hover">
-								<div class="portfolio-hover-content">
-									<i class="fas fa-plus fa-3x"></i>
-								</div>
-							</div> <img class="img-fluid"
-							src="${path}resources/img/portfolio/6.jpg" alt="..." />
-						</a>
-						<div class="portfolio-caption">
-							<a class="moveToCategorys" href="productList?c=취미 게임 음반&v=brandNew">
-								<div class="portfolio-caption-heading">취미 게임 음반</div>
-								<div class="portfolio-caption-subheading text-muted">Photography</div>
-							</a>	
+					<div class="col-lg-4 col-sm-6">
+						<!-- Portfolio item 6-->
+						<div class="portfolio-item itemRadi">
+							<a class="portfolio-link" data-bs-toggle="modal"
+								href="#portfolioModal6">
+								<div class="portfolio-hover">
+									<div class="portfolio-hover-content">
+										<i class="fas fa-plus fa-3x"></i>
+									</div>
+								</div> <img class="img-fluid"
+								src="${path}resources/img/portfolio/6.jpg" alt="..." />
+							</a>
+							<div class="portfolio-caption">
+								<a class="moveToCategorys" href="productList?c=취미 게임 음반&v=brandNew">
+									<div class="portfolio-caption-heading">취미 게임 음반</div>
+									<div class="portfolio-caption-subheading text-muted">Photography</div>
+								</a>	
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
-
-	<!-- footer -->
-	<div class="row position-relative">
-		<div style="background-color: #f5f5dc">
-			<img class="position-absolute" style="float: right"
-				src="${path}resources/img/well-done-3182_256.gif" alt="sample">
-			<footer>
-				<div class="container-fluid bg-footer">
-					<div class="container">
-
-						<!-- footer menus -->
-						<div class="row mt-5">
-							<div class="col-md-3">
-								<h3>Member</h3>
-								<ul class="list-unstyled" style="color: #808080">
-									<li> 김예림 </li>
-									<li> 김형관</li>
-									<li> 윤성혁 </li>
-									<li> 한인규 </li>
-								</ul>
-							</div>
-							<div class="col-md-3">
-								<h3>Help</h3>
-								<ul class="list-unstyled" style="color: #808080">
-									<li> Go to a class </li>
-									<li> Find an order </li>
-									<li> Courses </li>
-									<li> Jobs </li>
-									<li> Contact us</li>
-									<li> About us </li>
-								</ul>
-							</div>
-							<div class="col-md-3">
-								<h3>Service</h3>
-								<ul class="list-unstyled">
-									<li>
-										<p style="color: #808080">
-											Tel. 031-976-7779 <br>Fax. 031-976-7779<br> 월 - 금 AM 10:00 -
-											17:00<br> (점심시간 13:00~14:00)<br> 토.일.공휴일 휴무
-										</p>
-
-									</li>
-								</ul>
-							</div>
-							<div class="col-md-3">
-								<div class="form-group">
-									<a class="btn btn-alt btn-block" href="login"> 로그인 </a>
+		</section>
+	
+		<!-- footer -->
+		<div class="row position-relative">
+			<div style="background-color: #f5f5dc">
+				<img class="position-absolute" style="float: right"
+					src="${path}resources/img/well-done-3182_256.gif" alt="sample">
+				<footer>
+					<div class="container-fluid bg-footer">
+						<div class="container">
+							<!-- footer menus -->
+							<div class="row mt-5">
+								<div class="col-md-3">
+									<h3>Member</h3>
+									<ul class="list-unstyled" style="color: #808080">
+										<li> 김예림 </li>
+										<li> 김형관</li>
+										<li> 윤성혁 </li>
+										<li> 한인규 </li>
+									</ul>
 								</div>
-								<div class="form-group">
-									<a class="btn btn-alt btn-block" href="register"> 회원가입 </a>
+								<div class="col-md-3">
+									<h3>Help</h3>
+									<ul class="list-unstyled" style="color: #808080">
+										<li> Go to a class </li>
+										<li> Find an order </li>
+										<li> Courses </li>
+										<li> Jobs </li>
+										<li> Contact us</li>
+										<li> About us </li>
+									</ul>
+								</div>
+								<div class="col-md-3">
+									<h3>Service</h3>
+									<ul class="list-unstyled">
+										<li>
+											<p style="color: #808080">
+												Tel. 031-976-7779 <br>Fax. 031-976-7779<br> 월 - 금 AM 10:00 -
+												17:00<br> (점심시간 13:00~14:00)<br> 토.일.공휴일 휴무
+											</p>
+	
+										</li>
+									</ul>
+								</div>
+								<div class="col-md-3">
+									<div class="form-group">
+										<a class="btn btn-alt btn-block" href="login"> 로그인 </a>
+									</div>
+									<div class="form-group">
+										<a class="btn btn-alt btn-block" href="register"> 회원가입 </a>
+									</div>
 								</div>
 							</div>
 						</div>
-
 					</div>
-				</div>
-				<!-- end sub footer -->
-			</footer>
+				</footer>
+			</div>
 		</div>
-	</div>
 	
-	<!-- 스크롤  -->
-	<div id="to-top">
-    	<div class="material-symbols-outlined">arrow_upward</div>
-  	</div>
-
+		<!-- 스크롤  -->
+		<div id="to-top">
+	    	<div class="material-symbols-outlined">arrow_upward</div>
+	  	</div>
+	</div>
 <%@ include file="include/footer.jsp" %>
 </body>
 <script type="text/javascript">

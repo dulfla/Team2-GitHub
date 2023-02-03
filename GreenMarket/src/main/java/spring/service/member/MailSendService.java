@@ -1,15 +1,10 @@
 package spring.service.member;
-import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -28,6 +23,7 @@ public class MailSendService {
 	@Autowired
 	private MemberDao dao;
 	
+	// 인증번호 받는 키
 	public static int key;
 	
 	
