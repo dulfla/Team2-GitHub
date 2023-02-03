@@ -69,25 +69,5 @@ public class ChatDao {
 	public void readThisMessage(ChatMessageVo message) {
 		sqlSesison.selectOne("mybatis.mapper.chat.readThisMessage", message);
 	}
-
-	public void saveWebsocketSession(Map<String, String> info) {
-		sqlSesison.insert("mybatis.mapper.chat.saveWebsocket", info);
-	}
-
-	public void removeWebsocketSession(Map<String, String> info) {
-		sqlSesison.delete("mybatis.mapper.chat.removeWebsocket", info);
-	}
-
-	public void removeAllWebsocketSession() {
-		sqlSesison.delete("mybatis.mapper.chat.removeAllWebsocket");
-	}
-
-	public List<String> selectEmailInChatRoom(String c_id) {
-		return sqlSesison.selectList("mybatis.mapper.chat.selectChatJoinMembers", c_id);
-	}
-
-	public List<String> selectSessionIdByThis(Map<String, String> check) {
-		return sqlSesison.selectList("mybatis.mapper.chat.selectSessionIdByThis", check);
-	}
 	
 }

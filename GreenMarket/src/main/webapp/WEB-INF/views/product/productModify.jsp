@@ -10,57 +10,22 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" crossorigin="anonymous"></script> 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=490ef0680625aa2086d3bf61d038acea&libraries=services,clusterer,drawing"></script> <!-- 배포용 -->
+<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=400b390bffc07406773de1bb8ffca2ca&libraries=services,clusterer,drawing"></script> --> <!-- 테스트 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
+<!-- address api -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <style type="text/css">
-/* 	#result_card img{
-		max-width: 100%;
-	    height: 400px;
-	    display: block;
-	    padding: 5px;
-	    margin-top: 10px;
-	    margin: auto;	
-	}
-	#result_card {
-		position: relative;
-	}
-	.imgDeleteBtn{
-	    position: absolute;
-	    top: 0;
-	    right: 5%;
-	    background-color: #ef7d7d;
-	    color: wheat;
-	    font-weight: 900;
-	    width: 30px;
-	    height: 30px;
-	    border-radius: 50%;
-	    line-height: 26px;
-	    text-align: center;
-	    border: none;
-	    display: block;
-	    cursor: pointer;	
+	
+	@font-face {
+		  font-family: "hana";
+		  src: url("${path}resources/fonts/BMJUA_ttf.ttf");
 	}	
-	body {
-    font-family: 'Lato', sans-serif;
-	}
+	@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
 	
-	h1 {
-	    margin-bottom: 40px;
-	}
-	
-	label {
-	    color: #333;
-	}
-	.help-block.with-errors {
-	    color: #ff5050;
-	    margin-top: 5px;	
-	}
-	.card{
-		margin-left: 10px;
-		margin-right: 10px;
-	} */
 	textarea {
 		height: 20rem;
 	}
@@ -157,8 +122,29 @@
 	}
 	.location{
 		width: 100%;
-   		text-align: center;
-   		margin-top : 20px;
+   		text-align: right;
+   		font-style: italic;
+	}
+	#addressGroup, #adrButton{
+		top: 0;
+		bottom:0;
+		margin-top:auto;
+		margin-bottom:auto;
+	}
+	#addressPoint{
+		width:100%;
+		margin-top: 1rem;
+		justify-content: end;
+		margin-bottom: 1rem;
+	}
+	#formText{
+		text-align: center;
+		font-family: hana;
+		color: #68c930;
+	}
+	label, h1{
+		font-family: hana;
+		color: #68c930;
 	}
 </style>
 </head>
@@ -225,26 +211,38 @@
 		                                </div>
 		                            </div>  
 		                            <div class="row">
-			                            <div class="col-md-12" id="imageForm">
+			                            <div class="col-md-12 p-2 pt-5 pb-5" id="imageForm">
 	                                        <div class="form-group" id="uploud-group">
 	                                            <label for="chooseFile" class="file-label">
 	                                            	<li class="file-li">
-                                            		"이미지 등록"
+                                            		"이미지 업로드"
                                             		</li>
 	                                            </label>
 	                                            <input type="file" class="file" id="chooseFile" name='uploadFile' accept=".jpg, .png">
 	                                            <div id="uploadResult" class="uploadResultBox"></div>
 	                                        </div>
                                     	</div>
-		                            	<div class="col-md-12">
-			                                <div class="form-group">
-			                                    <label for="form_message" class="location">거래 위치</label>
-			                                    <div id="map" style="width:100%;height:400px;"></div>
-			                                        <p><em>지도를 클릭해주세요!</em></p> 
-			                                    <div id="clickLatlng"></div>
-		                                    </div>
-		                                </div>
 		                            </div>
+		                            <div class="row" id="addressPoint">
+	                                	<label for="form_address" id="formText">직거래 위치 설정</label>
+	                                     <div class="col-md-5" id="addressGroup">
+	                                        <div class="form-group" id="titleGroup">
+	                                            <input id="address_kakao" type="text" name="address" class="form-control">	                                                             
+	                                        </div>                             	                                        
+	                                    </div>
+	                                    <div class="col-md-4">
+	                                    <input type="button" id="adrButton" value="확인" onclick="adr()" class="btn btn-success btn-send  pt-2 btn-block">
+	                                    </div>
+									</div>
+									<div class="row">
+	                                    <div class="col-md-12">
+	                                        <div class="form-group">
+	                                            <div id="map" style="width:100%;height:400px;"></div>   
+	                                            <div id="clickLatlng"></div>
+	                                            <label for="form_message" class="location">클릭하여 직거래 위치를 지정해주세요!</label>
+	                                        </div>
+	                                    </div>
+									</div>
 		                            <div class="col-md-12">
 		                                <button type="submit" class="btn btn-success btn-send  pt-2 btn-block">상품 수정</button> 
 		                                <button type="button" class="btn btn-danger btn-send  pt-2 btn-block" id="back_Btn">취소</button>
@@ -259,22 +257,55 @@
 	</div>
 	<%@ include file="../include/footer.jsp" %>
 	
-
-	<%-- <script src="${path}resources/script/asdf/asdf.js"></script> --%>
+	<!-- address api script-->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script type="text/javascript">
+		window.onload = function () {
+			document.getElementById("address_kakao").addEventListener("click", function () { //주소입력칸을 클릭하면
+				//카카오 주소 발생
+				new daum.Postcode({
+					oncomplete: function (data) { //선택시 입력값 세팅
+						document.getElementById("address_kakao").value = data.address; // 주소 넣기
+						document.querySelector("input[name=address]").focus(); //상세입력 포커싱
+					}
+				}).open();
+			});
+		}		
+	</script>
 	<script type="text/javascript">
 		var lat = $("#lat").val();
 		var lng = $("#lng").val();
 		
-		console.log('위도 : '+lat);
-		console.log('경도 : '+lng);
-		
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = { 
 			center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
-			level: 5 // 지도의 확대 레벨
+			level: 3 // 지도의 확대 레벨
 		};
 		
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+		
+		function adr(){
+			// 사용자가 입력한 주소 값 저장
+			var address = document.getElementById('address_kakao').value; 
+			// 주소-좌표 변환 객체를 생성합니다           
+			var geocoder = new kakao.maps.services.Geocoder();
+			
+			// 주소로 좌표를 검색합니다
+			geocoder.addressSearch(address, function(result, status) {
+			
+				// 정상적으로 검색이 완료됐으면 
+				if (status === kakao.maps.services.Status.OK) {
+			
+					var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+					var cod = new kakao.maps.LatLng(result[0].y)
+
+					// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+					map.setCenter(coords);
+				} 
+			});    
+		         
+		}
 		
 		// 지도를 클릭한 위치에 표출할 마커입니다
 		var marker = new kakao.maps.Marker({ 
@@ -296,9 +327,6 @@
 		
 			var lat = latlng.getLat();
 			var lng = latlng.getLng();
-			
-			console.log('위도 : ' + lat);
-			console.log('경도 : ' + lng);
 			
 			$("#lat").val(lat);
 			$("#lng").val(lng);
@@ -323,7 +351,6 @@
 			   	type : 'POST',
 			   	dataType : 'json',
 			   	success : function(result){
-			   		console.log(result);
 			   		showUploadImage(result);
 			   	},
 			   	error : function(result){
