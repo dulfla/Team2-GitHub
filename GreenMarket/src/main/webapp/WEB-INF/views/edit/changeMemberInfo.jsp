@@ -42,10 +42,8 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="col-sm-2"></div>
-				<div class="col-sm-9">
+				<div class="col-md-8 mt-4 mx-auto">
 					<h2 class="text-center">회원 정보 수정하기</h2>
-
-
 						<table class="table table-striped">
 							<tr>
 								<td>이름</td>
@@ -85,10 +83,10 @@
 								</td>	
 							</tr>
 							<tr>
-								<td colspan="2" class="text-center"><input type="button"
-									value="나가기" class="btn btn-success" onclick="location.href='index'" >
+								<td colspan="3" class="text-center">
+									<button type="button"
+									class="btn btn-success" onclick="location.href='index'">나가기</button>
 								</td>
-								<td></td>
 							</tr>
 						</table>
 

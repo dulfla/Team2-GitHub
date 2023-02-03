@@ -17,8 +17,6 @@ public class MailAuthController {
 	@Inject
 	MailSendService mailSendService;
 	
-	
-	
 	@RequestMapping("mailAuth.wow")
 	@ResponseBody
 	public Object mailAuth(String mail, HttpServletResponse resp) throws Exception {

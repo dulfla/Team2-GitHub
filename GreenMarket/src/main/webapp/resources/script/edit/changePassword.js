@@ -26,7 +26,7 @@ function changePasswordCheck() {
 		"newPassword": newPassword,
 		"newPassword2": newPassword2
 	};
-	console.log(currentPassword);
+	
 	$.ajax({
 		type: "POST",
 		url: "changePasswordPost",
@@ -34,7 +34,6 @@ function changePasswordCheck() {
 		dataType: 'json',
 		contentType: 'application/json;charset=UTF-8',
 		success: function (result) {
-			console.log(result);
 			if(result == 3){
 				Swal.fire({
 				    icon: 'warning',
@@ -89,8 +88,7 @@ function checkPwd() {
 		dataType: 'json',
 		contentType: 'application/json;charset=UTF-8',
 		success: function (result) {
-			console.log(newPassword);
-			console.log(newPassword2);
+		
 			if (result == 1) {
 				
 				if (newPassword2 == '') {

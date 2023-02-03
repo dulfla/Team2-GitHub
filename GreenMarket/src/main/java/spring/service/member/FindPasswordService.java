@@ -29,8 +29,6 @@ public class FindPasswordService {
 			throw new MemberNotFoundException();
 		}
 		
-		System.out.println(findPwdCmd.getAuthKey());
-		
 		if(getKey != findPwdCmd.getAuthKey() || getKey == 0) {
 			throw new AlreadyExistingMemberException("인증키 맞지않음");
 		}
@@ -39,9 +37,6 @@ public class FindPasswordService {
 
 	public void changePassword(FindPasswordCommand findPwdCmd) {
 		Member member = dao.selectByEmail(findPwdCmd.getEmail());
-		
-		System.out.println(findPwdCmd.getNewPassword());
-		System.out.println(findPwdCmd.getNewPassword2());
 		
 		if(!findPwdCmd.getNewPassword().equals(findPwdCmd.getNewPassword2())) {
 			throw new AlreadyExistingMemberException("비밀번호가 일치하지 않음");

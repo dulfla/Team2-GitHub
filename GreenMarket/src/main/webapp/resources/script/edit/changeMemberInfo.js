@@ -67,7 +67,7 @@ function updatePhone() {
 		dataType : 'json', 
 		contentType : 'application/json;charset=UTF-8', 
 		 success: function(result){
-			 console.log(result +'전화번호');
+		 
 			 if(result == 2){
 					Swal.fire({
 					    icon: 'warning',
@@ -110,7 +110,7 @@ function updateBirth(){
 		dataType : 'json', 
 		contentType : 'application/json;charset=UTF-8', 
 		 success: function(result){
-			 console.log(result);
+		 
 				if(result == 2){
 					Swal.fire({
 					    icon: 'warning',
@@ -147,9 +147,6 @@ function updateName(){
 	};
 	
 	
-	
-	console.log(jsonData);
-	
 		$.ajax({
 			type:"POST",
 			url:"updateName",
@@ -157,7 +154,7 @@ function updateName(){
 			dataType : 'json', 
 			contentType : 'application/json;charset=UTF-8', 
 			 success: function(result){
-				 console.log(result);
+			 
 				if(result == 2){
 					Swal.fire({
 					    icon: 'warning',
@@ -203,7 +200,7 @@ function updateAddress(){
 		dataType : 'json', 
 		contentType : 'application/json;charset=UTF-8', 
 		 success: function(result){
-			 console.log(result +'주소')
+		 
 			 if(result == 2){
 					Swal.fire({
 					    icon: 'warning',
@@ -248,7 +245,7 @@ function updateNickname(){
 		dataType : 'json', 
 		contentType : 'application/json;charset=UTF-8', 
 		 success: function(result){
-			 console.log(result +'닉네임')
+		 
 			 if(result == 2){
 				 noValue();
 			 } else if(result == 1){
