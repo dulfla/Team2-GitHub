@@ -14,9 +14,8 @@
 src="https://code.jquery.com/jquery-3.6.3.js"
 integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
 crossorigin="anonymous"></script>
-<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=490ef0680625aa2086d3bf61d038acea"></script> --> <!-- 배포용 -->
-<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=400b390bffc07406773de1bb8ffca2ca"></script> --> <!-- 테스트 -->
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=400b390bffc07406773de1bb8ffca2ca&libraries=services,clusterer,drawing"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=490ef0680625aa2086d3bf61d038acea&libraries=services,clusterer,drawing"></script> <!-- 배포용 -->
+<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=400b390bffc07406773de1bb8ffca2ca&libraries=services,clusterer,drawing"></script> --> <!-- 테스트 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
  <%--  <link href="${path}resources/style/productreg.css" rel="stylesheet" type="text/css"> --%>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
