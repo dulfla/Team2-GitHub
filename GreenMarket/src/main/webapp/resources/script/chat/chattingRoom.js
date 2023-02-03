@@ -547,12 +547,17 @@ function onMsge(msg) {
 		
 	if(msgInfo[3][1]=='READ'){
 		if(msgInfo[0][1]!=personId){
-			let imgs = document.getElementsByTagName('img');
-			imgs[imgs.length-1].load = function(){
-				let readM = document.getElementsByClassName('readMark');
-			 	for(let i=readM.length-1; i>=0; i--){
-			 	 	readM[i].parentNode.removeChild(readM[i]);
-			 	};
+			let imgs = document.getElementById('messagesBox').getElementsByTagName('img');
+			if(imgs.length==0){
+				removeReadMark();
+			}else{
+				if(imgs[imgs.length-1].complete){
+					removeReadMark();
+				}else{
+					imgs[imgs.length-1].load = function(){
+						removeReadMark();
+					}
+				}
 			}
 		}
 	}else{
@@ -575,6 +580,14 @@ function onMsge(msg) {
 			}
 		}
 	}
+}
+
+function removeReadMark(){
+	let readM = document.getElementsByClassName('readMark');
+	
+	for(let i=readM.length-1; i>=0; i--){
+ 	 	readM[i].parentElement.removeChild(readM[i]);
+ 	};
 }
 
 function readMsg(msgIdx){

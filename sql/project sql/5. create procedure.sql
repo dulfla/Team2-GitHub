@@ -134,7 +134,7 @@ EXECUTE product_sampleDate;
 -- 페이징용 상품 샘플 데이터 - product tbl
 CREATE OR REPLACE PROCEDURE product_who_sampleDate
 IS
-    lastSampleDate NUMBER:=6; -- SELECT pid_seq.CURRVAL INTO lastSampleDate FROM dual;
+    lastSampleDate NUMBER:=195; -- SELECT pid_seq.CURRVAL FROM dual;
     num NUMBER(1);
     who product.email%TYPE;
     prodId productDetail.p_id%TYPE;
@@ -164,12 +164,12 @@ EXECUTE product_who_sampleDate;
 CREATE OR REPLACE PROCEDURE product_trade_sampleDate
 IS
     maxinput NUMBER(3);
-    randomN NUMBER(3);
+    randomN NUMBER(5);
     prodId productDetail.p_id%TYPE;
     maxProd NUMBER;
 BEGIN
     SELECT COUNT(*) INTO maxProd FROM productDetail;
-    maxinput:=ROUND(DBMS_RANDOM.VALUE(10, 19))*2;
+    maxinput:=ROUND(DBMS_RANDOM.VALUE(10, 19))*3;
     FOR idx IN 1..maxinput LOOP
         randomN:=ROUND(DBMS_RANDOM.VALUE(1, maxProd-1));
         UPDATE productDetail
