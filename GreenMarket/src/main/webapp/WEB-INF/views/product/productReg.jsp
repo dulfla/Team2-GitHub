@@ -200,7 +200,7 @@ crossorigin="anonymous"></script>
 	                                    </div>
 	                                    <div class="col-md-12">
 	                                        <div class="form-group">
-	                                        	<input type="text" class="address" name="address">
+	                                        	<!-- <input type="text" class="address" name="address"> -->
 	                                            <label for="form_message" class="location">거래 위치</label>
 	                                            <div id="map" style="width:100%;height:400px;"></div>
 	                                                <p><em>지도를 클릭해주세요!</em></p>    
@@ -237,7 +237,7 @@ crossorigin="anonymous"></script>
 		
 		/*주소 -> 좌표 변환 객체*/
 		
-		var geocoder = new kakao.maps.services.Geocoder();
+		// var geocoder = new kakao.maps.services.Geocoder();
 /* 		
 		geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', function(result, status) {
 

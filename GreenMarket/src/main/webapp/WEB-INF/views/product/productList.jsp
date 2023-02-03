@@ -60,7 +60,7 @@
 <%@ include file="../include/header.jsp" %>
 <div id="main">
 	<div class="container">
-		<div id="optionGroups">
+		<div id="optionGroups" class="mt-3">
 			<div class="btn-group linewarp">
 			  	<button class="btn btn-secondary dropdown-toggle bg" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 				   	<c:choose>
@@ -138,7 +138,16 @@
 							               	</c:choose>
 				            			</div>
 			            			</div>			            			
-			               			<h4 class="card-head mb-3"><p>${p.p_name}</p></h4>			               			
+			               			<h4 class="card-head mb-3">
+			               				<c:choose>
+				               				<c:when test="${fn:length(p.p_name) gt 13}">
+				               					<c:out value="${fn:substring(p.p_name,0,13)}" />...
+				               				</c:when>
+				               				<c:otherwise>
+				               					<c:out value="${p.p_name}" />
+				               				</c:otherwise>
+				               			</c:choose>
+			               			</h4>			               			
 			              			<div class="d-flex justify-content-between align-items-center">
 			                			<div class="btn-group">
 			                  				<button href="productDetail?p_id=${p.p_id}" type="button" class="btn btn-sm btn-outline-secondary" name="moveToDetail">보기</button>
@@ -162,13 +171,26 @@
 									<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s-1}&p=${pageData.pis}"><<</a>
 								</li>
 							</c:if>
-						</ul>
-					</nav>
-				</c:if>
-			</div>
+							<c:forEach var="page" begin="1" end="${((pageData.s*(pageData.pis*pageData.oip))<totalCnt)?(pageData.pis):(((totalCnt+(pageData.oip-1))-(pageData.s-1)*(pageData.pis*pageData.oip))/pageData.oip)}" step="1">
+								<li class="page-item">
+									<c:if test="${pageData.p==page}"><b></c:if>
+									<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s}&p=${page}">${(pageData.s-1)*pageData.pis+page}</a>
+									<c:if test="${pageData.p==page}"></b></c:if>
+								</li>
+							</c:forEach>
+							<c:if test="${(pageData.s*(pageData.pis*pageData.oip)) < totalCnt}">
+								<li class="page-item">
+									<a class="page-link" href="productList?c=${pageData.c}&v=${pageData.v}&pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s+1}&p=1">>></a>
+								</li>
+							</c:if>
+						</c:if>
+					</ul>
+				</nav>
+			</c:if>
 		</div>
 	</div>
-	<%@ include file="../include/footer.jsp" %>
+</div>
+<%@ include file="../include/footer.jsp" %>
 <script type="text/javascript">
   	window.onload = function(){
   		let moveToDetail = document.getElementsByName('moveToDetail');

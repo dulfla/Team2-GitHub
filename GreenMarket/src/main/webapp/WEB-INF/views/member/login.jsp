@@ -257,9 +257,9 @@ main button {
 	
 	let naverLogin = new naver.LoginWithNaverId(
 			{
-			/* 테스트용*/ clientId: "effwoF9_h12zWXZpxtMP",
-			/* 	배포용 clientId: zPr1GMk6QFJ0KznVNkPd, */
-				callbackUrl: "http://localhost:8085/GreenMarket/login",
+			/* 테스트용 clientId: "effwoF9_h12zWXZpxtMP", */
+			/*	배포용*/ clientId: "zPr1GMk6QFJ0KznVNkPd",
+				callbackUrl: "http://192.168.0.57:8085/GreenMarket/login",
 				isPopup: false,
 				loginButton: {
 					color: "white", type: 3, height: 50

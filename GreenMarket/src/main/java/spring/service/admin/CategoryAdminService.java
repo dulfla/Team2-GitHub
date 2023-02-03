@@ -35,8 +35,6 @@ public class CategoryAdminService {
 		if(fileObj.exists()) {
 		    fileObj.delete();
 		}
-		
-		dao.updateProduct(map);
 		dao.deleteCategory(map.get("category"));
 	}
 

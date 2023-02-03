@@ -32,12 +32,6 @@
    		background-color : #fff;
    		/* #A2F36A; */
    	}
-   	.linewarp{   
-   		position:fixed;
-   		top:300px;
-   		left:150px;
-   		padding-bottom : 0;
-   	}
     .py-5{
     	padding-top : 1rem!important;
     	padding-bottom : 1rem!important;
@@ -64,28 +58,40 @@
     }  
     .page-link{
     	color : #5FAD11;
-    }    
+    }   
+    .linewarp{
+    	margin-left:14px;
+    }
     </style>
 </head>
 <body>
 <%@ include file="../include/header.jsp" %>	
 <div id="main">
 	<div class="container">
-		<div class="list-group list">
-	  		<a href="myProduct" class="list-group-item list-group-item-action">내 상품</a>
-	  		<a href="selled" class="list-group-item list-group-item-action">판매완료된 상품</a>
-	  		<a href="unSelled" class="list-group-item list-group-item-action">판매중인 상품</a> 
+		<div class="btn-group linewarp mt-3">
+			<button class="btn btn-secondary dropdown-toggle bg" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+				  <c:choose>
+			           	<c:when test="${location eq 'myProduct'}" >내 상품</c:when>
+			           	<c:when test="${location eq 'selled'}">판매완료된 상품</c:when>
+			           	<c:when test="${location eq 'unselled'}">판매중인 상품</c:when>
+		          	</c:choose>
+			</button>
+			<ul class="dropdown-menu">
+			    <li><a href="myProduct" class="list-group-item list-group-item-action">내 상품</a></li>
+			    <li><a href="selled" class="list-group-item list-group-item-action">판매완료된 상품</a></li>
+			    <li><a href="unSelled" class="list-group-item list-group-item-action">판매중인 상품</a></li>
+			</ul>
 		</div>
-		<div class="btn-group linewarp">
-			  	<button class="btn btn-secondary dropdown-toggle bg" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+		<div class="btn-group linewarp mt-3">
+			<button class="btn btn-secondary dropdown-toggle bg" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
 				  	${pageData.oip} 개
-			  	</button>
-			  	<ul class="dropdown-menu">
+			</button>
+			<ul class="dropdown-menu">
 			    <li><a class="dropdown-item" href="${location}?pis=${pageData.pis}&oip=15">15 개</a></li>
 			    <li><a class="dropdown-item" href="${location}?pis=${pageData.pis}&oip=30">30 개</a></li>
 			    <li><a class="dropdown-item" href="${location}?pis=${pageData.pis}&oip=60">60 개</a></li>
 			    <li><a class="dropdown-item" href="${location}?pis=${pageData.pis}&oip=90">90 개</a></li>
-			  	</ul>
+			</ul>
 		</div>
 	 	<div class="album py-5">
 	   	 	<div class="container">
@@ -116,7 +122,16 @@
 				 							</c:choose>
 					 					</div>
 			      					</div>
-			      					<h4 class="card-head mb-3"><p>${p.p_name}</p></h4>
+			      					<h4 class="card-head mb-3">
+			      						<c:choose>
+				               				<c:when test="${fn:length(p.p_name) gt 13}">
+				               					<c:out value="${fn:substring(p.p_name,0,13)}" />...
+				               				</c:when>
+				               				<c:otherwise>
+				               					<c:out value="${p.p_name}" />
+				               				</c:otherwise>
+				               			</c:choose>
+			      					</h4>
 			      					<div class="d-flex justify-content-between align-items-center">
 			      						<div class="btn-group">
 			        						<button href="productDetail?p_id=${p.p_id}" type="button" class="btn btn-sm btn-outline-secondary" name="moveToDetail">보기</button>
@@ -152,23 +167,24 @@
 									<a class="page-link" href="${location}?pis=${pageData.pis}&oip=${pageData.oip}&s=${pageData.s+1}&p=1">>></a>
 								</li>
 							</c:if>
-						</ul>
-					</nav>
-				</c:if>
-			</div>
+						</c:if>
+					</ul>
+				</nav>
+			</c:if>
 		</div>
 	</div>
-  	<%@ include file="../include/footer.jsp" %>
-  	<script type="text/javascript">
-	  	window.onload = function(){
-	  		let moveToDetail = document.getElementsByName('moveToDetail');
-	  		for(let i=0; i<moveToDetail.length; i++){
-	  			moveToDetail[i].addEventListener('click', function(){
-	  	  			let href = moveToDetail[i].getAttribute('href');
-	  	  			location.href = href;
-	  	  		}, false);
-	  		}
-	  	}
-  	</script>
+</div>
+<%@ include file="../include/footer.jsp" %>
+<script type="text/javascript">
+ 	window.onload = function(){
+ 		let moveToDetail = document.getElementsByName('moveToDetail');
+ 		for(let i=0; i<moveToDetail.length; i++){
+ 			moveToDetail[i].addEventListener('click', function(){
+ 	  			let href = moveToDetail[i].getAttribute('href');
+ 	  			location.href = href;
+ 	  		}, false);
+ 		}
+ 	}
+</script>
 </body>
 </html>

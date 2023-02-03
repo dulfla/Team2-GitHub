@@ -140,16 +140,14 @@
 	
 	<!-- 검색어 저장 -->
 	<insert id="searchInsert" parameterType="search" >
-		<choose>
-			<when test="email == null">
-				insert into search(idx,keyword)
-				VALUES(search_seq.nextval,#{keyword})
-			</when>
-			<otherwise>
-				insert into search(idx, keyword, email)
-				VALUES(search_seq.nextval,#{keyword},#{email})
-			</otherwise>
-		</choose>
+		<if test="email == null">
+			insert into search(idx,keyword)
+			VALUES(search_seq.nextval,#{keyword})
+		</if>
+		<if test="email != null">
+			insert into search(idx, keyword, email)
+			VALUES(search_seq.nextval,#{keyword},#{email})
+		</if>
 	</insert>
 	
 	
