@@ -138,6 +138,8 @@ public class ProducListController {
 				list.get(i).setImgurl(null);
 			}else {
 				String url = "";
+				System.out.println("list.get(i).getUploadPath() : "+list.get(i).getUploadPath());
+				
 				url += list.get(i).getUploadPath().substring(0, 4)+"%5C"+list.get(i).getUploadPath().substring(5, 7)+"%5C"+list.get(i).getUploadPath().substring(8);
 				url += "%2Fs_"+list.get(i).getUuid()+"_"+list.get(i).getFileName();
 				list.get(i).setImgurl(url);				

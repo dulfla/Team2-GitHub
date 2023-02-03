@@ -200,6 +200,7 @@ crossorigin="anonymous"></script>
 	                                    </div>
 	                                    <div class="col-md-12">
 	                                        <div class="form-group">
+	                                        	<input type="text" class="address" name="address">
 	                                            <label for="form_message" class="location">거래 위치</label>
 	                                            <div id="map" style="width:100%;height:400px;"></div>
 	                                                <p><em>지도를 클릭해주세요!</em></p>    
@@ -223,7 +224,7 @@ crossorigin="anonymous"></script>
 	<%@ include file="../include/footer.jsp" %>
 	
 	<script type="text/javascript">
-
+			
 		var formObj = $("form[role='form']");
 	
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
@@ -233,7 +234,24 @@ crossorigin="anonymous"></script>
 		};
 	
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-	
+		
+		/*주소 -> 좌표 변환 객체*/
+		
+		var geocoder = new kakao.maps.services.Geocoder();
+/* 		
+		geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', function(result, status) {
+
+		    // 정상적으로 검색이 완료됐으면 
+		     if (status === kakao.maps.services.Status.OK) {
+
+		        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+		        // 결과값으로 받은 위치를 마커로 표시합니다
+		        var marker = new kakao.maps.Marker({
+		            map: map,
+		            position: coords
+		        });
+	 */
 		// 지도를 클릭한 위치에 표출할 마커입니다
 		var marker = new kakao.maps.Marker({ 
 			// 지도 중심좌표에 마커를 생성합니다 
@@ -335,14 +353,13 @@ crossorigin="anonymous"></script>
 			let fileCallPath = obj.uploadPath.replace(/\\/g, '/') + "/s_" + obj.uuid + "_" + obj.fileName;
 				
 			str += "<div id='result_card'>";
-			str += "<img src='display?fileName=" + fileCallPath +"'>";
+			str += "<img src='display?fileName=" + fileCallPath +"'>";			
 			str += "<div class='imgDeleteBtn' data-file='"+ fileCallPath +"'>x</div>";
 			str += "<input type='hidden' name='imageList[0].fileName' value='"+ obj.fileName +"'>";
 			str += "<input type='hidden' name='imageList[0].uuid' value='"+ obj.uuid +"'>";
 			str += "<input type='hidden' name='imageList[0].uploadPath' value='"+ obj.uploadPath +"'>";
-			str += "</div>";		
-				
-			uploadResult.append(str); 
+			str += "</div>";
+			uploadResult.append(str);
 		}
 		/* 이미지 삭제 버튼  동작 */
 		$("#uploadResult").on("click", ".imgDeleteBtn", function(e){	

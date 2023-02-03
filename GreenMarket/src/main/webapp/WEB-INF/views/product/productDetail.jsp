@@ -14,15 +14,23 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=490ef0680625aa2086d3bf61d038acea"></script>
 <style type="text/css">
-/* 	#result_card img{
-		max-width: 100%;
-	    height: 500px;
-	    display: block;
-	    padding: 5px;
-	    margin-top: 10px;
-	    margin: auto;
-	    border-radius: 2%;
-	} */
+
+	@font-face {
+		  font-family: "hana";
+		  src: url("${path}resources/fonts/BMJUA_ttf.ttf");
+	}
+	
+	@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
+	.fofont {
+		font-family: hana;
+		color: #68c930;
+	}
+	#imgBorder {
+		border: 1px solid #e9ecef;
+	}
+	#imgExpansion {
+		text-align: center;
+	}
 	.pics {      /* 전체 케러셀 */
 		width: 600px;
 		float: left;
@@ -30,13 +38,19 @@
 		left: 50%;		
         }
 	.carousel-inner {
-		width: 100%;
-		height: 400px; /* 이미지 높이 변경 */
+		height: 500px; /* 이미지 높이 변경 */
 		cursor: pointer;
 	}
+	 .carousel-inner img {
+      /*object-fit: none;*/		/*이미지 가운데 확대인데 애매하네잉 */
+      min-height: 500px;
+      min-width: 100%;
+      max-width: 100%;
+    } 
 	.breadcrumb {
     	margin-top: 0px;
     	font-size: 13px;
+    	--bs-breadcrumb-margin-bottom: 0rem;
 	}
 	.breadcrumb li {
 	    display: inline-block
@@ -61,11 +75,11 @@
 	#profile, .description, .map {
 		margin-top: 15px;
 		padding-bottom: 10px;
-		border-bottom: 2px solid #e9ecef;
+		border-bottom: 1px solid #e9ecef;
 	}
 	#kakaoMap {
 		padding-bottom: 23px;
-		border-bottom: 2px solid #e9ecef;
+		border-bottom: 1px solid #e9ecef;
 	}
 	.title {
 		font-size: 20px;
@@ -122,7 +136,7 @@
 	<%@ include file="../include/header.jsp" %>
 	<div>
 		<div class="row ">
-			<div class="col-lg-5 mx-auto">
+			<div class="col-lg-6 mx-auto">
 				<div class="card mt-2 mx-auto p-4 bg-light">
 					<div class="breadcrumb" role="navigation" aria-label="Breadcrumbs">
 						<div class="_cont">
@@ -145,7 +159,7 @@
 								<input type="hidden" id="lng" name="lng" value="${product.lng}">
 								<div class="controls">
 									<div class="row">
-										<div class="col-md-12">
+										<div class="col-md-12" id="imgBorder">
 											<div class="form-group">
 												<div id="uploadResult" class="position-relative">
 													<div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
@@ -165,8 +179,15 @@
 													    <span class="visually-hidden">Next</span>
 													  </button>
 													</div>
-												</div>                       
+												</div>              
 											</div>
+										</div>
+										<div class="col-md-12" id="imgExpansion">
+											<span class="fofont">이미지를 클릭해주세요!</span>
+											<!-- 
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+												<path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z"/>
+											</svg> -->
 										</div>
 									</div>
 									<div class="row" id="profile">
@@ -216,7 +237,7 @@
 									<div class="row">
 										<div class="col-md-12">
 											<div class="form-group" id="kakaoMap">
-												<label style= "width:100%; text-align: center;">직거래 위치</label>
+												<label style= "width:100%; text-align: center;"><span class="fofont">여기에서 만나요!</span></label>
 												<div id="map" style="max-width: 100%; height:500px;"></div>
 											</div>
 										</div>
