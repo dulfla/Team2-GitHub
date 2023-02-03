@@ -86,7 +86,7 @@
 	
 	.advertising  .badges2 {
 		position: fixed;
-		top: 132px;
+		top: 200px;
 		right: 40px;
 	}
 	
@@ -270,7 +270,7 @@
 							src="${path}resources/img/badge/badge3.jpg" alt="Badge"></a>
 					</div>
 					<div class="badge2">
-						<a href="https://suwon.greenart.co.kr/" target='_blank'><img
+						<a href="https://www.starbucks.co.kr/index.do" target='_blank'><img
 							src="${path}resources/img/badge/badge2.jpg"
 							alt="Badge"></a>
 					</div>
