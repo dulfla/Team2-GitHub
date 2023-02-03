@@ -201,7 +201,7 @@ function canUesThisCategoryTitle(e){
 		 		}
 		 	},
 		 	error : function(data){
-		 		console.log(JSON.stringify(data))
+		 		// console.log(JSON.stringify(data))
 		 	}
 		});
 	}
@@ -274,15 +274,15 @@ function modifyCategoryIconSubmit() {
 	 	dataType : 'json',
 	 	success : function(data){
 	 		if(data==1){
-	 			console.log('수정 완료');
+	 			// console.log('수정 완료');
 	 			categoryReload();
 	 			document.getElementById('modalClose').click();
 	 		}else if(data==2){
-	 			console.log('수정 요류');
+	 			// console.log('수정 요류');
 	 		}
 	 	},
 	 	error : function(data){
-	 		console.log(JSON.stringify(data));
+	 		// console.log(JSON.stringify(data));
 	 	}
 	});
 }
@@ -316,23 +316,21 @@ function modifyCategoryCategorySubmit() {
 	 	dataType : 'json',
 	 	success : function(data){
 	 		if(data==1){
-	 			console.log('수정 완료');
+	 			// console.log('수정 완료');
 	 			categoryReload();
 	 			document.getElementById('modalClose').click();
 	 		}else if(data==2){
-	 			console.log('수정 요류');
+	 			// console.log('수정 요류');
 	 		}
 	 	},
 	 	error : function(data){
-	 		console.log(JSON.stringify(data));
+	 		// console.log(JSON.stringify(data));
 	 	}
 	});
 }
 
 function registerCategorySubmit() {
 	let title = document.getElementById('registerCate').value;
-	console.log(document.getElementById('registerCate'))
-	console.log(title)
 	
 	let val = newIconFile;
 	let sendData = new FormData();
@@ -350,15 +348,15 @@ function registerCategorySubmit() {
 	 	dataType : 'json',
 	 	success : function(data){
 	 		if(data==1){
-	 			console.log('등록 완료');
+	 			// console.log('등록 완료');
 	 			categoryReload();
 	 			document.getElementById('modalClose').click();
 	 		}else if(data==2){
-	 			console.log('등록 요류');
+	 			// console.log('등록 요류');
 	 		}
 	 	},
 	 	error : function(data){
-	 		console.log(JSON.stringify(data));
+	 		// console.log(JSON.stringify(data));
 	 	}
 	});
 }
@@ -429,15 +427,15 @@ function categoryDelete(e) {
 								 	dataType : 'json',
 								 	success : function(data){
 								 		if(data==1){
-								 			console.log('삭제 완료');
+								 			// console.log('삭제 완료');
 								 			categoryReload();
 								 			document.getElementById('modalClose').click();
 								 		}else if(data==2){
-								 			console.log('삭제 요류');
+								 			// console.log('삭제 요류');
 								 		}
 								 	},
 								 	error : function(data){
-								 		console.log(JSON.stringify(data));
+								 		// console.log(JSON.stringify(data));
 								 	}
 								});
 							}
@@ -454,7 +452,7 @@ function categoryDelete(e) {
 			 		}
 			 	},
 			 	error : function(data){
-			 		console.log(JSON.stringify(data));
+			 		// console.log(JSON.stringify(data));
 			 	}
 			});
 	    }else if (result.isDismissed) {
@@ -503,11 +501,7 @@ function categoryReload(){
 			newCategoryAdd.addEventListener('click', openModal, false);
 	 	},
 	 	error : function(data){
-	 		console.log(JSON.stringify(data));
+	 		// console.log(JSON.stringify(data));
 	 	}
 	});
-}
-
-function doseNotActive(){
-	console.log('실행 할 수 없음');
 }

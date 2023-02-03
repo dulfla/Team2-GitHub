@@ -31,18 +31,18 @@ public class ChatServerController {
 		if(who!=null) {
 			if(who.getType().equalsIgnoreCase("M")) {
 				return "chat/serverOnOff";
-			}else { errorMsg = "관리자만 접속할 수 있는 페이지 입니다."; }
-		}else { errorMsg = "로그인하셔야  접속할 수 있는 페이지 입니다."; }
+			}else { /* errorMsg = "관리자만 접속할 수 있는 페이지 입니다."; */ }
+		}else { /* errorMsg = "로그인하셔야  접속할 수 있는 페이지 입니다."; */ }
 		
-		reda.addFlashAttribute("errMsg", errorMsg);
+		// reda.addFlashAttribute("errMsg", errorMsg);
 		return "redirect:"+(referer!=null?referer:"index");
 	}
 	
 	@GetMapping(value = {"ServerOpen", "ServerClose"})
 	public String locationErr(HttpServletRequest request, RedirectAttributes reda) {
 		String referer = request.getHeader("Referer");
-		String errorMsg = "접속할 수 없는 주소 입니다.";
-		reda.addFlashAttribute("errMsg", errorMsg);
+		// String errorMsg = "접속할 수 없는 주소 입니다.";
+		// reda.addFlashAttribute("errMsg", errorMsg);
 	    return "redirect:"+(referer!=null?referer:"index");
 	}
 	
