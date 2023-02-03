@@ -14,14 +14,25 @@
 src="https://code.jquery.com/jquery-3.6.3.js"
 integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
 crossorigin="anonymous"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=	490ef0680625aa2086d3bf61d038acea"></script>
+<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=490ef0680625aa2086d3bf61d038acea"></script> --> <!-- 배포용 -->
+<!-- <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=400b390bffc07406773de1bb8ffca2ca"></script> --> <!-- 테스트 -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=400b390bffc07406773de1bb8ffca2ca&libraries=services,clusterer,drawing"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js"></script>
  <%--  <link href="${path}resources/style/productreg.css" rel="stylesheet" type="text/css"> --%>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
+<!-- address api -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   
 <style type="text/css">
-
+	
+	@font-face {
+		  font-family: "hana";
+		  src: url("${path}resources/fonts/BMJUA_ttf.ttf");
+	}	
+	@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
+	
 	#titleGroup a{
 		position: absolute;
 	    right: 1rem;
@@ -126,10 +137,30 @@ crossorigin="anonymous"></script>
 	}
 	.location{
 		width: 100%;
-   		text-align: center;
-   		margin-top : 20px;
+   		text-align: right;
+   		font-style: italic;
 	}
-
+	#addressGroup, #adrButton{
+		top: 0;
+		bottom:0;
+		margin-top:auto;
+		margin-bottom:auto;
+	}
+	#addressPoint{
+		width:100%;
+		margin-top: 1rem;
+		justify-content: end;
+		margin-bottom: 1rem;
+	}
+	#formText{
+		text-align: center;
+		font-family: hana;
+		color: #68c930;
+	}
+	label, h1{
+		font-family: hana;
+		color: #68c930;
+	}
 </style>
 
 </head>
@@ -138,7 +169,7 @@ crossorigin="anonymous"></script>
 	<%@ include file="../include/header.jsp" %>
 	<div id="container">	
 		<div class=" text-center mt-5 ">
-	    <h1 >상품 등록</h1>                   
+	    <h1>상품 등록</h1>                   
 	    </div>
 	    <div class="row ">
 	    <div class="col-lg-7 mx-auto">
@@ -198,21 +229,31 @@ crossorigin="anonymous"></script>
 	                                            <div id="uploadResult" class="uploadResultBox"></div>             
 	                                        </div>                          
 	                                    </div>
+									</div>
+	                                <div class="row" id="addressPoint">
+	                                	<label for="form_address" id="formText">직거래 위치 설정</label>
+	                                     <div class="col-md-5" id="addressGroup">
+	                                        <div class="form-group" id="titleGroup">
+	                                            <input id="address_kakao" type="text" name="address" class="form-control">	                                                             
+	                                        </div>                             	                                        
+	                                    </div>
+	                                    <div class="col-md-4">
+	                                    <input type="button" id="adrButton" value="확인" onclick="adr()" class="btn btn-success btn-send  pt-2 btn-block">
+	                                    </div>
+									</div>
+									<div class="row">
 	                                    <div class="col-md-12">
 	                                        <div class="form-group">
-	                                        	<!-- <input type="text" class="address" name="address"> -->
-	                                            <label for="form_message" class="location">거래 위치</label>
-	                                            <div id="map" style="width:100%;height:400px;"></div>
-	                                                <p><em>지도를 클릭해주세요!</em></p>    
+	                                            <div id="map" style="width:100%;height:400px;"></div>   
 	                                            <div id="clickLatlng"></div>
+	                                            <label for="form_message" class="location">클릭하여 직거래 위치를 지정해주세요!</label>
 	                                        </div>
 	                                    </div>
 									</div>
-	                                    <div class="col-md-12">
-	                                        <button type="submit" id="register_Btn" class="btn btn-success btn-send  pt-2 btn-block" onclick="fileCheck()">상품 등록</button> 
-	                                        <button type="button" id="list_Btn" class="btn btn-outline-dark">목록</button>
-	                                    </div>
-	                             
+                                    <div class="col-md-12">
+                                        <button type="submit" id="register_Btn" class="btn btn-success btn-send  pt-2 btn-block" onclick="fileCheck()">상품 등록</button> 
+                                        <button type="button" id="list_Btn" class="btn btn-outline-dark">목록</button>
+                                    </div>
                                 </div>
                             </form> 
                         </div>
@@ -223,43 +264,65 @@ crossorigin="anonymous"></script>
     </div>				
 	<%@ include file="../include/footer.jsp" %>
 	
+	
+	<!-- address api script-->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script type="text/javascript">
-			
+		window.onload = function () {
+			document.getElementById("address_kakao").addEventListener("click", function () { //주소입력칸을 클릭하면
+				//카카오 주소 발생
+				new daum.Postcode({
+					oncomplete: function (data) { //선택시 입력값 세팅
+						document.getElementById("address_kakao").value = data.address; // 주소 넣기
+						document.querySelector("input[name=address]").focus(); //상세입력 포커싱
+					}
+				}).open();
+			});
+		}		
+	</script>
+	<script type="text/javascript">
+	
 		var formObj = $("form[role='form']");
 	
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		mapOption = { 
 			center: new kakao.maps.LatLng(37.267868108956456, 127.00053552238002), // 지도의 중심좌표
-			level: 5 // 지도의 확대 레벨
+			level: 3 // 지도의 확대 레벨
 		};
 	
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 		
-		/*주소 -> 좌표 변환 객체*/
-		
-		// var geocoder = new kakao.maps.services.Geocoder();
-/* 		
-		geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', function(result, status) {
+		function adr(){
+			// 사용자가 입력한 주소 값 저장
+			var address = document.getElementById('address_kakao').value; 
+			// 주소-좌표 변환 객체를 생성합니다           
+			var geocoder = new kakao.maps.services.Geocoder();
+			
+			// 주소로 좌표를 검색합니다
+			geocoder.addressSearch(address, function(result, status) {
+			
+				// 정상적으로 검색이 완료됐으면 
+				if (status === kakao.maps.services.Status.OK) {
+			
+					var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-		    // 정상적으로 검색이 완료됐으면 
-		     if (status === kakao.maps.services.Status.OK) {
+					var cod = new kakao.maps.LatLng(result[0].y)
 
-		        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+					// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+					map.setCenter(coords);
+				} 
+			});    
+		         
+		}
 
-		        // 결과값으로 받은 위치를 마커로 표시합니다
-		        var marker = new kakao.maps.Marker({
-		            map: map,
-		            position: coords
-		        });
-	 */
 		// 지도를 클릭한 위치에 표출할 마커입니다
 		var marker = new kakao.maps.Marker({ 
 			// 지도 중심좌표에 마커를 생성합니다 
-			position: map.getCenter() 
+			/* position: map.getCenter()  */
 		}); 
 		// 지도에 마커를 표시합니다
 		marker.setMap(map);
-	
+
 		// 지도에 클릭 이벤트를 등록합니다
 		// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
 		kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
@@ -273,15 +336,10 @@ crossorigin="anonymous"></script>
 			var lat = latlng.getLat();
 			var lng = latlng.getLng();
 			
-			
-			console.log('위도 : ' + lat);
-			console.log('경도 : ' + lng);
-			
 			$("#lat").val(lat);
 			$("#lng").val(lng);
 		});	
 
-		
 		$("input[type='file']").on("change", function(e){
 					
 			/* 등록된 이미지 존재시 삭제 */
@@ -307,7 +365,6 @@ crossorigin="anonymous"></script>
 				type : 'POST',
 				dataType : 'json',
 				success : function(result){
-					console.log(result);
 					showUploadImage(result);
 				},
 				error : function(result){
@@ -379,13 +436,11 @@ crossorigin="anonymous"></script>
 				dataType : 'text',
 				type : 'POST',
 				success : function(result){
-					console.log(result);
 						
 					targetDiv.remove();
 					$("input[type='file']").val("");
 				},
 				error : function(result){
-					console.log(result);
 						
 					alert("파일 삭제 실패")
 				}
