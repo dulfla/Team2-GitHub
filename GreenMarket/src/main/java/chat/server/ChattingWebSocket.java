@@ -27,9 +27,8 @@ public class ChattingWebSocket extends TextWebSocketHandler{
     
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-    	System.out.println(session.getId()+", WebSocket 연결");
         Map<String, String> info = getURIInfos(session);
-    	String key = info.get("email"); // +"@"+session.getId()
+    	String key = info.get("email");
     	
     	saveThisWebsession(info, session);
     }
@@ -58,7 +57,6 @@ public class ChattingWebSocket extends TextWebSocketHandler{
 
 	@Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		System.out.println(session.getId()+", WebSocket 분리");
     	Map<String, String> info = getURIInfos(session);
     	
         removeThisWebsession(info, session);

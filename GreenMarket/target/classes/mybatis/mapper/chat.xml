@@ -5,7 +5,6 @@
   
 <mapper namespace="mybatis.mapper.chat">
 	
-	<!-- 내 특정 상품에 존재하는 채팅방 목록 보기 -->
 	<select id="selectChattingRoomByPId" parameterType="String" resultType="chattingRoomInfosVo">
 		SELECT c.c_id, p_id, p_name, nickname AS "chatMember", 'sell' AS "type"
 		FROM
@@ -19,7 +18,6 @@
 			AND p_id=#{p_id}
 	</select>
 	
-	<!-- 내 채팅방 목록 보기 :: 내가 (구매자/판매자로)참여하고 있는 모든 채팅방 확인 -->
 	<select id="selectAllChatRoomByEmil" parameterType="String" resultType="chattingRoomInfosVo">
 		SELECT c.c_id, c.p_id, p_name, nickname AS "chatMember", 'sell' AS "type"
 		FROM (SELECT c_id, p.p_id, p_name
@@ -48,7 +46,6 @@
 		WHERE c.c_id=m.c_id
 	</select>
 	
-	<!-- 채팅하기를 누른 상품에 이미 참여했던 채팅방이 있는지 확인 -->
 	<select id="selectChattingRoom" parameterType="chatRoomSearchInfoVo" resultType="String">
  		SELECT c_id
  		FROM chatInfomation
@@ -58,7 +55,6 @@
  			AND p_id=#{p_id}
  	</select>
  	
- 	<!-- 해당 채팅방에 해당하는 상품 정보 가져오기 -->
 	<select id="selectProductByChatRoomId" parameterType="String" resultType="chatPdInfoVo">
  		SELECT p_id, p_name
 		FROM productDetail
@@ -67,7 +63,6 @@
 						WHERE c_id=#{c_id})
 	</select>
 	
-	<!-- 해당 채팅방의 상품에 대한 샘플 이미지 정보 가져오기 -->
 	<select id="selectProductImg" parameterType="String" resultType="ProductImageVO">
 		SELECT * FROM productPic
 		    	WHERE uuid = (SELECT min(uuid)
@@ -76,7 +71,6 @@
 		    					GROUP BY p_id)
 	</select>
 	
-	<!-- 채팅방이 없던 상품에 대해 채팅을 시도하는 경우 새로운 채팅방 만들기 && 새로운 채팅방에 입장했다는 데이터 입력 :: 프로시저 사용 -->
 	<select id="insertNewChatRoomInfo" parameterType="chatRoomSearchInfoVo" statementType="CALLABLE">
  		{CALL newChattingRoom(
  			#{p_id  , mode=IN , jdbcType=VARCHAR}
@@ -85,7 +79,6 @@
  		)}
  	</select>
  	
- 	<!-- 해당 채팅방의 모든 채팅 긁어오기 -->
  	<select id="selectAllMessages" parameterType="String" resultType="chatMessageVo">
  		SELECT message, messType, sender, read, send_date, nickname
  		FROM chatMessage c, member m
@@ -94,7 +87,6 @@
  		ORDER BY TO_CHAR(send_date, 'YYYYMMDDHH24MISS') ASC
  	</select>
  	
- 	<!-- 메세지를 보내면 해당 메세지를 DB에 저장 -->
  	<insert id="insertMessage" parameterType="chatMessageVo">
  		<selectKey resultType="long" keyProperty="idx" order="BEFORE">
 	        SELECT chatMessage_seq.NEXTVAL FROM dual
@@ -103,14 +95,12 @@
  		VALUES(#{idx}, #{c_id}, #{message}, #{messType}, #{sender}, 1, sysdate)
  	</insert>
  	
- 	<!-- 메세지 idx에 해당하는 메세지 가져오기 -->
  	<select id="selectSendedMessage" parameterType="long" resultType="chatMessageVo">
  		SELECT *
  		FROM chatMessage c, member m
  		WHERE c.sender = m.email AND idx=#{idx}
  	</select>
  	
- 	<!-- 해당 회원의 이메일 알아오기 -->
  	<select id="selectNicknameByEmil" parameterType="String" resultType="String">
  		SELECT nickname FROM member WHERE email=#{email}
  	</select>
@@ -128,31 +118,5 @@
 		SET read=0
 		WHERE idx=#{idx}
  	</update>
- 	
- 	<!--  -->
- 	
- 	<insert id="saveWebsocket" parameterType="map">
- 		insert into websocketsessionmanagement
- 		values(#{c_id}, #{email}, #{session_id})
- 	</insert>
- 	
- 	<delete id="removeWebsocket" parameterType="map">
- 		delete websocketsessionmanagement
- 		where session_id=#{session_id}
- 	</delete>
- 	
- 	<delete id="removeAllWebsocket">
- 		delete websocketsessionmanagement
- 	</delete>
- 	
- 	<select id="selectChatJoinMembers" parameterType="String" resultType="String">
- 		select DISTINCT email from websocketsessionmanagement
- 		where c_id=#{c_id}
- 	</select>
- 	
- 	<select id="selectSessionIdByThis" parameterType="map" resultType="String">
- 		select session_id from websocketsessionmanagement
- 		where c_id=#{c_id} AND email=#{email}
- 	</select>
  	
 </mapper>

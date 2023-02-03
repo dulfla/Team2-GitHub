@@ -16,7 +16,7 @@ function serverSetOn(){
 		url:"ServerOpen",
 		type:"POST",
     	error: function() {
-	    	console.log('통신실패!!');
+	    	// console.log('통신실패!!');
 	    },
 		success:function(data){
 			changeBtn(0);
@@ -29,7 +29,7 @@ function serverSetOff(){
 		url:"ServerClose",
 		type:"POST",
 		error: function() {
-	    	console.log('통신실패!!');
+	    	// console.log('통신실패!!');
 	    },
 		success:function(){
 			changeBtn(1);

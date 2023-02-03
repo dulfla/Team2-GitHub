@@ -99,8 +99,8 @@ function chattingRooms(){
 	    dataType : 'json',
     	contentType : 'application/json; charset=UTF-8',
 	    error: function(data) {
-	    	console.log(JSON.stringify(data));
-	    	console.log('통신실패!!');
+	    	// console.log(JSON.stringify(data));
+	    	// console.log('통신실패!!');
 	    },
 	    success: function(dt) {
 	    	if(0<dt.data.length){
@@ -318,11 +318,11 @@ function connecteWithSocket(){
 				c_id : chatRId
 			}),
 			error:function(data){ 
-				console.log(JSON.stringify(data));
-				console.log('서버와의 연결이 이어지지 않았습니다.'); 
+				// console.log(JSON.stringify(data));
+				// console.log('서버와의 연결이 이어지지 않았습니다.'); 
 			},
 			success:function(data){
-				if(data==1){console.log('서버와의 연결이 정상적으로 이어졌습니다.');}
+				if(data==1){ /* console.log('서버와의 연결이 정상적으로 이어졌습니다.'); */ }
 				chatStart();
 			}
 		});
@@ -343,7 +343,7 @@ function chatStart(){
 			c_id : chatRId
 		}),
 		error:function(){
-			console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
+			// console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
 		},
 		success:function(data){
 			let chatTitle = document.getElementById("chatPdTitle");
@@ -385,11 +385,11 @@ function chatClose(){
 			c_id : chatRId
 		}),
 		success:function(){   
-			console.log('서버와의 연결이 정상적으로 해제되었습니다.');
+			// console.log('서버와의 연결이 정상적으로 해제되었습니다.');
 			messagesBox.innerHTML = null;
 		},   
 		error:function(){
-			console.log('서버와의 연결이 해제되지 않았습니다.');
+			// console.log('서버와의 연결이 해제되지 않았습니다.');
 		}
 	});
 }
@@ -486,13 +486,13 @@ function fileSending(files){
 			 	dataType : 'json',
 			 	success : function(data){
 			 		if(data==1){
-			 			console.log('파일 전송 완료');
+			 			// console.log('파일 전송 완료');
 			 		}else if(data==2){
-			 			console.log('파일 전송 오류');
+			 			// console.log('파일 전송 오류');
 			 		}
 			 	},
 			 	error : function(data){
-			 		console.log(JSON.stringify(data))
+			 		// console.log(JSON.stringify(data))
 			 	},
 			 	complete : function(){
 				 	document.addEventListener('click', offCanvasCloseCheck, false);
@@ -528,7 +528,7 @@ function sendMsg(){
 			alert('서버 연결에 문제가 생겨 메세지가 전송되지 않았습니다.');
 		},
 		success:function(data){
-			if(data==1){console.log('메세지 전달 완료')}
+			if(data==1){ /* console.log('메세지 전달 완료'); */}
 			msge.value = null;
 		}
 	});
@@ -604,7 +604,7 @@ function readMsg(msgIdx){
 			alert('서버 연결에 문제가 생겨 메세지가 전송되지 않았습니다.');
 		},
 		success:function(data){
-			if(data==1){console.log('읽기 완료')}
+			if(data==1){ /* console.log('읽기 완료'); */ }
 		}
 	});
 }

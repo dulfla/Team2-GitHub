@@ -35,7 +35,7 @@ public class SocketServer {
 	public void start() throws IOException {
 		serverSocket = new ServerSocket(12005);
 		threadPool = Executors.newFixedThreadPool(max);
-		System.out.println("[server] 시작");
+		// System.out.println("[server] 시작");
 		Thread thread = new Thread(() -> {
 			try {
 				while(true) {
@@ -44,7 +44,7 @@ public class SocketServer {
 					sc.setCs(cs);
 				}
 			} catch (IOException e) {
-				System.out.println("[server] 종료");
+				// System.out.println("[server] 종료");
 				// e.printStackTrace();
 			}
 		});

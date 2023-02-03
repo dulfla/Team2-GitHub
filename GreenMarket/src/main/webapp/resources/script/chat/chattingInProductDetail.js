@@ -94,7 +94,7 @@ function openOffCanvas(){
     		p_id : productId
     	}),
 	    error: function(){
-	    	console.log('통신실패!!');
+	    	// console.log('통신실패!!');
 	    },
 	    success: function(data) {
 	    	if(data!=null && data!=""){
@@ -135,8 +135,8 @@ function chattingRoom(){
     		p_id : productId
     	}),
 	    error: function(data) {
-	    	console.log(JSON.stringify(data));
-	    	console.log('통신실패!!');
+	    	// console.log(JSON.stringify(data));
+	    	// console.log('통신실패!!');
 	    },
 	    success: function(data) {
 	    	if(data!=null){
@@ -341,7 +341,7 @@ function chatting(){
     		p_id : productId
     	}),
 	    error: function(){
-	    	console.log('통신실패!!');
+	    	// console.log('통신실패!!');
 	    },
 	    success: function(data) {
 	    	if(data!=null){
@@ -367,10 +367,10 @@ function connecteToSocket(){
 				c_id : chatRoomId
 			}),
 			error:function(){  
-				console.log('서버와의 연결이 이어지지 않았습니다.'); 
+				// console.log('서버와의 연결이 이어지지 않았습니다.'); 
 			},
 			success:function(data){
-				if(data==1){console.log('서버와의 연결이 정상적으로 이어졌습니다.');}
+				if(data==1){ /* console.log('서버와의 연결이 정상적으로 이어졌습니다.'); */ }
 				chattingStart();
 			}
 		});
@@ -378,7 +378,7 @@ function connecteToSocket(){
 }
 
 function onMessage(msg) {
-    let data = msg.data; console.log(data);
+    let data = msg.data;
     let reciveText = document.createElement('div');
 	reciveText.classList.add('messageBox', 'reciveMessageBox');
 	
@@ -405,7 +405,7 @@ function chattingStart(){
 			c_id : chatRoomId
 		}),
 		error:function(){
-			console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
+			// console.log('이전에 나눴던 메세지를 가져오지 못했습니다.'); 
 		},
 		success:function(data){
 			let msgL = data.messages;
@@ -441,11 +441,11 @@ function chattingClose(){
 			c_id : chatRoomId
 		}),
 		success:function(){   
-			console.log('서버와의 연결이 정상적으로 해제되었습니다.');
+			// console.log('서버와의 연결이 정상적으로 해제되었습니다.');
 			messageBox.innerHTML = null;
 		},   
 		error:function(){
-			console.log('서버와의 연결이 해제되지 않았습니다.');
+			// console.log('서버와의 연결이 해제되지 않았습니다.');
 		}
 	});
 }
@@ -542,13 +542,13 @@ function fileSend(files){
 			 	dataType : 'json',
 			 	success : function(data){
 			 		if(data==1){
-			 			console.log('파일 전송 완료');
+			 			// console.log('파일 전송 완료');
 			 		}else if(data==2){
-			 			console.log('파일 전송 오류');
+			 			// console.log('파일 전송 오류');
 			 		}
 			 	},
 			 	error : function(data){
-			 		console.log(JSON.stringify(data))
+			 		// console.log(JSON.stringify(data))
 			 	},
 			 	complete : function(){
 				 	document.addEventListener('click', offCanvasCloseChecking, false);
@@ -585,7 +585,7 @@ function sendMessage(){
 			alert('서버 연결에 문제가 생겨 메세지가 전송되지 않았습니다.');
 		},
 		success:function(data){
-			if(data==1){console.log('메세지 전달 완료')}
+			if(data==1){ /* console.log('메세지 전달 완료'); */ }
 			msg.value = null;
 		}
 	});
@@ -662,7 +662,7 @@ function readMsge(msgIdx){
 			alert('서버 연결에 문제가 생겨 메세지가 전송되지 않았습니다.');
 		},
 		success:function(data){
-			if(data==1){console.log('읽기 완료')}
+			if(data==1){ /* console.log('읽기 완료'); */ }
 		}
 	});
 }

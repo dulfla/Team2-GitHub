@@ -50,10 +50,10 @@ public class AdminController {
 				JSONObject json = adminJsonParsing.memverAdmin();
 				model.addAttribute("memberAdmin", json);
 				return "admin/memberStatus";
-			}else { errorMsg = "관리자만 접속할 수 있는 페이지 입니다."; }
-		}else { errorMsg = "로그인하셔야  접속할 수 있는 페이지 입니다."; }
+			}else { /* errorMsg = "관리자만 접속할 수 있는 페이지 입니다."; */ }
+		}else { /* errorMsg = "로그인하셔야  접속할 수 있는 페이지 입니다."; */ }
 		
-		reda.addFlashAttribute("errMsg", errorMsg);
+		// reda.addFlashAttribute("errMsg", errorMsg);
 		return "redirect:"+(referer!=null?referer:"index");
 	}
 	
