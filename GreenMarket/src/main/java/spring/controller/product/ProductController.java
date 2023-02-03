@@ -106,7 +106,6 @@ public class ProductController {
 			
 			try {
 				type = Files.probeContentType(checkfile.toPath());
-				logger.info("MIME TYPE : " + type);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

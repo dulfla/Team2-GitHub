@@ -64,7 +64,6 @@ public class MemberServiceImpl implements MemberService {
 		@Override
 		public List<ProductImageVO> getImageList(String p_id) {	
 			
-			logger.info("getImageList");
 			return dao.getImageList(p_id);
 		}
 		
@@ -78,12 +77,6 @@ public class MemberServiceImpl implements MemberService {
 				
 				dao.deleteImage(vo.getP_id());
 
-//				for(ProductImageVO attach : vo.getImageList()) {
-//				
-//					attach.setP_id(vo.getP_id());
-//					logger.info("deleteImageFor........" + attach);
-//					dao.modifyImage(attach);
-//				}
 				imgs.forEach(attach ->{
 					System.out.println(vo.getP_id());
 					attach.setProductId(vo.getP_id());
@@ -103,7 +96,6 @@ public class MemberServiceImpl implements MemberService {
 		// 상품 이미지 정보 얻기
 		@Override
 		public List<ProductImageVO> getImageInfo(String p_id) {
-			logger.info("getImageInfo.............");
 			return dao.getImageInfo(p_id);
 		}
 	
