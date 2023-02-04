@@ -147,8 +147,8 @@ function chattingRoom(){
 					aT.setAttribute('connection', r.c_id);
 
 					let imgT = document.createElement('img');
-					imgT.setAttribute('src', 'https://github.com/twbs.png');
-					imgT.setAttribute('alt', '임시 사진');
+					imgT.setAttribute('src', 'resources/img/icon.png'); // https://github.com/twbs.png
+					imgT.setAttribute('alt', '그린 마켓 로고');
 					imgT.classList.add('rounded-circle', 'flex-shrink-0', 'chatRoomImg');
 
 					let expressZone = document.createElement('div');

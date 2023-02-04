@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>그린 마켓</title>
+    <link rel="icon" href="${path}resources/img/icon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous"> 	
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     
@@ -77,9 +78,9 @@
 		          	</c:choose>
 			</button>
 			<ul class="dropdown-menu">
-			    <li><a href="myProduct" class="list-group-item list-group-item-action">내 상품</a></li>
-			    <li><a href="selled" class="list-group-item list-group-item-action">판매완료된 상품</a></li>
-			    <li><a href="unSelled" class="list-group-item list-group-item-action">판매중인 상품</a></li>
+			    <li><a href="myProduct" class="dropdown-item">내 상품</a></li>
+			    <li><a href="selled" class="dropdown-item">판매완료된 상품</a></li>
+			    <li><a href="unSelled" class="dropdown-item">판매중인 상품</a></li>
 			</ul>
 		</div>
 		<div class="btn-group linewarp mt-3">
