@@ -186,7 +186,7 @@ main button {
 	/* 광고 배너*/
 	.advertising  .badges2 {
 		position: absolute;
-		top: 132px;
+		top: 200px;
 		right:40px;
 	}
 	

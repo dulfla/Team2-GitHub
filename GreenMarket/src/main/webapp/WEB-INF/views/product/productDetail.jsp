@@ -292,6 +292,7 @@
 									<%@ include file="../include/chat/chat.jsp" %>
 								</c:otherwise>
 							</c:choose>
+							<a href="https://map.kakao.com/link/to/직거래장소,${product.lat},${product.lng}" target="_blank" class="btn btn-success">길찾기</a>
 							<button type="button" id="list_Btn" class="btn btn-outline-dark">목록</button>
 						</div>
 					</div>

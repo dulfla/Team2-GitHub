@@ -366,6 +366,7 @@ function registerCategorySubmit() {
 
 function categoryDelete(e) {
 	let target = e.currentTarget;
+	if(target.parentElement.parentElement.parentElement)
 	Swal.fire({
 	   title: '삭제하면 되돌릴 수 없습니다.',
 	   text: '정말로 삭제하시겠습니까?',
@@ -492,10 +493,19 @@ function categoryReload(){
 						let counts = data[i-1].cnt;
 						cP.innerHTML = counts.toLocaleString()+" 개";
 						
+						let deleteB = template.getElementsByTagName('li')[2].getElementsByTagName('button')[0];
+						deleteB.classList.add('categoryDelete');
+						
 						categoryList.appendChild(template);
 		 			}else{
 		 				categoryList.appendChild(template);
 		 			}
+		 		}
+		 		let categoryDeleteBtn = document.getElementsByClassName('categoryDelete');
+		 		if(categoryDeleteBtn.length>0){
+		 			for(let i=0; i<categoryDeleteBtn.length; i++){
+						categoryDeleteBtn[i].addEventListener('click', categoryDelete, false);
+					}
 		 		}
 	 		}else{
 	 			categoryList.appendChild(template);
