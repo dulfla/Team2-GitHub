@@ -1,7 +1,7 @@
 window.addEventListener('load', () => {
 	  const forms = document.getElementsByClassName('validation-form');
 	  const button = document.getElementById('button');
-
+		
 	  Array.prototype.filter.call(forms, (form) => {
 		  button.addEventListener('click', function (event) {
 	      if (form.checkValidity() == false) {
@@ -10,7 +10,6 @@ window.addEventListener('load', () => {
 	      }else{
 	    	  changePasswordCheck();
 	      }
-	      	form.classList.add('was-validated');
 
 	    }, false);
 	  });
@@ -41,19 +40,21 @@ function changePasswordCheck() {
 				    text: '다른 비밀번호를 입력해주세요.'
 
 			    })
+			    
 			}else if(result == 2){
 				Swal.fire({
 				    icon: 'error',
 				    title: '새 비밀번호가 일치하지 않습니다.'
 
 			    })
-			
+				
 			}else if (result == 1) {
 				Swal.fire({
 				    icon: 'error',
 				    title: '현재 비밀번호가 일치하지 않습니다.'
 
 			    })
+				
 			} else {
 			     Swal.fire({
 					   icon: 'success',
@@ -75,7 +76,7 @@ function changePasswordCheck() {
 function checkPwd() {
 	var newPassword = $('#newPassword').val();
 	var newPassword2 = $('#newPassword2').val();
-
+	
 	var jsonData = {
 		"newPassword": newPassword,
 		"newPassword2": newPassword2
@@ -94,11 +95,11 @@ function checkPwd() {
 				if (newPassword2 == '') {
 					$("#result_checkPwd").html('');
 				} else {
-
+				
 					$("#result_checkPwd").html('비밀번호가 일치합니다.').css("color", "green");
 				}
 			} else {
- 
+			
 				$("#result_checkPwd").html('비밀번호가 일치하지 않습니다.').css("color", "red");
 			}
 
