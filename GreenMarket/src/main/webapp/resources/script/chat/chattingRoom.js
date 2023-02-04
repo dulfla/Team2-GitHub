@@ -167,7 +167,6 @@ function backToChattRoom(){
 	addFileB.removeEventListener('click', actionFileInput);
 	inputFile.removeEventListener('change', sendingFile);
 	
-	
 	if(offCanvs.classList.contains('chattings')){
 		offCanvs.classList.remove('chattings');
 	}
@@ -176,6 +175,9 @@ function backToChattRoom(){
 	let offcanvasHeader = document.getElementsByClassName('offcanvas-header chatRoomOffcanvas')[0];
 	let backToChatRoomLBtn = document.getElementById('backB');
 	offcanvasHeader.removeChild(backToChatRoomLBtn);
+	
+	let chatTitle = document.getElementById("chatPdTitle");
+	chatTitle.innerHTML = null;
 
 	let backPageBtn = document.createElement('button');
 	backPageBtn.setAttribute('type', "button");

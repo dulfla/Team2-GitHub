@@ -84,13 +84,29 @@ function chooseMatchedModal() {
 				rido.addEventListener('click', onOffOptionSelect, false);
 			});
 			
-			let selectOpsions = document.getElementsByName('selectOptionC');
-			selectOpsions.forEach(so => {
-				if(so.value==selectedCategory){
-					so.setAttribute('disabled', "disabled");
-				}else if(so.getAttribute('disabled')=='disabled'){
-					so.removeAttribute('disabled');
-				}
+			let selectC = document.getElementsByName('selectC')[0];
+			selectC.innerHTML = null;
+			$.ajax({
+			 	url: 'CategoryList',
+			 	type : 'POST',
+			 	dataType : 'json',
+			 	success : function(data){
+			 		if(data!=null && 1<data.length){
+			 			for(let i=0; i<data.length; i++){
+			 				let opt = document.createElement('option');
+				 			opt.setAttribute('name', "selectOptionC");
+				 			opt.setAttribute('value', data[i].category);
+				 			opt.innerHTML = data[i].category
+				 			if(data[i].category==selectedCategory){
+				 				opt.setAttribute('disabled', "disabled");
+				 			}
+				 			selectC.appendChild(opt);
+			 			}
+				 	}
+			 	},
+			 	error : function(data){
+			 		// console.log(JSON.stringify(data));
+			 	}
 			});
 		}else if(sortation=='iconMf'){
 			modalTitle.innerHTML = "\""+selectedCategory+"\" 아이콘 수정";
@@ -424,7 +440,7 @@ function categoryDelete(e) {
 								 	url: 'CategoryDelete',
 								 	contentType : 'application/json; charset=UTF-8',
 								 	data : JSON.stringify({
-										category: choosedCategory,
+										data: choosedCategory,
 										move: value
 							    	}),
 								 	type : 'POST',

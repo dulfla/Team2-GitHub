@@ -29,13 +29,14 @@ public class CategoryAdminService {
 	private AdminDao dao;
 	
 	public void deleteCategory(Map<String, String> map) {
-		String originFileName = dao.originFileName(map.get("category"));
+		String originFileName = dao.originFileName(map.get("data"));
 		String originFile = "C:\\upload\\category";
 		File fileObj = new File(originFile, originFileName);
 		if(fileObj.exists()) {
 		    fileObj.delete();
 		}
-		dao.deleteCategory(map.get("category"));
+		dao.updateProduct(map);
+		dao.deleteCategory(map.get("data"));
 	}
 
 	public void modifyCategoryTitle(Map<String, String> map) {
