@@ -101,12 +101,16 @@ public class ChattingWebSocket extends TextWebSocketHandler{
 	}
 
 	public void sendMessageThisSession(String s, JSONObject root) {
-		Collection<WebSocketSession> ws = webSessions.get(root.getString("room")).get(s);
-		for(WebSocketSession w : ws) {
-			try {
-				sendMessage(w, root);
-			} catch (Exception e) {
-				e.printStackTrace();
+		if(webSessions.get(root.getString("room")).size()!=0 && webSessions.get(root.getString("room")).containsKey(s)) {
+			Collection<WebSocketSession> ws = webSessions.get(root.getString("room")).get(s);
+			if(ws.size()!=0) {
+				for(WebSocketSession w : ws) {
+					try {
+						sendMessage(w, root);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	}
