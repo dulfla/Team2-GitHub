@@ -3,7 +3,7 @@ let categoryModal = null;
 let completeBtn = null;
 
 let choosedCategoryBoxIdx = null;
-let activeBtn = null;
+let activeBtnType = null;
 let sortation = null;
 let selectedCategory = null;
 let selectedIcon = null;
@@ -38,21 +38,22 @@ function openModal(){
 function chooseMatchedModal() {
 	fileCheck = false;
 	nameCheck = false;
+	newIconFile = null;
 	
-	activeBtn = document.activeElement;
-	sortation = activeBtn.getAttribute('sortation');
+	activeBtnType = document.activeElement;
+	sortation = activeBtnType.getAttribute('sortation');
 	if(sortation==null){
 		sortation = "registerC";
 	}
 	
 	if(sortation!="registerC"){
-		choosedCategoryBoxIdx = activeBtn.parentElement.parentElement.parentElement.parentElement.getAttribute('idx');
+		choosedCategoryBoxIdx = activeBtnType.parentElement.parentElement.parentElement.parentElement.getAttribute('idx');
 		if(choosedCategoryBoxIdx==0){
 			sortation = 'noAction';
 		}
 		
-		selectedCategory = activeBtn.parentElement.parentElement.parentElement.getElementsByClassName('categoryName')[0].innerHTML;
-		selectedIconUrl = activeBtn.parentElement.parentElement.parentElement.getElementsByTagName('img')[0].getAttribute('src');
+		selectedCategory = activeBtnType.parentElement.parentElement.parentElement.getElementsByClassName('categoryName')[0].innerHTML;
+		selectedIconUrl = activeBtnType.parentElement.parentElement.parentElement.getElementsByTagName('img')[0].getAttribute('src');
 	}
 	
 	const modalTitle = document.getElementById('categoryModifyModalLabel');
@@ -97,6 +98,7 @@ function chooseMatchedModal() {
 			document.getElementById('beforeModifyI').setAttribute('src', selectedIconUrl);
 			document.getElementById('beforeModifyI').setAttribute('alt', selectedCategory+" 수정 전 이미지");
 			
+			document.getElementById('afterModifyI').value = null;
 			document.getElementById('afterModifyI').addEventListener('change', imgCheckAndView, false);
 			
 			document.getElementById('iconChooseBtn').addEventListener('click', function(){
@@ -106,6 +108,7 @@ function chooseMatchedModal() {
 			modalTitle.innerHTML = "카테고리 등록";
 			
 			document.getElementById('registerCate').addEventListener('input', canUesThisCategoryTitle, false);
+			document.getElementById('registerI').value = null;
 			document.getElementById('registerI').addEventListener('change', imgCheckAndView, false);
 			
 			document.getElementById('iconSelectBtn').addEventListener('click', function(){

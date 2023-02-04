@@ -73,7 +73,7 @@
 				  <c:choose>
 			           	<c:when test="${location eq 'myProduct'}" >내 상품</c:when>
 			           	<c:when test="${location eq 'selled'}">판매완료된 상품</c:when>
-			           	<c:when test="${location eq 'unselled'}">판매중인 상품</c:when>
+			           	<c:when test="${location eq 'unSelled'}">판매중인 상품</c:when>
 		          	</c:choose>
 			</button>
 			<ul class="dropdown-menu">
