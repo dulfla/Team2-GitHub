@@ -554,9 +554,9 @@ function onMsge(msg) {
 				if(imgs[imgs.length-1].complete){
 					removeReadMark();
 				}else{
-					imgs[imgs.length-1].load = function(){
+					imgs[imgs.length-1].addEventListener('load', function(){
 						removeReadMark();
-					}
+					});
 				}
 			}
 		}

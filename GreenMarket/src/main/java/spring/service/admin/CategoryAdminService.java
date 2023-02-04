@@ -70,7 +70,6 @@ public class CategoryAdminService {
 		}
 		
 		String originFileName = dao.originFileName(c);
-		System.out.println("originFileName : "+originFileName);
 		String originFile = "C:\\upload\\category";
 		File fileObj = new File(originFile, originFileName);
 		if(fileObj.exists()) {

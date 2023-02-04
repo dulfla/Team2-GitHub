@@ -611,9 +611,9 @@ function onMessage(msg) {
 				if(imgs[imgs.length-1].complete){
 					removeReadMarks();
 				}else{
-					imgs[imgs.length-1].load = function(){
-						removeReadMarks();
-					}
+					imgs[imgs.length-1].addEventListener('load', function(){
+						removeReadMark();
+					});
 				}
 			}
 		}	 
