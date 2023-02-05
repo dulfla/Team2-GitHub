@@ -17,7 +17,6 @@ public class RegisterService { // 회원정보를 저장하기 위한 기능을 
 	
 	
 	public int getNickNameMember(String nickname) {
-		System.out.println(nickname);
         return dao.getNickName(nickname);
     }
 	
@@ -39,7 +38,6 @@ public class RegisterService { // 회원정보를 저장하기 위한 기능을 
 
 
 	public int getEmailMember(String email) {
-		System.out.println(email);
         return dao.getEmail(email);
 	}
 

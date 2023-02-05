@@ -119,9 +119,6 @@ function registerAjax() {
 		"phone": phone,
 		"address": address
 	};
-	console.log(jsonData);
-
-
 
 	$.ajax({
 		type: "POST",
@@ -211,7 +208,7 @@ function checkEmail() {
 				if (email == '' || email == null) {
 					$("#result_email").html('');
 				} else {
-					check.setAttribute('value', 'emailFail ');
+					check.setAttribute('value', 'emailFail');
 					check2.setAttribute('class', 'form-control is-invalid');
 					$("#result_email").html('이메일 형식이 아닙니다.').css("color", "red");
 				}

@@ -79,14 +79,12 @@ public class RegisterController {
 		
 		if (errors.hasErrors()) { // 이메일 형식이 아님
 			result = 2;
-			System.out.println(result);
 		}
 		try {
 			return result;
 			 
 		}catch(AlreadyExistingMemberException e) { //이메일이 중복되는 경우
 			errors.rejectValue("email", "duplicate"); 
-			System.out.println(errors);
 			return result; 
 		}		
 				

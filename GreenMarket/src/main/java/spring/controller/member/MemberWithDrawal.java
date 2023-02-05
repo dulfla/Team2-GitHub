@@ -51,7 +51,6 @@ public class MemberWithDrawal {
 		try {
 			
 			int getKey = mailSendService.key;
-			System.out.println("테스트키 : "+mailSendService.key);
 			
 			memberWithDrawalService.withDrawal(mailAuth,getKey);
 			return 0;
