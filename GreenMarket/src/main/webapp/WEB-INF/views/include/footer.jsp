@@ -3,6 +3,7 @@
 
 <c:if test="${!empty errMsg}">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+	<link rel="icon" href="resources/img/favicon-32x32.png">
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 	<script type="text/javascript">
 		window.onload = function(){
