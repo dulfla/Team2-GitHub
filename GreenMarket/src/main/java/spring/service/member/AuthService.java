@@ -1,8 +1,11 @@
 package spring.service.member;
 
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import spring.dao.member.MemberDao;
@@ -18,7 +21,10 @@ public class AuthService { // 실제 로그인 기능을 담당할 객체
 	
 	@Autowired
 	private MemberDao memberDao;
-
+	
+	@Inject
+	BCryptPasswordEncoder passwordEncoder;
+	
 	public AuthInfo authenticate(LoginCommand lc) {
 		
 		Member member = memberDao.selectByEmail(lc.getEmail());
@@ -26,18 +32,24 @@ public class AuthService { // 실제 로그인 기능을 담당할 객체
 		if(member == null) {
 			throw new IdPasswordNotMatchingException();
 		}
+		boolean matchPw = passwordEncoder.matches(lc.getPassword(), member.getPassword());
 		
-		if(!member.getPassword().equals(lc.getPassword())) {
+		System.out.println("서비스테스트 : "+ matchPw);
+		if(matchPw == false) {
 			throw new IdPasswordNotMatchingException();
 		}
 		
+		/*
+		 * if(!member.getPassword().equals(lc.getPassword())) { throw new
+		 * IdPasswordNotMatchingException(); }
+		 */
 		AuthInfo authInfo = new AuthInfo()
 				.setNickname(member.getNickname())
 				.setEmail(member.getEmail())
 				.setName(member.getName())
 				.setType(member.getType());
-		
 		return authInfo;
+		
 	}
 
 	public AuthInfo naverAuthenticate(NaverCommand naverCommand) {

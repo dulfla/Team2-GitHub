@@ -8,8 +8,18 @@
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
 		<config>src/main/resources/mybatis/mapper/product.xml</config>
+		<config>src/main/resources/spring-security.xml</config>
 	</configs>
 	<autoconfigs>
+		<config>src/main/resources/spring-controller.xml</config>
+		<config>src/main/resources/spring-member.xml</config>
+		<config>src/main/resources/spring-mvc.xml</config>
+		<config>src/main/resources/spring-service.xml</config>
+		<config>src/main/resources/spring-mybatis.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
+		<config>src/main/resources/spring-email.xml</config>
+		<config>src/main/resources/spring-websocket.xml</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>

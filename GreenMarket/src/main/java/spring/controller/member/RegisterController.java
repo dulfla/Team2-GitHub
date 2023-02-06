@@ -1,8 +1,12 @@
 package spring.controller.member;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +31,9 @@ public class RegisterController {
 	@Autowired
 	private RegisterService registerService;
 	
+	@Inject
+	BCryptPasswordEncoder passwordEncoder;
+	  
 	
 	@GetMapping("register")
 	public String memberRegister() {
@@ -44,10 +51,14 @@ public class RegisterController {
 			result = "0"; 
 		}
 		
-		
 		//받아온 데이터를 DB에 저장
+		
+		// 비밀번호 암호화
+		String pwdBycrypt = passwordEncoder.encode(regReq.getPassword());
+		//ALTER TABLE member MODIFY password VARCHAR2(70);
+		
 		try {
-			registerService.regist(regReq);
+			registerService.regist(regReq,pwdBycrypt);
 			result = "1";
 
 		}catch (AlreadyExistingMemberException e) {

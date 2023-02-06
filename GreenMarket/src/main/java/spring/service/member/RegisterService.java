@@ -21,7 +21,7 @@ public class RegisterService { // 회원정보를 저장하기 위한 기능을 
     }
 	
 	
-	public void regist(RegisterRequest req) {
+	public void regist(RegisterRequest req, String pwdBycrypt) {
 		Member member = dao.selectByEmail(req.getEmail());
 		
 		if(member != null) {
@@ -29,7 +29,7 @@ public class RegisterService { // 회원정보를 저장하기 위한 기능을 
 		}
 		
 		Member newMember = new Member(req.getEmail(),
-				req.getPassword(), req.getBirth(),req.getAddress(),
+				pwdBycrypt, req.getBirth(),req.getAddress(),
 				req.getPhone(),req.getName(), req.getNickname());
 		
 		dao.insertMember(newMember);

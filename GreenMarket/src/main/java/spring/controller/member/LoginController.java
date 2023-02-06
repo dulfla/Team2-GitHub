@@ -2,10 +2,12 @@ package spring.controller.member;
 
 import java.util.HashMap;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,9 @@ public class LoginController {
 	@Autowired
 	private AuthService authService;
 	
+	@Inject
+	BCryptPasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private RegisterService registerService;
 	
@@ -52,6 +57,11 @@ public class LoginController {
 		new LoginCommandValidator().validate(loginCommand, errors);
 		
 		AuthInfo result; // ajax 반환받기 위한 변수
+		
+		/*
+		 * String checkPw = sqlSession.selectOne("user.loginCheck", vo); boolean matchPw
+		 * = passwordEncoder.matches(vo.getUserPw(), checkPw);
+		 */
 		
 		if (errors.hasErrors()) {
 			return null;
