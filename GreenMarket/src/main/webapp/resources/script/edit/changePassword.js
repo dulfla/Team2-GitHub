@@ -10,7 +10,6 @@ window.addEventListener('load', () => {
 	      }else{
 	    	  changePasswordCheck();
 	      }
-	      	form.classList.add('was-validated');
 
 	    }, false);
 	  });

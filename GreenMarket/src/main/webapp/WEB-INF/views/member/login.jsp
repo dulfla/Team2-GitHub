@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>그린 마켓</title>
-
+<link rel="icon" href="${path}resources/img/icon.png">
 <!-- bootstrap -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
@@ -186,7 +186,7 @@ main button {
 	/* 광고 배너*/
 	.advertising  .badges2 {
 		position: absolute;
-		top: 132px;
+		top: 200px;
 		right:40px;
 	}
 	

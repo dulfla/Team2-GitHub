@@ -23,7 +23,7 @@ BEGIN
         INSERT INTO productHistory
         VALUES(productTracking_seq.NEXTVAL, :NEW.p_id, :NEW.category, :NEW.regdate, 'IN');
     ELSIF updating THEN
-        IF :NEW.trade='CLEAR' OR :NEW.trade='clear' THEN
+        IF :OLD.trade<>'CLEAR' AND :OLD.trade<>'clear' AND (:NEW.trade='CLEAR' OR :NEW.trade='clear') THEN -- :NEW.trade='CLEAR' OR :NEW.trade='clear' AND (:OLD.trade<>'CLEAR' AND :OLD.trade<>'clear')
             INSERT INTO productHistory
             VALUES(productTracking_seq.NEXTVAL, :OLD.p_id, :NEW.category, :OLD.regdate, 'TRADE'); -- sysdate 여야 함
         END IF;

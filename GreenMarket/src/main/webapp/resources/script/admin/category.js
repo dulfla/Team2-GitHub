@@ -3,7 +3,7 @@ let categoryModal = null;
 let completeBtn = null;
 
 let choosedCategoryBoxIdx = null;
-let activeBtn = null;
+let activeBtnType = null;
 let sortation = null;
 let selectedCategory = null;
 let selectedIcon = null;
@@ -38,21 +38,22 @@ function openModal(){
 function chooseMatchedModal() {
 	fileCheck = false;
 	nameCheck = false;
+	newIconFile = null;
 	
-	activeBtn = document.activeElement;
-	sortation = activeBtn.getAttribute('sortation');
+	activeBtnType = document.activeElement;
+	sortation = activeBtnType.getAttribute('sortation');
 	if(sortation==null){
 		sortation = "registerC";
 	}
 	
 	if(sortation!="registerC"){
-		choosedCategoryBoxIdx = activeBtn.parentElement.parentElement.parentElement.parentElement.getAttribute('idx');
+		choosedCategoryBoxIdx = activeBtnType.parentElement.parentElement.parentElement.parentElement.getAttribute('idx');
 		if(choosedCategoryBoxIdx==0){
 			sortation = 'noAction';
 		}
 		
-		selectedCategory = activeBtn.parentElement.parentElement.parentElement.getElementsByClassName('categoryName')[0].innerHTML;
-		selectedIconUrl = activeBtn.parentElement.parentElement.parentElement.getElementsByTagName('img')[0].getAttribute('src');
+		selectedCategory = activeBtnType.parentElement.parentElement.parentElement.getElementsByClassName('categoryName')[0].innerHTML;
+		selectedIconUrl = activeBtnType.parentElement.parentElement.parentElement.getElementsByTagName('img')[0].getAttribute('src');
 	}
 	
 	const modalTitle = document.getElementById('categoryModifyModalLabel');
@@ -83,13 +84,29 @@ function chooseMatchedModal() {
 				rido.addEventListener('click', onOffOptionSelect, false);
 			});
 			
-			let selectOpsions = document.getElementsByName('selectOptionC');
-			selectOpsions.forEach(so => {
-				if(so.value==selectedCategory){
-					so.setAttribute('disabled', "disabled");
-				}else if(so.getAttribute('disabled')=='disabled'){
-					so.removeAttribute('disabled');
-				}
+			let selectC = document.getElementsByName('selectC')[0];
+			selectC.innerHTML = null;
+			$.ajax({
+			 	url: 'CategoryList',
+			 	type : 'POST',
+			 	dataType : 'json',
+			 	success : function(data){
+			 		if(data!=null && 1<data.length){
+			 			for(let i=0; i<data.length; i++){
+			 				let opt = document.createElement('option');
+				 			opt.setAttribute('name', "selectOptionC");
+				 			opt.setAttribute('value', data[i].category);
+				 			opt.innerHTML = data[i].category
+				 			if(data[i].category==selectedCategory){
+				 				opt.setAttribute('disabled', "disabled");
+				 			}
+				 			selectC.appendChild(opt);
+			 			}
+				 	}
+			 	},
+			 	error : function(data){
+			 		// console.log(JSON.stringify(data));
+			 	}
 			});
 		}else if(sortation=='iconMf'){
 			modalTitle.innerHTML = "\""+selectedCategory+"\" 아이콘 수정";
@@ -97,6 +114,7 @@ function chooseMatchedModal() {
 			document.getElementById('beforeModifyI').setAttribute('src', selectedIconUrl);
 			document.getElementById('beforeModifyI').setAttribute('alt', selectedCategory+" 수정 전 이미지");
 			
+			document.getElementById('afterModifyI').value = null;
 			document.getElementById('afterModifyI').addEventListener('change', imgCheckAndView, false);
 			
 			document.getElementById('iconChooseBtn').addEventListener('click', function(){
@@ -106,6 +124,7 @@ function chooseMatchedModal() {
 			modalTitle.innerHTML = "카테고리 등록";
 			
 			document.getElementById('registerCate').addEventListener('input', canUesThisCategoryTitle, false);
+			document.getElementById('registerI').value = null;
 			document.getElementById('registerI').addEventListener('change', imgCheckAndView, false);
 			
 			document.getElementById('iconSelectBtn').addEventListener('click', function(){
@@ -363,6 +382,7 @@ function registerCategorySubmit() {
 
 function categoryDelete(e) {
 	let target = e.currentTarget;
+	if(target.parentElement.parentElement.parentElement)
 	Swal.fire({
 	   title: '삭제하면 되돌릴 수 없습니다.',
 	   text: '정말로 삭제하시겠습니까?',
@@ -420,7 +440,7 @@ function categoryDelete(e) {
 								 	url: 'CategoryDelete',
 								 	contentType : 'application/json; charset=UTF-8',
 								 	data : JSON.stringify({
-										category: choosedCategory,
+										data: choosedCategory,
 										move: value
 							    	}),
 								 	type : 'POST',
@@ -489,10 +509,19 @@ function categoryReload(){
 						let counts = data[i-1].cnt;
 						cP.innerHTML = counts.toLocaleString()+" 개";
 						
+						let deleteB = template.getElementsByTagName('li')[2].getElementsByTagName('button')[0];
+						deleteB.classList.add('categoryDelete');
+						
 						categoryList.appendChild(template);
 		 			}else{
 		 				categoryList.appendChild(template);
 		 			}
+		 		}
+		 		let categoryDeleteBtn = document.getElementsByClassName('categoryDelete');
+		 		if(categoryDeleteBtn.length>0){
+		 			for(let i=0; i<categoryDeleteBtn.length; i++){
+						categoryDeleteBtn[i].addEventListener('click', categoryDelete, false);
+					}
 		 		}
 	 		}else{
 	 			categoryList.appendChild(template);

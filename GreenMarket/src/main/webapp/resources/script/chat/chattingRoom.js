@@ -112,8 +112,8 @@ function chattingRooms(){
 						aT.setAttribute('connection', r.c_id);
 	
 						let imgT = document.createElement('img');
-						imgT.setAttribute('src', 'https://github.com/twbs.png');
-						imgT.setAttribute('alt', '임시 사진');
+						imgT.setAttribute('src', 'resources/img/icon.png'); // https://github.com/twbs.png
+						imgT.setAttribute('alt', '그린 마켓 로고');
 						imgT.classList.add('rounded-circle', 'flex-shrink-0', 'chatRoomImg');
 	
 						let expressZone = document.createElement('div');
@@ -167,7 +167,6 @@ function backToChattRoom(){
 	addFileB.removeEventListener('click', actionFileInput);
 	inputFile.removeEventListener('change', sendingFile);
 	
-	
 	if(offCanvs.classList.contains('chattings')){
 		offCanvs.classList.remove('chattings');
 	}
@@ -176,6 +175,9 @@ function backToChattRoom(){
 	let offcanvasHeader = document.getElementsByClassName('offcanvas-header chatRoomOffcanvas')[0];
 	let backToChatRoomLBtn = document.getElementById('backB');
 	offcanvasHeader.removeChild(backToChatRoomLBtn);
+	
+	let chatTitle = document.getElementById("chatPdTitle");
+	chatTitle.innerHTML = null;
 
 	let backPageBtn = document.createElement('button');
 	backPageBtn.setAttribute('type', "button");
@@ -554,9 +556,9 @@ function onMsge(msg) {
 				if(imgs[imgs.length-1].complete){
 					removeReadMark();
 				}else{
-					imgs[imgs.length-1].load = function(){
+					imgs[imgs.length-1].addEventListener('load', function(){
 						removeReadMark();
-					}
+					});
 				}
 			}
 		}
