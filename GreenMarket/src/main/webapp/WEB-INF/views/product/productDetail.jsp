@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>그린 마켓</title>
+<link rel="icon" href="${path}resources/img/icon.png">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
 <link rel="icon" href="resources/img/favicon-32x32.png">
@@ -293,6 +294,7 @@
 									<%@ include file="../include/chat/chat.jsp" %>
 								</c:otherwise>
 							</c:choose>
+							<a href="https://map.kakao.com/link/to/직거래장소,${product.lat},${product.lng}" target="_blank" class="btn btn-success">길찾기</a>
 							<button type="button" id="list_Btn" class="btn btn-outline-dark">목록</button>
 						</div>
 					</div>

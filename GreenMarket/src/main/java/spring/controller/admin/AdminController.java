@@ -69,8 +69,8 @@ public class AdminController {
 				JSONObject json = adminJsonParsing.productAdmin();
 				model.addAttribute("productAdmin", json);
 				return "admin/productStatus";
-			}else { errorMsg = "관리자만 접속할 수 있는 페이지 입니다."; }
-		}else { errorMsg = "로그인하셔야  접속할 수 있는 페이지 입니다."; }
+			}else { /* errorMsg = "관리자만 접속할 수 있는 페이지 입니다."; */ }
+		}else { /* errorMsg = "로그인하셔야  접속할 수 있는 페이지 입니다."; */ }
 		
 		reda.addFlashAttribute("errMsg", errorMsg);
 		return "redirect:"+(referer!=null?referer:"index");
@@ -88,8 +88,8 @@ public class AdminController {
 				List<CategoryAdminVo> categorys= dao.getAllCategory();
 				model.addAttribute("categorys", categorys);
 				return "admin/category";
-			}else { errorMsg = "관리자만 접속할 수 있는 페이지 입니다."; }
-		}else { errorMsg = "로그인하셔야  접속할 수 있는 페이지 입니다."; }
+			}else { /* errorMsg = "관리자만 접속할 수 있는 페이지 입니다."; */ }
+		}else { /* errorMsg = "로그인하셔야  접속할 수 있는 페이지 입니다."; */ }
 		
 		reda.addFlashAttribute("errMsg", errorMsg);
 		return "redirect:"+(referer!=null?referer:"index");
@@ -104,8 +104,8 @@ public class AdminController {
 	@GetMapping({"CategoryDelete", "CategoryTitleModify", "CategoryIconModify", "CheckCategoryTitle", "CategoryRegister", "CategoryList"})
 	public String getTypeAccess(HttpServletRequest request, RedirectAttributes reda) {
 		String referer = request.getHeader("Referer");
-		String errorMsg = "접속할 수 없는 주소 입니다.";
-		reda.addFlashAttribute("errMsg", errorMsg);
+		// String errorMsg = "접속할 수 없는 주소 입니다.";
+		// reda.addFlashAttribute("errMsg", errorMsg);
 	    return "redirect:"+(referer!=null?referer:"index");
 	}
 
