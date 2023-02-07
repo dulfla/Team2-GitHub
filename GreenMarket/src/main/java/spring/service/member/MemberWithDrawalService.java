@@ -3,6 +3,7 @@ package spring.service.member;
 import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,13 +23,20 @@ public class MemberWithDrawalService {
 	@Inject
 	private MailSendService mailSendService;
 	
+	@Inject
+	BCryptPasswordEncoder passwordEncoder;
+	
+	
+	
 	@Transactional
 	public void withDrawal(MailAuthCommand mailAuth, int getKey) {
 		
 		Member member = dao.selectByEmail(mailAuth.getEmail());
-		if(!member.getPassword().equals(mailAuth.getPassword())) {
+		
+		boolean matchPw = passwordEncoder.matches(mailAuth.getPassword(), member.getPassword());
+		
+		if(matchPw == false) {
 			throw new IdPasswordNotMatchingException();
-
 		}
 		
 		System.out.println(mailAuth.getAuthKey());

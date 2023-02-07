@@ -3,6 +3,7 @@ package spring.service.member;
 import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import spring.dao.member.MemberDao;
@@ -22,6 +23,9 @@ public class FindPasswordService {
 	@Inject
 	private MailSendService mailSendService;
 	
+	@Inject
+	BCryptPasswordEncoder passwordEncoder;
+	
 	public void MailAuth(FindPasswordCommand findPwdCmd, int getKey) {
 			
 		Member member = dao.selectByEmail(findPwdCmd.getEmail());
@@ -38,10 +42,13 @@ public class FindPasswordService {
 	public void changePassword(FindPasswordCommand findPwdCmd) {
 		Member member = dao.selectByEmail(findPwdCmd.getEmail());
 		
+		// 암호화 비밀번호
+		String pwdBycrypt = passwordEncoder.encode(findPwdCmd.getNewPassword());
+		
 		if(!findPwdCmd.getNewPassword().equals(findPwdCmd.getNewPassword2())) {
 			throw new AlreadyExistingMemberException("비밀번호가 일치하지 않음");
 		}
-		member.changePassword(member.getPassword(), findPwdCmd.getNewPassword());
+		member.changePassword(member.getPassword(), pwdBycrypt);
 		
 		dao.updatePassword(member);
 	}

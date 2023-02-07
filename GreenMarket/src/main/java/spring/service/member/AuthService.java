@@ -34,7 +34,6 @@ public class AuthService { // 실제 로그인 기능을 담당할 객체
 		}
 		boolean matchPw = passwordEncoder.matches(lc.getPassword(), member.getPassword());
 		
-		System.out.println("서비스테스트 : "+ matchPw);
 		if(matchPw == false) {
 			throw new IdPasswordNotMatchingException();
 		}
